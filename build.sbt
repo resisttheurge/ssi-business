@@ -1,6 +1,7 @@
 lazy val `ssi-business` =
   (project in file("."))
     .settings(Revolver.settings: _ *)
+    .settings(scalikejdbcSettings: _ *)
     .settings(
 
       name := "ssi-business",
@@ -10,18 +11,24 @@ lazy val `ssi-business` =
       scalaVersion := "2.11.7",
 
       libraryDependencies ++= Seq(
-        "com.typesafe.akka" %% "akka-actor" % "2.3.9",
-        "com.typesafe.akka" %% "akka-slf4j" % "2.3.9",
+        "mysql" % "mysql-connector-java" % "5.1.+",
 
-        "io.spray" %% "spray-can" % "1.3.3",
-        "io.spray" %% "spray-routing" % "1.3.3",
+        "org.scalikejdbc" %% "scalikejdbc"  % "2.2.+",
+        "org.scalikejdbc"     %% "scalikejdbc-async" % "0.5.+",
+        "com.github.mauricio" %% "mysql-async"       % "0.2.+",
 
-        "ch.qos.logback" % "logback-classic" % "1.1.3"
+        "com.typesafe.akka" %% "akka-actor" % "2.3.+",
+        "com.typesafe.akka" %% "akka-slf4j" % "2.3.+",
+
+        "io.spray" %% "spray-can" % "1.3.+",
+        "io.spray" %% "spray-routing" % "1.3.+",
+
+        "ch.qos.logback" % "logback-classic" % "1.1.+"
       ),
 
-  	  scalaSource in Compile := baseDirectory.value / "src",
-  	  resourceDirectory in Compile := baseDirectory.value / "resources",
+      scalaSource in Compile := baseDirectory.value / "src",
+      resourceDirectory in Compile := baseDirectory.value / "resources",
 
-  	  scalaSource in Test := baseDirectory.value / "test",
-  	  resourceDirectory in Test := baseDirectory.value / "test-resources"
+      scalaSource in Test := baseDirectory.value / "test",
+      resourceDirectory in Test := baseDirectory.value / "test-resources"
     )

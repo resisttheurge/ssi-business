@@ -1,9 +1,8 @@
-package com.cooksys.ssi.business.actor
+package actors
 
 import java.io.File
 
-import akka.actor.{Props, Actor}
-import com.cooksys.ssi.business.properties._
+import akka.actor.{Actor, Props}
 import spray.routing._
 
 object ServerActor {

@@ -1,4 +1,4 @@
-package com.cooksys.ssi.business.actor
+package actors
 
 import akka.actor.{Actor, ActorLogging}
 

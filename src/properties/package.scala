@@ -1,10 +1,20 @@
-package com.cooksys.ssi.business
-
 package object properties {
 
   case object server extends Property[AnyRef] {
 
     case object cwd extends Property[String]
+
+    case object database extends Property[AnyRef] {
+
+      case object name extends Property[String]
+
+      case object url extends Property[String]
+
+      case object username extends Property[String]
+
+      case object password extends Property[String]
+
+    }
 
     case object http extends Property[AnyRef] {
 

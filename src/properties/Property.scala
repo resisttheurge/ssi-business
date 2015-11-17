@@ -1,4 +1,4 @@
-package com.cooksys.ssi.business.properties
+package properties
 
 import com.typesafe.config.{Config, ConfigFactory}
 

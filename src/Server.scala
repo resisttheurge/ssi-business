@@ -1,12 +1,10 @@
-package com.cooksys.ssi.business
-
+import actors.ServerActor
 import akka.actor.ActorSystem
 import akka.io.IO
 import akka.pattern._
 import akka.util.Timeout
-import com.cooksys.ssi.business.actor.ServerActor
+import properties.server
 import org.slf4j.LoggerFactory
-import properties._
 import spray.can.Http
 
 import scala.concurrent.duration._
