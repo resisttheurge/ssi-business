@@ -7,33 +7,17 @@ import scalikejdbc.async._
 
 import scala.concurrent._
 
-case class Token(userId: Int, uuid: UUID, expires: DateTime) extends Entity[Token] {
-
-  def user()(implicit ecs: ECS) = Token.user(this)
-
-}
+case class Token(userId: Int,
+                 uuid: UUID,
+                 expires: DateTime)
+  extends Entity[Token]
 
 object Token extends EntityCompanion[Token] {
 
   override val tableName = "token"
   override val columns = Seq("user_id", "uuid", "expires")
 
-  val (t, u) = (Token.syntax, User.syntax)
-
-  def user(token: Token)(implicit ecs: ECS) =
-    for {
-      user <- withSQL {
-        select
-          .from(Token as t)
-          .leftJoin(User as u)
-          .on(t.userId, u.id)
-          .where
-          .eq(t.userId, token.userId)
-      }
-        .map(User(u))
-        .single
-        .future
-    } yield user.get
+  val t = Token.syntax
 
   override def apply(t: ResultName[Token])(rs: WrappedResultSet): Token =
     Token(

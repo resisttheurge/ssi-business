@@ -4,7 +4,7 @@ import scalikejdbc._
 
 import scala.concurrent._
 
-trait EntityCompanion[E <: Entity[E]] extends SQLSyntaxSupport[E] with syntax.All with utils.syntax.All {
+trait EntityCompanion[E <: Entity[E]] extends SQLSyntaxSupport[E] with utils.syntax.All {
 
   def defaultECS: ECS = (EC.Implicits.global, DB.sharedSession)
 

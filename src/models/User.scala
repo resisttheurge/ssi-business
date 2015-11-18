@@ -5,29 +5,25 @@ import scalikejdbc.async._
 
 import scala.concurrent._
 
-case class User(id: Int, username: String, password: String) extends Entity[User] {
-
-  def token()(implicit ecs: ECS) = User.token(this)
-
-}
+case class User(id: Int,
+                username: String,
+                password: String,
+                active: Boolean)
+  extends Entity[User]
 
 object User extends EntityCompanion[User] {
 
   override val tableName = "user"
-  override val columns = Seq("id", "name", "password")
+  override val columns = Seq("id", "name", "password", "active")
 
-  val (u, t) = (User.syntax, Token.syntax)
-
-  def token(user: User)(implicit ecs: ECS) =
-    for {
-      token <- Token.by(user.id)
-    } yield token
+  val u = User.syntax
 
   override def apply(u: ResultName[User])(rs: WrappedResultSet): User =
     User(
       id = rs.get(u.id),
       username = rs.get(u.username),
-      password = rs.get(u.password)
+      password = rs.get(u.password),
+      active = rs.get(u.active)
     )
 
   override def opt(u: ResultName[User])(rs: WrappedResultSet): Option[User] =
@@ -35,7 +31,8 @@ object User extends EntityCompanion[User] {
       id <- rs.intOpt(u.id)
       username <- rs.stringOpt(u.username)
       password <- rs.stringOpt(u.password)
-    } yield User(id, username, password)
+      active <- rs.booleanOpt(u.active)
+    } yield User(id, username, password, active)
 
   def by(id: Int)(implicit ecs: ECS): Future[Option[User]] = byId(id)
 

@@ -3,8 +3,12 @@ package actors
 import akka.actor.{Actor, ActorLogging}
 import com.typesafe.config.Config
 
-trait BaseActor extends Actor with ActorLogging {
+trait BaseActor extends ActorLogging with utils.syntax.All {
+  this: Actor =>
+
   implicit def config: Config
-  implicit def system = context.system
+
+  def system = context.system
+
   implicit def dispatcher = context.dispatcher
 }

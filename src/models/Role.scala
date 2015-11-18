@@ -5,7 +5,9 @@ import scalikejdbc.async._
 
 import scala.concurrent._
 
-case class Role(id: Int, name: String) extends Entity[Role]
+case class Role(id: Int,
+                name: String)
+  extends Entity[Role]
 
 object Role extends EntityCompanion[Role] {
 

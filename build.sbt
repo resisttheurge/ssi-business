@@ -1,7 +1,6 @@
 lazy val `ssi-business` =
   (project in file("."))
     .settings(Revolver.settings: _ *)
-    .settings(scalikejdbcSettings: _ *)
     .settings(
 
       name := "ssi-business",
@@ -14,11 +13,15 @@ lazy val `ssi-business` =
         "mysql" % "mysql-connector-java" % "5.1.+",
 
         "org.scalikejdbc" %% "scalikejdbc"  % "2.2.+",
+        "org.scalikejdbc" %% "scalikejdbc-syntax-support-macro"  % "2.2.+",
         "org.scalikejdbc"     %% "scalikejdbc-async" % "0.5.+",
         "com.github.mauricio" %% "mysql-async"       % "0.2.+",
 
         "com.typesafe.akka" %% "akka-actor" % "2.3.+",
         "com.typesafe.akka" %% "akka-slf4j" % "2.3.+",
+
+        "de.knutwalker" %% "typed-actors" % "1.5.+",
+        "de.knutwalker" %% "typed-actors-creator" % "1.5.+",
 
         "io.spray" %% "spray-can" % "1.3.+",
         "io.spray" %% "spray-routing" % "1.3.+",

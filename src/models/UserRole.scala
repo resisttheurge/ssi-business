@@ -5,7 +5,9 @@ import scalikejdbc.async._
 
 import scala.concurrent._
 
-case class UserRole(userId: Int, roleId: Int) extends Entity[UserRole]
+case class UserRole(userId: Int,
+                    roleId: Int)
+  extends Entity[UserRole]
 
 object UserRole extends EntityCompanion[UserRole] {
 
@@ -21,10 +23,10 @@ object UserRole extends EntityCompanion[UserRole] {
     )
 
   override def opt(ur: ResultName[UserRole])(rs: WrappedResultSet): Option[UserRole] =
-  for {
-    userId <- rs.intOpt(ur.userId)
-    roleId <- rs.intOpt(ur.roleId)
-  } yield UserRole(userId, roleId)
+    for {
+      userId <- rs.intOpt(ur.userId)
+      roleId <- rs.intOpt(ur.roleId)
+    } yield UserRole(userId, roleId)
 
   def by(userId: Int, roleId: Int)(implicit ecs: ECS) = byUserIdAndRoleId(userId, roleId)
 
@@ -35,83 +37,90 @@ object UserRole extends EntityCompanion[UserRole] {
   def by(role: Role)(implicit ecs: ECS) = byRoleId(role.id)
 
   def byUserIdAndRoleId(userId: Int, roleId: Int)(implicit ecs: ECS): Future[Option[UserRole]] =
-    withSQL {
-      select
-        .from(UserRole as ur)
-        .where.eq(ur.userId, userId)
-        .and.eq(ur.roleId, roleId)
-    }
-      .map(UserRole(ur))
-      .single
-      .future
+    for {
+      userRole <- withSQL {
+        select
+          .from(UserRole as ur)
+          .where.eq(ur.userId, userId)
+          .and.eq(ur.roleId, roleId)
+      }
+        .map(UserRole(ur))
+        .single
+        .future
+    } yield userRole
 
   def byUserId(userId: Int)(implicit ecs: ECS): Future[List[UserRole]] =
-    withSQL {
-      select
-        .from(UserRole as ur)
-        .where.eq(ur.userId, userId)
-    }
-      .map(UserRole(ur))
-      .list
-      .future
+    for {
+      userRoles <- withSQL {
+        select
+          .from(UserRole as ur)
+          .where.eq(ur.userId, userId)
+      }
+        .map(UserRole(ur))
+        .list
+        .future
+    } yield userRoles
 
   def byRoleId(roleId: Int)(implicit ecs: ECS): Future[List[UserRole]] =
-    withSQL {
-      select
-        .from(UserRole as ur)
-        .where.eq(ur.roleId, roleId)
-    }
-      .map(UserRole(ur))
-      .list
-      .future
+    for {
+      userRoles <- withSQL {
+        select
+          .from(UserRole as ur)
+          .where.eq(ur.roleId, roleId)
+      }
+        .map(UserRole(ur))
+        .list
+        .future
+    } yield userRoles
 
   def createByUserIdAndRoleId(userId: Int, roleId: Int)(implicit ecs: ECS): Future[UserRole] =
-    AsyncDB.localTx {
-      implicit tx =>
-        for {
-          _ <- withSQL {
-            insert.into(UserRole)
-              .columns(
-                column.userId,
-                column.roleId
-              )
-              .values(
-                userId,
-                roleId
-              )
-          }
-            .update
-            .future
+    for {
+      _ <- withSQL {
+        insert.into(UserRole)
+          .columns(
+            column.userId,
+            column.roleId
+          )
+          .values(
+            userId,
+            roleId
+          )
+      }
+        .update
+        .future
 
-          userRole <- UserRole.by(userId, roleId)
+      userRole <- UserRole.by(userId, roleId)
 
-        } yield userRole.get
-    }
+    } yield userRole.get
 
 
   override def save(entity: UserRole)(implicit ecs: ECS): Future[UserRole] =
-    withSQL {
-      update(UserRole)
-        .set(
-          column.userId -> entity.userId,
-          column.roleId -> entity.roleId
-        )
-        .where.eq(column.userId, entity.userId)
-        .and.eq(column.roleId, entity.roleId)
-    }
-      .update
-      .future
-      .replace(entity)
+    for {
+      _ <- withSQL {
+        update(UserRole)
+          .set(
+            column.userId -> entity.userId,
+            column.roleId -> entity.roleId
+          )
+          .where.eq(column.userId, entity.userId)
+          .and.eq(column.roleId, entity.roleId)
+      }
+        .update
+        .future
+
+      userRole <- UserRole.by(entity.userId, entity.roleId)
+    } yield userRole.get
 
 
   override def destroy(entity: UserRole)(implicit ecs: ECS): Future[Unit] =
-    withSQL {
-      delete.from(UserRole)
-        .where.eq(column.roleId, entity.userId)
-        .and.eq(column.roleId, entity.roleId)
-    }
-      .update
-      .future
-      .discard
+    for {
+      _ <- withSQL {
+        delete.from(UserRole)
+          .where.eq(column.roleId, entity.userId)
+          .and.eq(column.roleId, entity.roleId)
+      }
+        .update
+        .future
+    } yield ()
 
 }

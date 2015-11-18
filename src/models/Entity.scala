@@ -2,7 +2,7 @@ package models
 
 import scala.concurrent._
 
-abstract class Entity[E <: Entity[E]](implicit val companion: EntityCompanion[E]) extends syntax.All with utils.syntax.All {
+abstract class Entity[E <: Entity[E]](implicit val companion: EntityCompanion[E]) extends utils.syntax.All {
   this: E =>
 
   def defaultECS: ECS = companion.defaultECS

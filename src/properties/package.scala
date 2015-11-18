@@ -6,7 +6,7 @@ package object properties {
 
     case object database extends Property[AnyRef] {
 
-      case object fragment extends Property[String]
+      case object name extends Property[String]
 
       case object url extends Property[String]
 
