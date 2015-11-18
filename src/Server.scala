@@ -3,6 +3,7 @@ import akka.actor.ActorSystem
 import akka.io.IO
 import akka.pattern._
 import akka.util.Timeout
+import com.typesafe.config.ConfigFactory
 import properties.server
 import org.slf4j.LoggerFactory
 import spray.can.Http
@@ -12,9 +13,10 @@ import scala.util.{Failure, Success}
 
 object Server extends App {
 
-  lazy val log = LoggerFactory.getLogger("server")
+  implicit lazy val log = LoggerFactory.getLogger("server")
 
-  implicit lazy val system = ActorSystem("ssi-business-server")
+  implicit lazy val config = ConfigFactory.load()
+  implicit lazy val system = ActorSystem("ssi-business-server", config)
   implicit lazy val dispatcher = system.dispatcher
 
   start()

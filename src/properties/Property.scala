@@ -6,7 +6,7 @@ import scala.reflect.ClassTag
 
 object Property {
 
-  def apply[A: ClassTag](path: String, conf: Config = ConfigFactory.load()): A = conf.getAnyRef(path).asInstanceOf[A]
+  def apply[A: ClassTag](conf: Config, path: String): A = conf.getAnyRef(path).asInstanceOf[A]
 
 }
 
@@ -15,16 +15,12 @@ abstract class Property[A: ClassTag](implicit val parent: Option[Property[_]] = 
 
   implicit val asParent = Some(this)
 
-  def name: String = this.productPrefix
-
-  def path: String =
+  lazy val path: String =
     parent match {
-      case Some(prop) => s"${prop.path}.$name"
-      case _ => name
+      case Some(prop) => s"${prop.path}.$productPrefix"
+      case _ => productPrefix
     }
 
-  def apply(): A = Property[A](path)
-
-  def apply(conf: Config): A = Property[A](path, conf)
+  def apply()(implicit conf: Config = ConfigFactory.load()): A = Property[A](conf, path)
 
 }

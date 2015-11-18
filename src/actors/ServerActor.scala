@@ -3,13 +3,15 @@ package actors
 import java.io.File
 
 import akka.actor.{Actor, Props}
+import com.typesafe.config.Config
+import properties._
 import spray.routing._
 
 object ServerActor {
-  def props = Props(classOf[ServerActor])
+  def props(implicit config: Config) = Props(classOf[ServerActor], config)
 }
 
-class ServerActor extends HttpServiceActor with BaseActor {
+case class ServerActor(config: Config) extends HttpServiceActor with BaseActor {
 
   override def receive: Actor.Receive =
     runRoute {

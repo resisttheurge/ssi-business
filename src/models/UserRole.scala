@@ -1,39 +1,40 @@
 package models
 
-import scalikejdbc._, async._, FutureImplicits._
-
-import util._
+import scalikejdbc._
+import scalikejdbc.async._
 
 import scala.concurrent._
 
-case class UserRole(userId: Int,
-                   roleId: Int)
-  extends ShortenedNames {
+case class UserRole(userId: Int, roleId: Int) extends Entity[UserRole]
 
-  def destroy()(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Unit] =
-    UserRole.destroy(this)(session, ec)
+object UserRole extends EntityCompanion[UserRole] {
 
-}
-
-
-object UserRole extends SQLSyntaxSupport[UserRole] with ShortenedNames {
+  override val tableName = "user_role"
+  override val columns = Seq("userId", "roleId")
 
   val ur = UserRole.syntax("ur")
-  override val tableName = "user_role"
-  override val columns = Seq("user_id", "role_id")
 
-
-  def apply(u: SyntaxProvider[UserRole])(rs: WrappedResultSet): UserRole =
-    UserRole(u.resultName)(rs)
-
-  def apply(u: ResultName[UserRole])(rs: WrappedResultSet): UserRole =
+  override def apply(ur: ResultName[UserRole])(rs: WrappedResultSet): UserRole =
     UserRole(
-      userId = rs.get(u.userId),
-      roleId = rs.get(u.roleId)
+      userId = rs.get(ur.userId),
+      roleId = rs.get(ur.roleId)
     )
 
+  override def opt(ur: ResultName[UserRole])(rs: WrappedResultSet): Option[UserRole] =
+  for {
+    userId <- rs.intOpt(ur.userId)
+    roleId <- rs.intOpt(ur.roleId)
+  } yield UserRole(userId, roleId)
 
-  def find(userId: Int, roleId: Int)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Option[UserRole]] =
+  def by(userId: Int, roleId: Int)(implicit ecs: ECS) = byUserIdAndRoleId(userId, roleId)
+
+  def by(user: User, role: Role)(implicit ecs: ECS) = byUserIdAndRoleId(user.id, role.id)
+
+  def by(user: User)(implicit ecs: ECS) = byUserId(user.id)
+
+  def by(role: Role)(implicit ecs: ECS) = byRoleId(role.id)
+
+  def byUserIdAndRoleId(userId: Int, roleId: Int)(implicit ecs: ECS): Future[Option[UserRole]] =
     withSQL {
       select
         .from(UserRole as ur)
@@ -44,91 +45,70 @@ object UserRole extends SQLSyntaxSupport[UserRole] with ShortenedNames {
       .single
       .future
 
-
-  def findAll()(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[List[UserRole]] =
+  def byUserId(userId: Int)(implicit ecs: ECS): Future[List[UserRole]] =
     withSQL {
       select
         .from(UserRole as ur)
+        .where.eq(ur.userId, userId)
     }
       .map(UserRole(ur))
       .list
       .future
 
-
-  def countAll()(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Long] =
-    for {
-      count <- withSQL {
-        select(sqls.count)
-          .from(UserRole as ur)
-      }
-        .map(_.long(1))
-        .single
-        .future
-    } yield count.get
-
-
-  def findBy(where: SQLSyntax)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Option[UserRole]] =
+  def byRoleId(roleId: Int)(implicit ecs: ECS): Future[List[UserRole]] =
     withSQL {
       select
         .from(UserRole as ur)
-        .where.append(where)
+        .where.eq(ur.roleId, roleId)
     }
       .map(UserRole(ur))
-      .single
-      .future
-
-
-  def findAllBy(where: SQLSyntax)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[List[UserRole]] =
-    withSQL {
-      select
-        .from(UserRole as ur)
-        .where.append(where)
-    }
-      .map(UserRole(ur.resultName))
       .list
       .future
 
+  def createByUserIdAndRoleId(userId: Int, roleId: Int)(implicit ecs: ECS): Future[UserRole] =
+    AsyncDB.localTx {
+      implicit tx =>
+        for {
+          _ <- withSQL {
+            insert.into(UserRole)
+              .columns(
+                column.userId,
+                column.roleId
+              )
+              .values(
+                userId,
+                roleId
+              )
+          }
+            .update
+            .future
 
-  def countBy(where: SQLSyntax)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Long] =
-    for {
-      count <- withSQL {
-        select(sqls.count)
-          .from(UserRole as ur)
-          .where.append(where)
-      }
-        .map(_.long(1))
-        .single
-        .future
-    } yield count.get
+          userRole <- UserRole.by(userId, roleId)
 
-
-  def create(userId: Int, roleId: Int)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[UserRole] =
-    for {
-
-      _ <- withSQL {
-        insert.into(UserRole)
-          .columns(
-            column.userId,
-            column.roleId
-          )
-          .values(
-            userId,
-            roleId
-          )
-      }
-        .update
-        .future
-
-      role <- UserRole.find(userId, roleId)
-
-    } yield role.get
+        } yield userRole.get
+    }
 
 
-  def destroy(entity: UserRole)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Unit] =
+  override def save(entity: UserRole)(implicit ecs: ECS): Future[UserRole] =
+    withSQL {
+      update(UserRole)
+        .set(
+          column.userId -> entity.userId,
+          column.roleId -> entity.roleId
+        )
+        .where.eq(column.userId, entity.userId)
+        .and.eq(column.roleId, entity.roleId)
+    }
+      .update
+      .future
+      .replace(entity)
+
+
+  override def destroy(entity: UserRole)(implicit ecs: ECS): Future[Unit] =
     withSQL {
       delete.from(UserRole)
-        .where.eq(ur.userId, entity.userId)
-        .and.eq(ur.roleId, entity.roleId)
+        .where.eq(column.roleId, entity.userId)
+        .and.eq(column.roleId, entity.roleId)
     }
       .update
       .future

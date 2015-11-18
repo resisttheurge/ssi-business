@@ -1,103 +1,60 @@
 package models
 
-import scalikejdbc._, async._, FutureImplicits._
-
-import util._
+import scalikejdbc._
+import scalikejdbc.async._
 
 import scala.concurrent._
 
-case class Role(id: Int, name: String) extends ShortenedNames {
+case class Role(id: Int, name: String) extends Entity[Role]
 
-  def save()(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Role] =
-    Role.save(this)(session, ec)
-
-  def destroy()(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal ): Future[Unit] =
-    Role.destroy(this)(session, ec)
-
-}
-
-object Role extends SQLSyntaxSupport[Role] with ShortenedNames {
+object Role extends EntityCompanion[Role] {
 
   override val tableName = "role"
   override val columns = Seq("id", "name")
 
   val r = Role.syntax("r")
 
-  def apply(r: SyntaxProvider[Role])(rs: WrappedResultSet): Role =
-    Role(r.resultName)(rs)
+  override def apply(r: ResultName[Role])(rs: WrappedResultSet): Role =
+    Role(
+      id = rs.get(r.id),
+      name = rs.get(r.name)
+    )
 
-  def apply(r: ResultName[Role])(rs: WrappedResultSet): Role =
-    Role(id = rs.get(r.id), name = rs.get(r.name))
-
-  def find(id: Int)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Option[Role]] =
-    withSQL {
-      select
-        .from(Role as r)
-        .where.eq(r.id, id)
-    }
-      .map(Role(r))
-      .single
-      .future
-
-
-  def findAll()(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[List[Role]] =
-    withSQL {
-      select
-        .from(Role as r)
-    }
-      .map(Role(r))
-      .list
-      .future
-
-
-  def countAll()(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Long] =
+  override def opt(r: ResultName[Role])(rs: WrappedResultSet): Option[Role] =
     for {
-      count <- withSQL {
-        select(sqls.count)
+      id <- rs.intOpt(r.id)
+      name <- rs.stringOpt(r.name)
+    } yield Role(id, name)
+
+  def by(id: Int)(implicit ecs: ECS): Future[Option[Role]] = byId(id)
+
+  def by(name: String)(implicit ecs: ECS): Future[Option[Role]] = byName(name)
+
+  def byId(id: Int)(implicit ecs: ECS): Future[Option[Role]] =
+    for {
+      role <- withSQL {
+        select
           .from(Role as r)
+          .where eq(r.id, id)
       }
-        .map(_.long(1))
+        .map(Role(r))
         .single
         .future
-    } yield count.get
+    } yield role
 
-
-  def findBy(where: SQLSyntax)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Option[Role]] =
-    withSQL {
-      select
-        .from(Role as r)
-        .where.append(where)
-    }
-      .map(Role(r))
-      .single
-      .future
-
-
-  def findAllBy(where: SQLSyntax)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[List[Role]] =
-    withSQL {
-      select
-        .from(Role as r)
-        .where.append(where)
-    }
-      .map(Role(r.resultName))
-      .list
-      .future
-
-
-  def countBy(where: SQLSyntax)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Long] =
+  def byName(name: String)(implicit ecs: ECS): Future[Option[Role]] =
     for {
-      count <- withSQL {
-        select(sqls.count)
+      role <- withSQL {
+        select
           .from(Role as r)
-          .where.append(where)
+          .where eq(r.name, name)
       }
-        .map(_.long(1))
+        .map(Role(r))
         .single
         .future
-    } yield count.get
+    } yield role
 
-
-  def create(name: String)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Role] =
+  def create(name: String)(implicit ecs: ECS): Future[Role] =
     for {
       generatedKey <- withSQL {
         insert.into(Role)
@@ -107,30 +64,35 @@ object Role extends SQLSyntaxSupport[Role] with ShortenedNames {
         .updateAndReturnGeneratedKey
         .future
 
-      role <- Role.find(generatedKey.toInt)
+      role <- Role.by(generatedKey.toInt)
 
     } yield role.get
 
-  def save(entity: Role)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Role] =
-    withSQL {
-      update(Role)
-        .set(
-          column.name -> entity.name
-        )
-        .where.eq(column.id, entity.id)
-    }
-      .update
-      .future
-      .replace(entity)
 
+  override def save(entity: Role)(implicit ecs: ECS): Future[Role] =
+    for {
+      _ <- withSQL {
+        update(Role)
+          .set(
+            column.name -> entity.name
+          )
+          .where.eq(column.id, entity.id)
+      }
+        .update
+        .future
 
-  def destroy(entity: Role)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Unit] =
-    withSQL {
-      delete.from(Role)
-        .where.eq(column.id, entity.id)
-    }
-      .update
-      .future
-      .discard
+      role <- Role.by(entity.id)
+
+    } yield role.get
+
+  override def destroy(entity: Role)(implicit ecs: ECS): Future[Unit] =
+    for {
+      _ <- withSQL {
+        delete.from(Role)
+          .where.eq(column.id, entity.id)
+      }
+        .update
+        .future
+    } yield ()
 
 }

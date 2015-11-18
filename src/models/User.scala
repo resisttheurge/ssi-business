@@ -1,166 +1,110 @@
 package models
 
-import scalikejdbc._, async._, FutureImplicits._
-
-import util._
+import scalikejdbc._
+import scalikejdbc.async._
 
 import scala.concurrent._
 
-case class User(id: Int,
-                name: String,
-                password: String)
-  extends ShortenedNames {
+case class User(id: Int, username: String, password: String) extends Entity[User] {
 
-  def roles()(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[List[Role]] =
-    User.roles(this)(session, ec)
-
-  def save()(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[User] =
-    User.save(this)(session, ec)
-
-  def destroy()(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Unit] =
-    User.destroy(this)(session, ec)
+  def token()(implicit ecs: ECS) = User.token(this)
 
 }
 
+object User extends EntityCompanion[User] {
 
-object User extends SQLSyntaxSupport[User] with ShortenedNames {
-
-  val u = User.syntax("u")
   override val tableName = "user"
-  override val columns = Seq("id", "name", "password", "token")
+  override val columns = Seq("id", "name", "password")
 
-  def roles(entity: User)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[List[Role]] =
-    withSQL {
-      select.from(UserRole as UserRole.ur)
-        .leftJoin(Role as Role.r).on(UserRole.ur.roleId, Role.r.id)
-        .where.eq(UserRole.ur.userId, entity.id)
-    }
-      .map(Role(Role.r))
-      .list
-      .future
+  val (u, t) = (User.syntax, Token.syntax)
 
+  def token(user: User)(implicit ecs: ECS) =
+    for {
+      token <- Token.by(user.id)
+    } yield token
 
-  def apply(u: SyntaxProvider[User])(rs: WrappedResultSet): User =
-    User(u.resultName)(rs)
-
-  def apply(u: ResultName[User])(rs: WrappedResultSet): User =
+  override def apply(u: ResultName[User])(rs: WrappedResultSet): User =
     User(
       id = rs.get(u.id),
-      name = rs.get(u.name),
+      username = rs.get(u.username),
       password = rs.get(u.password)
     )
 
-
-  def find(id: Int)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Option[User]] =
-    withSQL {
-      select
-        .from(User as u)
-        .where.eq(u.id, id)
-    }
-      .map(User(u))
-      .single
-      .future
-
-
-  def findAll()(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[List[User]] =
-    withSQL {
-      select
-        .from(User as u)
-    }
-      .map(User(u))
-      .list
-      .future
-
-
-  def countAll()(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Long] =
+  override def opt(u: ResultName[User])(rs: WrappedResultSet): Option[User] =
     for {
-      count <- withSQL {
-        select(sqls.count)
+      id <- rs.intOpt(u.id)
+      username <- rs.stringOpt(u.username)
+      password <- rs.stringOpt(u.password)
+    } yield User(id, username, password)
+
+  def by(id: Int)(implicit ecs: ECS): Future[Option[User]] = byId(id)
+
+  def by(username: String)(implicit ecs: ECS): Future[Option[User]] = byUsername(username)
+
+  def byId(id: Int)(implicit ecs: ECS): Future[Option[User]] =
+    for {
+      user <- withSQL {
+        select
           .from(User as u)
+          .where.eq(u.id, id)
       }
-        .map(_.long(1))
+        .map(User(u))
         .single
         .future
-    } yield count.get
+    } yield user
 
-
-  def findBy(where: SQLSyntax)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Option[User]] =
-    withSQL {
-      select
-        .from(User as u)
-        .where.append(where)
-    }
-      .map(User(u))
-      .single
-      .future
-
-
-  def findAllBy(where: SQLSyntax)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[List[User]] =
-    withSQL {
-      select
-        .from(User as u)
-        .where.append(where)
-    }
-      .map(User(u.resultName))
-      .list
-      .future
-
-
-  def countBy(where: SQLSyntax)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Long] =
+  def byUsername(username: String)(implicit ecs: ECS): Future[Option[User]] =
     for {
-      count <- withSQL {
-        select(sqls.count)
+      user <- withSQL {
+        select
           .from(User as u)
-          .where.append(where)
+          .where.eq(u.username, username)
       }
-        .map(_.long(1))
+        .map(User(u))
         .single
         .future
-    } yield count.get
+    } yield user
 
-
-  def create(name: String, password: String)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[User] =
+  def create(username: String, password: String)(implicit ecs: ECS): Future[User] =
     for {
-
       generatedKey <- withSQL {
         insert.into(User)
-          .columns(
-            column.name,
-            column.password
-          )
-          .values(
-            name,
-            password
-          )
+          .columns(column.username)
+          .values(username)
       }
         .updateAndReturnGeneratedKey
         .future
 
-      role <- User.find(generatedKey.toInt)
+      user <- User.by(generatedKey.toInt)
 
-    } yield role.get
-
-  def save(entity: User)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[User] =
-    withSQL {
-      update(User)
-        .set(
-          column.name -> entity.name,
-          column.password -> entity.password
-        )
-        .where.eq(column.id, entity.id)
-    }
-      .update
-      .future
-      .replace(entity)
+    } yield user.get
 
 
-  def destroy(entity: User)(implicit session: AsyncDBSession = AsyncDB.sharedSession, ec: EC = ECGlobal): Future[Unit] =
-    withSQL {
-      delete.from(User)
-        .where.eq(column.id, entity.id)
-    }
-      .update
-      .future
-      .discard
+  override def save(entity: User)(implicit ecs: ECS): Future[User] =
+    for {
+      _ <- withSQL {
+        update(User)
+          .set(
+            column.username -> entity.username,
+            column.password -> entity.password
+          )
+          .where.eq(column.id, entity.id)
+      }
+        .update
+        .future
 
+      user <- User.by(entity.id)
+
+    } yield user.get
+
+
+  override def destroy(entity: User)(implicit ecs: ECS): Future[Unit] =
+    for {
+      _ <- withSQL {
+        delete.from(User)
+          .where.eq(column.id, entity.id)
+      }
+        .update
+        .future
+    } yield ()
 }
