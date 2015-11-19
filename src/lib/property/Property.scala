@@ -1,4 +1,4 @@
-package properties
+package lib.property
 
 import com.typesafe.config.{Config, ConfigFactory}
 

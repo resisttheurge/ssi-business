@@ -1,31 +1,30 @@
-package actors
+package lib.actor
 
-import akka.actor.Actor
-import properties._
-import scalikejdbc.async.{TxAsyncDBSession, AsyncConnectionPool}
+import lib.util.syntax.all._
+import properties.server
+import scalikejdbc.async.{AsyncConnectionPool, TxAsyncDBSession}
 
 import scala.concurrent.Future
 
-trait DatabaseActor extends BaseActor {
-  base: Actor =>
+trait Database[D <: Database[D]] extends Base[D] {
+  this: D =>
 
   def tx[A](f: (TxAsyncDBSession) => Future[A]): Future[A] = DB.localTx(f)
 
   override def preStart(): Unit = {
+    super.preStart()
     AsyncConnectionPool.add(
       server.database.name(),
       server.database.url(),
       server.database.username(),
       server.database.password()
     )
-    base.preStart()
   }
 
 
   override def postStop(): Unit = {
+    super.postStop()
     AsyncConnectionPool.close(server.database.name())
-    base.postStop()
   }
-
 
 }

@@ -1,6 +1,7 @@
 package models
 
 import java.util.UUID
+import lib.model.{Companion, Model}
 import org.joda.time.DateTime
 import scalikejdbc._
 import scalikejdbc.async._
@@ -10,9 +11,9 @@ import scala.concurrent._
 case class Token(userId: Int,
                  uuid: UUID,
                  expires: DateTime)
-  extends Entity[Token]
+  extends Model[Token]
 
-object Token extends EntityCompanion[Token] {
+object Token extends Companion[Token] {
 
   override val tableName = "token"
   override val columns = Seq("user_id", "uuid", "expires")

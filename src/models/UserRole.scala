@@ -1,5 +1,6 @@
 package models
 
+import lib.model.{Companion, Model}
 import scalikejdbc._
 import scalikejdbc.async._
 
@@ -7,9 +8,9 @@ import scala.concurrent._
 
 case class UserRole(userId: Int,
                     roleId: Int)
-  extends Entity[UserRole]
+  extends Model[UserRole]
 
-object UserRole extends EntityCompanion[UserRole] {
+object UserRole extends Companion[UserRole] {
 
   override val tableName = "user_role"
   override val columns = Seq("userId", "roleId")

@@ -22,16 +22,13 @@ package object utils {
 
     trait Types {
 
-      type EC = ExecutionContext
-      type Session = AsyncDBSession
-      type ECS = (EC, Session)
+
 
     }
 
     trait Values {
 
-      val EC = ExecutionContext
-      val DB = AsyncDB
+
 
     }
 
@@ -43,13 +40,11 @@ package object utils {
       implicit lazy val `UserRole Companion` = UserRole
 
       implicit lazy val `UUID TypeBinder` = implicitly[TypeBinder[String]].map(UUID.fromString)
-      implicit lazy val `Option[UUID] TypeBinder` = implicitly[TypeBinder[Option[String]]]
+      implicit lazy val `Option[UUID] TypeBinder` = implicitly[TypeBinder[Option[String]]].map(opts => opts.map(UUID.fromString))
 
       import types._
 
-      implicit def `ECS => EC`(implicit ecs: ECS): EC = ecs._1
 
-      implicit def `ECS => Session`(implicit ecs: ECS): Session = ecs._2
 
     }
 

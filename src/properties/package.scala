@@ -1,3 +1,5 @@
+import lib.property.Property
+
 package object properties {
 
   case object server extends Property[AnyRef] {

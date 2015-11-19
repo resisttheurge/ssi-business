@@ -1,14 +1,15 @@
-package actors
+package lib.actor
 
 import akka.actor.{Actor, ActorLogging}
 import com.typesafe.config.Config
 
-trait BaseActor extends ActorLogging with utils.syntax.All {
-  this: Actor =>
+trait Base[B <: Base[B]] extends Actor with ActorLogging {
+  this: B =>
 
   implicit def config: Config
 
-  def system = context.system
+  implicit def system = context.system
 
   implicit def dispatcher = context.dispatcher
+
 }

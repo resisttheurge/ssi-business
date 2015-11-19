@@ -1,5 +1,6 @@
 package models
 
+import lib.model.{Companion, Model}
 import scalikejdbc._
 import scalikejdbc.async._
 
@@ -9,9 +10,9 @@ case class User(id: Int,
                 username: String,
                 password: String,
                 active: Boolean)
-  extends Entity[User]
+  extends Model[User]
 
-object User extends EntityCompanion[User] {
+object User extends Companion[User] {
 
   override val tableName = "user"
   override val columns = Seq("id", "name", "password", "active")
