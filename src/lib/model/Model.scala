@@ -5,12 +5,13 @@ import scalikejdbc.{DB => SyncDB, _}
 
 import scala.concurrent._
 
-trait Model[M <: Model[M]] {
+abstract class Model[M <: Model[M]](implicit val companion: Model.Companion[M]) {
   this: M =>
 
-  def save()(implicit ecs: ECS): Future[M]
+  def defaultECS: ECS = companion.defaultECS
 
-  def delete()(implicit ecs: ECS): Future[Unit]
+  def save()(implicit ecs: ECS = defaultECS): Future[M] = companion.save(this)
+  def destroy()(implicit ecs: ECS = defaultECS): Future[Unit] = companion.destroy(this)
 
 }
 
@@ -26,22 +27,8 @@ object Model {
     def apply(m: ResultName[M])(rs: WrappedResultSet): M
     def option(m: ResultName[M])(rs: WrappedResultSet): Option[M]
 
-    def create(magnet: Create[M])(implicit ecs: ECS = defaultECS): Future[M]
-    def read(magnet: Read[M])(implicit ecs: ECS = defaultECS): Future[Option[M]]
-    def readList(magnet: ReadList[M])(implicit ecs: ECS = defaultECS): Future[Option[M]]
-    def update(magnet: Update[M])(implicit ecs: ECS = defaultECS): Future[M]
-    def delete(magnet: Delete[M])(implicit ecs: ECS = defaultECS): Future[()]
-
-  }
-
-  abstract class Of[O <: Of[O]](val companion: Companion[O]) extends Model[O] {
-    this: O =>
-
-    def defaultECS: ECS = companion.defaultECS
-
-    override def save()(implicit ecs: ECS = defaultECS): Future[O] = companion.save(this)
-
-    override def delete()(implicit ecs: ECS = defaultECS): Future[Unit] = companion.delete(this)
+    def save(model: M)(implicit ecs: ECS = defaultECS): Future[M]
+    def destroy(model: M)(implicit ecs: ECS = defaultECS): Future[Unit]
 
   }
 

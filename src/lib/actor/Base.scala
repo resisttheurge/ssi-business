@@ -3,8 +3,8 @@ package lib.actor
 import akka.actor.{Actor, ActorLogging}
 import com.typesafe.config.Config
 
-trait Base[B <: Base[B]] extends Actor with ActorLogging {
-  this: B =>
+trait Base[+This <: Base[This]] extends Actor with ActorLogging {
+  this: This =>
 
   implicit def config: Config
 

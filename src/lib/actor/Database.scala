@@ -1,13 +1,13 @@
 package lib.actor
 
 import lib.util.syntax.all._
-import properties.server
+import app.properties.server
 import scalikejdbc.async.{AsyncConnectionPool, TxAsyncDBSession}
 
 import scala.concurrent.Future
 
-trait Database[D <: Database[D]] extends Base[D] {
-  this: D =>
+trait Database[+This <: Database[This]] extends Base[This] {
+  this: This =>
 
   def tx[A](f: (TxAsyncDBSession) => Future[A]): Future[A] = DB.localTx(f)
 

@@ -1,6 +1,8 @@
+package app
+
 import lib.property.Property
 
-package object properties {
+trait Properties {
 
   case object server extends Property[AnyRef] {
 

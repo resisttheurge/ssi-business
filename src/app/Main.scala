@@ -1,25 +1,25 @@
-import actors.ServerActor
+package app
+
+import app.actors.ServerActor
+import properties.server
 import akka.actor.ActorSystem
 import akka.io.IO
-import akka.pattern._
 import akka.util.Timeout
 import com.typesafe.config.ConfigFactory
-import properties.server
 import org.slf4j.LoggerFactory
 import spray.can.Http
+import akka.pattern._
 
 import scala.concurrent.duration._
 import scala.util.{Failure, Success}
 
-object Server extends App {
+trait Main {
 
   implicit lazy val log = LoggerFactory.getLogger("server")
 
   implicit lazy val config = ConfigFactory.load()
   implicit lazy val system = ActorSystem("ssi-business-server", config)
   implicit lazy val dispatcher = system.dispatcher
-
-  start()
 
   def start(): Unit =
     try {
