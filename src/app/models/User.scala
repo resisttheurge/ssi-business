@@ -32,6 +32,61 @@ object User extends Model.Companion[User] {
       active <- rs.booleanOpt(u.active)
     } yield User(id, username, password, active)
 
+  def create(username: String, password: String)(implicit ecs: ECS): Future[User] =
+    for {
+      key <- withSQL {
+        insert
+          .into(User)
+          .namedValues(
+            column.username -> username,
+            column.password -> password
+          )
+      }
+        .updateAndReturnGeneratedKey
+        .future
+
+      user <- withSQL {
+        select
+          .from(User as u)
+          .where
+          .eq(u.id, key)
+      }
+        .map(User(u))
+        .single
+        .future
+
+    } yield user.get
+
+
+  def authenticate(username: String, password: String)(implicit ecs: ECS): Future[Boolean] =
+    for {
+      user <- withSQL {
+        select
+          .from(User as u)
+          .where
+          .eq(u.username, username)
+          .and(Some(u.active))
+      }
+        .map(User(u))
+        .single
+        .future
+
+      result <- user.map(_.password == password)
+    } yield result
+
+
+  def token(user: User)(implicit ecs: ECS): Future[Token] = {
+    val t = Token.syntax
+    for {
+      token <- withSQL {
+        select
+          .from(Token as t)
+          .
+      }
+    }
+  }
+
+
   override def save(model: User)(implicit ecs: ECS): Future[User] =
     for {
       _ <- withSQL {
