@@ -14,7 +14,7 @@ object ServerActor {
 case class ServerActor(config: Config) extends Http[ServerActor] {
 
   override def route =
-    path("") {
+    pathEndOrSingleSlash {
       getFromResource(s"${server.cwd()}${File.separator}index.html")
 
     } ~ pathPrefix("assets") {

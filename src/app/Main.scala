@@ -36,7 +36,7 @@ trait Main {
             interface = server.http.bind.interface(),
             port = server.http.bind.port()
           )
-        ) (Timeout(Duration(server.http.bind.timeout(), MILLISECONDS)))
+        ) (server.http.bind.timeout().milliseconds)
 
       log.info("awaiting bound confirmation...")
       message

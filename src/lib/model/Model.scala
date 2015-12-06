@@ -10,9 +10,6 @@ abstract class Model[M <: Model[M]](implicit val companion: Model.Companion[M]) 
 
   def defaultECS: ECS = companion.defaultECS
 
-  def save()(implicit ecs: ECS = defaultECS): Future[M] = companion.save(this)
-  def destroy()(implicit ecs: ECS = defaultECS): Future[Unit] = companion.destroy(this)
-
 }
 
 object Model {
@@ -22,13 +19,8 @@ object Model {
     lazy val defaultECS: ECS = (EC.Implicits.global, DB.sharedSession)
 
     def apply(m: SyntaxProvider[M])(rs: WrappedResultSet): M = apply(m.resultName)(rs)
-    def option(m: SyntaxProvider[M])(rs: WrappedResultSet): Option[M] = option(m.resultName)(rs)
 
     def apply(m: ResultName[M])(rs: WrappedResultSet): M
-    def option(m: ResultName[M])(rs: WrappedResultSet): Option[M]
-
-    def save(model: M)(implicit ecs: ECS = defaultECS): Future[M]
-    def destroy(model: M)(implicit ecs: ECS = defaultECS): Future[Unit]
 
   }
 
