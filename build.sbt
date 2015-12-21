@@ -1,37 +1,62 @@
+lazy val shared = Seq(
+  organization := "Cook Systems Incorporated",
+  version := "0.1.0",
+  scalaVersion := "2.11.7",
+  libraryDependencies ++= Seq(
+    "com.typesafe.slick" %% "slick" % "3.1.+",
+    "ch.qos.logback" % "logback-classic" % "1.1.+",
+    "mysql" % "mysql-connector-java" % "5.1.+"
+  ),
+  scalaSource in Compile := baseDirectory.value / "src",
+  resourceDirectory in Compile := baseDirectory.value / "resources",
+  scalaSource in Test := baseDirectory.value / "test",
+  resourceDirectory in Test := baseDirectory.value / "test-resources"
+)
+
+lazy val slick = TaskKey[Seq[File]]("gen-tables")
+
+lazy val slickCodeGenTask =
+  (sourceManaged, dependencyClasspath in Compile, runner in Compile, streams) map {
+    (dir, cp, r, s) => {
+      val out = dir
+      val pkg = "slick.schema"
+      toError(r.run("codegen.CustomGenerator", cp.files, Array(out.getPath, pkg), s.log))
+      val f = out / "slick" / "schema" / "Tables.scala"
+      println(f.getPath)
+      Seq(f)
+    }
+  }
+
 lazy val `ssi-business` =
   (project in file("."))
+    .settings(shared: _ *)
     .settings(Revolver.settings: _ *)
     .settings(
-
       name := "ssi-business",
-      organization := "Cook Systems Incorporated",
-      version := "0.1.0",
-
-      scalaVersion := "2.11.7",
-
       libraryDependencies ++= Seq(
-        "mysql" % "mysql-connector-java" % "5.1.+",
-
-        "org.scalikejdbc" %% "scalikejdbc"  % "2.2.+",
-        "org.scalikejdbc" %% "scalikejdbc-syntax-support-macro"  % "2.2.+",
-        "org.scalikejdbc"     %% "scalikejdbc-async" % "0.5.+",
-        "com.github.mauricio" %% "mysql-async"       % "0.2.+",
+        "com.typesafe.slick" %% "slick-hikaricp" % "3.1.+",
 
         "com.typesafe.akka" %% "akka-actor" % "2.3.+",
         "com.typesafe.akka" %% "akka-slf4j" % "2.3.+",
 
-        "de.knutwalker" %% "typed-actors" % "1.5.+",
-        "de.knutwalker" %% "typed-actors-creator" % "1.5.+",
-
         "io.spray" %% "spray-can" % "1.3.+",
         "io.spray" %% "spray-routing" % "1.3.+",
-
-        "ch.qos.logback" % "logback-classic" % "1.1.+"
+        "io.spray" %% "spray-json" % "1.3.+"
       ),
 
-      scalaSource in Compile := baseDirectory.value / "src",
-      resourceDirectory in Compile := baseDirectory.value / "resources",
+      slick <<= slickCodeGenTask,
+      sourceGenerators in Compile <+= slickCodeGenTask
 
-      scalaSource in Test := baseDirectory.value / "test",
-      resourceDirectory in Test := baseDirectory.value / "test-resources"
     )
+    .dependsOn(codegen)
+
+lazy val codegen =
+  (project in file("codegen"))
+    .settings(shared: _*)
+    .settings(
+      name := "codegen",
+      libraryDependencies ++= Seq(
+        "com.typesafe.slick" %% "slick-codegen" % "3.1.+"
+      )
+    )
+

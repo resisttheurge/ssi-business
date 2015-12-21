@@ -1,19 +1,18 @@
 package app
 
-import app.actors.ServerActor
-import properties.server
 import akka.actor.ActorSystem
 import akka.io.IO
-import akka.util.Timeout
+import akka.pattern._
+import app.actors.ApiActor
+import app.properties._
 import com.typesafe.config.ConfigFactory
 import org.slf4j.LoggerFactory
 import spray.can.Http
-import akka.pattern._
 
 import scala.concurrent.duration._
 import scala.util.{Failure, Success}
 
-trait Main {
+trait Server {
 
   implicit lazy val log = LoggerFactory.getLogger("server")
 
@@ -24,19 +23,19 @@ trait Main {
   def start(): Unit =
     try {
 
-      log.info("obtaining server actor reference...")
+      log.info("obtaining api actor reference...")
       val serverActor =
-        system.actorOf(ServerActor.props, "server-actor")
+        system.actorOf(ApiActor.props, "api")
 
-      log.info("binding server actor reference to http...")
+      log.info("binding api actor reference to http...")
       val message = (
         IO(Http) ?
           Http.Bind(
             serverActor,
-            interface = server.http.bind.interface(),
-            port = server.http.bind.port()
+            interface = http.bind.interface(),
+            port = http.bind.port()
           )
-        ) (server.http.bind.timeout().milliseconds)
+        ) (http.bind.timeout().milliseconds)
 
       log.info("awaiting bound confirmation...")
       message
