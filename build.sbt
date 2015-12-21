@@ -3,6 +3,7 @@ lazy val shared = Seq(
   version := "0.1.0",
   scalaVersion := "2.11.7",
   libraryDependencies ++= Seq(
+    "com.typesafe.slick" %% "slick-hikaricp" % "3.1.+",
     "com.typesafe.slick" %% "slick" % "3.1.+",
     "ch.qos.logback" % "logback-classic" % "1.1.+",
     "mysql" % "mysql-connector-java" % "5.1.+"
@@ -34,7 +35,6 @@ lazy val `ssi-business` =
     .settings(
       name := "ssi-business",
       libraryDependencies ++= Seq(
-        "com.typesafe.slick" %% "slick-hikaricp" % "3.1.+",
 
         "com.typesafe.akka" %% "akka-actor" % "2.3.+",
         "com.typesafe.akka" %% "akka-slf4j" % "2.3.+",

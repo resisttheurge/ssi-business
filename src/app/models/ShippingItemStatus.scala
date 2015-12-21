@@ -20,4 +20,25 @@ object ShippingItemStatus {
   case object VOID extends ShippingItemStatus
   case object NEXT extends ShippingItemStatus
   case object HOLD extends ShippingItemStatus
+
+  def apply(s: String) = s match {
+    case "FAB" => FAB
+    case "PREFAB" => PREFAB
+    case "SHPD" => SHPD
+    case "RTA" => RTA
+    case "RTS" => RTS
+    case "MACH" => MACH
+    case "MOO" => MOO
+    case "NS" => NS
+    case "PAINT" => PAINT
+    case "SIP" => SIP
+    case "WP" => WP
+    case "SAMPLE" => SAMPLE
+    case "MEM" => MEM
+    case "FTS" => FTS
+    case "VOID" => VOID
+    case "NEXT" => NEXT
+    case "HOLD" => HOLD
+  }
+
 }
