@@ -1,8 +1,0 @@
-// mark
-{
-  "pk": 1, // optional
-  "drawingPk": 1,
-  "label": "A-53-7",
-  "tagType": "S|W",
-  "item": {} // shipping item
-}
