@@ -50,6 +50,13 @@ lazy val `ssi-business` =
     )
     .dependsOn(codegen)
 
+lazy val reporting =
+  (project in file("reporting"))
+    .settings(shared: _ *)
+    .settings(
+      name := "reporting"
+    )
+
 lazy val codegen =
   (project in file("codegen"))
     .settings(shared: _*)
