@@ -3,16 +3,13 @@ package app.api
 import akka.actor.ActorRefFactory
 import app.models._
 import slick.driver.MySQLDriver.api._
-import slick.schema.Tables._
-import spray.json._
+import app.db.Queries._
 import spray.routing._
 import lib.util.syntax.all._
 
 case class JobApi()(implicit val actorRefFactory: ActorRefFactory, val db: Database, val ec: EC) extends HttpService with Directives {
 
   import JsonProtocol._
-
-  val jobs = TableQuery[Jobs]
 
   def route =
     pathPrefix("jobs") {
@@ -25,7 +22,9 @@ case class JobApi()(implicit val actorRefFactory: ActorRefFactory, val db: Datab
       } ~ pathPrefix(IntNumber) { pk: Int =>
         pathEndOrSingleSlash {
           get {
-            complete(s"job $pk")
+            onSuccess(db.run(jobs.findById(pk).result)) {
+              r => complete(r.toString)
+            }
           } ~ patch {
             complete(s"update job $pk")
           } ~ delete {
