@@ -1,7 +1,5 @@
 package app
 
-import java.sql.Date
-
 import slick.schema.Tables._
 
 package object models {

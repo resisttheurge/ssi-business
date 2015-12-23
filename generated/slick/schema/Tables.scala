@@ -1629,26 +1629,29 @@ trait Tables {
   /** Entity class storing rows of table ShippingItems
    *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
    *  @param status Database column status SqlType(ENUM), Length(6,false)
+   *  @param label Database column label SqlType(VARCHAR), Length(100,true), Default(None)
    *  @param requested Database column requested SqlType(INT UNSIGNED), Default(0)
    *  @param completed Database column completed SqlType(INT UNSIGNED), Default(0)
    *  @param shopId Database column shop_id SqlType(INT UNSIGNED), Default(None)
    *  @param remarks Database column remarks SqlType(TEXT), Default(None) */
-  case class ShippingItemsRow(id: Int, status: String, requested: Int = 0, completed: Int = 0, shopId: Option[Int] = None, remarks: Option[String] = None)
+  case class ShippingItemsRow(id: Int, status: String, label: Option[String] = None, requested: Int = 0, completed: Int = 0, shopId: Option[Int] = None, remarks: Option[String] = None)
   /** GetResult implicit for fetching ShippingItemsRow objects using plain SQL queries */
-  implicit def GetResultShippingItemsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]], e3: GR[Option[String]]): GR[ShippingItemsRow] = GR{
+  implicit def GetResultShippingItemsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[String]], e3: GR[Option[Int]]): GR[ShippingItemsRow] = GR{
     prs => import prs._
-    ShippingItemsRow.tupled((<<[Int], <<[String], <<[Int], <<[Int], <<?[Int], <<?[String]))
+    ShippingItemsRow.tupled((<<[Int], <<[String], <<?[String], <<[Int], <<[Int], <<?[Int], <<?[String]))
   }
   /** Table description of table shipping_items. Objects of this class serve as prototypes for rows in queries. */
   class ShippingItems(_tableTag: Tag) extends Table[ShippingItemsRow](_tableTag, "shipping_items") {
-    def * = (id, status, requested, completed, shopId, remarks) <> (ShippingItemsRow.tupled, ShippingItemsRow.unapply)
+    def * = (id, status, label, requested, completed, shopId, remarks) <> (ShippingItemsRow.tupled, ShippingItemsRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(status), Rep.Some(requested), Rep.Some(completed), shopId, remarks).shaped.<>({r=>import r._; _1.map(_=> ShippingItemsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5, _6)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), Rep.Some(status), label, Rep.Some(requested), Rep.Some(completed), shopId, remarks).shaped.<>({r=>import r._; _1.map(_=> ShippingItemsRow.tupled((_1.get, _2.get, _3, _4.get, _5.get, _6, _7)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     /** Database column status SqlType(ENUM), Length(6,false) */
     val status: Rep[String] = column[String]("status", O.Length(6,varying=false))
+    /** Database column label SqlType(VARCHAR), Length(100,true), Default(None) */
+    val label: Rep[Option[String]] = column[Option[String]]("label", O.Length(100,varying=true), O.Default(None))
     /** Database column requested SqlType(INT UNSIGNED), Default(0) */
     val requested: Rep[Int] = column[Int]("requested", O.Default(0))
     /** Database column completed SqlType(INT UNSIGNED), Default(0) */
@@ -1667,28 +1670,31 @@ trait Tables {
   /** Entity class storing rows of table ShippingItemsAudit
    *  @param id Database column id SqlType(INT UNSIGNED)
    *  @param revId Database column rev_id SqlType(INT UNSIGNED)
+   *  @param label Database column label SqlType(VARCHAR), Length(100,true), Default(None)
    *  @param status Database column status SqlType(ENUM), Length(6,false), Default(None)
    *  @param requested Database column requested SqlType(INT UNSIGNED), Default(None)
    *  @param completed Database column completed SqlType(INT UNSIGNED), Default(None)
    *  @param assignedShopId Database column assigned_shop_id SqlType(INT UNSIGNED), Default(None)
    *  @param remarks Database column remarks SqlType(TEXT), Default(None)
    *  @param revType Database column rev_type SqlType(ENUM), Length(7,false) */
-  case class ShippingItemsAuditRow(id: Int, revId: Int, status: Option[String] = None, requested: Option[Int] = None, completed: Option[Int] = None, assignedShopId: Option[Int] = None, remarks: Option[String] = None, revType: String)
+  case class ShippingItemsAuditRow(id: Int, revId: Int, label: Option[String] = None, status: Option[String] = None, requested: Option[Int] = None, completed: Option[Int] = None, assignedShopId: Option[Int] = None, remarks: Option[String] = None, revType: String)
   /** GetResult implicit for fetching ShippingItemsAuditRow objects using plain SQL queries */
   implicit def GetResultShippingItemsAuditRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[Int]], e3: GR[String]): GR[ShippingItemsAuditRow] = GR{
     prs => import prs._
-    ShippingItemsAuditRow.tupled((<<[Int], <<[Int], <<?[String], <<?[Int], <<?[Int], <<?[Int], <<?[String], <<[String]))
+    ShippingItemsAuditRow.tupled((<<[Int], <<[Int], <<?[String], <<?[String], <<?[Int], <<?[Int], <<?[Int], <<?[String], <<[String]))
   }
   /** Table description of table shipping_items_audit. Objects of this class serve as prototypes for rows in queries. */
   class ShippingItemsAudit(_tableTag: Tag) extends Table[ShippingItemsAuditRow](_tableTag, "shipping_items_audit") {
-    def * = (id, revId, status, requested, completed, assignedShopId, remarks, revType) <> (ShippingItemsAuditRow.tupled, ShippingItemsAuditRow.unapply)
+    def * = (id, revId, label, status, requested, completed, assignedShopId, remarks, revType) <> (ShippingItemsAuditRow.tupled, ShippingItemsAuditRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(revId), status, requested, completed, assignedShopId, remarks, Rep.Some(revType)).shaped.<>({r=>import r._; _1.map(_=> ShippingItemsAuditRow.tupled((_1.get, _2.get, _3, _4, _5, _6, _7, _8.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), Rep.Some(revId), label, status, requested, completed, assignedShopId, remarks, Rep.Some(revType)).shaped.<>({r=>import r._; _1.map(_=> ShippingItemsAuditRow.tupled((_1.get, _2.get, _3, _4, _5, _6, _7, _8, _9.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT UNSIGNED) */
     val id: Rep[Int] = column[Int]("id")
     /** Database column rev_id SqlType(INT UNSIGNED) */
     val revId: Rep[Int] = column[Int]("rev_id")
+    /** Database column label SqlType(VARCHAR), Length(100,true), Default(None) */
+    val label: Rep[Option[String]] = column[Option[String]]("label", O.Length(100,varying=true), O.Default(None))
     /** Database column status SqlType(ENUM), Length(6,false), Default(None) */
     val status: Rep[Option[String]] = column[Option[String]]("status", O.Length(6,varying=false), O.Default(None))
     /** Database column requested SqlType(INT UNSIGNED), Default(None) */

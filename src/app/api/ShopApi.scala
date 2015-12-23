@@ -7,7 +7,7 @@ import spray.json._
 import spray.routing._
 import lib.util.syntax.all._
 
-class ShopApi(implicit val actorRefFactory: ActorRefFactory, val db: Database, val ec: EC) extends HttpService with Directives {
+case class ShopApi()(implicit val actorRefFactory: ActorRefFactory, val db: Database, val ec: EC) extends HttpService with Directives {
 
   import JsonProtocol._
 

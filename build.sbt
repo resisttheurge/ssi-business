@@ -1,3 +1,43 @@
+lazy val `ssi-business` =
+  (project in file("."))
+    .settings(shared: _ *)
+    .settings(Revolver.settings: _ *)
+    .settings(
+      name := "ssi-business",
+      libraryDependencies ++= deps.all,
+      unmanagedSourceDirectories in Compile += baseDirectory.value / "generated",
+      slick <<= slickCodeGenTask
+    )
+    .dependsOn(codegen, reporting)
+
+lazy val codegen =
+  (project in file("codegen"))
+    .settings(shared: _ *)
+    .settings(
+      name := "codegen",
+      libraryDependencies ++= deps.db
+    )
+    .dependsOn(config)
+
+lazy val reporting =
+  (project in file("reporting"))
+    .settings(shared: _ *)
+    .settings(
+      name := "reporting",
+      libraryDependencies ++= deps.db
+    )
+    .dependsOn(config)
+
+lazy val config =
+  (project in file("config"))
+    .settings(shared: _ *)
+    .settings(
+      name := "config",
+      libraryDependencies ++= deps.conf,
+      resourceDirectory in Compile := baseDirectory.value,
+      resourceDirectory in Test := baseDirectory.value / "test"
+    )
+
 lazy val shared = Seq(
   organization := "Cook Systems Incorporated",
   version := "0.1.0",
@@ -51,45 +91,3 @@ lazy val slickCodeGenTask =
       Seq(f)
     }
   }
-
-lazy val `ssi-business` =
-  (project in file("."))
-    .settings(shared: _ *)
-    .settings(Revolver.settings: _ *)
-
-    .settings(
-      name := "ssi-business",
-      libraryDependencies ++= deps.all,
-      unmanagedSourceDirectories in Compile += baseDirectory.value / "generated",
-      slick <<= slickCodeGenTask
-    )
-    .dependsOn(codegen, reporting)
-
-lazy val codegen =
-  (project in file("codegen"))
-    .settings(shared: _ *)
-    .settings(
-      name := "codegen",
-      libraryDependencies ++= deps.db
-    )
-    .dependsOn(config)
-
-lazy val config =
-  (project in file("config"))
-    .settings(shared: _ *)
-    .settings(
-      name := "config",
-      libraryDependencies ++= deps.conf,
-      resourceDirectory in Compile := baseDirectory.value,
-      resourceDirectory in Test := baseDirectory.value / "test"
-    )
-
-lazy val reporting =
-  (project in file("reporting"))
-    .settings(shared: _ *)
-    .settings(
-      name := "reporting",
-      libraryDependencies ++= deps.db
-    )
-    .dependsOn(config)
-

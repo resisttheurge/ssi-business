@@ -163,7 +163,7 @@ object JsonProtocol extends DefaultJsonProtocol with SprayJsonSupport {
 
   implicit def pshippingitemzone = jsonFormat3(ShippingItemZone)
 
-  implicit def pshippingitem = jsonFormat7(ShippingItem)
+  implicit def pshippingitem = jsonFormat8(ShippingItem)
 
   implicit def pshipmentitem = jsonFormat3(ShipmentItem)
 
