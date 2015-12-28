@@ -5,4 +5,4 @@ import java.sql.Date
 case class Zone(pk: Option[Int],
                 jobPk: Int,
                 number: Int,
-                fieldDate: Date)
+                fieldDate: Option[Date])
