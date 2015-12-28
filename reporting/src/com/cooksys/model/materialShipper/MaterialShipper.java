@@ -1,0 +1,141 @@
+package com.cooksys.model.materialShipper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import com.cooksys.db.Connector;
+import com.cooksys.model.LayoutDrawing;
+import com.cooksys.test.VariableGenerator;
+
+import static com.cooksys.util.DataUtil.*;
+
+public class MaterialShipper implements VariableGenerator<MaterialShipper> {
+
+	private String jobId;
+	private String jobName;
+	private String jobNumber;
+
+	private ArrayList<MaterialShipperDrawing> drawingList = new ArrayList<MaterialShipperDrawing>();
+
+
+	@Override
+	public List<MaterialShipper> generateVariables(ResultSet rawData) {
+
+		List<MaterialShipper> result = new ArrayList<MaterialShipper>();
+
+		try {
+
+			while (rawData.next()) {
+
+				MaterialShipper item = new MaterialShipper();
+				result.add(item);
+
+				item.jobId = convertRaw(rawData.getString(1));
+				item.jobName = convertRaw(rawData.getString(2));
+				item.jobNumber = convertRaw(rawData.getString(3)) + "-" + convertRaw(rawData.getString(4)) + "-" + convertRaw(rawData.getString(5));
+
+				ResultSet drawingSet = Connector.executeStoredProcedure(new MaterialShipperDrawing(),
+						new String[] { item.jobId });
+
+				while(drawingSet.next())
+				{
+					MaterialShipperDrawing drawing = new MaterialShipperDrawing();
+					
+					drawing.setDrawing(convertRaw(drawingSet.getString(1)));
+					drawing.setRevision(convertRaw(drawingSet.getString(2)));
+					drawing.setDrawingDesc(convertRaw(drawingSet.getString(3)));
+					drawing.setRevisionDate(convertRaw(drawingSet.getDate(4)));					
+					drawing.setDrawingId(convertRaw(drawingSet.getString(5)));
+							
+					ResultSet markSet = Connector.executeStoredProcedure(new MaterialShipperMark(),
+							new String[] { drawing.getDrawingId() });
+					
+					while(markSet.next())
+					{
+						MaterialShipperMark mark = new MaterialShipperMark();
+						
+						mark.setMarkId(convertRaw(markSet.getString(1)));
+						mark.setMark(convertRaw(markSet.getString(2)));
+						mark.setJobDesc(convertRaw(markSet.getString(3)));
+						mark.setShop(convertRaw(markSet.getString(4)));
+						mark.setRequested(convertRaw(markSet.getString(5)));
+						mark.setQuantity(convertRaw(markSet.getString(6)));
+						mark.setCompleted(convertRaw(markSet.getString(7)));
+						mark.setStatus(convertRaw(markSet.getString(8)));
+						
+						ResultSet zoneSet = Connector.executeStoredProcedure(new MaterialShipperZone(),
+								new String[] { mark.getMarkId() });
+						
+						while(zoneSet.next())
+						{
+							MaterialShipperZone zone = new MaterialShipperZone();
+						
+							zone.setNumber(convertRaw(zoneSet.getString(1)));
+							zone.setQuantity(convertRaw(zoneSet.getString(2)));
+							
+							mark.getZoneList().add(zone);
+							
+						}
+						
+						Collections.sort(mark.getZoneList());
+						
+						drawing.getMarkList().add(mark);
+					}
+					
+					item.drawingList.add(drawing);
+				}
+				
+				//Collections.sort(item.drawingList);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+
+	public String getJobId() {
+		return jobId;
+	}
+
+
+	public void setJobId(String jobId) {
+		this.jobId = jobId;
+	}
+
+
+	public String getJobName() {
+		return jobName;
+	}
+
+
+	public void setJobName(String jobName) {
+		this.jobName = jobName;
+	}
+
+
+	public String getJobNumber() {
+		return jobNumber;
+	}
+
+
+	public void setJobNumber(String jobNumber) {
+		this.jobNumber = jobNumber;
+	}
+
+
+	public ArrayList<MaterialShipperDrawing> getDrawingList() {
+		return drawingList;
+	}
+
+
+	public void setDrawingList(ArrayList<MaterialShipperDrawing> drawingList) {
+		this.drawingList = drawingList;
+	}
+}

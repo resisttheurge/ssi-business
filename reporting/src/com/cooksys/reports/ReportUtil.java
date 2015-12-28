@@ -9,6 +9,7 @@ import java.util.List;
 import com.cooksys.model.LayoutDrawing;
 import com.cooksys.model.User;
 import com.cooksys.model.Zone;
+import com.cooksys.model.materialShipper.MaterialShipper;
 import com.cooksys.test.VariableGenerator;
 
 import pdfGenerator.util.HtmlGenerator;
@@ -16,18 +17,18 @@ import pdfGenerator.util.PdfGenerator;
 
 public class ReportUtil<T extends VariableGenerator> implements Reporting<T> {
 
-	public static final ReportUtil<User> TEST_REPORT = new ReportUtil<User>("Test Report", "freemarker_template.html", "users", User.class);
-	public static final ReportUtil<LayoutDrawing> LAYOUT_DRAWING = new ReportUtil<LayoutDrawing>("Layout Drawing", "layout_drawing.html", "drawing", LayoutDrawing.class);
+	public static final ReportUtil<User> TEST_REPORT = new ReportUtil<User>("Test Report", "resources/freemarker_template.html", "users", User.class);
+	public static final ReportUtil<LayoutDrawing> LAYOUT_DRAWING = new ReportUtil<LayoutDrawing>("Layout Drawing", "resources/layout_drawing.html", "drawing", LayoutDrawing.class);
 	public static final ReportUtil<Zone> ZONE = new ReportUtil<Zone>("Zone", "resources/zone.html", "zone", Zone.class);
-
+	public static final ReportUtil<MaterialShipper> MATERIAL_SHIPPER = new ReportUtil<MaterialShipper>("Material Shipper", "resources/material_shipper.html", "ms", MaterialShipper.class);
+	
 	private String template;
 	private String varName;
 	private String reportName;
 	private Class<T> model;
 
 	private ReportUtil(String reportName, String template, String varName, Class<T> model) {
-//        System.out.println(ClassLoader.getSystemResource("zone.html"));
-        this.template = template;
+		this.template = template;
 		this.varName = varName;
 		this.reportName = reportName;
 		this.model = model;
