@@ -15,9 +15,9 @@ public class Tester {
 		if (file.exists()) {
 			file.delete();
 		}
-//		ZONE.generate(file, "1");
-		LAYOUT_DRAWING.generate(file, "1");
-		Desktop.getDesktop().open(file);
+		ZONE.generate(file, "1");
+//		LAYOUT_DRAWING.generate(file, "1");
+//		Desktop.getDesktop().open(file);
 	}
 
 }

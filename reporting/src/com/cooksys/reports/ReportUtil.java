@@ -18,7 +18,7 @@ public class ReportUtil<T extends VariableGenerator> implements Reporting<T> {
 
 	public static final ReportUtil<User> TEST_REPORT = new ReportUtil<User>("Test Report", "freemarker_template.html", "users", User.class);
 	public static final ReportUtil<LayoutDrawing> LAYOUT_DRAWING = new ReportUtil<LayoutDrawing>("Layout Drawing", "layout_drawing.html", "drawing", LayoutDrawing.class);
-	public static final ReportUtil<Zone> ZONE = new ReportUtil<Zone>("Zone", "zone.html", "zone", Zone.class);
+	public static final ReportUtil<Zone> ZONE = new ReportUtil<Zone>("Zone", "resources/zone.html", "zone", Zone.class);
 
 	private String template;
 	private String varName;
@@ -26,7 +26,8 @@ public class ReportUtil<T extends VariableGenerator> implements Reporting<T> {
 	private Class<T> model;
 
 	private ReportUtil(String reportName, String template, String varName, Class<T> model) {
-		this.template = template;
+//        System.out.println(ClassLoader.getSystemResource("zone.html"));
+        this.template = template;
 		this.varName = varName;
 		this.reportName = reportName;
 		this.model = model;
