@@ -24,7 +24,7 @@ lazy val reporting =
     .settings(shared: _ *)
     .settings(
       name := "reporting",
-      libraryDependencies ++= deps.db
+      libraryDependencies ++= deps.reporting
     )
     .dependsOn(config)
 
@@ -42,13 +42,17 @@ lazy val shared = Seq(
   organization := "Cook Systems Incorporated",
   version := "0.1.0",
   scalaVersion := "2.11.7",
+  javaSource in Compile := baseDirectory.value / "src",
   scalaSource in Compile := baseDirectory.value / "src",
   resourceDirectory in Compile := baseDirectory.value / "resources",
+  javaSource in Test := baseDirectory.value / "test",
   scalaSource in Test := baseDirectory.value / "test",
   resourceDirectory in Test := baseDirectory.value / "test-resources"
 )
 
 lazy val deps = new {
+
+  lazy val reporting =  db ++ conf ++ logging ++ freemarker ++ itext ++ guava ++ commons
 
   lazy val all = server ++ db ++ logging ++ conf
 
@@ -75,6 +79,30 @@ lazy val deps = new {
 
   lazy val conf = Seq(
     "com.typesafe" % "config" % "1.3.+"
+  )
+
+  lazy val test = Seq(
+    "junit" % "junit" % "3.8.1" % "test"
+  )
+
+  lazy val xhtmlRenderer = Seq(
+    "org.xhtmlrenderer" % "flying-saucer-pdf" % "9.0.4"
+  )
+
+  lazy val freemarker = Seq(
+    "org.freemarker" % "freemarker" % "2.3.18"
+  )
+
+  lazy val itext = Seq(
+    "com.lowagie" % "itext" % "2.1.7"
+  )
+
+  lazy val guava = Seq(
+    "com.google.guava" % "guava" % "19.0"
+  )
+
+  lazy val commons = Seq(
+    "org.apache.commons" % "commons-lang3" % "3.4"
   )
 }
 
