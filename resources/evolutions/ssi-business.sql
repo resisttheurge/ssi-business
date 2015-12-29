@@ -263,7 +263,7 @@ DROP TABLE IF EXISTS `ssi-business`.`files`;
 
 CREATE TABLE IF NOT EXISTS `ssi-business`.`files` (
   `id`   INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `path` VARCHAR(500) NOT NULL,
+  `path` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `path_UNIQUE` (`path` ASC)
 )
