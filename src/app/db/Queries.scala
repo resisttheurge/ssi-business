@@ -1,5 +1,6 @@
 package app.db
 
+import app.models.User.{Index, ByPk, ByUsername}
 import app.models._
 import slick.driver.MySQLDriver.api._
 import slick.schema.Tables.JobAddresses
@@ -9,21 +10,40 @@ object Queries {
 
   object users extends TableQuery(new Users(_)) {
 
-    def create(user: User) =
+    def find(data: User.Find) =
+      data match {
+        case Index(active) =>
+          active match {
+            case Some(active) => this.filter(_.active === active)
+            case None => this
+          }
+        case ByUsername(username, active) =>
+          active match {
+            case Some(active) => this.filter(_.active === active)
+            case None => this
+          }
+        case ByPk(pk, active) =>
+          active match {
+            case Some(active) => this.filter(_.active === active)
+            case None => this
+          }
+      }
+
+    def create(data: User.Create) =
       (this
         returning this.map(_.id)
-        into ((user, id) => User(Some(id), user.username, user.password, user.active))) +=
-        UsersRow(-1, user.username, user.password, user.active)
+        into ((user, id) => User(id, user.username, user.password, user.active))) +=
+        UsersRow(-1, data.username, data.password, data.active.getOrElse(true))
 
-    def update(user: User) =
+    def update(data: User) =
       this
-        .filter(_.id === user.pk.getOrElse(-1))
+        .filter(_.id === data.pk)
         .map(u => (u.username, u.password, u.active))
-        .update((user.username, user.password, user.active))
+        .update((data.username, data.password, data.active))
 
     def delete(user: User) =
       this
-        .filter(_.id === user.pk.getOrElse(-1))
+        .filter(_.id === user.pk)
         .delete
 
   }
@@ -180,7 +200,26 @@ object Queries {
     
   }
 
-  object schedules extends TableQuery(new Schedules(_))
+  object schedules extends TableQuery(new Schedules(_)) {
+
+    def create(jobId: Int, scheduleType: ScheduleType, schedule: Schedule) =
+      (this
+        returning this.map(_.id)
+        into ((schedule, id) => Schedule(Some(id), schedule.startDate, schedule.completeDate))) +=
+        SchedulesRow(-1, jobId, scheduleType.toString, schedule.startDate, schedule.completeDate)
+
+    def update(schedule: Schedule) =
+      this
+        .filter(_.id === schedule.pk.getOrElse(-1))
+        .map(s => (s.startDate, s.completeDate))
+        .update(schedule.startDate, schedule.completeDate)
+
+    def delete(salesperson: Salesperson) =
+      this
+        .filter(_.id === salesperson.pk.getOrElse(-1))
+        .delete
+
+  }
 
   object shipmentItems extends TableQuery(new ShipmentItems(_))
 

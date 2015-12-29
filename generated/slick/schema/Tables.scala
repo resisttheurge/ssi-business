@@ -645,9 +645,6 @@ trait Tables {
     lazy val salespeopleFk = foreignKey("jobs__salespeople__fk", salespersonId, Salespeople)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
     /** Foreign key referencing Shops (database name jobs__shops__fk) */
     lazy val shopsFk = foreignKey("jobs__shops__fk", shopId, Shops)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
-
-    /** Uniqueness Index over (year,label,prefix) (database name UNIQUE_JOB_NUMBER_AND_REVISION) */
-    val index1 = index("UNIQUE_JOB_NUMBER_AND_REVISION", (year, label, prefix), unique=true)
   }
   /** Collection-like TableQuery object for table Jobs */
   lazy val Jobs = new TableQuery(tag => new Jobs(tag))
