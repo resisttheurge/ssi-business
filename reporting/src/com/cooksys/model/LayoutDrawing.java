@@ -116,7 +116,6 @@ public class LayoutDrawing implements VariableGenerator<LayoutDrawing> {
 	}
 
 
-
 	@Override
 	public List<LayoutDrawing> generateVariables(ResultSet rawData) {
 		

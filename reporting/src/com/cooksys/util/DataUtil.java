@@ -21,4 +21,9 @@ public class DataUtil {
 	public static String convertRaw(Date data){
 		return data == null ? "" : mdyFormat.format(data);
 	}
+	
+	public static String convertHeaderYear(Date data){
+		//magic numbers lol read the getYear() javadoc
+		return data == null ? "" : String.valueOf(data.getYear() - 100);
+	}
 }

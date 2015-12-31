@@ -2,6 +2,7 @@ package com.cooksys.test;
 
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface VariableGenerator<T> {
 		
 		ResultSet set = Connector.executeStoredProcedure(this, args);
 		
-		return generateVariables(set);
+		return set != null ? generateVariables(set) : new ArrayList<T>();
 	}
 	
 	public default String getStoredProcedureName(String[] argLength)

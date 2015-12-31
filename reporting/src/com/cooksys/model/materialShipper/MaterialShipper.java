@@ -19,6 +19,7 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 	private String jobNumber;
 
 	private ArrayList<MaterialShipperDrawing> drawingList = new ArrayList<MaterialShipperDrawing>();
+	private ArrayList<MaterialShipperShippingGroup> shippingGroupList = new ArrayList<MaterialShipperShippingGroup>();
 
 
 	@Override
@@ -88,6 +89,60 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 					item.drawingList.add(drawing);
 				}
 				
+				
+				
+				ResultSet shippingGroupSet = Connector.executeStoredProcedure("MaterialShipperShippingGroup",
+						new String[] { item.jobId });
+
+				while(shippingGroupSet.next())
+				{
+					MaterialShipperShippingGroup shippingGroup = new MaterialShipperShippingGroup();
+					
+					shippingGroup.setDrawing(convertRaw(shippingGroupSet.getString(1)));
+					shippingGroup.setRevision(convertRaw(shippingGroupSet.getString(2)));
+					shippingGroup.setDrawingDesc(convertRaw(shippingGroupSet.getString(3)));
+					shippingGroup.setRevisionDate(convertRaw(shippingGroupSet.getDate(4)));					
+					shippingGroup.setDrawingId(convertRaw(shippingGroupSet.getString(5)));
+							
+					ResultSet markSet = Connector.executeStoredProcedure(new MaterialShipperShippingGroupItem(),
+							new String[] { shippingGroup.getDrawingId() });
+					
+					while(markSet.next())
+					{
+						MaterialShipperShippingGroupItem shippingGroupItem = new MaterialShipperShippingGroupItem();
+						
+						shippingGroupItem.setMarkId(convertRaw(markSet.getString(1)));
+						shippingGroupItem.setMark(convertRaw(markSet.getString(2)));
+						shippingGroupItem.setJobDesc(convertRaw(markSet.getString(3)));
+						shippingGroupItem.setShop(convertRaw(markSet.getString(4)));
+						shippingGroupItem.setRequested(convertRaw(markSet.getString(5)));
+						shippingGroupItem.setQuantity(convertRaw(markSet.getString(6)));
+						shippingGroupItem.setCompleted(convertRaw(markSet.getString(7)));
+						shippingGroupItem.setStatus(convertRaw(markSet.getString(8)));
+						
+						ResultSet zoneSet = Connector.executeStoredProcedure(new MaterialShipperZone(),
+								new String[] { shippingGroupItem.getMarkId() });
+						
+						while(zoneSet.next())
+						{
+							MaterialShipperZone zone = new MaterialShipperZone();
+						
+							zone.setNumber(convertRaw(zoneSet.getString(1)));
+							zone.setQuantity(convertRaw(zoneSet.getString(2)));
+							
+							shippingGroupItem.getZoneList().add(zone);
+							
+						}
+						
+						Collections.sort(shippingGroupItem.getZoneList());
+						
+						shippingGroup.getShippingGroupItemList().add(shippingGroupItem);
+					}
+					
+					item.shippingGroupList.add(shippingGroup);
+				}
+				
+				
 				//Collections.sort(item.drawingList);
 			}
 			
@@ -137,5 +192,15 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 
 	public void setDrawingList(ArrayList<MaterialShipperDrawing> drawingList) {
 		this.drawingList = drawingList;
+	}
+
+
+	public ArrayList<MaterialShipperShippingGroup> getShippingGroupList() {
+		return shippingGroupList;
+	}
+
+
+	public void setShippingGroupList(ArrayList<MaterialShipperShippingGroup> shippingGroupList) {
+		this.shippingGroupList = shippingGroupList;
 	}
 }

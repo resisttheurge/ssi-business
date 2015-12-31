@@ -45,14 +45,14 @@
 	<h2>${zone[0].prefix}-${zone[0].year}-${zone[0].label}</h2>
 	<table border="1" cellspacing="0" cellpadding="0" align="center">
 		<thead>
-			<tr style="background: #CCC0DA">
+			<tr style="background: #64a2c1">
 				<th align="center">Number</th>
 				<th align="center">Field Date</th>
 			</tr>
 		</thead>
 		<#list 1..zone?size as i><#if i%2==0>
-		<tr style="background: #FABF8F"><#else>
-		<tr style="background: #C4D79B">
+		<tr style="background: #e4edd2"><#else>
+		<tr style="background: #d2fd75">
 			</#if>
 			<td width="189" align="center"><p align="center">${zone[i-1].number}</p></td>
 			<td width="189" align="center"><p align="center">${zone[i-1].fieldDate}</p></td>

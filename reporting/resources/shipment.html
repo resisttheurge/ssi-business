@@ -1,0 +1,86 @@
+<!DOCTYPE html [
+    <!ENTITY nbsp "&#160;"> 
+]>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>PDF Generator</title>
+
+<style type="text/css">
+
+@page { size: A4 landscape;}
+
+.head1 {
+	color: #496192;
+	font-size: x-large;
+}
+
+.head2 {
+	color: #496192;
+	font-size: large;
+}
+
+.head3 {
+	color: #000;
+	font-size: medium
+}
+
+.paragraph {
+	text-align: justify;
+}
+
+.toc {
+	list-style-type: none;
+}
+
+.toc a::after {
+	content: leader('.') target-counter(attr(href), page);
+}
+</style>
+
+</head>
+
+<body>
+	<p class="head1">Shipment Report</p>
+
+
+	<h1>${ship[0].prefix}-${ship[0].year}-${ship[0].label}</h1>
+
+	
+	<table border="1" cellspacing="0" cellpadding="0" align="center"
+		width="100%">
+		<thead>
+			<tr style="background: #CCC0DA">
+				<th align="center" width="10%">Number</th>
+				<th align="center" width="15%">Ship Date</th>
+				<th align="center" width="10%">Shop</th>
+				<th align="center" width="35%">Ship Via</th>
+				<th align="center" width="10%">Weight</th>
+				<th align="center" width="10%">Bill of Lading</th>
+				<th align="center" width="10%">Posted</th>
+			</tr>
+		</thead>
+		<#list ship[0].shipmentByCarrier?keys as prop>
+		<#list ship[0].shipmentByCarrier[prop] as carrier>
+		<tr style="background: #F0F8FF">
+			<td align="center" width="10%"><p align="center">${carrier.number}</p></td>
+			<td align="center" width="15%"><p align="center">${carrier.shipDate}</p></td>
+			<td align="center" width="10%"><p align="center">${carrier.shop}</p></td>
+			<td align="center" width="35%"><p align="center">${carrier.shipVia}</p></td>
+			<td align="center" width="10%"><p align="center">${carrier.weight}</p></td>
+			<td align="center" width="10%"><p align="center">${carrier.billOfLading}</p></td>
+			<td align="center" width="10%">
+				<p align="center"><#if carrier.posted == "1">POSTED</#if></p>
+			</td>
+		</tr>
+		</#list>
+		</#list>
+	</table>
+	
+
+	<p align="center" style="font-size: large; font-weight: bold;">Total Weight : ${ship[0].totalWeight}</p>
+	<p align="center" style="font-size: large; font-weight: bold;">Average Weight : ${ship[0].averageWeight}</p>
+	
+</body>
+</html>
