@@ -13,6 +13,11 @@ After cloning the project locally, navigate to the project root and use npm to i
 npm install
 ```
 
+If not already installed, use `npm` to install `gulp` and `browserify` globally.
+```bash
+npm install -g gulp browserify
+```
+
 Then install the React and MSignal Haxe libraries with the `haxelib` command.
 ```bash
 haxelib install React
@@ -21,9 +26,9 @@ haxelib install MSignal
 
 
 ### Project Workflow
-If `resources/style/js/required.js` has changed, run `browserify`.
+If `resources/js/required.js` has changed, run `browserify`.
 ```bash
-browserify resources/style/js/required.js -o resources/style/js/required
+browserify resources/js/required.js -o resources/js/required.browser.js
 ```
 
 If `resources/style/settings/*` has changed, run `gulp make`.
@@ -36,7 +41,7 @@ To compile Haxe code, build the project and start electron, run `gulp electron`.
 gulp electron
 ```
 
-If electron is already running, run `gulp build` to compile and build the project. Then, press `ctrl-R` in electron to refresh the application.
+If electron is already running, run `gulp build` in a different terminal window to compile and build the project. Then, press `ctrl-R` in electron to refresh the application.
 ```bash
 gulp build
 ```
