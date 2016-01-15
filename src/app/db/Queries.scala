@@ -1,6 +1,5 @@
 package app.db
 
-import app.models.User.{Index, ByPk, ByUsername}
 import app.models._
 import slick.driver.MySQLDriver.api._
 import slick.schema.Tables.JobAddresses
@@ -10,40 +9,30 @@ object Queries {
 
   object users extends TableQuery(new Users(_)) {
 
-    def find(data: User.Find) =
-      data match {
-        case Index(active) =>
-          active match {
-            case Some(active) => this.filter(_.active === active)
-            case None => this
-          }
-        case ByUsername(username, active) =>
-          active match {
-            case Some(active) => this.filter(_.active === active)
-            case None => this
-          }
-        case ByPk(pk, active) =>
-          active match {
-            case Some(active) => this.filter(_.active === active)
-            case None => this
-          }
-      }
-
-    def create(data: User.Create) =
+    def create(user: User) =
       (this
         returning this.map(_.id)
-        into ((user, id) => User(id, user.username, user.password, user.active))) +=
-        UsersRow(-1, data.username, data.password, data.active.getOrElse(true))
+        into ((user, id) => User(Some(id), user.username, user.password, Some(user.active)))) +=
+        UsersRow(-1, user.username, user.password, user.active.getOrElse(true))
 
-    def update(data: User) =
-      this
-        .filter(_.id === data.pk)
-        .map(u => (u.username, u.password, u.active))
-        .update((data.username, data.password, data.active))
+    def update(user: User) =
+      user.active match {
+        case Some(active) =>
+          this
+            .filter(_.id === user.pk.getOrElse(-1))
+            .map(u => (u.username, u.password, u.active))
+            .update((user.username, user.password, active))
+        case None =>
+          this
+            .filter(_.id === user.pk.getOrElse(-1))
+            .map(u => (u.username, u.password))
+            .update((user.username, user.password))
+      }
+
 
     def delete(user: User) =
       this
-        .filter(_.id === user.pk)
+        .filter(_.id === user.pk.getOrElse(-1))
         .delete
 
   }
@@ -65,7 +54,7 @@ object Queries {
             Some(id),
             address.lines.getOrElse(""),
             address.city.getOrElse(""),
-            address.stateorprovince.getOrElse(""),
+            address.stateOrProvince.getOrElse(""),
             address.postalCode.getOrElse(""),
             address.country.getOrElse("")
           )
@@ -82,7 +71,7 @@ object Queries {
     def update(address: Address) =
       this
         .filter(_.id === address.pk.getOrElse(-1))
-        .map(a => (a.lines, a.city, a.stateorprovince, a.postalCode, a.country))
+        .map(a => (a.lines, a.city, a.stateOrProvince, a.postalCode, a.country))
         .update((
           if (address.lines.isEmpty) None else Some(address.lines),
           if (address.city.isEmpty) None else Some(address.city),
