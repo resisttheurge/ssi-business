@@ -14,7 +14,7 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(Addenda.schema, Addresses.schema, Carriers.schema, Contacts.schema, Customers.schema, Drawings.schema, Files.schema, JobAddresses.schema, Jobs.schema, Manufacturers.schema, Marks.schema, PartOrders.schema, Parts.schema, Salespeople.schema, Schedules.schema, ShipmentItems.schema, Shipments.schema, ShippingGroupItems.schema, ShippingGroups.schema, ShippingItems.schema, ShippingItemZones.schema, ShippingRequests.schema, Shops.schema, SpecialtyItems.schema, UserRoles.schema, Users.schema, UserTokens.schema, Vendors.schema, Zones.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(Addenda.schema, Addresses.schema, Addressjobtemp.schema, Carriers.schema, Contactjobtemp.schema, Contacts.schema, Customers.schema, Drawings.schema, Dwgshipreqlinktemp.schema, Idslinktemp.schema, JobAddresses.schema, Jobs.schema, Manufacturers.schema, Marks.schema, PartOrders.schema, Parts.schema, Salespeople.schema, Schedules.schema, ShipmentItems.schema, Shipments.schema, ShippingGroupItems.schema, ShippingGroups.schema, ShippingItems.schema, ShippingItemZones.schema, ShippingRequests.schema, Shops.schema, SpecialtyItems.schema, UserRoles.schema, Users.schema, UserTokens.schema, Validshippertemp.schema, Validtagtemp.schema, Vendors.schema, Zones.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -61,7 +61,7 @@ trait Tables {
    *  @param lines Database column lines SqlType(TEXT), Default(None)
    *  @param city Database column city SqlType(VARCHAR), Length(100,true), Default(None)
    *  @param stateOrProvince Database column state_or_province SqlType(VARCHAR), Length(100,true), Default(None)
-   *  @param postalCode Database column postal_code SqlType(VARCHAR), Length(20,true), Default(None)
+   *  @param postalCode Database column postal_code SqlType(VARCHAR), Length(30,true), Default(None)
    *  @param country Database column country SqlType(VARCHAR), Length(100,true), Default(None) */
   case class AddressesRow(id: Int, lines: Option[String] = None, city: Option[String] = None, stateOrProvince: Option[String] = None, postalCode: Option[String] = None, country: Option[String] = None)
   /** GetResult implicit for fetching AddressesRow objects using plain SQL queries */
@@ -83,13 +83,41 @@ trait Tables {
     val city: Rep[Option[String]] = column[Option[String]]("city", O.Length(100,varying=true), O.Default(None))
     /** Database column state_or_province SqlType(VARCHAR), Length(100,true), Default(None) */
     val stateOrProvince: Rep[Option[String]] = column[Option[String]]("state_or_province", O.Length(100,varying=true), O.Default(None))
-    /** Database column postal_code SqlType(VARCHAR), Length(20,true), Default(None) */
-    val postalCode: Rep[Option[String]] = column[Option[String]]("postal_code", O.Length(20,varying=true), O.Default(None))
+    /** Database column postal_code SqlType(VARCHAR), Length(30,true), Default(None) */
+    val postalCode: Rep[Option[String]] = column[Option[String]]("postal_code", O.Length(30,varying=true), O.Default(None))
     /** Database column country SqlType(VARCHAR), Length(100,true), Default(None) */
     val country: Rep[Option[String]] = column[Option[String]]("country", O.Length(100,varying=true), O.Default(None))
   }
   /** Collection-like TableQuery object for table Addresses */
   lazy val Addresses = new TableQuery(tag => new Addresses(tag))
+
+  /** Entity class storing rows of table Addressjobtemp
+   *  @param addressesid Database column addressesid SqlType(INT UNSIGNED), AutoInc, PrimaryKey
+   *  @param jobid Database column jobid SqlType(INT UNSIGNED)
+   *  @param `type` Database column type SqlType(ENUM), Length(9,false) */
+  case class AddressjobtempRow(addressesid: Int, jobid: Int, `type`: String)
+  /** GetResult implicit for fetching AddressjobtempRow objects using plain SQL queries */
+  implicit def GetResultAddressjobtempRow(implicit e0: GR[Int], e1: GR[String]): GR[AddressjobtempRow] = GR{
+    prs => import prs._
+    AddressjobtempRow.tupled((<<[Int], <<[Int], <<[String]))
+  }
+  /** Table description of table addressjobtemp. Objects of this class serve as prototypes for rows in queries.
+   *  NOTE: The following names collided with Scala keywords and were escaped: type */
+  class Addressjobtemp(_tableTag: Tag) extends Table[AddressjobtempRow](_tableTag, "addressjobtemp") {
+    def * = (addressesid, jobid, `type`) <> (AddressjobtempRow.tupled, AddressjobtempRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(addressesid), Rep.Some(jobid), Rep.Some(`type`)).shaped.<>({r=>import r._; _1.map(_=> AddressjobtempRow.tupled((_1.get, _2.get, _3.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column addressesid SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
+    val addressesid: Rep[Int] = column[Int]("addressesid", O.AutoInc, O.PrimaryKey)
+    /** Database column jobid SqlType(INT UNSIGNED) */
+    val jobid: Rep[Int] = column[Int]("jobid")
+    /** Database column type SqlType(ENUM), Length(9,false)
+     *  NOTE: The name was escaped because it collided with a Scala keyword. */
+    val `type`: Rep[String] = column[String]("type", O.Length(9,varying=false))
+  }
+  /** Collection-like TableQuery object for table Addressjobtemp */
+  lazy val Addressjobtemp = new TableQuery(tag => new Addressjobtemp(tag))
 
   /** Entity class storing rows of table Carriers
    *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
@@ -117,37 +145,62 @@ trait Tables {
   /** Collection-like TableQuery object for table Carriers */
   lazy val Carriers = new TableQuery(tag => new Carriers(tag))
 
+  /** Entity class storing rows of table Contactjobtemp
+   *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
+   *  @param jobid Database column jobid SqlType(INT UNSIGNED)
+   *  @param `type` Database column type SqlType(ENUM), Length(9,false) */
+  case class ContactjobtempRow(id: Int, jobid: Int, `type`: String)
+  /** GetResult implicit for fetching ContactjobtempRow objects using plain SQL queries */
+  implicit def GetResultContactjobtempRow(implicit e0: GR[Int], e1: GR[String]): GR[ContactjobtempRow] = GR{
+    prs => import prs._
+    ContactjobtempRow.tupled((<<[Int], <<[Int], <<[String]))
+  }
+  /** Table description of table contactjobtemp. Objects of this class serve as prototypes for rows in queries.
+   *  NOTE: The following names collided with Scala keywords and were escaped: type */
+  class Contactjobtemp(_tableTag: Tag) extends Table[ContactjobtempRow](_tableTag, "contactjobtemp") {
+    def * = (id, jobid, `type`) <> (ContactjobtempRow.tupled, ContactjobtempRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(id), Rep.Some(jobid), Rep.Some(`type`)).shaped.<>({r=>import r._; _1.map(_=> ContactjobtempRow.tupled((_1.get, _2.get, _3.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
+    /** Database column jobid SqlType(INT UNSIGNED) */
+    val jobid: Rep[Int] = column[Int]("jobid")
+    /** Database column type SqlType(ENUM), Length(9,false)
+     *  NOTE: The name was escaped because it collided with a Scala keyword. */
+    val `type`: Rep[String] = column[String]("type", O.Length(9,varying=false))
+  }
+  /** Collection-like TableQuery object for table Contactjobtemp */
+  lazy val Contactjobtemp = new TableQuery(tag => new Contactjobtemp(tag))
+
   /** Entity class storing rows of table Contacts
    *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
-   *  @param label Database column label SqlType(VARCHAR), Length(100,true)
-   *  @param phone Database column phone SqlType(VARCHAR), Length(20,true), Default(None)
-   *  @param fax Database column fax SqlType(VARCHAR), Length(20,true), Default(None)
+   *  @param label Database column label SqlType(VARCHAR), Length(100,true), Default(None)
+   *  @param phone Database column phone SqlType(VARCHAR), Length(35,true), Default(None)
+   *  @param fax Database column fax SqlType(VARCHAR), Length(35,true), Default(None)
    *  @param email Database column email SqlType(VARCHAR), Length(100,true), Default(None) */
-  case class ContactsRow(id: Int, label: String, phone: Option[String] = None, fax: Option[String] = None, email: Option[String] = None)
+  case class ContactsRow(id: Int, label: Option[String] = None, phone: Option[String] = None, fax: Option[String] = None, email: Option[String] = None)
   /** GetResult implicit for fetching ContactsRow objects using plain SQL queries */
-  implicit def GetResultContactsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[String]]): GR[ContactsRow] = GR{
+  implicit def GetResultContactsRow(implicit e0: GR[Int], e1: GR[Option[String]]): GR[ContactsRow] = GR{
     prs => import prs._
-    ContactsRow.tupled((<<[Int], <<[String], <<?[String], <<?[String], <<?[String]))
+    ContactsRow.tupled((<<[Int], <<?[String], <<?[String], <<?[String], <<?[String]))
   }
   /** Table description of table contacts. Objects of this class serve as prototypes for rows in queries. */
   class Contacts(_tableTag: Tag) extends Table[ContactsRow](_tableTag, "contacts") {
     def * = (id, label, phone, fax, email) <> (ContactsRow.tupled, ContactsRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(label), phone, fax, email).shaped.<>({r=>import r._; _1.map(_=> ContactsRow.tupled((_1.get, _2.get, _3, _4, _5)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), label, phone, fax, email).shaped.<>({r=>import r._; _1.map(_=> ContactsRow.tupled((_1.get, _2, _3, _4, _5)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
-    /** Database column label SqlType(VARCHAR), Length(100,true) */
-    val label: Rep[String] = column[String]("label", O.Length(100,varying=true))
-    /** Database column phone SqlType(VARCHAR), Length(20,true), Default(None) */
-    val phone: Rep[Option[String]] = column[Option[String]]("phone", O.Length(20,varying=true), O.Default(None))
-    /** Database column fax SqlType(VARCHAR), Length(20,true), Default(None) */
-    val fax: Rep[Option[String]] = column[Option[String]]("fax", O.Length(20,varying=true), O.Default(None))
+    /** Database column label SqlType(VARCHAR), Length(100,true), Default(None) */
+    val label: Rep[Option[String]] = column[Option[String]]("label", O.Length(100,varying=true), O.Default(None))
+    /** Database column phone SqlType(VARCHAR), Length(35,true), Default(None) */
+    val phone: Rep[Option[String]] = column[Option[String]]("phone", O.Length(35,varying=true), O.Default(None))
+    /** Database column fax SqlType(VARCHAR), Length(35,true), Default(None) */
+    val fax: Rep[Option[String]] = column[Option[String]]("fax", O.Length(35,varying=true), O.Default(None))
     /** Database column email SqlType(VARCHAR), Length(100,true), Default(None) */
     val email: Rep[Option[String]] = column[Option[String]]("email", O.Length(100,varying=true), O.Default(None))
-
-    /** Uniqueness Index over (label) (database name label_UNIQUE) */
-    val index1 = index("label_UNIQUE", label, unique=true)
   }
   /** Collection-like TableQuery object for table Contacts */
   lazy val Contacts = new TableQuery(tag => new Contacts(tag))
@@ -223,31 +276,60 @@ trait Tables {
   /** Collection-like TableQuery object for table Drawings */
   lazy val Drawings = new TableQuery(tag => new Drawings(tag))
 
-  /** Entity class storing rows of table Files
-   *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
-   *  @param path Database column path SqlType(VARCHAR), Length(200,true) */
-  case class FilesRow(id: Int, path: String)
-  /** GetResult implicit for fetching FilesRow objects using plain SQL queries */
-  implicit def GetResultFilesRow(implicit e0: GR[Int], e1: GR[String]): GR[FilesRow] = GR{
+  /** Entity class storing rows of table Dwgshipreqlinktemp
+   *  @param shippingRequestId Database column shipping_request_id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
+   *  @param dwgId Database column dwg_id SqlType(INT UNSIGNED) */
+  case class DwgshipreqlinktempRow(shippingRequestId: Int, dwgId: Int)
+  /** GetResult implicit for fetching DwgshipreqlinktempRow objects using plain SQL queries */
+  implicit def GetResultDwgshipreqlinktempRow(implicit e0: GR[Int]): GR[DwgshipreqlinktempRow] = GR{
     prs => import prs._
-    FilesRow.tupled((<<[Int], <<[String]))
+    DwgshipreqlinktempRow.tupled((<<[Int], <<[Int]))
   }
-  /** Table description of table files. Objects of this class serve as prototypes for rows in queries. */
-  class Files(_tableTag: Tag) extends Table[FilesRow](_tableTag, "files") {
-    def * = (id, path) <> (FilesRow.tupled, FilesRow.unapply)
+  /** Table description of table dwgshipreqlinktemp. Objects of this class serve as prototypes for rows in queries. */
+  class Dwgshipreqlinktemp(_tableTag: Tag) extends Table[DwgshipreqlinktempRow](_tableTag, "dwgshipreqlinktemp") {
+    def * = (shippingRequestId, dwgId) <> (DwgshipreqlinktempRow.tupled, DwgshipreqlinktempRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(path)).shaped.<>({r=>import r._; _1.map(_=> FilesRow.tupled((_1.get, _2.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(shippingRequestId), Rep.Some(dwgId)).shaped.<>({r=>import r._; _1.map(_=> DwgshipreqlinktempRow.tupled((_1.get, _2.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
-    /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
-    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
-    /** Database column path SqlType(VARCHAR), Length(200,true) */
-    val path: Rep[String] = column[String]("path", O.Length(200,varying=true))
-
-    /** Uniqueness Index over (path) (database name path_UNIQUE) */
-    val index1 = index("path_UNIQUE", path, unique=true)
+    /** Database column shipping_request_id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
+    val shippingRequestId: Rep[Int] = column[Int]("shipping_request_id", O.AutoInc, O.PrimaryKey)
+    /** Database column dwg_id SqlType(INT UNSIGNED) */
+    val dwgId: Rep[Int] = column[Int]("dwg_id")
   }
-  /** Collection-like TableQuery object for table Files */
-  lazy val Files = new TableQuery(tag => new Files(tag))
+  /** Collection-like TableQuery object for table Dwgshipreqlinktemp */
+  lazy val Dwgshipreqlinktemp = new TableQuery(tag => new Dwgshipreqlinktemp(tag))
+
+  /** Entity class storing rows of table Idslinktemp
+   *  @param shippingItemsId Database column shipping_items_id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
+   *  @param jobid Database column jobid SqlType(INT UNSIGNED), Default(None)
+   *  @param dwgid Database column dwgid SqlType(INT UNSIGNED), Default(None)
+   *  @param mark Database column mark SqlType(VARCHAR), Length(255,true), Default(None)
+   *  @param tagid Database column tagid SqlType(INT UNSIGNED), Default(None) */
+  case class IdslinktempRow(shippingItemsId: Int, jobid: Option[Int] = None, dwgid: Option[Int] = None, mark: Option[String] = None, tagid: Option[Int] = None)
+  /** GetResult implicit for fetching IdslinktempRow objects using plain SQL queries */
+  implicit def GetResultIdslinktempRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[Option[String]]): GR[IdslinktempRow] = GR{
+    prs => import prs._
+    IdslinktempRow.tupled((<<[Int], <<?[Int], <<?[Int], <<?[String], <<?[Int]))
+  }
+  /** Table description of table idslinktemp. Objects of this class serve as prototypes for rows in queries. */
+  class Idslinktemp(_tableTag: Tag) extends Table[IdslinktempRow](_tableTag, "idslinktemp") {
+    def * = (shippingItemsId, jobid, dwgid, mark, tagid) <> (IdslinktempRow.tupled, IdslinktempRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(shippingItemsId), jobid, dwgid, mark, tagid).shaped.<>({r=>import r._; _1.map(_=> IdslinktempRow.tupled((_1.get, _2, _3, _4, _5)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column shipping_items_id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
+    val shippingItemsId: Rep[Int] = column[Int]("shipping_items_id", O.AutoInc, O.PrimaryKey)
+    /** Database column jobid SqlType(INT UNSIGNED), Default(None) */
+    val jobid: Rep[Option[Int]] = column[Option[Int]]("jobid", O.Default(None))
+    /** Database column dwgid SqlType(INT UNSIGNED), Default(None) */
+    val dwgid: Rep[Option[Int]] = column[Option[Int]]("dwgid", O.Default(None))
+    /** Database column mark SqlType(VARCHAR), Length(255,true), Default(None) */
+    val mark: Rep[Option[String]] = column[Option[String]]("mark", O.Length(255,varying=true), O.Default(None))
+    /** Database column tagid SqlType(INT UNSIGNED), Default(None) */
+    val tagid: Rep[Option[Int]] = column[Option[Int]]("tagid", O.Default(None))
+  }
+  /** Collection-like TableQuery object for table Idslinktemp */
+  lazy val Idslinktemp = new TableQuery(tag => new Idslinktemp(tag))
 
   /** Entity class storing rows of table JobAddresses
    *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
@@ -296,22 +378,21 @@ trait Tables {
    *  @param contractPrice Database column contract_price SqlType(DECIMAL), Default(None)
    *  @param startDate Database column start_date SqlType(DATE), Default(None)
    *  @param dueDate Database column due_date SqlType(DATE), Default(None)
-   *  @param completeDate Database column complete_date SqlType(DATE), Default(None)
    *  @param shopId Database column shop_id SqlType(INT UNSIGNED), Default(None)
    *  @param salespersonId Database column salesperson_id SqlType(INT UNSIGNED), Default(None)
    *  @param customerId Database column customer_id SqlType(INT UNSIGNED), Default(None)
    *  @param contactId Database column contact_id SqlType(INT UNSIGNED), Default(None) */
-  case class JobsRow(id: Int, prefix: String, year: java.sql.Date, label: String, status: String = "DRAFT", description: Option[String] = None, contractPrice: Option[scala.math.BigDecimal] = None, startDate: Option[java.sql.Date] = None, dueDate: Option[java.sql.Date] = None, completeDate: Option[java.sql.Date] = None, shopId: Option[Int] = None, salespersonId: Option[Int] = None, customerId: Option[Int] = None, contactId: Option[Int] = None)
+  case class JobsRow(id: Int, prefix: String, year: java.sql.Date, label: String, status: String = "DRAFT", description: Option[String] = None, contractPrice: Option[scala.math.BigDecimal] = None, startDate: Option[java.sql.Date] = None, dueDate: Option[java.sql.Date] = None, shopId: Option[Int] = None, salespersonId: Option[Int] = None, customerId: Option[Int] = None, contactId: Option[Int] = None)
   /** GetResult implicit for fetching JobsRow objects using plain SQL queries */
   implicit def GetResultJobsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[java.sql.Date], e3: GR[Option[String]], e4: GR[Option[scala.math.BigDecimal]], e5: GR[Option[java.sql.Date]], e6: GR[Option[Int]]): GR[JobsRow] = GR{
     prs => import prs._
-    JobsRow.tupled((<<[Int], <<[String], <<[java.sql.Date], <<[String], <<[String], <<?[String], <<?[scala.math.BigDecimal], <<?[java.sql.Date], <<?[java.sql.Date], <<?[java.sql.Date], <<?[Int], <<?[Int], <<?[Int], <<?[Int]))
+    JobsRow.tupled((<<[Int], <<[String], <<[java.sql.Date], <<[String], <<[String], <<?[String], <<?[scala.math.BigDecimal], <<?[java.sql.Date], <<?[java.sql.Date], <<?[Int], <<?[Int], <<?[Int], <<?[Int]))
   }
   /** Table description of table jobs. Objects of this class serve as prototypes for rows in queries. */
   class Jobs(_tableTag: Tag) extends Table[JobsRow](_tableTag, "jobs") {
-    def * = (id, prefix, year, label, status, description, contractPrice, startDate, dueDate, completeDate, shopId, salespersonId, customerId, contactId) <> (JobsRow.tupled, JobsRow.unapply)
+    def * = (id, prefix, year, label, status, description, contractPrice, startDate, dueDate, shopId, salespersonId, customerId, contactId) <> (JobsRow.tupled, JobsRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(prefix), Rep.Some(year), Rep.Some(label), Rep.Some(status), description, contractPrice, startDate, dueDate, completeDate, shopId, salespersonId, customerId, contactId).shaped.<>({r=>import r._; _1.map(_=> JobsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6, _7, _8, _9, _10, _11, _12, _13, _14)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), Rep.Some(prefix), Rep.Some(year), Rep.Some(label), Rep.Some(status), description, contractPrice, startDate, dueDate, shopId, salespersonId, customerId, contactId).shaped.<>({r=>import r._; _1.map(_=> JobsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6, _7, _8, _9, _10, _11, _12, _13)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
@@ -331,8 +412,6 @@ trait Tables {
     val startDate: Rep[Option[java.sql.Date]] = column[Option[java.sql.Date]]("start_date", O.Default(None))
     /** Database column due_date SqlType(DATE), Default(None) */
     val dueDate: Rep[Option[java.sql.Date]] = column[Option[java.sql.Date]]("due_date", O.Default(None))
-    /** Database column complete_date SqlType(DATE), Default(None) */
-    val completeDate: Rep[Option[java.sql.Date]] = column[Option[java.sql.Date]]("complete_date", O.Default(None))
     /** Database column shop_id SqlType(INT UNSIGNED), Default(None) */
     val shopId: Rep[Option[Int]] = column[Option[Int]]("shop_id", O.Default(None))
     /** Database column salesperson_id SqlType(INT UNSIGNED), Default(None) */
@@ -350,9 +429,6 @@ trait Tables {
     lazy val salespeopleFk = foreignKey("jobs__salespeople__fk", salespersonId, Salespeople)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
     /** Foreign key referencing Shops (database name jobs__shops__fk) */
     lazy val shopsFk = foreignKey("jobs__shops__fk", shopId, Shops)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
-
-    /** Uniqueness Index over (year,label,prefix) (database name UNIQUE_JOB_NUMBER_AND_REVISION) */
-    val index1 = index("UNIQUE_JOB_NUMBER_AND_REVISION", (year, label, prefix), unique=true)
   }
   /** Collection-like TableQuery object for table Jobs */
   lazy val Jobs = new TableQuery(tag => new Jobs(tag))
@@ -499,28 +575,28 @@ trait Tables {
   /** Entity class storing rows of table Parts
    *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
    *  @param `type` Database column type SqlType(ENUM), Length(5,false)
-   *  @param number Database column number SqlType(VARCHAR), Length(200,true)
+   *  @param number Database column number SqlType(VARCHAR), Length(200,true), Default(None)
    *  @param description Database column description SqlType(TEXT), Default(None) */
-  case class PartsRow(id: Int, `type`: String, number: String, description: Option[String] = None)
+  case class PartsRow(id: Int, `type`: String, number: Option[String] = None, description: Option[String] = None)
   /** GetResult implicit for fetching PartsRow objects using plain SQL queries */
   implicit def GetResultPartsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[String]]): GR[PartsRow] = GR{
     prs => import prs._
-    PartsRow.tupled((<<[Int], <<[String], <<[String], <<?[String]))
+    PartsRow.tupled((<<[Int], <<[String], <<?[String], <<?[String]))
   }
   /** Table description of table parts. Objects of this class serve as prototypes for rows in queries.
    *  NOTE: The following names collided with Scala keywords and were escaped: type */
   class Parts(_tableTag: Tag) extends Table[PartsRow](_tableTag, "parts") {
     def * = (id, `type`, number, description) <> (PartsRow.tupled, PartsRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(`type`), Rep.Some(number), description).shaped.<>({r=>import r._; _1.map(_=> PartsRow.tupled((_1.get, _2.get, _3.get, _4)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), Rep.Some(`type`), number, description).shaped.<>({r=>import r._; _1.map(_=> PartsRow.tupled((_1.get, _2.get, _3, _4)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     /** Database column type SqlType(ENUM), Length(5,false)
      *  NOTE: The name was escaped because it collided with a Scala keyword. */
     val `type`: Rep[String] = column[String]("type", O.Length(5,varying=false))
-    /** Database column number SqlType(VARCHAR), Length(200,true) */
-    val number: Rep[String] = column[String]("number", O.Length(200,varying=true))
+    /** Database column number SqlType(VARCHAR), Length(200,true), Default(None) */
+    val number: Rep[Option[String]] = column[Option[String]]("number", O.Length(200,varying=true), O.Default(None))
     /** Database column description SqlType(TEXT), Default(None) */
     val description: Rep[Option[String]] = column[Option[String]]("description", O.Default(None))
   }
@@ -621,9 +697,6 @@ trait Tables {
     lazy val shipmentsFk = foreignKey("shipment_items__shipments__fk", shipmentId, Shipments)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
     /** Foreign key referencing ShippingItems (database name shipment_items__shipping_items__fk) */
     lazy val shippingItemsFk = foreignKey("shipment_items__shipping_items__fk", shippingItemId, ShippingItems)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
-
-    /** Uniqueness Index over (shipmentId,shippingItemId) (database name UNIQUE_SHIPMENT_SHIPPING_ITEM) */
-    val index1 = index("UNIQUE_SHIPMENT_SHIPPING_ITEM", (shipmentId, shippingItemId), unique=true)
   }
   /** Collection-like TableQuery object for table ShipmentItems */
   lazy val ShipmentItems = new TableQuery(tag => new ShipmentItems(tag))
@@ -633,24 +706,24 @@ trait Tables {
    *  @param jobId Database column job_id SqlType(INT UNSIGNED)
    *  @param number Database column number SqlType(INT UNSIGNED), Default(1)
    *  @param status Database column status SqlType(ENUM), Length(9,false)
-   *  @param shopId Database column shop_id SqlType(INT UNSIGNED)
-   *  @param carrierId Database column carrier_id SqlType(INT UNSIGNED)
+   *  @param shopId Database column shop_id SqlType(INT UNSIGNED), Default(None)
+   *  @param carrierId Database column carrier_id SqlType(INT UNSIGNED), Default(None)
    *  @param weight Database column weight SqlType(INT UNSIGNED), Default(0)
    *  @param billOfLading Database column bill_of_lading SqlType(VARCHAR), Length(100,true), Default(None)
    *  @param shipDate Database column ship_date SqlType(DATE), Default(None)
    *  @param contactId Database column contact_id SqlType(INT UNSIGNED), Default(None)
    *  @param addressId Database column address_id SqlType(INT UNSIGNED), Default(None) */
-  case class ShipmentsRow(id: Int, jobId: Int, number: Int = 1, status: String, shopId: Int, carrierId: Int, weight: Int = 0, billOfLading: Option[String] = None, shipDate: Option[java.sql.Date] = None, contactId: Option[Int] = None, addressId: Option[Int] = None)
+  case class ShipmentsRow(id: Int, jobId: Int, number: Int = 1, status: String, shopId: Option[Int] = None, carrierId: Option[Int] = None, weight: Int = 0, billOfLading: Option[String] = None, shipDate: Option[java.sql.Date] = None, contactId: Option[Int] = None, addressId: Option[Int] = None)
   /** GetResult implicit for fetching ShipmentsRow objects using plain SQL queries */
-  implicit def GetResultShipmentsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[String]], e3: GR[Option[java.sql.Date]], e4: GR[Option[Int]]): GR[ShipmentsRow] = GR{
+  implicit def GetResultShipmentsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]], e3: GR[Option[String]], e4: GR[Option[java.sql.Date]]): GR[ShipmentsRow] = GR{
     prs => import prs._
-    ShipmentsRow.tupled((<<[Int], <<[Int], <<[Int], <<[String], <<[Int], <<[Int], <<[Int], <<?[String], <<?[java.sql.Date], <<?[Int], <<?[Int]))
+    ShipmentsRow.tupled((<<[Int], <<[Int], <<[Int], <<[String], <<?[Int], <<?[Int], <<[Int], <<?[String], <<?[java.sql.Date], <<?[Int], <<?[Int]))
   }
   /** Table description of table shipments. Objects of this class serve as prototypes for rows in queries. */
   class Shipments(_tableTag: Tag) extends Table[ShipmentsRow](_tableTag, "shipments") {
     def * = (id, jobId, number, status, shopId, carrierId, weight, billOfLading, shipDate, contactId, addressId) <> (ShipmentsRow.tupled, ShipmentsRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(jobId), Rep.Some(number), Rep.Some(status), Rep.Some(shopId), Rep.Some(carrierId), Rep.Some(weight), billOfLading, shipDate, contactId, addressId).shaped.<>({r=>import r._; _1.map(_=> ShipmentsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8, _9, _10, _11)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), Rep.Some(jobId), Rep.Some(number), Rep.Some(status), shopId, carrierId, Rep.Some(weight), billOfLading, shipDate, contactId, addressId).shaped.<>({r=>import r._; _1.map(_=> ShipmentsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5, _6, _7.get, _8, _9, _10, _11)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
@@ -660,10 +733,10 @@ trait Tables {
     val number: Rep[Int] = column[Int]("number", O.Default(1))
     /** Database column status SqlType(ENUM), Length(9,false) */
     val status: Rep[String] = column[String]("status", O.Length(9,varying=false))
-    /** Database column shop_id SqlType(INT UNSIGNED) */
-    val shopId: Rep[Int] = column[Int]("shop_id")
-    /** Database column carrier_id SqlType(INT UNSIGNED) */
-    val carrierId: Rep[Int] = column[Int]("carrier_id")
+    /** Database column shop_id SqlType(INT UNSIGNED), Default(None) */
+    val shopId: Rep[Option[Int]] = column[Option[Int]]("shop_id", O.Default(None))
+    /** Database column carrier_id SqlType(INT UNSIGNED), Default(None) */
+    val carrierId: Rep[Option[Int]] = column[Option[Int]]("carrier_id", O.Default(None))
     /** Database column weight SqlType(INT UNSIGNED), Default(0) */
     val weight: Rep[Int] = column[Int]("weight", O.Default(0))
     /** Database column bill_of_lading SqlType(VARCHAR), Length(100,true), Default(None) */
@@ -678,13 +751,13 @@ trait Tables {
     /** Foreign key referencing Addresses (database name shipments__addresses__fk) */
     lazy val addressesFk = foreignKey("shipments__addresses__fk", addressId, Addresses)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
     /** Foreign key referencing Carriers (database name shipments__carriers__fk) */
-    lazy val carriersFk = foreignKey("shipments__carriers__fk", carrierId, Carriers)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    lazy val carriersFk = foreignKey("shipments__carriers__fk", carrierId, Carriers)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
     /** Foreign key referencing Contacts (database name shipments__contacts__fk) */
     lazy val contactsFk = foreignKey("shipments__contacts__fk", contactId, Contacts)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
     /** Foreign key referencing Jobs (database name shipments__jobs__fk) */
     lazy val jobsFk = foreignKey("shipments__jobs__fk", jobId, Jobs)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
     /** Foreign key referencing Shops (database name shipments__shops__fk) */
-    lazy val shopsFk = foreignKey("shipments__shops__fk", shopId, Shops)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    lazy val shopsFk = foreignKey("shipments__shops__fk", shopId, Shops)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
 
     /** Uniqueness Index over (jobId,number) (database name UNIQUE_JOB_SHIPMENT) */
     val index1 = index("UNIQUE_JOB_SHIPMENT", (jobId, number), unique=true)
@@ -695,18 +768,20 @@ trait Tables {
   /** Entity class storing rows of table ShippingGroupItems
    *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
    *  @param shippingGroupId Database column shipping_group_id SqlType(INT UNSIGNED)
-   *  @param shippingItemId Database column shipping_item_id SqlType(INT UNSIGNED) */
-  case class ShippingGroupItemsRow(id: Int, shippingGroupId: Int, shippingItemId: Int)
+   *  @param shippingItemId Database column shipping_item_id SqlType(INT UNSIGNED)
+   *  @param label Database column label SqlType(VARCHAR), Length(100,true)
+   *  @param tagType Database column tag_type SqlType(ENUM), Length(2,false), Default(None) */
+  case class ShippingGroupItemsRow(id: Int, shippingGroupId: Int, shippingItemId: Int, label: String, tagType: Option[String] = None)
   /** GetResult implicit for fetching ShippingGroupItemsRow objects using plain SQL queries */
-  implicit def GetResultShippingGroupItemsRow(implicit e0: GR[Int]): GR[ShippingGroupItemsRow] = GR{
+  implicit def GetResultShippingGroupItemsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[String]]): GR[ShippingGroupItemsRow] = GR{
     prs => import prs._
-    ShippingGroupItemsRow.tupled((<<[Int], <<[Int], <<[Int]))
+    ShippingGroupItemsRow.tupled((<<[Int], <<[Int], <<[Int], <<[String], <<?[String]))
   }
   /** Table description of table shipping_group_items. Objects of this class serve as prototypes for rows in queries. */
   class ShippingGroupItems(_tableTag: Tag) extends Table[ShippingGroupItemsRow](_tableTag, "shipping_group_items") {
-    def * = (id, shippingGroupId, shippingItemId) <> (ShippingGroupItemsRow.tupled, ShippingGroupItemsRow.unapply)
+    def * = (id, shippingGroupId, shippingItemId, label, tagType) <> (ShippingGroupItemsRow.tupled, ShippingGroupItemsRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(shippingGroupId), Rep.Some(shippingItemId)).shaped.<>({r=>import r._; _1.map(_=> ShippingGroupItemsRow.tupled((_1.get, _2.get, _3.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), Rep.Some(shippingGroupId), Rep.Some(shippingItemId), Rep.Some(label), tagType).shaped.<>({r=>import r._; _1.map(_=> ShippingGroupItemsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
@@ -714,6 +789,10 @@ trait Tables {
     val shippingGroupId: Rep[Int] = column[Int]("shipping_group_id")
     /** Database column shipping_item_id SqlType(INT UNSIGNED) */
     val shippingItemId: Rep[Int] = column[Int]("shipping_item_id")
+    /** Database column label SqlType(VARCHAR), Length(100,true) */
+    val label: Rep[String] = column[String]("label", O.Length(100,varying=true))
+    /** Database column tag_type SqlType(ENUM), Length(2,false), Default(None) */
+    val tagType: Rep[Option[String]] = column[Option[String]]("tag_type", O.Length(2,varying=false), O.Default(None))
 
     /** Foreign key referencing ShippingGroups (database name shipping_group_items__shipping_groups__fk) */
     lazy val shippingGroupsFk = foreignKey("shipping_group_items__shipping_groups__fk", shippingGroupId, ShippingGroups)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
@@ -722,8 +801,8 @@ trait Tables {
 
     /** Uniqueness Index over (shippingGroupId,shippingItemId) (database name UNIQUE_GROUP_ITEM) */
     val index1 = index("UNIQUE_GROUP_ITEM", (shippingGroupId, shippingItemId), unique=true)
-    /** Uniqueness Index over (shippingGroupId) (database name UNIQUE_GROUP_ITEM_LABEL) */
-    val index2 = index("UNIQUE_GROUP_ITEM_LABEL", shippingGroupId, unique=true)
+    /** Uniqueness Index over (shippingGroupId,shippingItemId,label) (database name UNIQUE_GROUP_ITEM_LABEL) */
+    val index2 = index("UNIQUE_GROUP_ITEM_LABEL", (shippingGroupId, shippingItemId, label), unique=true)
   }
   /** Collection-like TableQuery object for table ShippingGroupItems */
   lazy val ShippingGroupItems = new TableQuery(tag => new ShippingGroupItems(tag))
@@ -770,8 +849,8 @@ trait Tables {
 
   /** Entity class storing rows of table ShippingItems
    *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
-   *  @param status Database column status SqlType(ENUM), Length(6,false)
-   *  @param label Database column label SqlType(VARCHAR), Length(100,true), Default(None)
+   *  @param status Database column status SqlType(ENUM), Length(8,false)
+   *  @param label Database column label SqlType(VARCHAR), Length(250,true), Default(None)
    *  @param requested Database column requested SqlType(INT UNSIGNED), Default(0)
    *  @param completed Database column completed SqlType(INT UNSIGNED), Default(0)
    *  @param remarks Database column remarks SqlType(TEXT), Default(None)
@@ -790,10 +869,10 @@ trait Tables {
 
     /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
-    /** Database column status SqlType(ENUM), Length(6,false) */
-    val status: Rep[String] = column[String]("status", O.Length(6,varying=false))
-    /** Database column label SqlType(VARCHAR), Length(100,true), Default(None) */
-    val label: Rep[Option[String]] = column[Option[String]]("label", O.Length(100,varying=true), O.Default(None))
+    /** Database column status SqlType(ENUM), Length(8,false) */
+    val status: Rep[String] = column[String]("status", O.Length(8,varying=false))
+    /** Database column label SqlType(VARCHAR), Length(250,true), Default(None) */
+    val label: Rep[Option[String]] = column[Option[String]]("label", O.Length(250,varying=true), O.Default(None))
     /** Database column requested SqlType(INT UNSIGNED), Default(0) */
     val requested: Rep[Int] = column[Int]("requested", O.Default(0))
     /** Database column completed SqlType(INT UNSIGNED), Default(0) */
@@ -858,22 +937,22 @@ trait Tables {
    *  @param requestDate Database column request_date SqlType(DATE), Default(None)
    *  @param requestedBy Database column requested_by SqlType(VARCHAR), Length(100,true), Default(None)
    *  @param preparedBy Database column prepared_by SqlType(VARCHAR), Length(100,true), Default(None)
-   *  @param fileId Database column file_id SqlType(INT UNSIGNED), Default(None)
+   *  @param filePath Database column file_path SqlType(VARCHAR), Length(200,true), Default(None)
    *  @param shopId Database column shop_id SqlType(INT UNSIGNED), Default(None)
    *  @param carrierId Database column carrier_id SqlType(INT UNSIGNED), Default(None)
    *  @param contactId Database column contact_id SqlType(INT UNSIGNED), Default(None)
    *  @param addressId Database column address_id SqlType(INT UNSIGNED), Default(None) */
-  case class ShippingRequestsRow(id: Int, tagType: Option[String] = None, title: Option[String] = None, revision: Option[String] = None, revisionDate: Option[java.sql.Date] = None, startDate: Option[java.sql.Date] = None, shopDate: Option[java.sql.Date] = None, fieldDate: Option[java.sql.Date] = None, requestDate: Option[java.sql.Date] = None, requestedBy: Option[String] = None, preparedBy: Option[String] = None, fileId: Option[Int] = None, shopId: Option[Int] = None, carrierId: Option[Int] = None, contactId: Option[Int] = None, addressId: Option[Int] = None)
+  case class ShippingRequestsRow(id: Int, tagType: Option[String] = None, title: Option[String] = None, revision: Option[String] = None, revisionDate: Option[java.sql.Date] = None, startDate: Option[java.sql.Date] = None, shopDate: Option[java.sql.Date] = None, fieldDate: Option[java.sql.Date] = None, requestDate: Option[java.sql.Date] = None, requestedBy: Option[String] = None, preparedBy: Option[String] = None, filePath: Option[String] = None, shopId: Option[Int] = None, carrierId: Option[Int] = None, contactId: Option[Int] = None, addressId: Option[Int] = None)
   /** GetResult implicit for fetching ShippingRequestsRow objects using plain SQL queries */
   implicit def GetResultShippingRequestsRow(implicit e0: GR[Int], e1: GR[Option[String]], e2: GR[Option[java.sql.Date]], e3: GR[Option[Int]]): GR[ShippingRequestsRow] = GR{
     prs => import prs._
-    ShippingRequestsRow.tupled((<<[Int], <<?[String], <<?[String], <<?[String], <<?[java.sql.Date], <<?[java.sql.Date], <<?[java.sql.Date], <<?[java.sql.Date], <<?[java.sql.Date], <<?[String], <<?[String], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int]))
+    ShippingRequestsRow.tupled((<<[Int], <<?[String], <<?[String], <<?[String], <<?[java.sql.Date], <<?[java.sql.Date], <<?[java.sql.Date], <<?[java.sql.Date], <<?[java.sql.Date], <<?[String], <<?[String], <<?[String], <<?[Int], <<?[Int], <<?[Int], <<?[Int]))
   }
   /** Table description of table shipping_requests. Objects of this class serve as prototypes for rows in queries. */
   class ShippingRequests(_tableTag: Tag) extends Table[ShippingRequestsRow](_tableTag, "shipping_requests") {
-    def * = (id, tagType, title, revision, revisionDate, startDate, shopDate, fieldDate, requestDate, requestedBy, preparedBy, fileId, shopId, carrierId, contactId, addressId) <> (ShippingRequestsRow.tupled, ShippingRequestsRow.unapply)
+    def * = (id, tagType, title, revision, revisionDate, startDate, shopDate, fieldDate, requestDate, requestedBy, preparedBy, filePath, shopId, carrierId, contactId, addressId) <> (ShippingRequestsRow.tupled, ShippingRequestsRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), tagType, title, revision, revisionDate, startDate, shopDate, fieldDate, requestDate, requestedBy, preparedBy, fileId, shopId, carrierId, contactId, addressId).shaped.<>({r=>import r._; _1.map(_=> ShippingRequestsRow.tupled((_1.get, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), tagType, title, revision, revisionDate, startDate, shopDate, fieldDate, requestDate, requestedBy, preparedBy, filePath, shopId, carrierId, contactId, addressId).shaped.<>({r=>import r._; _1.map(_=> ShippingRequestsRow.tupled((_1.get, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
@@ -897,8 +976,8 @@ trait Tables {
     val requestedBy: Rep[Option[String]] = column[Option[String]]("requested_by", O.Length(100,varying=true), O.Default(None))
     /** Database column prepared_by SqlType(VARCHAR), Length(100,true), Default(None) */
     val preparedBy: Rep[Option[String]] = column[Option[String]]("prepared_by", O.Length(100,varying=true), O.Default(None))
-    /** Database column file_id SqlType(INT UNSIGNED), Default(None) */
-    val fileId: Rep[Option[Int]] = column[Option[Int]]("file_id", O.Default(None))
+    /** Database column file_path SqlType(VARCHAR), Length(200,true), Default(None) */
+    val filePath: Rep[Option[String]] = column[Option[String]]("file_path", O.Length(200,varying=true), O.Default(None))
     /** Database column shop_id SqlType(INT UNSIGNED), Default(None) */
     val shopId: Rep[Option[Int]] = column[Option[Int]]("shop_id", O.Default(None))
     /** Database column carrier_id SqlType(INT UNSIGNED), Default(None) */
@@ -914,10 +993,11 @@ trait Tables {
     lazy val carriersFk = foreignKey("shipping_requests__carriers__fk", carrierId, Carriers)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
     /** Foreign key referencing Contacts (database name shipping_requests__contacts__fk) */
     lazy val contactsFk = foreignKey("shipping_requests__contacts__fk", contactId, Contacts)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
-    /** Foreign key referencing Files (database name shipping_requests__files__fk) */
-    lazy val filesFk = foreignKey("shipping_requests__files__fk", fileId, Files)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
     /** Foreign key referencing Shops (database name shipping_requests__shops__fk) */
     lazy val shopsFk = foreignKey("shipping_requests__shops__fk", shopId, Shops)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+
+    /** Index over (filePath) (database name shipping_requests__files__fk_idx) */
+    val index1 = index("shipping_requests__files__fk_idx", filePath)
   }
   /** Collection-like TableQuery object for table ShippingRequests */
   lazy val ShippingRequests = new TableQuery(tag => new ShippingRequests(tag))
@@ -1069,6 +1149,46 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table UserTokens */
   lazy val UserTokens = new TableQuery(tag => new UserTokens(tag))
+
+  /** Entity class storing rows of table Validshippertemp
+   *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
+  case class ValidshippertempRow(id: Int)
+  /** GetResult implicit for fetching ValidshippertempRow objects using plain SQL queries */
+  implicit def GetResultValidshippertempRow(implicit e0: GR[Int]): GR[ValidshippertempRow] = GR{
+    prs => import prs._
+    ValidshippertempRow(<<[Int])
+  }
+  /** Table description of table validshippertemp. Objects of this class serve as prototypes for rows in queries. */
+  class Validshippertemp(_tableTag: Tag) extends Table[ValidshippertempRow](_tableTag, "validshippertemp") {
+    def * = id <> (ValidshippertempRow, ValidshippertempRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = Rep.Some(id).shaped.<>(r => r.map(_=> ValidshippertempRow(r.get)), (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
+  }
+  /** Collection-like TableQuery object for table Validshippertemp */
+  lazy val Validshippertemp = new TableQuery(tag => new Validshippertemp(tag))
+
+  /** Entity class storing rows of table Validtagtemp
+   *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
+  case class ValidtagtempRow(id: Int)
+  /** GetResult implicit for fetching ValidtagtempRow objects using plain SQL queries */
+  implicit def GetResultValidtagtempRow(implicit e0: GR[Int]): GR[ValidtagtempRow] = GR{
+    prs => import prs._
+    ValidtagtempRow(<<[Int])
+  }
+  /** Table description of table validtagtemp. Objects of this class serve as prototypes for rows in queries. */
+  class Validtagtemp(_tableTag: Tag) extends Table[ValidtagtempRow](_tableTag, "validtagtemp") {
+    def * = id <> (ValidtagtempRow, ValidtagtempRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = Rep.Some(id).shaped.<>(r => r.map(_=> ValidtagtempRow(r.get)), (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
+  }
+  /** Collection-like TableQuery object for table Validtagtemp */
+  lazy val Validtagtemp = new TableQuery(tag => new Validtagtemp(tag))
 
   /** Entity class storing rows of table Vendors
    *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey

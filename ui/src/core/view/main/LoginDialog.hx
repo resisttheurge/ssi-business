@@ -1,5 +1,6 @@
 package core.view.main;
 
+import core.dataaccess.PersistenceManager;
 import core.authentication.AuthenticationManager;
 import api.react.ReactDOM;
 import js.JQuery;
@@ -83,11 +84,15 @@ class LoginDialog extends ReactComponent {
         untyped elem
         .modal({
             onApprove: function(){
-                Core.application.setState({
-                authenticated: AuthenticationManager.authenticate(
+                AuthenticationManager.authenticate(
                     this.state.uname == null? "":this.state.uname,
-                    this.state.pass == null? "":this.state.pass)
-                });
+                    this.state.pass == null? "":this.state.pass,
+                    function(user: User){
+
+                        Core.application.setState({authenticated: success});
+
+                    }
+                );
             },
             onHidden: function(){
                 Core.modalChange.dispatch("");

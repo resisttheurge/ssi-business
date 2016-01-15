@@ -214,7 +214,9 @@ core_view_main_LoginDialog.prototype = $extend(React.Component.prototype,{
 		var _g = this;
 		var elem = js.JQuery(ReactDOM.findDOMNode(this));
 		elem.modal({ onApprove : function() {
-			Core.application.setState({ authenticated : core_authentication_AuthenticationManager.authenticate(_g.state.uname == null?"":_g.state.uname,_g.state.pass == null?"":_g.state.pass)});
+			core_authentication_AuthenticationManager.authenticate(_g.state.uname == null?"":_g.state.uname,_g.state.pass == null?"":_g.state.pass,function(user) {
+				Core.application.setState({ authenticated : success});
+			});
 		}, onHidden : function() {
 			Core.modalChange.dispatch("");
 		}}).modal("setting","closable",false).modal("setting","transition","vertical flip").modal("show");
@@ -795,7 +797,6 @@ Core.jt = function() {
 };
 Core.main = function() {
 	var appElem = window.document.getElementById("app");
-	console.log("fdsa");
 	Core.application = ReactDOM.render(React.createElement(Core,{ authenticated : core_authentication_AuthenticationManager.isLoggedIn(), key : "core-elem"}),appElem);
 };
 Core.__super__ = React.Component;
@@ -934,12 +935,15 @@ core_authentication_Role.Annon.toString = $estr;
 core_authentication_Role.Annon.__enum__ = core_authentication_Role;
 var core_authentication_AuthenticationManager = function() { };
 core_authentication_AuthenticationManager.__name__ = true;
-core_authentication_AuthenticationManager.authenticate = function(username,password) {
-	var success = username == "test" && password == "pass";
-	if(success) core_authentication_AuthenticationManager.currentUser = { username : "Test", role : core_authentication_Role.Admin, token : "blahblahblah"}; else core_authentication_AuthenticationManager.currentUser == null;
-	core_dataaccess_PersistenceManager.store("user",core_authentication_AuthenticationManager.currentUser);
-	core_authentication_AuthenticationManager.initialized == success;
-	return success;
+core_authentication_AuthenticationManager.hash = function(password) {
+	return bcrypt.hashSync(password,bcrypt.genSaltSync());
+};
+core_authentication_AuthenticationManager.authenticate = function(username,password,onSuccess,onError) {
+	core_dataaccess_ServiceAccessManager.postData(core_dataaccess_EndPoint.USER,{ success : function(user) {
+		core_authentication_AuthenticationManager.currentUser = user;
+		core_dataaccess_PersistenceManager.store("user",core_authentication_AuthenticationManager.currentUser);
+		onSuccess(user);
+	}, error : onError},{ username : username, password : core_authentication_AuthenticationManager.hash(password)});
 };
 core_authentication_AuthenticationManager.getCurrentUser = function() {
 	if(!core_authentication_AuthenticationManager.initialized) core_authentication_AuthenticationManager.currentUser = core_dataaccess_PersistenceManager.get("user");

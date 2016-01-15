@@ -4,4 +4,4 @@
 /dist
 /node_modules
 /semantic/dist
-k
+*.log

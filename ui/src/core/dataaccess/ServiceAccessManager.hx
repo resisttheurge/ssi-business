@@ -44,7 +44,7 @@ class ServiceAccessManager {/* for Intellij, Ignore or Delete if Necessary */ #i
         return '$baseUrl$contextRoot${urlObj(ep, data)}';
     }
 
-    public static function getData(ep: EndPoint, callbacks: AjaxCallbacks, ?data: Dynamic){
+    public static function getData(ep: EndPoint, callbacks: Dynamic, ?data: Dynamic){
         var url = buildUrl(ep, data);
 
         return ajax({
@@ -55,7 +55,7 @@ class ServiceAccessManager {/* for Intellij, Ignore or Delete if Necessary */ #i
         }).always(callbacks.always).fail(callbacks.fail).done(callbacks.done).then(callbacks.then);
     }
 
-    public static function postData(ep: EndPoint, callbacks: AjaxCallbacks, data: Dynamic){
+    public static function postData(ep: EndPoint, callbacks: Dynamic, data: Dynamic){
         var url = buildUrl(ep, data);
 
         return ajax({

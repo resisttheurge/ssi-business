@@ -53,8 +53,6 @@ class Core extends ReactComponent {
     private static function main() {
         var appElem = Browser.document.getElementById("app");
 
-        untyped console.log("fdsa");
-
         application = ReactDOM.render(jsx('<$Core key="core-elem" authenticated=${AuthenticationManager.isLoggedIn()} />'), appElem);
     }
 
