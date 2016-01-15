@@ -16,15 +16,15 @@ public class Tester {
 			file.delete();
 		}
 
-//		LAYOUT_DRAWING.generate(file, "1");
-//		ZONE.generate(file, "1");
-//		MATERIAL_SHIPPER.generate(file, "1");
-//		SHIP_VIA.generate(file, "1");
-//		SHIPMENT.generate(file, "1");
-//		MANAGEMENT_REVIEW.generate(file, "2010-09-12", "2015-12-30");
+//		LAYOUT_DRAWING.generate(file, "35");
+//		ZONE.generate(file, "1");											//BROKEN
+		MATERIAL_SHIPPER.generate(file, "12942");
+//		SHIP_VIA.generate(file, "1");										//BROKEN
+//		SHIPMENT.generate(file, "1");										//BROKEN
+//		MANAGEMENT_REVIEW.generate(file, "2010-09-12", "2015-12-30");		//BROKEN
 //		PRODUCTION_SCHEDULE.generate(file, "11/29/2015");
-//		SPECIALTY_ITEMS_BY_JOB.generate(file, "1");
-//		SPECIALTY_ITEMS_BY_PART_TYPE.generate(file, "LEADING TROLLEY");
+//		SPECIALTY_ITEMS_BY_JOB.generate(file, "1");							//BROKEN
+//		SPECIALTY_ITEMS_BY_PART_TYPE.generate(file, "LEADING TROLLEY");		//BROKEN
 		Desktop.getDesktop().open(file);
 	}
 

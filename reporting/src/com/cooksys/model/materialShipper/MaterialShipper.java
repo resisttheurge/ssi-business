@@ -1,16 +1,17 @@
 package com.cooksys.model.materialShipper;
 
+import static com.cooksys.util.DataUtil.convertRaw;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.cooksys.db.Connector;
-import com.cooksys.model.LayoutDrawing;
 import com.cooksys.test.VariableGenerator;
-
-import static com.cooksys.util.DataUtil.*;
 
 public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 
@@ -41,6 +42,18 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 				ResultSet drawingSet = Connector.executeStoredProcedure(new MaterialShipperDrawing(),
 						new String[] { item.jobId });
 
+				ResultSet zoneListSet = Connector.executeStoredProcedure("ZoneList", new String[] { item.jobId});
+				HashSet<MaterialShipperZone> zoneBaseSet = new HashSet<MaterialShipperZone>();
+				
+				while(zoneListSet.next())
+				{
+					MaterialShipperZone zone = new MaterialShipperZone();
+					zone.setNumber(zoneListSet.getString(1));
+					zone.setQuantity(String.valueOf(0));
+					
+					zoneBaseSet.add(zone);
+				}
+				
 				while(drawingSet.next())
 				{
 					MaterialShipperDrawing drawing = new MaterialShipperDrawing();
@@ -70,6 +83,9 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 						ResultSet zoneSet = Connector.executeStoredProcedure(new MaterialShipperZone(),
 								new String[] { mark.getMarkId() });
 						
+						HashSet<MaterialShipperZone> cloneZone = (HashSet<MaterialShipperZone>) zoneBaseSet.clone();
+						
+						
 						while(zoneSet.next())
 						{
 							MaterialShipperZone zone = new MaterialShipperZone();
@@ -77,9 +93,11 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 							zone.setNumber(convertRaw(zoneSet.getString(1)));
 							zone.setQuantity(convertRaw(zoneSet.getString(2)));
 							
-							mark.getZoneList().add(zone);
-							
+							cloneZone.remove(zone);
+							cloneZone.add(zone);		
 						}
+						
+						mark.getZoneList().addAll(cloneZone);
 						
 						Collections.sort(mark.getZoneList());
 						
@@ -120,19 +138,25 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 						shippingGroupItem.setCompleted(convertRaw(markSet.getString(7)));
 						shippingGroupItem.setStatus(convertRaw(markSet.getString(8)));
 						
-						ResultSet zoneSet = Connector.executeStoredProcedure(new MaterialShipperZone(),
+						ResultSet zoneList = Connector.executeStoredProcedure(new MaterialShipperZone(),
 								new String[] { shippingGroupItem.getMarkId() });
 						
-						while(zoneSet.next())
+						HashSet<MaterialShipperZone> cloneZone = (HashSet<MaterialShipperZone>) zoneBaseSet.clone();
+						
+						
+						while(zoneList.next())
 						{
 							MaterialShipperZone zone = new MaterialShipperZone();
 						
-							zone.setNumber(convertRaw(zoneSet.getString(1)));
-							zone.setQuantity(convertRaw(zoneSet.getString(2)));
+							zone.setNumber(convertRaw(zoneList.getString(1)));
+							zone.setQuantity(convertRaw(zoneList.getString(2)));
 							
-							shippingGroupItem.getZoneList().add(zone);
+							cloneZone.remove(zone);
+							cloneZone.add(zone);
 							
 						}
+						
+						shippingGroupItem.getZoneList().addAll(cloneZone);
 						
 						Collections.sort(shippingGroupItem.getZoneList());
 						

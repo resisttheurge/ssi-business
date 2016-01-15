@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import com.cooksys.test.VariableGenerator;
 
 public class MaterialShipperMark implements VariableGenerator<MaterialShipperMark>{
@@ -62,7 +64,7 @@ public class MaterialShipperMark implements VariableGenerator<MaterialShipperMar
 		this.status = status;
 	}
 	public String getBalance() {
-		return String.valueOf(Integer.valueOf(requested) - Integer.valueOf(quantity));
+		return String.valueOf(NumberUtils.toInt(requested) - NumberUtils.toInt(quantity));
 	}
 	public ArrayList<MaterialShipperZone> getZoneList() {
 		return zoneList;

@@ -99,7 +99,15 @@ public class ReportUtil<T extends VariableGenerator> implements Reporting<T> {
 		try {
 			FileOutputStream fos = new FileOutputStream(f);
 			String htmlStr = HtmlGenerator.generate(template, getVarMap(varList));
+			
+			File fun = new File("generatedString.txt");
+			fun.delete();
+			fun.createNewFile();
+			
+			new FileOutputStream(fun).write(htmlStr.getBytes());
+			
 			PdfGenerator.generate(htmlStr, fos);
+			
 		} catch (Exception e) {
 			System.err.println("Reporting engine failed to generate report for " + reportName);
 			e.printStackTrace();
