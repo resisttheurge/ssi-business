@@ -8,11 +8,16 @@
 <title>PDF Generator</title>
 
 <style type="text/css">
-
-@page { size: A4 landscape;}
+@page {
+	size: A4 landscape; 
+	@bottom-right{
+	    font-size:80%;
+	    content: "Page " counter(page)  " of " counter(pages);
+    }
+}
 
 .head1 {
-	color: #496192;
+	color: #000;
 	font-size: x-large;
 }
 
@@ -21,7 +26,7 @@
 	font-size: large;
 }
 
-.head3 {
+.- {
 	color: #000;
 	font-size: medium
 }
@@ -37,46 +42,74 @@
 .toc a::after {
 	content: leader('.') target-counter(attr(href), page);
 }
+
+th {
+	font-size: 8px;
+	text-align: left;
+}
+
+table {
+	-fs-table-paginate: paginate;
+	page-break-inside: avoid;
+}
+
+p {
+	font-size: 10px;
+	text-align: left;
+	padding-left: 5px;
+}
 </style>
 
 </head>
 
 <body>
-	<p class="head1">Management Review</p>
-	
-	
-	<h2>${mgmt[0].prefix}-${mgmt[0].year}-${mgmt[0].label}</h2>
-	<table border="1" cellspacing="0" cellpadding="0" align="center" width="100%">
+	<div id="header">
+		<img src="resources/ssilogo.png" alt="Southern Systems, Inc."
+			style="height: 75px;" />
+		<p class="head1">Management Review</p>
+	</div>
+
+	<table border="1" cellspacing="0" cellpadding="0" align="center"
+		width="100%">
+			
 		<thead>
-			<tr style="background: #ffb380">
-				<th align="center" width="15%">Customer</th>
-				<th align="center" width="10%">City</th>
-				<th align="center" width="5%">State</th>
-				<th align="center" width="10%">Start Date</th>
-				<th align="center" width="10%">Due Date</th>
-				<th align="center" width="10%">Complete Date</th>
-				<th align="center" width="10%">Status</th>
-				<th align="center" width="30%">Description</th>
+			<tr style="background: #CCC0DA">
+				<th align="center" width="6%">Job</th>
+				<th align="center" width="13%">Customer</th>
+				<th align="center" width="8%">City</th>
+				<th align="center" width="3%">State</th>
+				<th align="center" width="6%">Start Date</th>
+				<th align="center" width="6%">Due Date</th>
+				<th align="center" width="6%">Complete Date</th>
+				<th align="center" width="6%">Status</th>
+				<th align="center" width="46%">Description</th>
 			</tr>
 		</thead>
-		<#list 1..mgmt?size as i><#if i%2==0>
-		<tr style="background: #ffcccc"><#else>
-		<tr style="background: #ffffcc">
-			</#if>
-			<td align="center" width="15%"><p align="center">${mgmt[i-1].customer}</p></td>
-			<td align="center" width="10%"><p align="center">${mgmt[i-1].city}</p></td>
-			<td align="center" width="5%"><p align="center">${mgmt[i-1].state}</p></td>
-			<td align="center" width="10%"><p align="center">${mgmt[i-1].startDate}</p></td>
-			<td align="center" width="10%"><p align="center">${mgmt[i-1].dueDate}</p></td>
-			<td align="center" width="10%"><p align="center">${mgmt[i-1].completeDate}</p></td>
-			<td align="center" width="30%"><p align="center">${mgmt[i-1].description}</p></td>
+
+		<#list 1..mgmt?size as i>
+<!-- 		<#if i%2==0> -->
+<!-- 		<tr style="background: #FABF8F"><#else> -->
+<!-- 		<tr style="background: #C4D79B"> -->
+<!-- 			</#if> -->
+		<tr>
+
+			<td align="center" width="6%"><p align="center">${mgmt[i-1].prefix}-${mgmt[i-1].year}-${mgmt[i-1].label}</p></td>
+			<td align="center" width="13%"><p align="center">${mgmt[i-1].customer}</p></td>
+			<td align="center" width="8%"><p align="center">${mgmt[i-1].city}</p></td>
+			<td align="center" width="3%"><p align="center">${mgmt[i-1].state}</p></td>
+			<td align="center" width="6%"><p align="center">${mgmt[i-1].startDate}</p></td>
+			<td align="center" width="6%"><p align="center">${mgmt[i-1].dueDate}</p></td>
+			<td align="center" width="6%"><p align="center">${mgmt[i-1].completeDate}</p></td>
+			<td align="center" width="6%"><p align="center">${mgmt[i-1].status}</p></td>
+			<td align="center" width="46W%"><p align="center">${mgmt[i-1].description}</p></td>
 		</tr>
 		</#list>
 	</table>
-	
-	<p align="center" style="font-size: large; font-weight: bold;">TOTAL ON TIME ORDERS : ${mgmt[0].onTimeOrders}</p>
-	<p align="center" style="font-size: large; font-weight: bold;">TOTAL LATE ORDERS : ${mgmt[0].lateOrders}</p>
-	<p align="center" style="font-size: large; font-weight: bold;">TOTAL NO STATUS ORDERS : ${mgmt[0].noStatusOrders}</p>
-
+	<p align="center" style="font-size: large; font-weight: bold;">TOTAL
+		ON TIME ORDERS : ${mgmt[0].onTimeOrders}</p>
+	<p align="center" style="font-size: large; font-weight: bold;">TOTAL
+		LATE ORDERS : ${mgmt[0].lateOrders}</p>
+	<p align="center" style="font-size: large; font-weight: bold;">TOTAL
+		NO STATUS ORDERS : ${mgmt[0].noStatusOrders}</p>
 </body>
 </html>

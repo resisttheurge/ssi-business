@@ -18,7 +18,7 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 	private String jobId;
 	private String jobName;
 	private String jobNumber;
-
+	private ResultSet zoneList;
 	private ArrayList<MaterialShipperDrawing> drawingList = new ArrayList<MaterialShipperDrawing>();
 	private ArrayList<MaterialShipperShippingGroup> shippingGroupList = new ArrayList<MaterialShipperShippingGroup>();
 
@@ -138,13 +138,12 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 						shippingGroupItem.setCompleted(convertRaw(markSet.getString(7)));
 						shippingGroupItem.setStatus(convertRaw(markSet.getString(8)));
 						
-						ResultSet zoneList = Connector.executeStoredProcedure(new MaterialShipperZone(),
-								new String[] { shippingGroupItem.getMarkId() });
+						ResultSet zoneList = getZoneList(shippingGroupItem);
 						
 						HashSet<MaterialShipperZone> cloneZone = (HashSet<MaterialShipperZone>) zoneBaseSet.clone();
 						
 						
-						while(zoneList.next())
+						if(zoneList.next())
 						{
 							MaterialShipperZone zone = new MaterialShipperZone();
 						
@@ -176,6 +175,18 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 		}
 
 		return result;
+	}
+
+
+	private ResultSet getZoneList(MaterialShipperShippingGroupItem shippingGroupItem) {
+		try {
+			if(zoneList == null || zoneList.isLast())
+				zoneList = Connector.executeStoredProcedure(new MaterialShipperZone(),
+					new String[] { shippingGroupItem.getMarkId() });
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return zoneList;
 	}
 
 

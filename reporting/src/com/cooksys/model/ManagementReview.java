@@ -74,7 +74,7 @@ public class ManagementReview implements VariableGenerator<ManagementReview>
 	{
 		if(completeDate == null)
 			noStatusOrders++;
-		else if(dueDate.getTime() > completeDate.getTime())
+		else if(dueDate.getTime() >= completeDate.getTime())
 			onTimeOrders++;
 		else
 			lateOrders++;	

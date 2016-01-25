@@ -9,7 +9,7 @@
 
 <style type="text/css">
 .head1 {
-	color: #496192;
+	color: #000;
 	font-size: x-large;
 }
 
@@ -39,22 +39,29 @@
 </head>
 
 <body>
-	<p class="head1">Specialty Items by Job</p>
+	<div id="header">
+		<img src="resources/ssilogo.png" alt="Southern Systems, Inc."
+			style="height: 75px;" />
+		<p class="head1">Specialty Items by Job</p>
+	</div>
+	<p class="head1"></p>
 	
 	
 	<h2>${job[0].prefix}-${job[0].year}-${job[0].label}</h2>
 	<table border="1" cellspacing="0" cellpadding="0" align="center" width="100%">
 		<thead>
-			<tr style="background: #6666ff">
+			<tr style="background: #CCC0DA">
 				<th align="center">Drawing</th>
 				<th align="center">Title</th>
 				<th align="center">Part Type</th>
 			</tr>
 		</thead>
-		<#list 1..job?size as i><#if i%2==0>
-		<tr style="background: #ccccff"><#else>
-		<tr style="background: #ffffff">
-			</#if>
+		<#list 1..job?size as i>
+<!-- 		<#if i%2==0> -->
+<!-- 		<tr style="background: #ccccff"><#else> -->
+<!-- 		<tr style="background: #ffffff"> -->
+<!-- 			</#if> -->
+		<tr>
 			<td width="33%" align="center"><p align="center">${job[i-1].drawing}</p></td>
 			<td width="33%" align="center"><p align="center">${job[i-1].title}</p></td>
 			<td width="33%" align="center"><p align="center">${job[i-1].specialtyItem}</p></td>

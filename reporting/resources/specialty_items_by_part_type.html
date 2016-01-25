@@ -9,7 +9,7 @@
 
 <style type="text/css">
 .head1 {
-	color: #496192;
+	color: #000;
 	font-size: x-large;
 }
 
@@ -39,23 +39,28 @@
 </head>
 
 <body>
-	<p class="head1">Specialty Items by Part Type</p>
-	
+	<div id="header">
+		<img src="resources/ssilogo.png" alt="Southern Systems, Inc."
+			style="height: 75px;" />
+		<p class="head1">Specialty Items by Part Type</p>
+	</div>	
 	
 	<h2>${part[0].prefix}-${part[0].year}-${part[0].label}</h2>
 	<table border="1" cellspacing="0" cellpadding="0" align="center" width="100%">
 		<thead>
-			<tr style="background: #ffcc00">
+			<tr style="background: #CCC0DA">
 				<th align="center">Job</th>
 				<th align="center">Customer</th>
 				<th align="center">Drawing</th>
 				<th align="center">Title</th>
 			</tr>
 		</thead>
-		<#list 1..part?size as i><#if i%2==0>
-		<tr style="background: #ffe680"><#else>
-		<tr style="background: #ffffff">
-			</#if>
+		<#list 1..part?size as i>
+<!-- 		<#if i%2==0> -->
+<!-- 		<tr style="background: #ffe680"><#else> -->
+<!-- 		<tr style="background: #ffffff"> -->
+<!-- 			</#if> -->
+		<tr>
 			<td width="25%" align="center"><p align="center">${part[i-1].partType}</p></td>
 			<td width="25%" align="center"><p align="center">${part[i-1].customer}</p></td>
 			<td width="25%" align="center"><p align="center">${part[i-1].drawing}</p></td>

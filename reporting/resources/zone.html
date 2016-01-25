@@ -9,7 +9,7 @@
 
 <style type="text/css">
 .head1 {
-	color: #496192;
+	color: #000;
 	font-size: x-large;
 }
 
@@ -34,26 +34,47 @@
 .toc a::after {
 	content: leader('.') target-counter(attr(href), page);
 }
+
+table {
+	-fs-table-paginate: paginate;
+	page-break-inside: avoid;
+}
+
+th{
+	font-size: 14px;
+	text-align: center;
+}
+
+p{
+	font-size: 14px;
+	text-align: left;
+	padding-left: 5px;
+}
 </style>
 
 </head>
 
 <body>
-	<p class="head1">Zone Report</p>
-	
+	<div id="header">
+		<img src="resources/ssilogo.png" alt="Southern Systems, Inc."
+			style="height: 75px;" />
+		<p class="head1">Zone Report</p>
+	</div>
 	
 	<h2>${zone[0].prefix}-${zone[0].year}-${zone[0].label}</h2>
 	<table border="1" cellspacing="0" cellpadding="0" align="center">
 		<thead>
-			<tr style="background: #64a2c1">
+			<tr style="background: #CCC0DA">
 				<th align="center">Number</th>
 				<th align="center">Field Date</th>
 			</tr>
 		</thead>
-		<#list 1..zone?size as i><#if i%2==0>
-		<tr style="background: #e4edd2"><#else>
-		<tr style="background: #d2fd75">
-			</#if>
+		<#list 1..zone?size as i>
+<!-- 		<#if i%2==0> -->
+<!-- 		<tr style="background: #e4edd2"><#else> -->
+<!-- 		<tr style="background: #d2fd75"> -->
+<!-- 			</#if> -->
+		<tr>
 			<td width="189" align="center"><p align="center">${zone[i-1].number}</p></td>
 			<td width="189" align="center"><p align="center">${zone[i-1].fieldDate}</p></td>
 		</tr>

@@ -4,10 +4,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import static com.cooksys.util.DataUtil.*;
 
 import com.cooksys.db.Connector;
 import com.cooksys.test.VariableGenerator;
+
+import freemarker.template.utility.StringUtil;
 
 public class ProductionSchedule implements VariableGenerator<ProductionSchedule>
 {
@@ -28,6 +32,8 @@ public class ProductionSchedule implements VariableGenerator<ProductionSchedule>
 	String instStart;
 	String instComp;
 	String description;
+	String city;
+	String state;
 	
 	static String weekEnding;
 	
@@ -52,7 +58,7 @@ public class ProductionSchedule implements VariableGenerator<ProductionSchedule>
 			{
 				ProductionSchedule prod = new ProductionSchedule();
 				
-				prod.setCustomer(convertRaw(rawData.getString(1)));
+				prod.setCustomer(StringUtils.substring(convertRaw(rawData.getString(1)), 0, 15));
 				prod.setPrefix(convertRaw(rawData.getString(2)));
 				prod.setYear(convertHeaderYear(rawData.getDate(3)));
 				prod.setLabel(convertRaw(rawData.getString(4)));
@@ -69,6 +75,8 @@ public class ProductionSchedule implements VariableGenerator<ProductionSchedule>
 				prod.setInstStart(convertRaw(rawData.getDate(15)));
 				prod.setInstComp(convertRaw(rawData.getDate(16)));
 				prod.setDescription(convertRaw(rawData.getString(17)));
+				prod.setCity(convertRaw(rawData.getString(18)));
+				prod.setState(convertRaw(rawData.getString(19)));
 				
 				result.add(prod);
 			}
@@ -259,6 +267,22 @@ public class ProductionSchedule implements VariableGenerator<ProductionSchedule>
 	public void setWeekEnding(String weekEnding)
 	{
 		ProductionSchedule.weekEnding = weekEnding;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 }

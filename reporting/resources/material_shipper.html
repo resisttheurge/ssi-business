@@ -9,10 +9,10 @@
 
 <style type="text/css">
 
-@page { size: A4 landscape;}
+@page { size: A3 landscape;}
 
 .head1 {
-	color: #496192;
+	color: #000;
 	font-size: x-large;
 }
 
@@ -37,13 +37,18 @@
 .toc a::after {
 	content: leader('.') target-counter(attr(href), page);
 }
+
 </style>
 
 </head>
 
 <body>
-	<p class="head1">Material Shipping Report</p>
-
+	<div id="header">
+		<img src="resources/ssilogo.png" alt="Southern Systems, Inc."
+			style="height: 75px;" />
+		<p class="head1">Material Shipping Report</p>
+	</div>
+	
 	<h1>${ms[0].jobName} -- ${ms[0].jobNumber}</h1>
 
 	<#list ms[0].drawingList as drawing>
@@ -108,16 +113,16 @@
 		<#list shipping.shippingGroupItemList as shippingGroupItem>
 		
 		<tr style="background: #F5F5F5">
-			<td align="center"><p align="center">${shippingGroupItem.mark}</p></td>
-			<td align="center"><p align="center">${shippingGroupItem.jobDesc}</p></td>
-			<td align="center"><p align="center">${shippingGroupItem.shop}</p></td>
-			<td align="center"><p align="center">${shippingGroupItem.requested}</p></td>
-			<td align="center"><p align="center">${shippingGroupItem.quantity}</p></td>
-			<td align="center"><p align="center">${shippingGroupItem.balance}</p></td>
-			<td align="center"><p align="center">${shippingGroupItem.completed}</p></td>
-			<td align="center"><p align="center">${shippingGroupItem.status}</p></td>
+			<td width="7%" align="center"><p align="center">${shippingGroupItem.mark}</p></td>
+			<td width="25%" align="center"><p align="center">${shippingGroupItem.jobDesc}</p></td>
+			<td width="4%" align="center"><p align="center">${shippingGroupItem.shop}</p></td>
+			<td width="4%" align="center"><p align="center">${shippingGroupItem.requested}</p></td>
+			<td width="4%" align="center"><p align="center">${shippingGroupItem.quantity}</p></td>
+			<td width="4%" align="center"><p align="center">${shippingGroupItem.balance}</p></td>
+			<td width="4%" align="center"><p align="center">${shippingGroupItem.completed}</p></td>
+			<td width="4%" align="center"><p align="center">${shippingGroupItem.status}</p></td>
 			<#list shippingGroupItem.zoneList as zone>
-				<td align="center"><p align="center">${zone.quantity}</p></td>
+				<td width="4%" align="center"><p align="center">${zone.quantity}</p></td>
 			</#list>
 		</tr>
 		</#list>
