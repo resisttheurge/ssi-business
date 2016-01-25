@@ -20,7 +20,7 @@ public class Tester {
 //		JOB_SHIPMENT.generate(file, "12942","16");//need bill of lading etc
 //		LAYOUT_DRAWING.generate(file, "12942");
 //		MANAGEMENT_REVIEW.generate(file, "2015-08-01", "2016-01-11");
-//		MATERIAL_SHIPPER.generate(file, "12942");
+//		MATERIAL_SHIPPER.generate(file, "35");
 //		PRODUCTION_SCHEDULE.generate(file, "11/29/2015");
 //		SHIP_VIA.generate(file, "12942");
 //		SHIPMENT.generate(file, "12942");

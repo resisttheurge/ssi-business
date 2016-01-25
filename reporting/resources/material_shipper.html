@@ -9,7 +9,7 @@
 
 <style type="text/css">
 
-@page { size: A3 landscape;}
+@page { size: A4 landscape;}
 
 .head1 {
 	color: #000;
@@ -38,6 +38,28 @@
 	content: leader('.') target-counter(attr(href), page);
 }
 
+
+
+table {
+	-fs-table-paginate: paginate;
+	page-break-inside: avoid;
+	border-spacing: 0;
+}
+
+
+th{
+	font-size: 13px;
+	text-align: center;
+	border: .5px solid black;
+}
+
+td{
+	font-size: 11px;
+	text-align: left;
+	padding-left: 5px;
+	border: .5px solid black;
+}
+
 </style>
 
 </head>
@@ -49,14 +71,14 @@
 		<p class="head1">Material Shipping Report</p>
 	</div>
 	
-	<h1>${ms[0].jobName} -- ${ms[0].jobNumber}</h1>
+	<h2>${ms[0].jobName} -- ${ms[0].jobNumber}</h2>
 
 	<#list ms[0].drawingList as drawing>
 	<h3 style="font-weight: bold;">${drawing.drawing} --
 		${drawing.revision} ${drawing.drawingDesc}      ${drawing.revisionDate}</h3>
 	<table>
 		<thead>
-			<tr style="background: #00a2e8">
+			<tr style="background: #CCC0DA">
 				<th align="center">MARK</th>
 				<th align="center">DESCRIPTION</th>
 				<th align="center">SHOP</th>
@@ -72,17 +94,17 @@
 		</thead>
 		<#list drawing.markList as mark>
 		
-		<tr style="background: #F5F5F5">
-			<td align="center"><p align="center">${mark.mark}</p></td>
-			<td align="center"><p align="center">${mark.jobDesc}</p></td>
-			<td align="center"><p align="center">${mark.shop}</p></td>
-			<td align="center"><p align="center">${mark.requested}</p></td>
-			<td align="center"><p align="center">${mark.quantity}</p></td>
-			<td align="center"><p align="center">${mark.balance}</p></td>
-			<td align="center"><p align="center">${mark.completed}</p></td>
-			<td align="center"><p align="center">${mark.status}</p></td>
+		<tr>
+			<td width="7%" align="left">${mark.mark}</td>
+			<td width="25%" align="left">${mark.jobDesc}</td>
+			<td width="4%" align="left">${mark.shop}</td>
+			<td width="4%" align="left">${mark.requested}</td>
+			<td width="4%" align="left">${mark.quantity}</td>
+			<td width="4%" align="left">${mark.balance}</td>
+			<td width="4%" align="left">${mark.completed}</td>
+			<td width="4%" align="left">${mark.status}</td>
 			<#list mark.zoneList as zone>
-				<td align="center"><p align="center">${zone.quantity}</p></td>
+				<td width="4%" align="left">${zone.quantity}</td>
 			</#list>
 		</tr>
 		</#list>
@@ -96,7 +118,7 @@
 		${shipping.revision} ${shipping.drawingDesc}      ${shipping.revisionDate}</h3>
 	<table>
 		<thead>
-			<tr style="background: #00a2e8">
+			<tr style="background: #CCC0DA">
 				<th align="center">MARK</th>
 				<th align="center">DESCRIPTION</th>
 				<th align="center">SHOP</th>
@@ -112,17 +134,17 @@
 		</thead>
 		<#list shipping.shippingGroupItemList as shippingGroupItem>
 		
-		<tr style="background: #F5F5F5">
-			<td width="7%" align="center"><p align="center">${shippingGroupItem.mark}</p></td>
-			<td width="25%" align="center"><p align="center">${shippingGroupItem.jobDesc}</p></td>
-			<td width="4%" align="center"><p align="center">${shippingGroupItem.shop}</p></td>
-			<td width="4%" align="center"><p align="center">${shippingGroupItem.requested}</p></td>
-			<td width="4%" align="center"><p align="center">${shippingGroupItem.quantity}</p></td>
-			<td width="4%" align="center"><p align="center">${shippingGroupItem.balance}</p></td>
-			<td width="4%" align="center"><p align="center">${shippingGroupItem.completed}</p></td>
-			<td width="4%" align="center"><p align="center">${shippingGroupItem.status}</p></td>
+		<tr>
+			<td width="7%" align="left">${shippingGroupItem.mark}</td>
+			<td width="25%" align="left">${shippingGroupItem.jobDesc}</td>
+			<td width="4%" align="left">${shippingGroupItem.shop}</td>
+			<td width="4%" align="left">${shippingGroupItem.requested}</td>
+			<td width="4%" align="left">${shippingGroupItem.quantity}</td>
+			<td width="4%" align="left">${shippingGroupItem.balance}</td>
+			<td width="4%" align="left">${shippingGroupItem.completed}</td>
+			<td width="4%" align="left">${shippingGroupItem.status}</td>
 			<#list shippingGroupItem.zoneList as zone>
-				<td width="4%" align="center"><p align="center">${zone.quantity}</p></td>
+				<td width="4%" align="left">${zone.quantity}</td>
 			</#list>
 		</tr>
 		</#list>
