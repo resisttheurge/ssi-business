@@ -1,0 +1,21 @@
+#Test haxml
+
+--cwd resources
+-cp ../src
+--each
+
+-main Main
+-js electron-main.js
+--next
+
+--cwd js
+-cp ../../src
+
+--each
+
+
+
+-main Core
+-lib react
+-lib msignal
+-js core.js
