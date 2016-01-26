@@ -8,8 +8,11 @@
 <title>PDF Generator</title>
 
 <style type="text/css">
+
+@page { size: A3 landscape;}
+
 .head1 {
-	color: #496192;
+	color: #000;
 	font-size: x-large;
 }
 
@@ -34,19 +37,98 @@
 .toc a::after {
 	content: leader('.') target-counter(attr(href), page);
 }
+
 </style>
 
 </head>
 
 <body>
-	<p class="head1">Material Shipping</p>
+	<div id="header">
+		<img src="resources/ssilogo.png" alt="Southern Systems, Inc."
+			style="height: 75px;" />
+		<p class="head1">Material Shipping Report</p>
+	</div>
 	
-	<h2>${ms[0].jobName} -- ${ms[0].jobNumber}</h2>
-	
+	<h1>${ms[0].jobName} -- ${ms[0].jobNumber}</h1>
+
 	<#list ms[0].drawingList as drawing>
-		<h3>${drawing.drawing} -- ${drawing.revision}</h3>
+	<h3 style="font-weight: bold;">${drawing.drawing} --
+		${drawing.revision} ${drawing.drawingDesc}      ${drawing.revisionDate}</h3>
+	<table>
+		<thead>
+			<tr style="background: #00a2e8">
+				<th align="center">MARK</th>
+				<th align="center">DESCRIPTION</th>
+				<th align="center">SHOP</th>
+				<th align="center">QTY REQD</th>
+				<th align="center">QTY SHPD</th>
+				<th align="center">BAL DUE</th>
+				<th align="center">QTY COMP</th>
+				<th align="center">STATUS</th> 
+				<#list drawing.markList[0].zoneList as zone>
+				<th align="center">ZONE ${zone.number}</th> 
+				</#list>
+			</tr>
+		</thead>
+		<#list drawing.markList as mark>
+		
+		<tr style="background: #F5F5F5">
+			<td align="center"><p align="center">${mark.mark}</p></td>
+			<td align="center"><p align="center">${mark.jobDesc}</p></td>
+			<td align="center"><p align="center">${mark.shop}</p></td>
+			<td align="center"><p align="center">${mark.requested}</p></td>
+			<td align="center"><p align="center">${mark.quantity}</p></td>
+			<td align="center"><p align="center">${mark.balance}</p></td>
+			<td align="center"><p align="center">${mark.completed}</p></td>
+			<td align="center"><p align="center">${mark.status}</p></td>
+			<#list mark.zoneList as zone>
+				<td align="center"><p align="center">${zone.quantity}</p></td>
+			</#list>
+		</tr>
+		</#list>
+		
+	</table>
 	</#list>
-	
-	
+
+
+	<#list ms[0].shippingGroupList as shipping>
+	<h3 style="font-weight: bold;">${shipping.drawing} --
+		${shipping.revision} ${shipping.drawingDesc}      ${shipping.revisionDate}</h3>
+	<table>
+		<thead>
+			<tr style="background: #00a2e8">
+				<th align="center">MARK</th>
+				<th align="center">DESCRIPTION</th>
+				<th align="center">SHOP</th>
+				<th align="center">QTY REQD</th>
+				<th align="center">QTY SHPD</th>
+				<th align="center">BAL DUE</th>
+				<th align="center">QTY COMP</th>
+				<th align="center">STATUS</th> 
+				<#list shipping.shippingGroupItemList[0].zoneList as zone>
+				<th align="center">ZONE ${zone.number}</th> 
+				</#list>
+			</tr>
+		</thead>
+		<#list shipping.shippingGroupItemList as shippingGroupItem>
+		
+		<tr style="background: #F5F5F5">
+			<td width="7%" align="center"><p align="center">${shippingGroupItem.mark}</p></td>
+			<td width="25%" align="center"><p align="center">${shippingGroupItem.jobDesc}</p></td>
+			<td width="4%" align="center"><p align="center">${shippingGroupItem.shop}</p></td>
+			<td width="4%" align="center"><p align="center">${shippingGroupItem.requested}</p></td>
+			<td width="4%" align="center"><p align="center">${shippingGroupItem.quantity}</p></td>
+			<td width="4%" align="center"><p align="center">${shippingGroupItem.balance}</p></td>
+			<td width="4%" align="center"><p align="center">${shippingGroupItem.completed}</p></td>
+			<td width="4%" align="center"><p align="center">${shippingGroupItem.status}</p></td>
+			<#list shippingGroupItem.zoneList as zone>
+				<td width="4%" align="center"><p align="center">${zone.quantity}</p></td>
+			</#list>
+		</tr>
+		</#list>
+		
+	</table>
+	</#list>
+
 </body>
 </html>
