@@ -4,7 +4,7 @@ lazy val `ssi-business` =
     .settings(Revolver.settings: _ *)
     .settings(
       name := "ssi-business",
-      libraryDependencies ++= deps.all,
+      libraryDependencies ++= deps.main,
       unmanagedSourceDirectories in Compile += baseDirectory.value / "generated",
       slick <<= slickCodeGenTask
     )
@@ -15,7 +15,7 @@ lazy val codegen =
     .settings(shared: _ *)
     .settings(
       name := "codegen",
-      libraryDependencies ++= deps.db
+      libraryDependencies ++= deps.codegen
     )
     .dependsOn(config)
 
@@ -33,9 +33,7 @@ lazy val config =
     .settings(shared: _ *)
     .settings(
       name := "config",
-      libraryDependencies ++= deps.conf,
-      resourceDirectory in Compile := baseDirectory.value,
-      resourceDirectory in Test := baseDirectory.value / "test"
+      libraryDependencies ++= deps.config
     )
 
 lazy val shared = Seq(
@@ -52,57 +50,47 @@ lazy val shared = Seq(
 
 lazy val deps = new {
 
-  lazy val reporting =  db ++ conf ++ logging ++ freemarker ++ itext ++ guava ++ commons
+  lazy val main = akka ++ spray
 
-  lazy val all = server ++ db ++ logging ++ conf
+  lazy val codegen = slick ++ mysql
 
-  lazy val server = Seq(
+  lazy val reporting = Seq(
+    "junit" % "junit" % "3.8.1" % "test",
+    "org.xhtmlrenderer" % "flying-saucer-pdf" % "9.0.4",
+    "org.freemarker" % "freemarker" % "2.3.18",
+    "com.lowagie" % "itext" % "2.1.7",
+    "com.google.guava" % "guava" % "19.0",
+    "org.apache.commons" % "commons-lang3" % "3.4"
+  )
+
+  lazy val config = Seq(
+    "com.typesafe" % "config" % "1.3.+"
+  )
+
+  lazy val akka = Seq(
     "com.typesafe.akka" %% "akka-actor" % "2.3.+",
-    "com.typesafe.akka" %% "akka-slf4j" % "2.3.+",
+    "com.typesafe.akka" %% "akka-slf4j" % "2.3.+"
+  )
 
+  lazy val spray = Seq(
     "io.spray" %% "spray-can" % "1.3.+",
     "io.spray" %% "spray-routing" % "1.3.+",
     "io.spray" %% "spray-json" % "1.3.+"
   )
 
-  lazy val db = Seq(
+  lazy val slick = Seq(
     "com.typesafe.slick" %% "slick-codegen" % "3.1.+",
     "com.typesafe.slick" %% "slick-hikaricp" % "3.1.+",
-    "com.typesafe.slick" %% "slick" % "3.1.+",
+    "com.typesafe.slick" %% "slick" % "3.1.+"
+  )
+
+  lazy val mysql = Seq(
     "mysql" % "mysql-connector-java" % "5.1.+"
   )
 
   lazy val logging = Seq(
     "org.slf4j" % "slf4j-api" % "1.7.+",
     "ch.qos.logback" % "logback-classic" % "1.1.+"
-  )
-
-  lazy val conf = Seq(
-    "com.typesafe" % "config" % "1.3.+"
-  )
-
-  lazy val test = Seq(
-    "junit" % "junit" % "3.8.1" % "test"
-  )
-
-  lazy val xhtmlRenderer = Seq(
-    "org.xhtmlrenderer" % "flying-saucer-pdf" % "9.0.4"
-  )
-
-  lazy val freemarker = Seq(
-    "org.freemarker" % "freemarker" % "2.3.18"
-  )
-
-  lazy val itext = Seq(
-    "com.lowagie" % "itext" % "2.1.7"
-  )
-
-  lazy val guava = Seq(
-    "com.google.guava" % "guava" % "19.0"
-  )
-
-  lazy val commons = Seq(
-    "org.apache.commons" % "commons-lang3" % "3.4"
   )
 }
 
