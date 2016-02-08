@@ -8,7 +8,7 @@ lazy val `ssi-business` =
       unmanagedSourceDirectories in Compile += baseDirectory.value / "generated",
       slick <<= slickCodeGenTask
     )
-    .dependsOn(codegen)
+    .dependsOn(codegen, reporting)
 
 lazy val codegen =
   (project in file("codegen"))
@@ -17,7 +17,7 @@ lazy val codegen =
       name := "codegen",
       libraryDependencies ++= deps.codegen
     )
-    .dependsOn(config, reporting)
+    .dependsOn(config)
 
 lazy val reporting =
   (project in file("reporting"))
@@ -50,9 +50,9 @@ lazy val shared = Seq(
 
 lazy val deps = new {
 
-  lazy val main = akka ++ spray
+  lazy val main = akka ++ spray ++ config ++ logging
 
-  lazy val codegen = slick ++ mysql
+  lazy val codegen = slick ++ mysql ++ logging
 
   lazy val reporting = logging ++ Seq(
     "junit" % "junit" % "3.8.1" % "test",

@@ -14,7 +14,7 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(Addenda.schema, Addresses.schema, Addressjobtemp.schema, Carriers.schema, Contactjobtemp.schema, Contacts.schema, Customers.schema, Drawings.schema, Dwgshipreqlinktemp.schema, Idslinktemp.schema, JobAddresses.schema, Jobs.schema, Manufacturers.schema, Marks.schema, PartOrders.schema, Parts.schema, Salespeople.schema, Schedules.schema, ShipmentItems.schema, Shipments.schema, ShippingGroupItems.schema, ShippingGroups.schema, ShippingItems.schema, ShippingItemZones.schema, ShippingRequests.schema, Shops.schema, SpecialtyItems.schema, UserRoles.schema, Users.schema, UserTokens.schema, Validshippertemp.schema, Validtagtemp.schema, Vendors.schema, Zones.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(Addenda.schema, Addresses.schema, Addressjobtemp.schema, Carriers.schema, Contactjobtemp.schema, Contacts.schema, Customers.schema, Drawings.schema, Dwgshipreqlinktemp.schema, Idslinktemp.schema, JobAddresses.schema, Jobs.schema, JobSystemTypes.schema, Manufacturers.schema, Marks.schema, PartOrders.schema, Parts.schema, Salespeople.schema, Schedules.schema, ShipmentItems.schema, Shipments.schema, ShippingGroupItems.schema, ShippingGroups.schema, ShippingItems.schema, ShippingItemZones.schema, ShippingRequests.schema, Shops.schema, SpecialtyItems.schema, SystemTypes.schema, UserRoles.schema, Users.schema, UserTokens.schema, Validshippertemp.schema, Validtagtemp.schema, Vendors.schema, Zones.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -373,7 +373,7 @@ trait Tables {
    *  @param prefix Database column prefix SqlType(ENUM), Length(2,false)
    *  @param year Database column year SqlType(YEAR)
    *  @param label Database column label SqlType(VARCHAR), Length(20,true)
-   *  @param status Database column status SqlType(ENUM), Length(9,false), Default(DRAFT)
+   *  @param status Database column status SqlType(ENUM), Length(9,false), Default(INACTIVE)
    *  @param description Database column description SqlType(TEXT), Default(None)
    *  @param contractPrice Database column contract_price SqlType(DECIMAL), Default(None)
    *  @param startDate Database column start_date SqlType(DATE), Default(None)
@@ -381,18 +381,19 @@ trait Tables {
    *  @param shopId Database column shop_id SqlType(INT UNSIGNED), Default(None)
    *  @param salespersonId Database column salesperson_id SqlType(INT UNSIGNED), Default(None)
    *  @param customerId Database column customer_id SqlType(INT UNSIGNED), Default(None)
-   *  @param contactId Database column contact_id SqlType(INT UNSIGNED), Default(None) */
-  case class JobsRow(id: Int, prefix: String, year: java.sql.Date, label: String, status: String = "DRAFT", description: Option[String] = None, contractPrice: Option[scala.math.BigDecimal] = None, startDate: Option[java.sql.Date] = None, dueDate: Option[java.sql.Date] = None, shopId: Option[Int] = None, salespersonId: Option[Int] = None, customerId: Option[Int] = None, contactId: Option[Int] = None)
+   *  @param contactId Database column contact_id SqlType(INT UNSIGNED), Default(None)
+   *  @param completeDate Database column complete_date SqlType(DATE), Default(None) */
+  case class JobsRow(id: Int, prefix: String, year: java.sql.Date, label: String, status: String = "INACTIVE", description: Option[String] = None, contractPrice: Option[scala.math.BigDecimal] = None, startDate: Option[java.sql.Date] = None, dueDate: Option[java.sql.Date] = None, shopId: Option[Int] = None, salespersonId: Option[Int] = None, customerId: Option[Int] = None, contactId: Option[Int] = None, completeDate: Option[java.sql.Date] = None)
   /** GetResult implicit for fetching JobsRow objects using plain SQL queries */
   implicit def GetResultJobsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[java.sql.Date], e3: GR[Option[String]], e4: GR[Option[scala.math.BigDecimal]], e5: GR[Option[java.sql.Date]], e6: GR[Option[Int]]): GR[JobsRow] = GR{
     prs => import prs._
-    JobsRow.tupled((<<[Int], <<[String], <<[java.sql.Date], <<[String], <<[String], <<?[String], <<?[scala.math.BigDecimal], <<?[java.sql.Date], <<?[java.sql.Date], <<?[Int], <<?[Int], <<?[Int], <<?[Int]))
+    JobsRow.tupled((<<[Int], <<[String], <<[java.sql.Date], <<[String], <<[String], <<?[String], <<?[scala.math.BigDecimal], <<?[java.sql.Date], <<?[java.sql.Date], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[java.sql.Date]))
   }
   /** Table description of table jobs. Objects of this class serve as prototypes for rows in queries. */
   class Jobs(_tableTag: Tag) extends Table[JobsRow](_tableTag, "jobs") {
-    def * = (id, prefix, year, label, status, description, contractPrice, startDate, dueDate, shopId, salespersonId, customerId, contactId) <> (JobsRow.tupled, JobsRow.unapply)
+    def * = (id, prefix, year, label, status, description, contractPrice, startDate, dueDate, shopId, salespersonId, customerId, contactId, completeDate) <> (JobsRow.tupled, JobsRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(prefix), Rep.Some(year), Rep.Some(label), Rep.Some(status), description, contractPrice, startDate, dueDate, shopId, salespersonId, customerId, contactId).shaped.<>({r=>import r._; _1.map(_=> JobsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6, _7, _8, _9, _10, _11, _12, _13)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), Rep.Some(prefix), Rep.Some(year), Rep.Some(label), Rep.Some(status), description, contractPrice, startDate, dueDate, shopId, salespersonId, customerId, contactId, completeDate).shaped.<>({r=>import r._; _1.map(_=> JobsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6, _7, _8, _9, _10, _11, _12, _13, _14)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
@@ -402,8 +403,8 @@ trait Tables {
     val year: Rep[java.sql.Date] = column[java.sql.Date]("year")
     /** Database column label SqlType(VARCHAR), Length(20,true) */
     val label: Rep[String] = column[String]("label", O.Length(20,varying=true))
-    /** Database column status SqlType(ENUM), Length(9,false), Default(DRAFT) */
-    val status: Rep[String] = column[String]("status", O.Length(9,varying=false), O.Default("DRAFT"))
+    /** Database column status SqlType(ENUM), Length(9,false), Default(INACTIVE) */
+    val status: Rep[String] = column[String]("status", O.Length(9,varying=false), O.Default("INACTIVE"))
     /** Database column description SqlType(TEXT), Default(None) */
     val description: Rep[Option[String]] = column[Option[String]]("description", O.Default(None))
     /** Database column contract_price SqlType(DECIMAL), Default(None) */
@@ -420,6 +421,8 @@ trait Tables {
     val customerId: Rep[Option[Int]] = column[Option[Int]]("customer_id", O.Default(None))
     /** Database column contact_id SqlType(INT UNSIGNED), Default(None) */
     val contactId: Rep[Option[Int]] = column[Option[Int]]("contact_id", O.Default(None))
+    /** Database column complete_date SqlType(DATE), Default(None) */
+    val completeDate: Rep[Option[java.sql.Date]] = column[Option[java.sql.Date]]("complete_date", O.Default(None))
 
     /** Foreign key referencing Contacts (database name jobs__contacts__fk) */
     lazy val contactsFk = foreignKey("jobs__contacts__fk", contactId, Contacts)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
@@ -432,6 +435,40 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table Jobs */
   lazy val Jobs = new TableQuery(tag => new Jobs(tag))
+
+  /** Entity class storing rows of table JobSystemTypes
+   *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
+   *  @param jobId Database column job_id SqlType(INT UNSIGNED)
+   *  @param systemTypeId Database column system_type_id SqlType(INT UNSIGNED) */
+  case class JobSystemTypesRow(id: Int, jobId: Int, systemTypeId: Int)
+  /** GetResult implicit for fetching JobSystemTypesRow objects using plain SQL queries */
+  implicit def GetResultJobSystemTypesRow(implicit e0: GR[Int]): GR[JobSystemTypesRow] = GR{
+    prs => import prs._
+    JobSystemTypesRow.tupled((<<[Int], <<[Int], <<[Int]))
+  }
+  /** Table description of table job_system_types. Objects of this class serve as prototypes for rows in queries. */
+  class JobSystemTypes(_tableTag: Tag) extends Table[JobSystemTypesRow](_tableTag, "job_system_types") {
+    def * = (id, jobId, systemTypeId) <> (JobSystemTypesRow.tupled, JobSystemTypesRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(id), Rep.Some(jobId), Rep.Some(systemTypeId)).shaped.<>({r=>import r._; _1.map(_=> JobSystemTypesRow.tupled((_1.get, _2.get, _3.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
+    /** Database column job_id SqlType(INT UNSIGNED) */
+    val jobId: Rep[Int] = column[Int]("job_id")
+    /** Database column system_type_id SqlType(INT UNSIGNED) */
+    val systemTypeId: Rep[Int] = column[Int]("system_type_id")
+
+    /** Foreign key referencing Jobs (database name job_system_types__jobs__fk) */
+    lazy val jobsFk = foreignKey("job_system_types__jobs__fk", jobId, Jobs)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing SystemTypes (database name job_system_types__system_types__fk) */
+    lazy val systemTypesFk = foreignKey("job_system_types__system_types__fk", systemTypeId, SystemTypes)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+
+    /** Uniqueness Index over (jobId,systemTypeId) (database name UNIQUE_JOB_SYSTEM_TYPE) */
+    val index1 = index("UNIQUE_JOB_SYSTEM_TYPE", (jobId, systemTypeId), unique=true)
+  }
+  /** Collection-like TableQuery object for table JobSystemTypes */
+  lazy val JobSystemTypes = new TableQuery(tag => new JobSystemTypes(tag))
 
   /** Entity class storing rows of table Manufacturers
    *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
@@ -463,19 +500,18 @@ trait Tables {
    *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
    *  @param drawingId Database column drawing_id SqlType(INT UNSIGNED)
    *  @param label Database column label SqlType(VARCHAR), Length(100,true)
-   *  @param tagType Database column tag_type SqlType(ENUM), Length(2,false), Default(None)
    *  @param shippingItemId Database column shipping_item_id SqlType(INT UNSIGNED), Default(None) */
-  case class MarksRow(id: Int, drawingId: Int, label: String, tagType: Option[String] = None, shippingItemId: Option[Int] = None)
+  case class MarksRow(id: Int, drawingId: Int, label: String, shippingItemId: Option[Int] = None)
   /** GetResult implicit for fetching MarksRow objects using plain SQL queries */
-  implicit def GetResultMarksRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[String]], e3: GR[Option[Int]]): GR[MarksRow] = GR{
+  implicit def GetResultMarksRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]]): GR[MarksRow] = GR{
     prs => import prs._
-    MarksRow.tupled((<<[Int], <<[Int], <<[String], <<?[String], <<?[Int]))
+    MarksRow.tupled((<<[Int], <<[Int], <<[String], <<?[Int]))
   }
   /** Table description of table marks. Objects of this class serve as prototypes for rows in queries. */
   class Marks(_tableTag: Tag) extends Table[MarksRow](_tableTag, "marks") {
-    def * = (id, drawingId, label, tagType, shippingItemId) <> (MarksRow.tupled, MarksRow.unapply)
+    def * = (id, drawingId, label, shippingItemId) <> (MarksRow.tupled, MarksRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(drawingId), Rep.Some(label), tagType, shippingItemId).shaped.<>({r=>import r._; _1.map(_=> MarksRow.tupled((_1.get, _2.get, _3.get, _4, _5)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), Rep.Some(drawingId), Rep.Some(label), shippingItemId).shaped.<>({r=>import r._; _1.map(_=> MarksRow.tupled((_1.get, _2.get, _3.get, _4)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
@@ -483,8 +519,6 @@ trait Tables {
     val drawingId: Rep[Int] = column[Int]("drawing_id")
     /** Database column label SqlType(VARCHAR), Length(100,true) */
     val label: Rep[String] = column[String]("label", O.Length(100,varying=true))
-    /** Database column tag_type SqlType(ENUM), Length(2,false), Default(None) */
-    val tagType: Rep[Option[String]] = column[Option[String]]("tag_type", O.Length(2,varying=false), O.Default(None))
     /** Database column shipping_item_id SqlType(INT UNSIGNED), Default(None) */
     val shippingItemId: Rep[Option[Int]] = column[Option[Int]]("shipping_item_id", O.Default(None))
 
@@ -769,19 +803,18 @@ trait Tables {
    *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
    *  @param shippingGroupId Database column shipping_group_id SqlType(INT UNSIGNED)
    *  @param shippingItemId Database column shipping_item_id SqlType(INT UNSIGNED)
-   *  @param label Database column label SqlType(VARCHAR), Length(100,true)
-   *  @param tagType Database column tag_type SqlType(ENUM), Length(2,false), Default(None) */
-  case class ShippingGroupItemsRow(id: Int, shippingGroupId: Int, shippingItemId: Int, label: String, tagType: Option[String] = None)
+   *  @param label Database column label SqlType(VARCHAR), Length(100,true) */
+  case class ShippingGroupItemsRow(id: Int, shippingGroupId: Int, shippingItemId: Int, label: String)
   /** GetResult implicit for fetching ShippingGroupItemsRow objects using plain SQL queries */
-  implicit def GetResultShippingGroupItemsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[String]]): GR[ShippingGroupItemsRow] = GR{
+  implicit def GetResultShippingGroupItemsRow(implicit e0: GR[Int], e1: GR[String]): GR[ShippingGroupItemsRow] = GR{
     prs => import prs._
-    ShippingGroupItemsRow.tupled((<<[Int], <<[Int], <<[Int], <<[String], <<?[String]))
+    ShippingGroupItemsRow.tupled((<<[Int], <<[Int], <<[Int], <<[String]))
   }
   /** Table description of table shipping_group_items. Objects of this class serve as prototypes for rows in queries. */
   class ShippingGroupItems(_tableTag: Tag) extends Table[ShippingGroupItemsRow](_tableTag, "shipping_group_items") {
-    def * = (id, shippingGroupId, shippingItemId, label, tagType) <> (ShippingGroupItemsRow.tupled, ShippingGroupItemsRow.unapply)
+    def * = (id, shippingGroupId, shippingItemId, label) <> (ShippingGroupItemsRow.tupled, ShippingGroupItemsRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(shippingGroupId), Rep.Some(shippingItemId), Rep.Some(label), tagType).shaped.<>({r=>import r._; _1.map(_=> ShippingGroupItemsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), Rep.Some(shippingGroupId), Rep.Some(shippingItemId), Rep.Some(label)).shaped.<>({r=>import r._; _1.map(_=> ShippingGroupItemsRow.tupled((_1.get, _2.get, _3.get, _4.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
@@ -791,8 +824,6 @@ trait Tables {
     val shippingItemId: Rep[Int] = column[Int]("shipping_item_id")
     /** Database column label SqlType(VARCHAR), Length(100,true) */
     val label: Rep[String] = column[String]("label", O.Length(100,varying=true))
-    /** Database column tag_type SqlType(ENUM), Length(2,false), Default(None) */
-    val tagType: Rep[Option[String]] = column[Option[String]]("tag_type", O.Length(2,varying=false), O.Default(None))
 
     /** Foreign key referencing ShippingGroups (database name shipping_group_items__shipping_groups__fk) */
     lazy val shippingGroupsFk = foreignKey("shipping_group_items__shipping_groups__fk", shippingGroupId, ShippingGroups)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
@@ -1053,6 +1084,32 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table SpecialtyItems */
   lazy val SpecialtyItems = new TableQuery(tag => new SpecialtyItems(tag))
+
+  /** Entity class storing rows of table SystemTypes
+   *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
+   *  @param label Database column label SqlType(VARCHAR), Length(100,true) */
+  case class SystemTypesRow(id: Int, label: String)
+  /** GetResult implicit for fetching SystemTypesRow objects using plain SQL queries */
+  implicit def GetResultSystemTypesRow(implicit e0: GR[Int], e1: GR[String]): GR[SystemTypesRow] = GR{
+    prs => import prs._
+    SystemTypesRow.tupled((<<[Int], <<[String]))
+  }
+  /** Table description of table system_types. Objects of this class serve as prototypes for rows in queries. */
+  class SystemTypes(_tableTag: Tag) extends Table[SystemTypesRow](_tableTag, "system_types") {
+    def * = (id, label) <> (SystemTypesRow.tupled, SystemTypesRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(id), Rep.Some(label)).shaped.<>({r=>import r._; _1.map(_=> SystemTypesRow.tupled((_1.get, _2.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
+    /** Database column label SqlType(VARCHAR), Length(100,true) */
+    val label: Rep[String] = column[String]("label", O.Length(100,varying=true))
+
+    /** Uniqueness Index over (label) (database name label_UNIQUE) */
+    val index1 = index("label_UNIQUE", label, unique=true)
+  }
+  /** Collection-like TableQuery object for table SystemTypes */
+  lazy val SystemTypes = new TableQuery(tag => new SystemTypes(tag))
 
   /** Entity class storing rows of table UserRoles
    *  @param userId Database column user_id SqlType(INT UNSIGNED)

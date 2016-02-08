@@ -5,14 +5,7 @@ import slick.driver.MySQLDriver.api._
 
 trait DatabaseActor extends BaseActor {
 
-  implicit var db: Database = null
-
-  @throws[Exception](classOf[Exception])
-  override def preStart(): Unit = {
-    log.debug("starting database actor")
-    close()
-    db = Database.forConfig(properties.database.default(), this.config)
-  }
+  implicit val db = Database.forConfig(properties.database.default(), this.config)
 
   @throws[Exception](classOf[Exception])
   override def postStop(): Unit = {
@@ -21,11 +14,8 @@ trait DatabaseActor extends BaseActor {
   }
 
   private def close(): Unit = {
-    if(db != null) {
-      log.debug("closing existing database")
-      db.close()
-      db = null
-    }
+    log.debug("closing existing database")
+    db.close()
   }
 
 }

@@ -19,15 +19,17 @@ class ManufacturerRoute(implicit val db: Database, ec: ExecutionContext) extends
             create(manufacturer)
           }
         }
-      } ~ path(IntNumber) { id: Int =>
-        get {
-          single(id)
-        } ~ patch {
-          entity(as[Manufacturer.Update]) { manufacturer =>
-            update(id, manufacturer)
+      } ~ pathPrefix(IntNumber) { id: Int =>
+        pathEndOrSingleSlash {
+          get {
+            single(id)
+          } ~ patch {
+            entity(as[Manufacturer.Update]) { manufacturer =>
+              update(id, manufacturer)
+            }
+          } ~ delete {
+            destroy(id)
           }
-        } ~ delete {
-          destroy(id)
         }
       }
     }
@@ -46,6 +48,8 @@ class ManufacturerRoute(implicit val db: Database, ec: ExecutionContext) extends
         yield Manufacturer.Result(
           option.isDefined,
           option.map(m => m: Manufacturer),
+          None,
+          None,
           if (option.isDefined) None
           else Some(s"Manufacturer with id=$id does not exist")
         )
@@ -54,12 +58,14 @@ class ManufacturerRoute(implicit val db: Database, ec: ExecutionContext) extends
   def create(manufacturer: Manufacturer.Create): Future[Manufacturer.Result] =
     db.run(
       for {
-        id <- (Manufacturers returning Manufacturers.map(_.id)) += Manufacturer(None, manufacturer.label)
+        id <- (Manufacturers returning Manufacturers.map(_.id)) += manufacturer
         option <- Manufacturers.filter(_.id === id).result.headOption
       }
         yield Manufacturer.Result(
           option.isDefined,
           option.map(m => m: Manufacturer),
+          None,
+          None,
           if (option.isDefined) None
           else Some(s"Manufacturer could not be created")
         )
@@ -68,11 +74,14 @@ class ManufacturerRoute(implicit val db: Database, ec: ExecutionContext) extends
   def update(id: Int, manufacturer: Manufacturer.Update): Future[Manufacturer.Result] =
     db.run(
       for {
+        before <- Manufacturers.filter(_.id === id).result.headOption
         rows <- Manufacturers.filter(_.id === id).map(_.label).update(manufacturer.label)
         after <- Manufacturers.filter(_.id === id).result.headOption
       }
         yield Manufacturer.Result(
           rows != 0,
+          None,
+          before.map(m => m: Manufacturer),
           after.map(m => m: Manufacturer),
           if(rows != 0) None else Some(s"Manufacturer with id=$id does not exist")
         )
@@ -87,6 +96,8 @@ class ManufacturerRoute(implicit val db: Database, ec: ExecutionContext) extends
         yield Manufacturer.Result(
           rows != 0,
           before.map(m => m: Manufacturer),
+          None,
+          None,
           if(rows != 0) None else Some(s"Manufacturer with id=$id does not exist")
         )
     )

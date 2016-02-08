@@ -19,15 +19,17 @@ class CarrierRoute(implicit val db: Database, ec: ExecutionContext) extends Base
             create(carrier)
           }
         }
-      } ~ path(IntNumber) { id: Int =>
-        get {
-          single(id)
-        } ~ patch {
-          entity(as[Carrier.Update]) { carrier =>
-            update(id, carrier)
+      } ~ pathPrefix(IntNumber) { id: Int =>
+        pathEndOrSingleSlash {
+          get {
+            single(id)
+          } ~ patch {
+            entity(as[Carrier.Update]) { carrier =>
+              update(id, carrier)
+            }
+          } ~ delete {
+            destroy(id)
           }
-        } ~ delete {
-          destroy(id)
         }
       }
     }
@@ -46,33 +48,38 @@ class CarrierRoute(implicit val db: Database, ec: ExecutionContext) extends Base
         yield Carrier.Result(
           option.isDefined,
           option.map(c => c: Carrier),
-          if (option.isDefined) None
-          else Some(s"Carrier with id=$id does not exist")
+          None,
+          None,
+          if (option.isDefined) None else Some(s"Carrier with id=$id does not exist")
         )
     )
 
   def create(carrier: Carrier.Create): Future[Carrier.Result] =
     db.run(
       for {
-        id <- (Carriers returning Carriers.map(_.id)) += Carrier(None, carrier.label)
+        id <- (Carriers returning Carriers.map(_.id)) += carrier
         option <- Carriers.filter(_.id === id).result.headOption
       }
         yield Carrier.Result(
           option.isDefined,
           option.map(c => c: Carrier),
-          if (option.isDefined) None
-          else Some(s"Carrier could not be created")
+          None,
+          None,
+          if (option.isDefined) None else Some(s"Carrier could not be created")
         )
     )
 
   def update(id: Int, carrier: Carrier.Update): Future[Carrier.Result] =
     db.run(
       for {
+        before <- Carriers.filter(_.id === id).result.headOption
         rows <- Carriers.filter(_.id === id).map(_.label).update(carrier.label)
         after <- Carriers.filter(_.id === id).result.headOption
       }
         yield Carrier.Result(
           rows != 0,
+          None,
+          before.map(c => c: Carrier),
           after.map(c => c: Carrier),
           if(rows != 0) None else Some(s"Carrier with id=$id does not exist")
         )
@@ -87,6 +94,8 @@ class CarrierRoute(implicit val db: Database, ec: ExecutionContext) extends Base
         yield Carrier.Result(
           rows != 0,
           before.map(c => c: Carrier),
+          None,
+          None,
           if(rows != 0) None else Some(s"Carrier with id=$id does not exist")
         )
     )

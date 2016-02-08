@@ -19,15 +19,17 @@ class ShopRoute(implicit val db: Database, ec: ExecutionContext) extends BaseRou
             create(shop)
           }
         }
-      } ~ path(IntNumber) { id: Int =>
-        get {
-          single(id)
-        } ~ patch {
-          entity(as[Shop.Update]) { shop =>
-            update(id, shop)
+      } ~ pathPrefix(IntNumber) { id: Int =>
+        pathEndOrSingleSlash {
+          get {
+            single(id)
+          } ~ patch {
+            entity(as[Shop.Update]) { shop =>
+              update(id, shop)
+            }
+          } ~ delete {
+            destroy(id)
           }
-        } ~ delete {
-          destroy(id)
         }
       }
     }
@@ -46,6 +48,8 @@ class ShopRoute(implicit val db: Database, ec: ExecutionContext) extends BaseRou
         yield Shop.Result(
           option.isDefined,
           option.map(s => s: Shop),
+          None,
+          None,
           if (option.isDefined) None
           else Some(s"Shop with id=$id does not exist")
         )
@@ -54,12 +58,14 @@ class ShopRoute(implicit val db: Database, ec: ExecutionContext) extends BaseRou
   def create(shop: Shop.Create): Future[Shop.Result] =
     db.run(
       for {
-        id <- (Shops returning Shops.map(_.id)) += Shop(None, shop.label)
+        id <- (Shops returning Shops.map(_.id)) += shop
         option <- Shops.filter(_.id === id).result.headOption
       }
         yield Shop.Result(
           option.isDefined,
           option.map(s => s: Shop),
+          None,
+          None,
           if (option.isDefined) None
           else Some(s"Shop could not be created")
         )
@@ -68,11 +74,14 @@ class ShopRoute(implicit val db: Database, ec: ExecutionContext) extends BaseRou
   def update(id: Int, shop: Shop.Update): Future[Shop.Result] =
     db.run(
       for {
+        before <- Shops.filter(_.id === id).result.headOption
         rows <- Shops.filter(_.id === id).map(_.label).update(shop.label)
         after <- Shops.filter(_.id === id).result.headOption
       }
         yield Shop.Result(
           rows != 0,
+          None,
+          before.map(s => s: Shop),
           after.map(s => s: Shop),
           if(rows != 0) None else Some(s"Shop with id=$id does not exist")
         )
@@ -87,6 +96,8 @@ class ShopRoute(implicit val db: Database, ec: ExecutionContext) extends BaseRou
         yield Shop.Result(
           rows != 0,
           before.map(s => s: Shop),
+          None,
+          None,
           if(rows != 0) None else Some(s"Shop with id=$id does not exist")
         )
     )

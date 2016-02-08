@@ -15,17 +15,17 @@ object Customer {
   type Update = Customer
   val Update = Customer
 
-  case class Result(success: Boolean, carrier: Option[Customer], message: Option[String])
+  case class Result(success: Boolean, customer: Option[Customer], before: Option[Customer], after: Option[Customer], message: Option[String])
 
   object Implicits extends Implicits
 
   trait Implicits extends JsonProtocol {
 
-    implicit def toCustomersRow(carrier: Customer): CustomersRow =
-      CustomersRow(if (carrier.id.isDefined) carrier.id.get else -1, carrier.label)
+    implicit def toCustomersRow(customer: Customer): CustomersRow =
+      CustomersRow(if (customer.id.isDefined) customer.id.get else -1, customer.label)
 
-    implicit def fromCustomersRow(carriersRow: CustomersRow): Customer =
-      Customer(Option(carriersRow.id), carriersRow.label)
+    implicit def fromCustomersRow(customersRow: CustomersRow): Customer =
+      Customer(Option(customersRow.id), customersRow.label)
 
   }
 
@@ -37,7 +37,7 @@ object Customer {
 
     implicit val `JSON Customer` = jsonFormat2(Customer.apply)
     implicit val `JSON Customer.Index` = jsonFormat1(Index)
-    implicit val `JSON Customer.Result` = jsonFormat3(Result)
+    implicit val `JSON Customer.Result` = jsonFormat5(Result)
 
   }
 

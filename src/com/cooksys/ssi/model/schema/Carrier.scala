@@ -15,7 +15,7 @@ object Carrier {
   type Update = Carrier
   val Update = Carrier
 
-  case class Result(success: Boolean, carrier: Option[Carrier], message: Option[String])
+  case class Result(success: Boolean, carrier: Option[Carrier], before: Option[Carrier], after: Option[Carrier], message: Option[String])
 
   object Implicits extends Implicits
 
@@ -37,7 +37,7 @@ object Carrier {
 
     implicit val `JSON Carrier` = jsonFormat2(Carrier.apply)
     implicit val `JSON Carrier.Index` = jsonFormat1(Index)
-    implicit val `JSON Carrier.Result` = jsonFormat3(Result)
+    implicit val `JSON Carrier.Result` = jsonFormat5(Result)
 
   }
 

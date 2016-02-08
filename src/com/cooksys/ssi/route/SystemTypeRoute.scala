@@ -19,15 +19,17 @@ class SystemTypeRoute(implicit val db: Database, ec: ExecutionContext) extends B
             create(systemType)
           }
         }
-      } ~ path(IntNumber) { id: Int =>
-        get {
-          single(id)
-        } ~ patch {
-          entity(as[SystemType.Update]) { systemType =>
-            update(id, systemType)
+      } ~ pathPrefix(IntNumber) { id: Int =>
+        pathEndOrSingleSlash {
+          get {
+            single(id)
+          } ~ patch {
+            entity(as[SystemType.Update]) { systemType =>
+              update(id, systemType)
+            }
+          } ~ delete {
+            destroy(id)
           }
-        } ~ delete {
-          destroy(id)
         }
       }
     }
@@ -46,6 +48,8 @@ class SystemTypeRoute(implicit val db: Database, ec: ExecutionContext) extends B
         yield SystemType.Result(
           option.isDefined,
           option.map(s => s: SystemType),
+          None,
+          None,
           if (option.isDefined) None
           else Some(s"SystemType with id=$id does not exist")
         )
@@ -54,12 +58,14 @@ class SystemTypeRoute(implicit val db: Database, ec: ExecutionContext) extends B
   def create(systemType: SystemType.Create): Future[SystemType.Result] =
     db.run(
       for {
-        id <- (SystemTypes returning SystemTypes.map(_.id)) += SystemType(None, systemType.label)
+        id <- (SystemTypes returning SystemTypes.map(_.id)) += systemType
         option <- SystemTypes.filter(_.id === id).result.headOption
       }
         yield SystemType.Result(
           option.isDefined,
           option.map(s => s: SystemType),
+          None,
+          None,
           if (option.isDefined) None
           else Some(s"SystemType could not be created")
         )
@@ -68,11 +74,14 @@ class SystemTypeRoute(implicit val db: Database, ec: ExecutionContext) extends B
   def update(id: Int, systemType: SystemType.Update): Future[SystemType.Result] =
     db.run(
       for {
+        before <- SystemTypes.filter(_.id === id).result.headOption
         rows <- SystemTypes.filter(_.id === id).map(_.label).update(systemType.label)
         after <- SystemTypes.filter(_.id === id).result.headOption
       }
         yield SystemType.Result(
           rows != 0,
+          None,
+          before.map(s => s: SystemType),
           after.map(s => s: SystemType),
           if(rows != 0) None else Some(s"SystemType with id=$id does not exist")
         )
@@ -87,6 +96,8 @@ class SystemTypeRoute(implicit val db: Database, ec: ExecutionContext) extends B
         yield SystemType.Result(
           rows != 0,
           before.map(s => s: SystemType),
+          None,
+          None,
           if(rows != 0) None else Some(s"SystemType with id=$id does not exist")
         )
     )

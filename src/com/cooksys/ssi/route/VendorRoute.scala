@@ -19,15 +19,17 @@ class VendorRoute(implicit val db: Database, ec: ExecutionContext) extends BaseR
             create(vendor)
           }
         }
-      } ~ path(IntNumber) { id: Int =>
-        get {
-          single(id)
-        } ~ patch {
-          entity(as[Vendor.Update]) { vendor =>
-            update(id, vendor)
+      } ~ pathPrefix(IntNumber) { id: Int =>
+        pathEndOrSingleSlash {
+          get {
+            single(id)
+          } ~ patch {
+            entity(as[Vendor.Update]) { vendor =>
+              update(id, vendor)
+            }
+          } ~ delete {
+            destroy(id)
           }
-        } ~ delete {
-          destroy(id)
         }
       }
     }
@@ -46,6 +48,8 @@ class VendorRoute(implicit val db: Database, ec: ExecutionContext) extends BaseR
         yield Vendor.Result(
           option.isDefined,
           option.map(v => v: Vendor),
+          None,
+          None,
           if (option.isDefined) None
           else Some(s"Vendor with id=$id does not exist")
         )
@@ -54,12 +58,14 @@ class VendorRoute(implicit val db: Database, ec: ExecutionContext) extends BaseR
   def create(vendor: Vendor.Create): Future[Vendor.Result] =
     db.run(
       for {
-        id <- (Vendors returning Vendors.map(_.id)) += Vendor(None, vendor.label)
+        id <- (Vendors returning Vendors.map(_.id)) += vendor
         option <- Vendors.filter(_.id === id).result.headOption
       }
         yield Vendor.Result(
           option.isDefined,
           option.map(v => v: Vendor),
+          None,
+          None,
           if (option.isDefined) None
           else Some(s"Vendor could not be created")
         )
@@ -68,11 +74,14 @@ class VendorRoute(implicit val db: Database, ec: ExecutionContext) extends BaseR
   def update(id: Int, vendor: Vendor.Update): Future[Vendor.Result] =
     db.run(
       for {
+        before <- Vendors.filter(_.id === id).result.headOption
         rows <- Vendors.filter(_.id === id).map(_.label).update(vendor.label)
         after <- Vendors.filter(_.id === id).result.headOption
       }
         yield Vendor.Result(
           rows != 0,
+          None,
+          before.map(v => v: Vendor),
           after.map(v => v: Vendor),
           if(rows != 0) None else Some(s"Vendor with id=$id does not exist")
         )
@@ -87,6 +96,8 @@ class VendorRoute(implicit val db: Database, ec: ExecutionContext) extends BaseR
         yield Vendor.Result(
           rows != 0,
           before.map(v => v: Vendor),
+          None,
+          None,
           if(rows != 0) None else Some(s"Vendor with id=$id does not exist")
         )
     )

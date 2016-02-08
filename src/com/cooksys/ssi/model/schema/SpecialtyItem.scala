@@ -15,17 +15,17 @@ object SpecialtyItem {
   type Update = SpecialtyItem
   val Update = SpecialtyItem
 
-  case class Result(success: Boolean, carrier: Option[SpecialtyItem], message: Option[String])
+  case class Result(success: Boolean, specialtyItem: Option[SpecialtyItem], before: Option[SpecialtyItem], after: Option[SpecialtyItem], message: Option[String])
 
   object Implicits extends Implicits
 
   trait Implicits extends JsonProtocol {
 
-    implicit def toShopsRow(carrier: SpecialtyItem): SpecialtyItemsRow =
-      SpecialtyItemsRow(if (carrier.id.isDefined) carrier.id.get else -1, carrier.label)
+    implicit def toSpecialtyItemsRow(specialtyItem: SpecialtyItem): SpecialtyItemsRow =
+      SpecialtyItemsRow(if (specialtyItem.id.isDefined) specialtyItem.id.get else -1, specialtyItem.label)
 
-    implicit def fromShopsRow(carriersRow: SpecialtyItemsRow): SpecialtyItem =
-      SpecialtyItem(Option(carriersRow.id), carriersRow.label)
+    implicit def fromSpecialtyItemsRow(specialtyItemsRow: SpecialtyItemsRow): SpecialtyItem =
+      SpecialtyItem(Option(specialtyItemsRow.id), specialtyItemsRow.label)
 
   }
 
@@ -37,7 +37,7 @@ object SpecialtyItem {
 
     implicit val `JSON SpecialtyItem` = jsonFormat2(SpecialtyItem.apply)
     implicit val `JSON SpecialtyItem.Index` = jsonFormat1(Index)
-    implicit val `JSON SpecialtyItem.Result` = jsonFormat3(Result)
+    implicit val `JSON SpecialtyItem.Result` = jsonFormat5(Result)
 
   }
 

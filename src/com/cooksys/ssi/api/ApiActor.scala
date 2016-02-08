@@ -12,13 +12,17 @@ object ApiActor {
 class ApiActor extends HttpActor with DatabaseActor {
 
   override def route: Route =
-    new CarrierRoute ~
-    new CustomerRoute ~
-    new ManufacturerRoute ~
-    new SalespersonRoute ~
-    new ShopRoute ~
-    new SpecialtyItemRoute ~
-    new SystemTypeRoute ~
-    new VendorRoute
+    pathPrefix("api") {
+      new CarrierRoute ~
+        new CustomerRoute ~
+        new ManufacturerRoute ~
+        new PartRoute ~
+        new SalespersonRoute ~
+        new ShopRoute ~
+        new SpecialtyItemRoute ~
+        new SystemTypeRoute ~
+        new UserRoute ~
+        new VendorRoute
+    }
 
 }

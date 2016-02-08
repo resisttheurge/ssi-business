@@ -19,15 +19,17 @@ class SpecialtyItemRoute(implicit val db: Database, ec: ExecutionContext) extend
             create(specialtyItem)
           }
         }
-      } ~ path(IntNumber) { id: Int =>
-        get {
-          single(id)
-        } ~ patch {
-          entity(as[SpecialtyItem.Update]) { specialtyItem =>
-            update(id, specialtyItem)
+      } ~ pathPrefix(IntNumber) { id: Int =>
+        pathEndOrSingleSlash {
+          get {
+            single(id)
+          } ~ patch {
+            entity(as[SpecialtyItem.Update]) { specialtyItem =>
+              update(id, specialtyItem)
+            }
+          } ~ delete {
+            destroy(id)
           }
-        } ~ delete {
-          destroy(id)
         }
       }
     }
@@ -46,6 +48,8 @@ class SpecialtyItemRoute(implicit val db: Database, ec: ExecutionContext) extend
         yield SpecialtyItem.Result(
           option.isDefined,
           option.map(s => s: SpecialtyItem),
+          None,
+          None,
           if (option.isDefined) None
           else Some(s"SpecialtyItem with id=$id does not exist")
         )
@@ -54,12 +58,14 @@ class SpecialtyItemRoute(implicit val db: Database, ec: ExecutionContext) extend
   def create(specialtyItem: SpecialtyItem.Create): Future[SpecialtyItem.Result] =
     db.run(
       for {
-        id <- (SpecialtyItems returning SpecialtyItems.map(_.id)) += SpecialtyItem(None, specialtyItem.label)
+        id <- (SpecialtyItems returning SpecialtyItems.map(_.id)) += specialtyItem
         option <- SpecialtyItems.filter(_.id === id).result.headOption
       }
         yield SpecialtyItem.Result(
           option.isDefined,
           option.map(s => s: SpecialtyItem),
+          None,
+          None,
           if (option.isDefined) None
           else Some(s"SpecialtyItem could not be created")
         )
@@ -68,11 +74,14 @@ class SpecialtyItemRoute(implicit val db: Database, ec: ExecutionContext) extend
   def update(id: Int, specialtyItem: SpecialtyItem.Update): Future[SpecialtyItem.Result] =
     db.run(
       for {
+        before <- SpecialtyItems.filter(_.id === id).result.headOption
         rows <- SpecialtyItems.filter(_.id === id).map(_.label).update(specialtyItem.label)
         after <- SpecialtyItems.filter(_.id === id).result.headOption
       }
         yield SpecialtyItem.Result(
           rows != 0,
+          None,
+          before.map(s => s: SpecialtyItem),
           after.map(s => s: SpecialtyItem),
           if(rows != 0) None else Some(s"SpecialtyItem with id=$id does not exist")
         )
@@ -87,6 +96,8 @@ class SpecialtyItemRoute(implicit val db: Database, ec: ExecutionContext) extend
         yield SpecialtyItem.Result(
           rows != 0,
           before.map(s => s: SpecialtyItem),
+          None,
+          None,
           if(rows != 0) None else Some(s"SpecialtyItem with id=$id does not exist")
         )
     )

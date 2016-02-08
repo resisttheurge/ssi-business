@@ -15,17 +15,17 @@ object Manufacturer {
   type Update = Manufacturer
   val Update = Manufacturer
 
-  case class Result(success: Boolean, carrier: Option[Manufacturer], message: Option[String])
+  case class Result(success: Boolean, manufacturer: Option[Manufacturer], before: Option[Manufacturer], after: Option[Manufacturer], message: Option[String])
 
   object Implicits extends Implicits
 
   trait Implicits extends JsonProtocol {
 
-    implicit def toManufacturersRow(carrier: Manufacturer): ManufacturersRow =
-      ManufacturersRow(if (carrier.id.isDefined) carrier.id.get else -1, carrier.label)
+    implicit def toManufacturersRow(manufacturer: Manufacturer): ManufacturersRow =
+      ManufacturersRow(if (manufacturer.id.isDefined) manufacturer.id.get else -1, manufacturer.label)
 
-    implicit def fromManufacturersRow(carriersRow: ManufacturersRow): Manufacturer =
-      Manufacturer(Option(carriersRow.id), carriersRow.label)
+    implicit def fromManufacturersRow(manufacturersRow: ManufacturersRow): Manufacturer =
+      Manufacturer(Option(manufacturersRow.id), manufacturersRow.label)
 
   }
 
@@ -37,7 +37,7 @@ object Manufacturer {
 
     implicit val `JSON Manufacturer` = jsonFormat2(Manufacturer.apply)
     implicit val `JSON Manufacturer.Index` = jsonFormat1(Index)
-    implicit val `JSON Manufacturer.Result` = jsonFormat3(Result)
+    implicit val `JSON Manufacturer.Result` = jsonFormat5(Result)
 
   }
 

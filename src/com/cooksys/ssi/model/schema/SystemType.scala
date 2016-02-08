@@ -15,17 +15,17 @@ object SystemType {
   type Update = SystemType
   val Update = SystemType
 
-  case class Result(success: Boolean, carrier: Option[SystemType], message: Option[String])
+  case class Result(success: Boolean, systemType: Option[SystemType], before: Option[SystemType], after: Option[SystemType], message: Option[String])
 
   object Implicits extends Implicits
 
   trait Implicits extends JsonProtocol {
 
-    implicit def toShopsRow(carrier: SystemType): SystemTypesRow =
-      SystemTypesRow(if (carrier.id.isDefined) carrier.id.get else -1, carrier.label)
+    implicit def toSystemTypesRow(systemType: SystemType): SystemTypesRow =
+      SystemTypesRow(if (systemType.id.isDefined) systemType.id.get else -1, systemType.label)
 
-    implicit def fromShopsRow(carriersRow: SystemTypesRow): SystemType =
-      SystemType(Option(carriersRow.id), carriersRow.label)
+    implicit def fromSystemTypesRow(systemTypesRow: SystemTypesRow): SystemType =
+      SystemType(Option(systemTypesRow.id), systemTypesRow.label)
 
   }
 
@@ -37,7 +37,7 @@ object SystemType {
 
     implicit val `JSON SystemType` = jsonFormat2(SystemType.apply)
     implicit val `JSON SystemType.Index` = jsonFormat1(Index)
-    implicit val `JSON SystemType.Result` = jsonFormat3(Result)
+    implicit val `JSON SystemType.Result` = jsonFormat5(Result)
 
   }
 

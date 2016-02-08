@@ -19,15 +19,17 @@ class CustomerRoute(implicit val db: Database, ec: ExecutionContext) extends Bas
             create(customer)
           }
         }
-      } ~ path(IntNumber) { id: Int =>
-        get {
-          single(id)
-        } ~ patch {
-          entity(as[Customer.Update]) { customer =>
-            update(id, customer)
+      } ~ pathPrefix(IntNumber) { id: Int =>
+        pathEndOrSingleSlash {
+          get {
+            single(id)
+          } ~ patch {
+            entity(as[Customer.Update]) { customer =>
+              update(id, customer)
+            }
+          } ~ delete {
+            destroy(id)
           }
-        } ~ delete {
-          destroy(id)
         }
       }
     }
@@ -46,6 +48,8 @@ class CustomerRoute(implicit val db: Database, ec: ExecutionContext) extends Bas
         yield Customer.Result(
           option.isDefined,
           option.map(c => c: Customer),
+          None,
+          None,
           if (option.isDefined) None
           else Some(s"Customer with id=$id does not exist")
         )
@@ -54,12 +58,14 @@ class CustomerRoute(implicit val db: Database, ec: ExecutionContext) extends Bas
   def create(customer: Customer.Create): Future[Customer.Result] =
     db.run(
       for {
-        id <- (Customers returning Customers.map(_.id)) += Customer(None, customer.label)
+        id <- (Customers returning Customers.map(_.id)) += customer
         option <- Customers.filter(_.id === id).result.headOption
       }
         yield Customer.Result(
           option.isDefined,
           option.map(c => c: Customer),
+          None,
+          None,
           if (option.isDefined) None
           else Some(s"Customer could not be created")
         )
@@ -68,11 +74,14 @@ class CustomerRoute(implicit val db: Database, ec: ExecutionContext) extends Bas
   def update(id: Int, customer: Customer.Update): Future[Customer.Result] =
     db.run(
       for {
+        before <- Customers.filter(_.id === id).result.headOption
         rows <- Customers.filter(_.id === id).map(_.label).update(customer.label)
         after <- Customers.filter(_.id === id).result.headOption
       }
         yield Customer.Result(
           rows != 0,
+          None,
+          before.map(c => c: Customer),
           after.map(c => c: Customer),
           if(rows != 0) None else Some(s"Customer with id=$id does not exist")
         )
@@ -87,6 +96,8 @@ class CustomerRoute(implicit val db: Database, ec: ExecutionContext) extends Bas
         yield Customer.Result(
           rows != 0,
           before.map(c => c: Customer),
+          None,
+          None,
           if(rows != 0) None else Some(s"Customer with id=$id does not exist")
         )
     )
