@@ -20,5 +20,10 @@ trait Properties {
 
   }
 
+  case object database extends Property[AnyRef] {
+
+    case object default extends Property[String]
+
+  }
 
 }

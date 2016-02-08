@@ -4,7 +4,6 @@ import akka.actor.{ActorRef, Props}
 import akka.io.IO
 import com.cooksys.ssi.actor.BaseActor
 import com.cooksys.ssi.api.ApiActor
-import com.cooksys.ssi.model.ModelActor
 import com.cooksys.ssi.properties
 import spray.can.Http
 
@@ -16,8 +15,7 @@ class ServerActor extends BaseActor {
 
   var binder: ActorRef = null
 
-  lazy val api: ActorRef = context.actorOf(ApiActor.props(model))
-  lazy val model: ActorRef = context.actorOf(ModelActor.props)
+  lazy val api: ActorRef = context.actorOf(ApiActor.props)
 
   override def receive: Receive = {
 

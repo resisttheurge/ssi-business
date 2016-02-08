@@ -4,8 +4,8 @@ import spray.routing.{HttpServiceActor, Route}
 
 trait HttpActor extends HttpServiceActor with BaseActor {
 
-  def route: Route
-
   override def receive: Receive = runRoute(route)
+
+  def route: Route
 
 }

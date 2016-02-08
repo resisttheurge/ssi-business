@@ -2,6 +2,7 @@ package com.cooksys.ssi.server
 
 import akka.actor.ActorSystem
 import akka.pattern._
+import akka.util.Timeout
 import com.cooksys.ssi.properties
 import com.typesafe.config.ConfigFactory
 import org.slf4j.LoggerFactory
@@ -29,7 +30,7 @@ trait Server {
     system.dispatcher
   }
 
-  implicit lazy val timeout = {
+  implicit lazy val timeout: Timeout = {
     log.debug("obtaining server timeout value")
     properties.server.timeout().milliseconds
   }

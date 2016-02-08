@@ -8,7 +8,7 @@ lazy val `ssi-business` =
       unmanagedSourceDirectories in Compile += baseDirectory.value / "generated",
       slick <<= slickCodeGenTask
     )
-    .dependsOn(codegen, reporting)
+    .dependsOn(codegen)
 
 lazy val codegen =
   (project in file("codegen"))
@@ -17,7 +17,7 @@ lazy val codegen =
       name := "codegen",
       libraryDependencies ++= deps.codegen
     )
-    .dependsOn(config)
+    .dependsOn(config, reporting)
 
 lazy val reporting =
   (project in file("reporting"))
@@ -54,7 +54,7 @@ lazy val deps = new {
 
   lazy val codegen = slick ++ mysql
 
-  lazy val reporting = Seq(
+  lazy val reporting = logging ++ Seq(
     "junit" % "junit" % "3.8.1" % "test",
     "org.xhtmlrenderer" % "flying-saucer-pdf" % "9.0.4",
     "org.freemarker" % "freemarker" % "2.3.18",

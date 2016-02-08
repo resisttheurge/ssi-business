@@ -2,7 +2,7 @@ package com.cooksys
 
 package object ssi {
 
-  object main = Main
+  val main = Main
   object properties extends Properties
 
 }
