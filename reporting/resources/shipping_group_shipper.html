@@ -1,0 +1,162 @@
+<!DOCTYPE html [
+    <!ENTITY nbsp "&#160;"> 
+]>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>PDF Generator</title>
+
+<style type="text/css">
+@page {
+	size: A4 landscape; @ bottom-right { font-size : 80%;
+	content: "Page " counter(page) " of " counter(pages);
+}
+
+}
+.head1 {
+	color: 000;
+	font-size: x-large;
+}
+
+.head2 {
+	color: #496192;
+	font-size: large;
+}
+
+.head3 {
+	color: #000;
+	font-size: medium
+}
+
+.paragraph {
+	text-align: justify;
+}
+
+.toc {
+	list-style-type: none;
+}
+
+.toc a::after {
+	content: leader('.') target-counter(attr(href), page);
+}
+
+.mainTable {
+	-fs-table-paginate: paginate;
+	page-break-inside: avoid;
+}
+
+#mainTH, #mainTD {
+	border: 1px solid black;
+}
+
+th {
+	font-size: 15px;
+	text-align: center;
+}
+
+td {
+	font-size: 13px;
+	text-align: left;
+	padding-left: 5px;
+	margin: 0px;
+}
+</style>
+
+</head>
+
+<body>
+	<div id="header">
+		<img src="resources/ssilogo.png" alt="Southern Systems, Inc."
+			style="height: 75px;" />
+		<p class="head1">RMS Shipper</p>
+	</div>
+
+	<table
+		style="border: none; cellspacing: 0; cellpadding: 0; display: block; float: left; width: 55%'">
+		<tr>
+			<td><strong>SHIP TO:</strong></td>
+		</tr>
+		<tr>
+			<td align="left">&nbsp;${sgs[0].contact}</td>
+		</tr>
+		<tr>
+			<td align="left">&nbsp;${sgs[0].address}</td>
+		</tr>
+		<tr>
+			<td align="left">&nbsp;${sgs[0].city},${sgs[0].state}
+				${sgs[0].zip} ${sgs[0].country}</td>
+		</tr>
+	</table>
+	<table style="display: block; float: left; width: 17%">
+		<tr>
+			<td align="left"><strong>JOB NO.</strong></td>
+			<td align="right">${sgs[0].prefix}-${sgs[0].year}-${sgs[0].label}</td>
+		</tr>
+		<tr>
+			<td align="left"><strong>DATE REQ</strong></td>
+			<td align="right">${sgs[0].dateReq}</td>
+		</tr>
+		<tr>
+			<td align="left"><strong>SHIPPER NO.</strong></td>
+			<td align="right">${sgs[0].shipperNumber}</td>
+		</tr>
+	</table>
+	<table style="display: block; float: left; width: 9%">
+		<tr>
+			<td align="center"><strong>COLLECT</strong></td>
+			<td align="right"><input type="checkbox" /></td>
+		</tr>
+		<tr>
+			<td align="center"><strong>PREPAID</strong></td>
+			<td align="right"><input type="checkbox" /></td>
+		</tr>
+	</table>
+	<table style="display: block; float: left; width: 19%">
+		<tr>
+			<td align="left"><strong>SHIP VIA</strong></td>
+			<td align="right">${sgs[0].shipVia}</td>
+		</tr>
+		<tr>
+			<td align="left"><strong>BILL OF LADING</strong></td>
+			<td align="right">${sgs[0].billOfLading}</td>
+		</tr>
+		<tr>
+			<td align="left"><strong>DATE SHIPPED</strong></td>
+			<td align="right">${sgs[0].billOfLading}</td>
+		</tr>
+		<tr>
+			<td align="left"><strong>PRO NO.</strong></td>
+			<td align="right">${sgs[0].billOfLading}</td>
+		</tr>
+	</table>
+
+
+	<table id="mainTable" style="display: block; float: left; margin: 0px;">
+		<thead>
+			<tr style="background: #CCC0DA">
+				<th id="mainTH" align="center">MARK</th>
+				<th id="mainTH" align="center">DESCRIPTION</th>
+				<th id="mainTH" align="center">QTY REQD</th>
+				<th id="mainTH" align="center">QTY SHIPPED</th>
+				<th id="mainTH" align="center">REMARKS</th>
+			</tr>
+		</thead>
+		<#list 1..sgs[0].shipperInfo?size as i>
+		<!-- 		<#if i%2==0> -->
+		<!-- 		<tr style="background: #FABF8F"><#else> -->
+		<!-- 		<tr style="background: #C4D79B"> -->
+		<!-- 			</#if> -->
+		<tr>
+			<td id="mainTD" width="10%" align="center">${sgs[0].shipperInfo[i-1].mark}</td>
+			<td id="mainTD" width="39%" align="center">${sgs[0].shipperInfo[i-1].description}</td>
+			<td id="mainTD" width="8%" align="center">${sgs[0].shipperInfo[i-1].qtyReqd}</td>
+			<td id="mainTD" width="8%" align="center">${sgs[0].shipperInfo[i-1].qtyShpd}</td>
+			<td id="mainTD" width="35%" align="center">${sgs[0].shipperInfo[i-1].remarks}</td>
+		</tr>
+		</#list>
+
+	</table>
+
+</body>
+</html>

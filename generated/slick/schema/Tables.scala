@@ -23,18 +23,21 @@ trait Tables {
    *  @param jobId Database column job_id SqlType(INT UNSIGNED)
    *  @param label Database column label SqlType(VARCHAR), Length(50,true)
    *  @param description Database column description SqlType(TEXT)
+   *  @param contractPrice Database column contract_price SqlType(DECIMAL), Default(None)
+   *  @param salespersonId Database column salesperson_id SqlType(INT UNSIGNED), Default(None)
+   *  @param contactId Database column contact_id SqlType(INT UNSIGNED), Default(None)
    *  @param created Database column created SqlType(TIMESTAMP) */
-  case class AddendaRow(id: Int, jobId: Int, label: String, description: String, created: java.sql.Timestamp)
+  case class AddendaRow(id: Int, jobId: Int, label: String, description: String, contractPrice: Option[scala.math.BigDecimal] = None, salespersonId: Option[Int] = None, contactId: Option[Int] = None, created: java.sql.Timestamp)
   /** GetResult implicit for fetching AddendaRow objects using plain SQL queries */
-  implicit def GetResultAddendaRow(implicit e0: GR[Int], e1: GR[String], e2: GR[java.sql.Timestamp]): GR[AddendaRow] = GR{
+  implicit def GetResultAddendaRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[scala.math.BigDecimal]], e3: GR[Option[Int]], e4: GR[java.sql.Timestamp]): GR[AddendaRow] = GR{
     prs => import prs._
-    AddendaRow.tupled((<<[Int], <<[Int], <<[String], <<[String], <<[java.sql.Timestamp]))
+    AddendaRow.tupled((<<[Int], <<[Int], <<[String], <<[String], <<?[scala.math.BigDecimal], <<?[Int], <<?[Int], <<[java.sql.Timestamp]))
   }
   /** Table description of table addenda. Objects of this class serve as prototypes for rows in queries. */
   class Addenda(_tableTag: Tag) extends Table[AddendaRow](_tableTag, "addenda") {
-    def * = (id, jobId, label, description, created) <> (AddendaRow.tupled, AddendaRow.unapply)
+    def * = (id, jobId, label, description, contractPrice, salespersonId, contactId, created) <> (AddendaRow.tupled, AddendaRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(jobId), Rep.Some(label), Rep.Some(description), Rep.Some(created)).shaped.<>({r=>import r._; _1.map(_=> AddendaRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), Rep.Some(jobId), Rep.Some(label), Rep.Some(description), contractPrice, salespersonId, contactId, Rep.Some(created)).shaped.<>({r=>import r._; _1.map(_=> AddendaRow.tupled((_1.get, _2.get, _3.get, _4.get, _5, _6, _7, _8.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
@@ -44,11 +47,21 @@ trait Tables {
     val label: Rep[String] = column[String]("label", O.Length(50,varying=true))
     /** Database column description SqlType(TEXT) */
     val description: Rep[String] = column[String]("description")
+    /** Database column contract_price SqlType(DECIMAL), Default(None) */
+    val contractPrice: Rep[Option[scala.math.BigDecimal]] = column[Option[scala.math.BigDecimal]]("contract_price", O.Default(None))
+    /** Database column salesperson_id SqlType(INT UNSIGNED), Default(None) */
+    val salespersonId: Rep[Option[Int]] = column[Option[Int]]("salesperson_id", O.Default(None))
+    /** Database column contact_id SqlType(INT UNSIGNED), Default(None) */
+    val contactId: Rep[Option[Int]] = column[Option[Int]]("contact_id", O.Default(None))
     /** Database column created SqlType(TIMESTAMP) */
     val created: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("created")
 
+    /** Foreign key referencing Contacts (database name addenda__contacts__fk) */
+    lazy val contactsFk = foreignKey("addenda__contacts__fk", contactId, Contacts)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
     /** Foreign key referencing Jobs (database name addenda__jobs__fk) */
     lazy val jobsFk = foreignKey("addenda__jobs__fk", jobId, Jobs)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Salespeople (database name addenda__salespeople__fk) */
+    lazy val salespeopleFk = foreignKey("addenda__salespeople__fk", salespersonId, Salespeople)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
 
     /** Uniqueness Index over (jobId,label) (database name UNIQUE_REVISION_LABEL) */
     val index1 = index("UNIQUE_REVISION_LABEL", (jobId, label), unique=true)

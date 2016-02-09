@@ -38,7 +38,7 @@ class UserRoute(implicit val db: Database, ec: ExecutionContext) extends BaseRou
     db.run(
       for {
         users <- Users.withRoles.result
-      } yield User.Index(aggregate(users))
+      } yield User.Index(User.aggregate(users).map(_.copy(password = None)))
     )
 
   def single(id: Int): Future[User.Result] =
@@ -46,7 +46,7 @@ class UserRoute(implicit val db: Database, ec: ExecutionContext) extends BaseRou
       for {
         seq <- Users.byId(id).withRoles.result
       } yield {
-        val option = aggregate(seq).headOption
+        val option = User.aggregate(seq).headOption
         User.Result(
           option.isDefined,
           option.map(u => (u: User).copy(password = None)),
@@ -62,10 +62,11 @@ class UserRoute(implicit val db: Database, ec: ExecutionContext) extends BaseRou
     db.run(
       for {
         id <- (Users returning Users.map(_.id)) += user
+        roleCreates <- createRoles(id, user.roles.getOrElse(Seq.empty))
         seq <- Users.byId(id).withRoles.result
       }
         yield {
-          val option = aggregate(seq).headOption
+          val option = User.aggregate(seq).headOption
           User.Result(
             option.isDefined,
             option.map(u => (u: User).copy(password = None)),
@@ -79,17 +80,17 @@ class UserRoute(implicit val db: Database, ec: ExecutionContext) extends BaseRou
 
   def update(id: Int, user: User.Update): Future[User.Result] =
     db.run(
-
       for {
         before <- Users.byId(id).withRoles.result
         rows <- Users.byId(id).update(user)
+        roleUpdate <- updateRoles(id, user.roles.getOrElse(Seq.empty))
         after <- Users.byId(id).withRoles.result
       }
         yield User.Result(
           rows != 0,
           None,
-          aggregate(before).headOption.map(u => u.copy(password = None)),
-          aggregate(after).headOption.map(u => u.copy(password = None)),
+          User.aggregate(before).headOption.map(u => u.copy(password = None)),
+          User.aggregate(after).headOption.map(u => u.copy(password = None)),
           if (rows != 0) None else Some(s"User with id=$id does not exist")
         )
     )
@@ -102,31 +103,24 @@ class UserRoute(implicit val db: Database, ec: ExecutionContext) extends BaseRou
       }
         yield User.Result(
           rows != 0,
-          aggregate(before).headOption.map(u => u.copy(password = None)),
+          User.aggregate(before).headOption.map(u => u.copy(password = None)),
           None,
           None,
           if (rows != 0) None else Some(s"User with id=$id does not exist")
         )
     )
 
-  /*
-   * turns flat (UsersRow, UserRolesRow) query results into a list of User objects with seq's of roles nested within
-   */
-  def aggregate(userRoles: Seq[(UsersRow, Option[UserRolesRow])]): Seq[User] =
-    userRoles
-      .map {
-        case (user, opt) =>
-          if (opt.isDefined) (user: User).copy(roles = Seq(opt.get.role))
-          else user: User
-      }
-      .foldLeft(Seq.empty[User])(
-        (seq: Seq[User], user: User) =>
-          if (seq.nonEmpty && seq.exists(_.id == user.id))
-            seq.map {
-              case u if u.id == user.id => u.copy(roles = u.roles ++ user.roles)
-              case u => u
-            }
-          else seq :+ user
-      )
+  def createRoles(id: Int, roles: Seq[String])(implicit ec: ExecutionContext) =
+    UserRoles ++= roles.map(role => UserRolesRow(id, role, active = true))
+
+  def updateRoles(id: Int, roles: Seq[String])(implicit ec: ExecutionContext) =
+    for {
+      existing <- UserRoles.byUserId(id).map(_.role).result
+      created <- UserRoles ++= roles.diff(existing).map(role => UserRolesRow(id, role, active = true))
+      activated <- UserRoles.inactive.byUserId(id).byRoles(roles).map(_.active).update(true)
+      deactivated <- UserRoles.active.byUserId(id).filterNot(_.role inSet roles).map(_.active).update(false)
+    } yield {
+      (created, activated, deactivated)
+    }
 
 }

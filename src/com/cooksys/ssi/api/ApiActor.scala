@@ -16,8 +16,10 @@ class ApiActor extends HttpActor with DatabaseActor {
       new AuthRoute ~
         new CarrierRoute ~
         new CustomerRoute ~
+        new JobRoute ~
         new ManufacturerRoute ~
         new PartRoute ~
+        new ReportRoute ~
         new SalespersonRoute ~
         new ShopRoute ~
         new SpecialtyItemRoute ~

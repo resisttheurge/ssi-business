@@ -31,7 +31,7 @@ object SpecialtyItem {
 
   object JsonProtocol extends JsonProtocol
 
-  trait JsonProtocol extends DefaultJsonProtocol {
+  trait JsonProtocol extends RootJsonProtocol {
 
     implicit val `JSON SpecialtyItemsRow` = jsonFormat2(SpecialtyItemsRow)
 

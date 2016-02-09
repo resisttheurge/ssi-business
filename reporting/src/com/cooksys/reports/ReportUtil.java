@@ -24,20 +24,20 @@ import pdfGenerator.util.PdfGenerator;
 
 public class ReportUtil<T extends VariableGenerator> implements Reporting<T> {
 
-	public static final ReportUtil<User> TEST_REPORT = new ReportUtil<User>("Test Report", "resources/freemarker_template.html", "users", User.class);
-	public static final ReportUtil<LayoutDrawing> LAYOUT_DRAWING = new ReportUtil<LayoutDrawing>("Layout Drawing", "resources/layout_drawing.html", "drawing", LayoutDrawing.class);
-	public static final ReportUtil<LayoutDrawing> DETAIL_DRAWING = new ReportUtil<LayoutDrawing>("Detail Drawing", "resources/detail_drawing.html", "drawing", LayoutDrawing.class);
-	public static final ReportUtil<LayoutDrawing> COMPUTER_DRAWING = new ReportUtil<LayoutDrawing>("Computer Drawing", "resources/computer_drawing.html", "drawing", LayoutDrawing.class);
-	public static final ReportUtil<Zone> ZONE = new ReportUtil<Zone>("Zone", "resources/zone.html", "zone", Zone.class);
-	public static final ReportUtil<MaterialShipper> MATERIAL_SHIPPER = new ReportUtil<MaterialShipper>("Material Shipper", "resources/material_shipper.html", "ms", MaterialShipper.class);
-	public static final ReportUtil<CustomerJob> SHIP_VIA = new ReportUtil<CustomerJob>("Ship Via", "resources/ship_via.html", "ship", CustomerJob.class);
-	public static final ReportUtil<CustomerJob> SHIPMENT = new ReportUtil<CustomerJob>("Shipment", "resources/shipment.html", "ship", CustomerJob.class);
-	public static final ReportUtil<ManagementReview> MANAGEMENT_REVIEW = new ReportUtil<ManagementReview>("Management Review", "resources/management_review.html", "mgmt", ManagementReview.class);
-	public static final ReportUtil<ProductionSchedule> PRODUCTION_SCHEDULE = new ReportUtil<ProductionSchedule>("Production Schedule", "resources/production_schedule.html", "prod", ProductionSchedule.class);
-	public static final ReportUtil<SpecialtyItemsByJob> SPECIALTY_ITEMS_BY_JOB = new ReportUtil<SpecialtyItemsByJob>("Specialty Items By Job", "resources/specialty_items_by_job.html", "job", SpecialtyItemsByJob.class);
-	public static final ReportUtil<SpecialtyItemsByPartType> SPECIALTY_ITEMS_BY_PART_TYPE = new ReportUtil<SpecialtyItemsByPartType>("Specialty Items By Part Type", "resources/specialty_items_by_part_type.html", "part", SpecialtyItemsByPartType.class);
-	public static final ReportUtil<ShippingGroupShipper> SHIPPING_GROUP_SHIPPER = new ReportUtil<ShippingGroupShipper>("Shipping Group Shipper","resources/shipping_group_shipper.html","sgs", ShippingGroupShipper.class);
-	public static final ReportUtil<JobShipment> JOB_SHIPMENT = new ReportUtil<JobShipment>("Job Shipment","resources/job_shipment.html","js", JobShipment.class);
+	public static final ReportUtil<User> TEST_REPORT = new ReportUtil<User>("Test Report", "freemarker_template.html", "users", User.class);
+	public static final ReportUtil<LayoutDrawing> LAYOUT_DRAWING = new ReportUtil<LayoutDrawing>("Layout Drawing", "layout_drawing.html", "drawing", LayoutDrawing.class);
+	public static final ReportUtil<LayoutDrawing> DETAIL_DRAWING = new ReportUtil<LayoutDrawing>("Detail Drawing", "detail_drawing.html", "drawing", LayoutDrawing.class);
+	public static final ReportUtil<LayoutDrawing> COMPUTER_DRAWING = new ReportUtil<LayoutDrawing>("Computer Drawing", "computer_drawing.html", "drawing", LayoutDrawing.class);
+	public static final ReportUtil<Zone> ZONE = new ReportUtil<Zone>("Zone", "zone.html", "zone", Zone.class);
+	public static final ReportUtil<MaterialShipper> MATERIAL_SHIPPER = new ReportUtil<MaterialShipper>("Material Shipper", "material_shipper.html", "ms", MaterialShipper.class);
+	public static final ReportUtil<CustomerJob> SHIP_VIA = new ReportUtil<CustomerJob>("Ship Via", "ship_via.html", "ship", CustomerJob.class);
+	public static final ReportUtil<CustomerJob> SHIPMENT = new ReportUtil<CustomerJob>("Shipment", "shipment.html", "ship", CustomerJob.class);
+	public static final ReportUtil<ManagementReview> MANAGEMENT_REVIEW = new ReportUtil<ManagementReview>("Management Review", "management_review.html", "mgmt", ManagementReview.class);
+	public static final ReportUtil<ProductionSchedule> PRODUCTION_SCHEDULE = new ReportUtil<ProductionSchedule>("Production Schedule", "production_schedule.html", "prod", ProductionSchedule.class);
+	public static final ReportUtil<SpecialtyItemsByJob> SPECIALTY_ITEMS_BY_JOB = new ReportUtil<SpecialtyItemsByJob>("Specialty Items By Job", "specialty_items_by_job.html", "job", SpecialtyItemsByJob.class);
+	public static final ReportUtil<SpecialtyItemsByPartType> SPECIALTY_ITEMS_BY_PART_TYPE = new ReportUtil<SpecialtyItemsByPartType>("Specialty Items By Part Type", "specialty_items_by_part_type.html", "part", SpecialtyItemsByPartType.class);
+	public static final ReportUtil<ShippingGroupShipper> SHIPPING_GROUP_SHIPPER = new ReportUtil<ShippingGroupShipper>("Shipping Group Shipper","shipping_group_shipper.html","sgs", ShippingGroupShipper.class);
+	public static final ReportUtil<JobShipment> JOB_SHIPMENT = new ReportUtil<JobShipment>("Job Shipment","job_shipment.html","js", JobShipment.class);
 	
 	private String template;
 	private String varName;

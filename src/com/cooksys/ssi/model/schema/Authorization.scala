@@ -10,7 +10,7 @@ object Authorization {
 
   trait Implicits extends JsonProtocol
 
-  trait JsonProtocol extends DefaultJsonProtocol {
+  trait JsonProtocol extends RootJsonProtocol {
     implicit val `JSON Authorization` = jsonFormat4(Authorization.apply)
   }
 

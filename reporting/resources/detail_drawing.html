@@ -1,0 +1,111 @@
+<!DOCTYPE html [
+    <!ENTITY nbsp "&#160;"> 
+]>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>PDF Generator</title>
+
+<style type="text/css">
+@page {
+	size: A4 landscape; 
+	@bottom-right{
+	    font-size:80%;
+	    content: "Page " counter(page)  " of " counter(pages);
+    }
+}
+
+.head1 {
+	color: #000;
+	font-size: x-large;
+	@bottom-right{
+	    font-size:80%;
+	    content: "Page " counter(page)  " of " counter(pages);
+    }
+}
+
+.head2 {
+	color: #496192;
+	font-size: large;
+}
+
+.head3 {
+	color: #000;
+	font-size: medium
+}
+
+.paragraph {
+	text-align: justify;
+}
+
+.toc {
+	list-style-type: none;
+}
+
+.toc a::after {
+	content: leader('.') target-counter(attr(href), page);
+}
+
+table {
+	-fs-table-paginate: paginate;
+	page-break-inside: avoid;
+}
+
+th{
+	font-size: 14px;
+	text-align: center;
+}
+
+p{
+	font-size: 14px;
+	text-align: left;
+	padding-left: 5px;
+}
+</style>
+
+</head>
+
+<body>
+	<div id="header">
+		<img src="resources/ssilogo.png" alt="Southern Systems, Inc."
+			style="height: 75px;" />
+		<p class="head1">Detail Drawing Report</p>
+	</div>
+
+	<table border="1" cellspacing="0" cellpadding="0" align="center">
+		<thead>
+			<tr style="background: #CCC0DA">
+				<th align="center">Label</th>
+				<th align="center">Revision</th>
+				<th align="center">Title</th>
+				<th align="center">Shop</th>
+				<th align="center">Revision Date</th>
+				<th align="center">Start Date</th>
+				<th align="center">Shop Date</th>
+				<th align="center">Field Date</th>
+			</tr>
+		</thead>
+		<#list 1..drawing?size as i> 
+<!-- 		<#if i%2==0> -->
+<!-- 		<tr style="background: #FABF8F"><#else> -->
+<!-- 		<tr style="background: #C4D79B"> -->
+<!-- 			</#if> -->
+		<tr>
+			<#if drawing[i-1].drawingType=='DETAIL'>
+			<td width="11%" align="center">${drawing[i-1].label}</td>
+			<td width="7%" align="center">${drawing[i-1].revision}</td>
+			<td width="35" align="center">${drawing[i-1].title}</td>
+			<td width="6%" align="center">${drawing[i-1].shop}</td>
+			<td width="9%" align="center">${drawing[i-1].revisionDate}</td>
+			<td width="9%" align="center">${drawing[i-1].startDate}</td>
+			<td width="9%" align="center">${drawing[i-1].shopDate}</td>
+			<td width="9%" align="center">${drawing[i-1].fieldDate}</td>
+			</#if>
+		</tr>
+		</#list>
+	</table>
+
+
+</body>
+</html>

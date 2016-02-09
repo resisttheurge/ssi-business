@@ -12,7 +12,7 @@ object Credentials {
 
   object JsonProtocol extends JsonProtocol
 
-  trait JsonProtocol extends DefaultJsonProtocol {
+  trait JsonProtocol extends RootJsonProtocol {
     implicit val `JSON Credentials` = jsonFormat2(Credentials.apply)
   }
 

@@ -27,33 +27,16 @@ class AuthRoute(implicit val db: Database, ec: ExecutionContext)
   def authorize(credentials: Credentials): Future[Authorization] =
     db.run(
       for {
-        results <- Users.byCredentials(credentials).withRoles.result
+        results <- Users.active.byCredentials(credentials).withRoles.result
       } yield {
-        val option = aggregate(results).headOption
+        val option = User.aggregate(results).headOption
         Authorization(
           success = option.isDefined,
           option.map(_.username),
-          option.map(_.roles),
+          option.flatMap(_.roles),
           if (option.isEmpty) Some("Username or password is incorrect") else None
         )
       }
     )
-
-  def aggregate(userRoles: Seq[(UsersRow, Option[UserRolesRow])]): Seq[User] =
-    userRoles
-      .map {
-        case (user, opt) =>
-          if (opt.isDefined) (user: User).copy(roles = Seq(opt.get.role))
-          else user: User
-      }
-      .foldLeft(Seq.empty[User])(
-        (seq: Seq[User], user: User) =>
-          if (seq.nonEmpty && seq.exists(_.id == user.id))
-            seq.map {
-              case u if u.id == user.id => u.copy(roles = u.roles ++ user.roles)
-              case u => u
-            }
-          else seq :+ user
-      )
 
 }

@@ -31,7 +31,7 @@ object SystemType {
 
   object JsonProtocol extends JsonProtocol
 
-  trait JsonProtocol extends DefaultJsonProtocol {
+  trait JsonProtocol extends RootJsonProtocol {
 
     implicit val `JSON SystemTypesRow` = jsonFormat2(SystemTypesRow)
 
