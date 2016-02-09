@@ -62,7 +62,7 @@ object User {
 
     implicit val `JSON UsersRow` = jsonFormat4(UsersRow)
 
-    implicit val `JSON User` = jsonFormat4(User.apply)
+    implicit val `JSON User` = jsonFormat5(User.apply)
     implicit val `JSON User.Index` = jsonFormat1(Index)
     implicit val `JSON User.Result` = jsonFormat5(Result)
 
