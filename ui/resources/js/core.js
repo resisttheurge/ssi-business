@@ -52,7 +52,6 @@ msignal_Signal.prototype = {
 		if(!this.slots.nonEmpty) return true;
 		var existingSlot = this.slots.find(listener);
 		if(existingSlot == null) return true;
-		if(existingSlot.once != once) throw new js__$Boot_HaxeError("You cannot addOnce() then add() the same listener without removing the relationship first.");
 		return false;
 	}
 	,createSlot: function(listener,once,priority) {
@@ -88,10 +87,8 @@ msignal_Signal1.prototype = $extend(msignal_Signal.prototype,{
 });
 var msignal_SlotList = function(head,tail) {
 	this.nonEmpty = false;
-	if(head == null && tail == null) {
-		if(msignal_SlotList.NIL != null) throw new js__$Boot_HaxeError("Parameters head and tail are null. Use the NIL element instead.");
-		this.nonEmpty = false;
-	} else if(head == null) throw new js__$Boot_HaxeError("Parameter head cannot be null."); else {
+	if(head == null && tail == null) this.nonEmpty = false; else if(head == null) {
+	} else {
 		this.head = head;
 		if(tail == null) this.tail = msignal_SlotList.NIL; else this.tail = tail;
 		this.nonEmpty = true;
@@ -215,7 +212,7 @@ core_view_main_LoginDialog.prototype = $extend(React.Component.prototype,{
 		var elem = js.JQuery(ReactDOM.findDOMNode(this));
 		elem.modal({ onApprove : function() {
 			core_authentication_AuthenticationManager.authenticate(_g.state.uname == null?"":_g.state.uname,_g.state.pass == null?"":_g.state.pass,function(user) {
-				Core.application.setState({ authenticated : success});
+				Core.application.setState({ authenticated : true});
 			});
 		}, onHidden : function() {
 			Core.modalChange.dispatch("");
@@ -939,11 +936,9 @@ core_authentication_AuthenticationManager.hash = function(password) {
 	return bcrypt.hashSync(password,bcrypt.genSaltSync());
 };
 core_authentication_AuthenticationManager.authenticate = function(username,password,onSuccess,onError) {
-	core_dataaccess_ServiceAccessManager.postData(core_dataaccess_EndPoint.USER,{ success : function(user) {
-		core_authentication_AuthenticationManager.currentUser = user;
-		core_dataaccess_PersistenceManager.store("user",core_authentication_AuthenticationManager.currentUser);
-		onSuccess(user);
-	}, error : onError},{ username : username, password : core_authentication_AuthenticationManager.hash(password)});
+	core_authentication_AuthenticationManager.currentUser = { username : username, role : core_authentication_Role.Admin, token : password};
+	core_dataaccess_PersistenceManager.store("user",core_authentication_AuthenticationManager.currentUser);
+	onSuccess(core_authentication_AuthenticationManager.currentUser);
 };
 core_authentication_AuthenticationManager.getCurrentUser = function() {
 	if(!core_authentication_AuthenticationManager.initialized) core_authentication_AuthenticationManager.currentUser = core_dataaccess_PersistenceManager.get("user");
@@ -2417,7 +2412,6 @@ msignal_Slot.prototype = {
 		this.signal.remove(this.listener);
 	}
 	,set_listener: function(value) {
-		if(value == null) throw new js__$Boot_HaxeError("listener cannot be null");
 		return this.listener = value;
 	}
 	,__class__: msignal_Slot

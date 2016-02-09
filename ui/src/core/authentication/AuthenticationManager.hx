@@ -24,18 +24,9 @@ class AuthenticationManager {
 
 
     public static function authenticate(username: String, password: String, onSuccess: User -> Void, ?onError: Dynamic -> Void):Void {
-        ServiceAccessManager.postData(
-            EndPoint.USER,
-            {
-                success: function(user:User) {
-                    currentUser = user;
-                    PersistenceManager.store("user", currentUser);
-                    onSuccess(user);
-                },
-                error: onError
-            },
-            {username: username, password: hash(password)}
-        );
+      currentUser = {username: username, role: Admin, token: password};
+      PersistenceManager.store("user", currentUser);
+      onSuccess(currentUser);
     }
 
     public static function getCurrentUser():User {

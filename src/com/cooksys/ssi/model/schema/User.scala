@@ -30,6 +30,8 @@ object User {
 
     implicit class UserQueryExtensions[C[_]](self: Query[Users, UsersRow, C]) {
       def byId(id: Int) = self filter (_.id === id)
+      def byCredentials(credentials: Credentials) =
+        self filter (u => u.username === credentials.username && u.password === credentials.password)
       def active = self filter (_.active)
       def inactive = self filterNot (_.active)
       def withRoles = self joinLeft UserRoles on (_.id === _.userId)

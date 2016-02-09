@@ -13,7 +13,8 @@ class ApiActor extends HttpActor with DatabaseActor {
 
   override def route: Route =
     pathPrefix("api") {
-      new CarrierRoute ~
+      new AuthRoute ~
+        new CarrierRoute ~
         new CustomerRoute ~
         new ManufacturerRoute ~
         new PartRoute ~

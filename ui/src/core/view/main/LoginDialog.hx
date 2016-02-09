@@ -88,9 +88,7 @@ class LoginDialog extends ReactComponent {
                     this.state.uname == null? "":this.state.uname,
                     this.state.pass == null? "":this.state.pass,
                     function(user: User){
-
-                        Core.application.setState({authenticated: success});
-
+                        Core.application.setState({authenticated: true});
                     }
                 );
             },
