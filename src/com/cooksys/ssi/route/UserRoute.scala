@@ -80,18 +80,18 @@ class UserRoute(implicit val db: Database, ec: ExecutionContext) extends BaseRou
   def update(id: Int, user: User.Update): Future[User.Result] =
     db.run(
 
-        for {
-          before <- Users.byId(id).withRoles.result
-          rows <- Users.byId(id).update(user)
-          after <- Users.byId(id).withRoles.result
-        }
-          yield User.Result(
-            rows != 0,
-            None,
-            aggregate(before).headOption.map(u => u.copy(password = None)),
-            aggregate(after).headOption.map(u => u.copy(password = None)),
-            if (rows != 0) None else Some(s"User with id=$id does not exist")
-          )
+      for {
+        before <- Users.byId(id).withRoles.result
+        rows <- Users.byId(id).update(user)
+        after <- Users.byId(id).withRoles.result
+      }
+        yield User.Result(
+          rows != 0,
+          None,
+          aggregate(before).headOption.map(u => u.copy(password = None)),
+          aggregate(after).headOption.map(u => u.copy(password = None)),
+          if (rows != 0) None else Some(s"User with id=$id does not exist")
+        )
     )
 
   def destroy(id: Int): Future[User.Result] =
@@ -109,6 +109,9 @@ class UserRoute(implicit val db: Database, ec: ExecutionContext) extends BaseRou
         )
     )
 
+  /*
+   * turns flat (UsersRow, UserRolesRow) query results into a list of User objects with seq's of roles nested within
+   */
   def aggregate(userRoles: Seq[(UsersRow, Option[UserRolesRow])]): Seq[User] =
     userRoles
       .map {
