@@ -17,7 +17,12 @@ case class Addendum(id: Option[Int],
 
 object Addendum {
 
-  trait Implicits extends JsonProtocol {
+  object Implicits extends Implicits
+
+  trait Implicits
+    extends JsonProtocol
+      with Salesperson.Implicits
+      with Contact.Implicits {
 
     implicit def fromAddendaRow(row: AddendaRow): Addendum =
       Addendum(
@@ -58,5 +63,17 @@ object Addendum {
     implicit val `JSON Addendum` = jsonFormat8(Addendum.apply)
 
   }
+
+  import Implicits._
+
+  def aggregate(seq: Seq[(AddendaRow, Option[SalespeopleRow], Option[ContactsRow])]): Seq[Addendum] =
+    seq.map {
+      case (arow, srow, crow) =>
+        (arow: Addendum)
+          .copy(
+            salesperson = srow.map(s => s: Salesperson),
+            contact = crow.map(c => c: Contact)
+          )
+    }
 
 }

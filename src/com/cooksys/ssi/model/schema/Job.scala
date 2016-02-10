@@ -3,6 +3,7 @@ package com.cooksys.ssi.model.schema
 import java.sql.Date
 import java.util.Calendar
 
+import slick.schema.Tables
 import slick.schema.Tables._
 import slick.driver.MySQLDriver.api._
 
@@ -46,9 +47,19 @@ object Job {
                        shipping: Option[Schedule],
                        installation: Option[Schedule])
 
+  type JobsRowWithDependents =
+  (JobsRow, Option[ShopsRow], Option[SalespeopleRow], Option[CustomersRow], Option[ContactsRow])
+
   object Implicits extends Implicits
 
-  trait Implicits extends JsonProtocol with Address.Implicits with Contact.Implicits {
+  trait Implicits
+    extends JsonProtocol
+      with Shop.Implicits
+      with Salesperson.Implicits
+      with Customer.Implicits
+      with Address.Implicits
+      with Contact.Implicits
+      with Addendum.Implicits {
 
     implicit def toJobsRow(job: Job): JobsRow =
       JobsRow(
@@ -92,10 +103,38 @@ object Job {
         completeDate = row.completeDate
       )
 
-    implicit def addressesFromAddressesRowAndType(rows: Seq[(String, AddressesRow)]): Addresses =
+    implicit def fromJobsRowWithDependents(row: JobsRowWithDependents): Job =
+      row match {
+        case (job, shop, salesperson, customer, contact) =>
+          Job(
+            id = Some(job.id),
+            identifier = Identifier(
+              prefix = job.prefix,
+              year = {
+                val cal = Calendar.getInstance()
+                cal.setTime(job.year)
+                cal.get(Calendar.YEAR)
+              },
+              label = job.label
+            ),
+            status = job.status,
+            description = job.description,
+            contractPrice = job.contractPrice,
+            startDate = job.startDate,
+            dueDate = job.dueDate,
+            completeDate = job.completeDate,
+            shop = shop.map(s => s: Shop),
+            salesperson = salesperson.map(s => s: Salesperson),
+            customer = customer.map(c => c: Customer),
+            contact = contact.map(c => c: Contact)
+          )
+      }
+
+
+    implicit def addressesFromAddressesRowAndType(rows: Seq[(String, Address)]): Addresses =
       Addresses(
-        shipping = rows.find(_._1 == "SHIPPING").map(row => row._2: Address),
-        invoicing = rows.find(_._1 == "INVOICING").map(row => row._2: Address)
+        shipping = rows.find(_._1 == "SHIPPING").map(_._2),
+        invoicing = rows.find(_._1 == "INVOICING").map(_._2)
       )
 
     implicit def scheduleFromSchedulesRow(row: SchedulesRow): Schedule =
@@ -104,18 +143,30 @@ object Job {
         row.completeDate
       )
 
-    implicit def schedulesFromSchedulesRows(rows: Seq[SchedulesRow]): Schedules =
+    implicit def schedulesFromSchedulesRows(rows: Seq[(String, Schedule)]): Schedules =
       Schedules(
-        engineering = rows.find(_.scheduleType == "ENGINEERING").map(s => s: Schedule),
-        mechanical = rows.find(_.scheduleType == "ENGINEERING").map(s => s: Schedule),
-        electrical = rows.find(_.scheduleType == "ENGINEERING").map(s => s: Schedule),
-        shipping = rows.find(_.scheduleType == "ENGINEERING").map(s => s: Schedule),
-        installation = rows.find(_.scheduleType == "ENGINEERING").map(s => s: Schedule)
+        engineering = rows.find(_._1 == "ENGINEERING").map(_._2),
+        mechanical = rows.find(_._1 == "MECHANICAL").map(_._2),
+        electrical = rows.find(_._1 == "ELECTRICAL").map(_._2),
+        shipping = rows.find(_._1 == "SHIPPING").map(_._2),
+        installation = rows.find(_._1 == "INSTALLATION").map(_._2)
       )
 
     implicit class JobsQueryExtensions[C[_]](self: Query[Jobs, JobsRow, C]) {
 
       def byId(id: Int) = self filter (_.id === id)
+
+      def withDependents =
+        for {
+          ((((job, shop), salesperson), customer), contact) <- {
+            self
+              .joinLeft(Shops).on(_.shopId === _.id)
+              .joinLeft(Salespeople).on(_._1.salespersonId === _.id)
+              .joinLeft(Customers).on(_._1._1.customerId === _.id)
+              .joinLeft(Contacts).on(_._1._1._1.contactId === _.id)
+          }
+        } yield
+          (job, shop, salesperson, customer, contact)
 
     }
 

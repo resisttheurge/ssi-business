@@ -34,71 +34,82 @@ class JobRoute(implicit val db: Database, ec: ExecutionContext) extends BaseRout
       }
     }
 
+  val indexQuery = Compiled(Jobs.withDependents)
+
   def index: Future[Job.Index] =
     db.run(
-      for (jobs <- Jobs.result)
-        yield Job.Index(
-          jobs.map(p => p: Job)
+      for (jobs <- indexQuery.result)
+      yield {
+        Job.Index(
+          jobs.par.map(j => j: Job).seq
         )
-    )
+      }
+  )
+
+  val singleQuery =
+    Compiled((id: Rep[Int]) => Jobs.filter(_.id === id).withDependents)
+
 
   def single(id: Int): Future[Job.Result] =
     db.run(
-      for (option <- Jobs.filter(_.id === id).result.headOption)
-        yield Job.Result(
-          option.isDefined,
-          option.map(p => p: Job),
-          None,
-          None,
-          if (option.isDefined) None
-          else Some(s"Job with id=$id does not exist")
-        )
-    )
+      for (option <- singleQuery(id).result.headOption)
+        yield {
+          Job.Result(
+            option.isDefined,
+            option.map(j => j: Job),
+            None,
+            None,
+            if (option.isDefined) None
+            else Some(s"Job with id=$id does not exist")
+          )
+        })
 
   def create(job: Job.Create): Future[Job.Result] =
     db.run(
       for {
         id <- (Jobs returning Jobs.map(_.id)) += job
-        option <- Jobs.filter(_.id === id).result.headOption
+        option <- singleQuery(id).result.headOption
       }
-        yield Job.Result(
-          option.isDefined,
-          option.map(p => p: Job),
-          None,
-          None,
-          if (option.isDefined) None
-          else Some(s"Job could not be created")
-        )
+        yield {
+          Job.Result(
+            option.isDefined,
+            option.map(j => j: Job),
+            None,
+            None,
+            if (option.isDefined) None
+            else Some(s"Job could not be created")
+          )
+        }
     )
 
   def update(id: Int, job: Job.Update): Future[Job.Result] =
     db.run(
       for {
-        before <- Jobs.filter(_.id === id).result.headOption
-        rows <- Jobs.filter(_.id === id).map(p => ()).update()
-        after <- Jobs.filter(_.id === id).result.headOption
+        before <- singleQuery(id).result.headOption
+        rows <- Jobs.byId(id).update(job)
+        after <- singleQuery(id).result.headOption
       }
         yield Job.Result(
           rows != 0,
           None,
-          before.map(p => p: Job),
-          after.map(p => p: Job),
-          if(rows != 0) None else Some(s"Job with id=$id does not exist")
+          before.map(j => j: Job),
+          after.map(j => j: Job),
+          if (rows != 0) None else Some(s"Job with id=$id does not exist")
         )
     )
 
   def destroy(id: Int): Future[Job.Result] =
     db.run(
       for {
-        before <- Jobs.filter(_.id === id).result.headOption
-        rows <- Jobs.filter(_.id === id).delete
+        before <- singleQuery(id).result.headOption
+        rows <- Jobs.byId(id).delete
       }
         yield Job.Result(
           rows != 0,
-          before.map(p => p: Job),
+          before.map(j => j: Job),
           None,
           None,
-          if(rows != 0) None else Some(s"Job with id=$id does not exist")
+          if (rows != 0) None else Some(s"Job with id=$id does not exist")
         )
     )
 
