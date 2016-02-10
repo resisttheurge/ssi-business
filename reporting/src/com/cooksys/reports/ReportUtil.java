@@ -1,10 +1,9 @@
 package com.cooksys.reports;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.cooksys.model.LayoutDrawing;
 import com.cooksys.model.ManagementReview;
@@ -19,6 +18,8 @@ import com.cooksys.model.shipment.CustomerJob;
 import com.cooksys.model.shippingGroupShipper.ShippingGroupShipper;
 import com.cooksys.test.VariableGenerator;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import pdfGenerator.util.HtmlGenerator;
 import pdfGenerator.util.PdfGenerator;
 
@@ -38,7 +39,21 @@ public class ReportUtil<T extends VariableGenerator> implements Reporting<T> {
 	public static final ReportUtil<SpecialtyItemsByPartType> SPECIALTY_ITEMS_BY_PART_TYPE = new ReportUtil<SpecialtyItemsByPartType>("Specialty Items By Part Type", "specialty_items_by_part_type.html", "part", SpecialtyItemsByPartType.class);
 	public static final ReportUtil<ShippingGroupShipper> SHIPPING_GROUP_SHIPPER = new ReportUtil<ShippingGroupShipper>("Shipping Group Shipper","shipping_group_shipper.html","sgs", ShippingGroupShipper.class);
 	public static final ReportUtil<JobShipment> JOB_SHIPMENT = new ReportUtil<JobShipment>("Job Shipment","job_shipment.html","js", JobShipment.class);
-	
+
+	public static String generateHtml(String template, Map<String, Object> variables) throws Exception {
+		Configuration config = new Configuration();
+		config.setClassForTemplateLoading(ReportUtil.class, "/");
+		Template tp = config.getTemplate(template);
+		StringWriter stringWriter = new StringWriter();
+		BufferedWriter writer = new BufferedWriter(stringWriter);
+		tp.setEncoding("UTF-8");
+		tp.process(variables, writer);
+		String htmlStr = stringWriter.toString();
+		writer.flush();
+		writer.close();
+		return "<!DOCTYPE html [ \n <!ENTITY nbsp \"&#160;\"> \n <!ENTITY deg \"&#176;\"> \n ]>" + htmlStr.substring(50);
+	}
+
 	private String template;
 	private String varName;
 	private String reportName;
@@ -70,7 +85,7 @@ public class ReportUtil<T extends VariableGenerator> implements Reporting<T> {
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
-			String htmlStr = HtmlGenerator.generate(template, getVarMap(varList));
+			String htmlStr = generateHtml(template, getVarMap(varList));
 			PdfGenerator.generate(htmlStr, baos);
 		} catch (Exception e) {
 			System.err.println("Reporting engine failed to generate report for " + reportName);
@@ -104,7 +119,7 @@ public class ReportUtil<T extends VariableGenerator> implements Reporting<T> {
 		}
 		try {
 			FileOutputStream fos = new FileOutputStream(f);
-			String htmlStr = HtmlGenerator.generate(template, getVarMap(varList));
+			String htmlStr = generateHtml(template, getVarMap(varList));
 			
 			File fun = new File("generatedString.txt");
 			fun.delete();
