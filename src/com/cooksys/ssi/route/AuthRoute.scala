@@ -1,9 +1,9 @@
 package com.cooksys.ssi.route
 
-import com.cooksys.ssi.model.schema.{Authorization, User, Credentials, Carrier}
+import akka.http.scaladsl.server.Route
+import com.cooksys.ssi.model.schema.{Authorization, Credentials, User}
 import slick.driver.MySQLDriver.api._
 import slick.schema.Tables._
-import spray.routing.Route
 
 import scala.concurrent.{ExecutionContext, Future}
 

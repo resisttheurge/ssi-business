@@ -1,8 +1,8 @@
 package com.cooksys.ssi.route
 
+import akka.http.scaladsl.server.Route
 import com.cooksys.reports.ReportUtil
 import com.cooksys.ssi.model.schema.Report
-import spray.routing.Route
 
 import scala.concurrent.{ExecutionContext, Future}
 
