@@ -16,13 +16,16 @@ class ManageFilterDialog extends ReactComponent {
 
     private var structure: TableStructure<Model>;
     private var filters: Array<Filter<Model>>;
-    private var deleteIndexes = new Array<Int>();
 
     public function new(props) {
         super(props);
 
         structure = props.structure;
         filters = structure.getFilters();
+
+        this.state = {
+            deleteIndexes: new Array<Int>()
+        }
     }
 
     private static var FILTERLISTITEM = untyped React.createClass({
@@ -46,9 +49,13 @@ class ManageFilterDialog extends ReactComponent {
     public function onDeleteClick(index: Int) {
         untyped console.log('Delete index: $index');
 
-        this.deleteIndexes.push(index);
+        var deleteIndexes = this.state.deleteIndexes;
 
+        deleteIndexes.push(index);
 
+        setState({
+            deleteIndexes: deleteIndexes
+        });
     }
 
     public override function render():ReactComponent {
@@ -64,12 +71,12 @@ class ManageFilterDialog extends ReactComponent {
         var size = filters.length;
 
         for (i in 0...size) {
-            if(deleteIndexes.indexOf(i) != -1) {
+            if(state.deleteIndexes.indexOf(i) != -1) {
                 continue;
             }
             var f = filters[i];
 
-            row.push(jsx('<$FILTERLISTITEM fid="$i" name="${f.getName()}" visible="${deleteIndexes.indexOf(i) != -1}" onClick="${onDeleteClick.bind(i)}" />'));
+            row.push(jsx('<$FILTERLISTITEM fid="$i" name="${f.getName()}" visible="${state.deleteIndexes.indexOf(i) != -1}" onClick="${onDeleteClick.bind(i)}" />'));
         }
 
 
@@ -112,7 +119,9 @@ class ManageFilterDialog extends ReactComponent {
         .modal({
             onApprove: function(){
 
-                var filters = this.deleteIndexes.map(function (i) {
+                var deleteIndexes: Array<Int> = this.state.deleteIndexes;
+
+                var filters = deleteIndexes.map(function (i) {
                    return this.filters[i];
                 });
 

@@ -404,10 +404,10 @@ StringTools.hex = function(n,digits) {
 	return s;
 };
 var core_view_main_ManageFilterDialog = function(props) {
-	this.deleteIndexes = [];
 	React.Component.call(this,props);
 	this.structure = props.structure;
 	this.filters = this.structure.getFilters();
+	this.state = { deleteIndexes : []};
 };
 core_view_main_ManageFilterDialog.__name__ = true;
 core_view_main_ManageFilterDialog.jt = function() {
@@ -417,7 +417,9 @@ core_view_main_ManageFilterDialog.__super__ = React.Component;
 core_view_main_ManageFilterDialog.prototype = $extend(React.Component.prototype,{
 	onDeleteClick: function(index) {
 		console.log("Delete index: " + index);
-		this.deleteIndexes.push(index);
+		var deleteIndexes = this.state.deleteIndexes;
+		deleteIndexes.push(index);
+		this.setState({ deleteIndexes : deleteIndexes});
 	}
 	,render: function() {
 		var openAddFilterDialog = function() {
@@ -430,9 +432,9 @@ core_view_main_ManageFilterDialog.prototype = $extend(React.Component.prototype,
 		var _g = 0;
 		while(_g < size) {
 			var i = _g++;
-			if(HxOverrides.indexOf(this.deleteIndexes,i,0) != -1) continue;
+			if(this.state.deleteIndexes.indexOf(i) != -1) continue;
 			var f = this.filters[i];
-			row.push(React.createElement(core_view_main_ManageFilterDialog.FILTERLISTITEM,{ name : f.getName(), fid : i, visible : HxOverrides.indexOf(this.deleteIndexes,i,0) != -1, onClick : (function(f1,a1) {
+			row.push(React.createElement(core_view_main_ManageFilterDialog.FILTERLISTITEM,{ name : f.getName(), fid : i, visible : this.state.deleteIndexes.indexOf(i) != -1, onClick : (function(f1,a1) {
 				return function() {
 					f1(a1);
 				};
@@ -444,7 +446,8 @@ core_view_main_ManageFilterDialog.prototype = $extend(React.Component.prototype,
 		var _g = this;
 		var elem = js.JQuery(ReactDOM.findDOMNode(this));
 		elem.modal({ onApprove : function() {
-			var filters = _g.deleteIndexes.map(function(i) {
+			var deleteIndexes = _g.state.deleteIndexes;
+			var filters = deleteIndexes.map(function(i) {
 				return _g.filters[i];
 			});
 			var _g1 = 0;
@@ -1040,9 +1043,11 @@ core_authentication_AuthenticationManager.hash = function(password) {
 	return bcrypt.hashSync(password,bcrypt.genSaltSync());
 };
 core_authentication_AuthenticationManager.authenticate = function(username,password,onSuccess,onError) {
-	core_authentication_AuthenticationManager.currentUser = { username : username, role : core_authentication_Role.Admin, token : password};
-	core_dataaccess_PersistenceManager.store("user",core_authentication_AuthenticationManager.currentUser);
-	onSuccess(core_authentication_AuthenticationManager.currentUser);
+	core_dataaccess_ServiceAccessManager.postData(core_dataaccess_EndPoint.USER,{ success : function(user) {
+		core_authentication_AuthenticationManager.currentUser = user;
+		core_dataaccess_PersistenceManager.store("user",core_authentication_AuthenticationManager.currentUser);
+		onSuccess(user);
+	}, error : onError},{ username : username, password : core_authentication_AuthenticationManager.hash(password)});
 };
 core_authentication_AuthenticationManager.getCurrentUser = function() {
 	if(!core_authentication_AuthenticationManager.initialized) core_authentication_AuthenticationManager.currentUser = core_dataaccess_PersistenceManager.get("user");
