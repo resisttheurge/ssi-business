@@ -18,10 +18,7 @@ case class Job(id: Option[Int],
                shop: Option[Shop] = None,
                salesperson: Option[Salesperson] = None,
                customer: Option[Customer] = None,
-               contact: Option[Contact] = None,
-               addresses: Option[Job.Addresses] = None,
-               schedules: Option[Job.Schedules] = None,
-               addenda: Option[Seq[Addendum]] = None)
+               contact: Option[Contact] = None)
 
 object Job {
 
@@ -37,16 +34,6 @@ object Job {
 
   case class Identifier(prefix: String, year: Int, label: String)
 
-  case class Addresses(shipping: Option[Address], invoicing: Option[Address])
-
-  case class Schedule(startDate: Option[Date], completeDate: Option[Date])
-
-  case class Schedules(engineering: Option[Schedule],
-                       mechanical: Option[Schedule],
-                       electrical: Option[Schedule],
-                       shipping: Option[Schedule],
-                       installation: Option[Schedule])
-
   type JobsRowWithDependents =
   (JobsRow, Option[ShopsRow], Option[SalespeopleRow], Option[CustomersRow], Option[ContactsRow])
 
@@ -57,7 +44,6 @@ object Job {
       with Shop.Implicits
       with Salesperson.Implicits
       with Customer.Implicits
-      with Address.Implicits
       with Contact.Implicits
       with Addendum.Implicits {
 
@@ -130,31 +116,9 @@ object Job {
           )
       }
 
-
-    implicit def addressesFromAddressesRowAndType(rows: Seq[(String, Address)]): Addresses =
-      Addresses(
-        shipping = rows.find(_._1 == "SHIPPING").map(_._2),
-        invoicing = rows.find(_._1 == "INVOICING").map(_._2)
-      )
-
-    implicit def scheduleFromSchedulesRow(row: SchedulesRow): Schedule =
-      Schedule(
-        row.startDate,
-        row.completeDate
-      )
-
-    implicit def schedulesFromSchedulesRows(rows: Seq[(String, Schedule)]): Schedules =
-      Schedules(
-        engineering = rows.find(_._1 == "ENGINEERING").map(_._2),
-        mechanical = rows.find(_._1 == "MECHANICAL").map(_._2),
-        electrical = rows.find(_._1 == "ELECTRICAL").map(_._2),
-        shipping = rows.find(_._1 == "SHIPPING").map(_._2),
-        installation = rows.find(_._1 == "INSTALLATION").map(_._2)
-      )
-
     implicit class JobsQueryExtensions[C[_]](self: Query[Jobs, JobsRow, C]) {
 
-      def byId(id: Int) = self filter (_.id === id)
+      def byId(id: Rep[Int]) = self filter (_.id === id)
 
       def withDependents =
         for {
@@ -176,7 +140,6 @@ object Job {
 
   trait JsonProtocol
     extends RootJsonProtocol
-      with Address.JsonProtocol
       with Contact.JsonProtocol
       with Shop.JsonProtocol
       with Customer.JsonProtocol
@@ -184,11 +147,7 @@ object Job {
       with Salesperson.JsonProtocol {
 
     implicit lazy val `JSON Job.Identifier` = jsonFormat3(Identifier)
-    implicit lazy val `JSON Job.Addresses` = jsonFormat2(Addresses)
-    implicit lazy val `JSON Job.Schedule` = jsonFormat2(Schedule)
-    implicit lazy val `JSON Job.Schedules` = jsonFormat5(Schedules)
-
-    implicit lazy val `JSON Job` = jsonFormat15(Job.apply)
+    implicit lazy val `JSON Job` = jsonFormat12(Job.apply)
 
     implicit lazy val `JSON Job.Index` = jsonFormat1(Index)
     implicit lazy val `JSON Job.Result` = jsonFormat5(Result)

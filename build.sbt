@@ -74,8 +74,7 @@ lazy val deps = new {
     "com.typesafe.akka" %% "akka-stream-experimental" % "2.0.+",
     "com.typesafe.akka" %% "akka-http-core-experimental" % "2.0.+",
     "com.typesafe.akka" %% "akka-http-experimental" % "2.0.+",
-    "com.typesafe.akka" %% "akka-http-spray-json-experimental" % "2.0.+" +
-      ""
+    "com.typesafe.akka" %% "akka-http-spray-json-experimental" % "2.0.+"
   )
 
   lazy val spray = Seq(

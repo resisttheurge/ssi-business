@@ -1,13 +1,17 @@
 package com.cooksys.ssi.route
 
 import akka.http.scaladsl.server.Route
-import com.cooksys.ssi.model.schema.Job
+import com.cooksys.ssi.model.schema._
 import slick.driver.MySQLDriver.api._
 import slick.schema.Tables._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class JobRoute(implicit val db: Database, ec: ExecutionContext) extends BaseRoute with Job.Implicits {
+class JobRoute(implicit val db: Database, ec: ExecutionContext)
+  extends BaseRoute
+    with Job.Implicits
+    with AllJobAddresses.Implicits
+    with JobSchedules.Implicits {
 
   override def internal: Route =
     pathPrefix("jobs") {
@@ -25,29 +29,109 @@ class JobRoute(implicit val db: Database, ec: ExecutionContext) extends BaseRout
             single(id)
           } ~ patch {
             entity(as[Job.Update]) { job =>
-              update(id, job)
+              ???
             }
           } ~ delete {
-            destroy(id)
+            ???
+          }
+        } ~ pathPrefix("addresses") {
+          pathEndOrSingleSlash {
+            get {
+              indexJobAddresses(id)
+            }
+          } ~ pathPrefix(Segment) { addressType =>
+            pathEndOrSingleSlash {
+              get {
+                ???
+              } ~ patch {
+                entity(as[Address.Update]) { schedule =>
+                  ???
+                }
+              } ~ delete {
+                ???
+              }
+            }
+          }
+        } ~ pathPrefix("schedules") {
+          pathEndOrSingleSlash {
+            get {
+              indexJobSchedules(id)
+            }
+          } ~ pathPrefix(Segment) { scheduleType =>
+            pathEndOrSingleSlash {
+              get {
+                ???
+              } ~ patch {
+                entity(as[Schedule.Update]) { schedule =>
+                  ???
+                }
+              } ~ delete {
+                ???
+              }
+            }
+          }
+        } ~ pathPrefix("addenda") {
+          pathEndOrSingleSlash {
+            get {
+              ???
+            } ~ post {
+              ???
+            }
+          } ~ pathPrefix(IntNumber) { addendumId =>
+            pathEndOrSingleSlash {
+              get {
+                ???
+              } ~ patch {
+                entity(as[Addendum.Update]) { addendum =>
+                  ???
+                }
+              } ~ delete {
+                ???
+              }
+            }
           }
         }
       }
     }
 
-  val indexQuery = Compiled(Jobs.withDependents)
+  val indexQuery = Compiled(Jobs.withDependents).result
 
   def index: Future[Job.Index] =
     db.run(
-      for (jobs <- indexQuery.result)
-      yield {
-        Job.Index(
-          jobs.par.map(j => j: Job).seq
-        )
+      for (jobs <- indexQuery)
+        yield {
+          Job.Index(
+            jobs.par.map(j => j: Job).seq
+          )
+        }
+    )
+
+  val indexAddressesQuery =
+    Compiled((id: Rep[Int]) => JobAddresses.byJobId(id) join Addresses on (_.addressId === _.id))
+
+  def indexJobAddresses(id: Int): Future[AllJobAddresses] =
+    db.run(
+      for {
+        results <- indexAddressesQuery(id).result
+      } yield {
+        results.toSet: AllJobAddresses
       }
-  )
+    )
+
+  val indexSchedulesQuery =
+    Compiled((id: Rep[Int]) => Schedules.byJobId(id))
+
+  def indexJobSchedules(id: Int): Future[JobSchedules] =
+    db.run(
+      for {
+        results <- indexSchedulesQuery(id).result
+      } yield {
+        results.toSet: JobSchedules
+      }
+    )
 
   val singleQuery =
-    Compiled((id: Rep[Int]) => Jobs.filter(_.id === id).withDependents)
+    Compiled((id: Rep[Int]) => Jobs.byId(id).withDependents)
 
 
   def single(id: Int): Future[Job.Result] =
@@ -81,36 +165,4 @@ class JobRoute(implicit val db: Database, ec: ExecutionContext) extends BaseRout
           )
         }
     )
-
-  def update(id: Int, job: Job.Update): Future[Job.Result] =
-    db.run(
-      for {
-        before <- singleQuery(id).result.headOption
-        rows <- Jobs.byId(id).update(job)
-        after <- singleQuery(id).result.headOption
-      }
-        yield Job.Result(
-          rows != 0,
-          None,
-          before.map(j => j: Job),
-          after.map(j => j: Job),
-          if (rows != 0) None else Some(s"Job with id=$id does not exist")
-        )
-    )
-
-  def destroy(id: Int): Future[Job.Result] =
-    db.run(
-      for {
-        before <- singleQuery(id).result.headOption
-        rows <- Jobs.byId(id).delete
-      }
-        yield Job.Result(
-          rows != 0,
-          before.map(j => j: Job),
-          None,
-          None,
-          if (rows != 0) None else Some(s"Job with id=$id does not exist")
-        )
-    )
-
 }
