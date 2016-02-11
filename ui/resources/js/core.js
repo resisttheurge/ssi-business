@@ -380,8 +380,34 @@ core_view_job_modal_EditJobDialog.prototype = $extend(React.Component.prototype,
 	}
 	,__class__: core_view_job_modal_EditJobDialog
 });
-var core_view_main_ManageFilterDialog = function() {
-	React.Component.call(this);
+var core_view_UidGenerator = function() { };
+core_view_UidGenerator.__name__ = true;
+core_view_UidGenerator.nextId = function() {
+	if(core_view_UidGenerator.label == 16777215) core_view_UidGenerator.label = 0;
+	var result = core_view_UidGenerator.prefix + StringTools.hex(core_view_UidGenerator.label,8);
+	core_view_UidGenerator.label += 1;
+	return result;
+};
+core_view_UidGenerator.reset = function() {
+	core_view_UidGenerator.label = 0;
+};
+var StringTools = function() { };
+StringTools.__name__ = true;
+StringTools.hex = function(n,digits) {
+	var s = "";
+	var hexChars = "0123456789ABCDEF";
+	do {
+		s = hexChars.charAt(n & 15) + s;
+		n >>>= 4;
+	} while(n > 0);
+	if(digits != null) while(s.length < digits) s = "0" + s;
+	return s;
+};
+var core_view_main_ManageFilterDialog = function(props) {
+	React.Component.call(this,props);
+	this.structure = props.structure;
+	this.filters = this.structure.getFilters();
+	this.state = { deleteIndexes : []};
 };
 core_view_main_ManageFilterDialog.__name__ = true;
 core_view_main_ManageFilterDialog.jt = function() {
@@ -389,17 +415,49 @@ core_view_main_ManageFilterDialog.jt = function() {
 };
 core_view_main_ManageFilterDialog.__super__ = React.Component;
 core_view_main_ManageFilterDialog.prototype = $extend(React.Component.prototype,{
-	render: function() {
+	onDeleteClick: function(index) {
+		console.log("Delete index: " + index);
+		var deleteIndexes = this.state.deleteIndexes;
+		deleteIndexes.push(index);
+		this.setState({ deleteIndexes : deleteIndexes});
+	}
+	,render: function() {
 		var openAddFilterDialog = function() {
 			Core.modalChange.dispatch("job-filter");
 		};
 		var initialize = function(input) {
 		};
-		return React.createElement("div",{ id : "content-modal", ref : initialize, className : "ui small modal"},React.createElement("div",{ className : "header"},React.createElement("i",{ className : "list layout icon"}),"Manage Filters"),React.createElement("div",{ className : "content"},React.createElement("div",{ className : "ui grid"},React.createElement("div",{ className : "nine wide right floated column"},React.createElement("div",{ className : "ui bottom aligned small divided list"},React.createElement(core_view_main_ManageFilterDialog.FILTERLISTITEM,{ name : "Arbitrary Filter Name 1", fid : "1"}),React.createElement(core_view_main_ManageFilterDialog.FILTERLISTITEM,{ name : "Arbitrary Filter Name 2", fid : "2"}),React.createElement(core_view_main_ManageFilterDialog.FILTERLISTITEM,{ name : "Arbitrary Filter Name 3", fid : "3"}))),React.createElement("div",{ className : "six wide column"},React.createElement("div",{ onClick : openAddFilterDialog, className : "ui button"},"Add New Filter!")))),React.createElement("div",{ className : "actions"},React.createElement("div",{ className : "ui black cancel button"},"Cancel"),React.createElement("div",{ className : "ui approve right labeled icon button"},"Ok",React.createElement("i",{ className : "checkmark icon"}))));
+		var row = [];
+		var size = this.filters.length;
+		var _g = 0;
+		while(_g < size) {
+			var i = _g++;
+			if(this.state.deleteIndexes.indexOf(i) != -1) continue;
+			var f = this.filters[i];
+			row.push(React.createElement(core_view_main_ManageFilterDialog.FILTERLISTITEM,{ name : f.getName(), fid : i, visible : this.state.deleteIndexes.indexOf(i) != -1, onClick : (function(f1,a1) {
+				return function() {
+					f1(a1);
+				};
+			})($bind(this,this.onDeleteClick),i)}));
+		}
+		return React.createElement("div",{ id : "content-modal", ref : initialize, className : "ui small modal"},React.createElement("div",{ className : "header"},React.createElement("i",{ className : "list layout icon"}),"Manage Filters"),React.createElement("div",{ className : "content"},React.createElement("div",{ className : "ui grid"},React.createElement("div",{ className : "nine wide right floated column"},React.createElement("div",{ className : "ui bottom aligned small divided list"},row)),React.createElement("div",{ className : "six wide column"},React.createElement("div",{ onClick : openAddFilterDialog, className : "ui button"},"Add New Filter!")))),React.createElement("div",{ className : "actions"},React.createElement("div",{ className : "ui black cancel button"},"Cancel"),React.createElement("div",{ className : "ui approve right labeled icon button"},"Ok",React.createElement("i",{ className : "checkmark icon"}))));
 	}
 	,componentDidMount: function() {
+		var _g = this;
 		var elem = js.JQuery(ReactDOM.findDOMNode(this));
-		elem.modal({ onHidden : function() {
+		elem.modal({ onApprove : function() {
+			var deleteIndexes = _g.state.deleteIndexes;
+			var filters = deleteIndexes.map(function(i) {
+				return _g.filters[i];
+			});
+			var _g1 = 0;
+			while(_g1 < filters.length) {
+				var i1 = filters[_g1];
+				++_g1;
+				_g.structure.removeFilter(i1);
+			}
+			_g.structure.saveFilters();
+		}, onHidden : function() {
 			Core.modalChange.dispatch("");
 		}}).modal("setting","closable",false).modal("setting","transition","vertical flip").modal("show");
 	}
@@ -762,6 +820,60 @@ core_view_shipment_modal_EditShipmentDialog.prototype = $extend(React.Component.
 	}
 	,__class__: core_view_shipment_modal_EditShipmentDialog
 });
+var core_view_job_modal_NewFilterDialog = function(props) {
+	this.fields = [];
+	React.Component.call(this,props);
+	var structure = props.structure;
+	if(structure.jobTable) this.isJob = true; else this.isJob = false;
+	var ordering = structure.generateDefaultOrder([]);
+	this.fields = ordering.fields;
+	console.log("Names: " + Std.string(this.fields));
+	console.log("Is Job: " + Std.string(this.isJob));
+	var map = new haxe_ds_StringMap();
+	this.state = { struct : structure, filterMap : map, filter : new core_sorting_Filter(ordering,map)};
+};
+core_view_job_modal_NewFilterDialog.__name__ = true;
+core_view_job_modal_NewFilterDialog.jt = function() {
+	return this;
+};
+core_view_job_modal_NewFilterDialog.__super__ = React.Component;
+core_view_job_modal_NewFilterDialog.prototype = $extend(React.Component.prototype,{
+	handleOnChange: function(name,value) {
+		if(name == "filterName") this.state.filter.setName(value); else {
+			var map = this.state.filterMap;
+			{
+				if(__map_reserved[name] != null) map.setReserved(name,value); else map.h[name] = value;
+				value;
+			}
+		}
+	}
+	,render: function() {
+		var row = [];
+		if(this.isJob) {
+			row.push(React.createElement(core_view_job_modal_NewFilterDialog.DROPDOWN,{ label : "Staus", items : core_view_job_modal_NewFilterDialog.statusTypes, def : "ACTIVE", onChange : $bind(this,this.handleOnChange), key : core_view_UidGenerator.nextId(), title : "Status"}));
+			row.push(React.createElement(core_view_job_modal_NewFilterDialog.DROPDOWN,{ label : "Prefix", items : core_view_job_modal_NewFilterDialog.prefixTypes, def : "ALL", onChange : $bind(this,this.handleOnChange), key : core_view_UidGenerator.nextId(), title : "Prefix"}));
+		}
+		var i = 1;
+		var _g = 0;
+		var _g1 = this.fields;
+		while(_g < _g1.length) {
+			var field = _g1[_g];
+			++_g;
+			row.push(React.createElement(core_view_job_modal_NewFilterDialog.FIELD,{ label : field.rep, onChange : $bind(this,this.handleOnChange), name : field.name, value : "", key : core_view_UidGenerator.nextId()}));
+		}
+		return React.createElement("div",{ id : "content-modal", className : "ui small modal"},React.createElement("div",{ className : "header"},React.createElement("i",{ className : "list layout icon"}),"Add New Filter"),React.createElement("div",{ className : "content"},React.createElement("div",{ className : "ui grid"},"x",React.createElement("div",{ className : "nine wide right floated column"},React.createElement("div",null,React.createElement(core_view_job_modal_NewFilterDialog.FIELD,{ label : "Filter Name", onChange : $bind(this,this.handleOnChange), name : "filterName", value : "", key : core_view_UidGenerator.nextId()})),React.createElement("div",{ className : "ui bottom aligned small divided list"},row)))),React.createElement("div",{ className : "actions"},React.createElement("div",{ className : "ui black cancel button"},"Cancel"),React.createElement("div",{ className : "ui approve right labeled icon button"},"Ok",React.createElement("i",{ className : "checkmark icon"}))));
+	}
+	,componentDidMount: function() {
+		var _g = this;
+		var elem = js.JQuery(ReactDOM.findDOMNode(this));
+		elem.modal({ onApprove : function() {
+			_g.state.struct.addFilter(_g.state.filter);
+		}, onHidden : function() {
+			Core.modalChange.dispatch("");
+		}}).modal("setting","closable",false).modal("setting","transition","vertical flip").modal("show");
+	}
+	,__class__: core_view_job_modal_NewFilterDialog
+});
 var msignal_Signal2 = function(type1,type2) {
 	msignal_Signal.call(this,[type1,type2]);
 };
@@ -814,12 +926,12 @@ Core.prototype = $extend(React.Component.prototype,{
 	}
 	,componentDidMount: function() {
 		var modalsElem = window.document.getElementById("modals");
-		var dataObj = { editJobObj : this.state.editJobObj, editJobMainObj : this.state.editJobMainObj, editObj : this.state.editObj};
+		var dataObj = { editJobObj : this.state.editJobObj, editJobMainObj : this.state.editJobMainObj, editObj : this.state.editObj, structure : this.state.content.props.structure};
 		ReactDOM.render(React.createElement(Core.MODALELEMENT,{ index : this.state.currentModal, dataObj : dataObj}),modalsElem);
 	}
 	,componentDidUpdate: function(prevProps,prevState) {
 		var modalsElem = window.document.getElementById("modals");
-		var dataObj = { editJobObj : this.state.editJobObj, editJobMainObj : this.state.editJobMainObj, editObj : this.state.editObj};
+		var dataObj = { editJobObj : this.state.editJobObj, editJobMainObj : this.state.editJobMainObj, editObj : this.state.editObj, structure : this.state.content.props.structure};
 		ReactDOM.render(React.createElement(Core.MODALELEMENT,{ index : this.state.currentModal, dataObj : dataObj}),modalsElem);
 	}
 	,componentWillUpdate: function(nextProps,nextState) {
@@ -866,6 +978,13 @@ HxOverrides.remove = function(a,obj) {
 	a.splice(i,1);
 	return true;
 };
+HxOverrides.iter = function(a) {
+	return { cur : 0, arr : a, hasNext : function() {
+		return this.cur < this.arr.length;
+	}, next : function() {
+		return this.arr[this.cur++];
+	}};
+};
 Math.__name__ = true;
 var Reflect = function() { };
 Reflect.__name__ = true;
@@ -901,18 +1020,6 @@ StringBuf.prototype = {
 	}
 	,__class__: StringBuf
 };
-var StringTools = function() { };
-StringTools.__name__ = true;
-StringTools.hex = function(n,digits) {
-	var s = "";
-	var hexChars = "0123456789ABCDEF";
-	do {
-		s = hexChars.charAt(n & 15) + s;
-		n >>>= 4;
-	} while(n > 0);
-	if(digits != null) while(s.length < digits) s = "0" + s;
-	return s;
-};
 var Type = function() { };
 Type.__name__ = true;
 Type.getClass = function(o) {
@@ -936,9 +1043,11 @@ core_authentication_AuthenticationManager.hash = function(password) {
 	return bcrypt.hashSync(password,bcrypt.genSaltSync());
 };
 core_authentication_AuthenticationManager.authenticate = function(username,password,onSuccess,onError) {
-	core_authentication_AuthenticationManager.currentUser = { username : username, role : core_authentication_Role.Admin, token : password};
-	core_dataaccess_PersistenceManager.store("user",core_authentication_AuthenticationManager.currentUser);
-	onSuccess(core_authentication_AuthenticationManager.currentUser);
+	core_dataaccess_ServiceAccessManager.postData(core_dataaccess_EndPoint.USER,{ success : function(user) {
+		core_authentication_AuthenticationManager.currentUser = user;
+		core_dataaccess_PersistenceManager.store("user",core_authentication_AuthenticationManager.currentUser);
+		onSuccess(user);
+	}, error : onError},{ username : username, password : core_authentication_AuthenticationManager.hash(password)});
 };
 core_authentication_AuthenticationManager.getCurrentUser = function() {
 	if(!core_authentication_AuthenticationManager.initialized) core_authentication_AuthenticationManager.currentUser = core_dataaccess_PersistenceManager.get("user");
@@ -1275,12 +1384,33 @@ core_models_ShipmentStatus.CANCELLED.__enum__ = core_models_ShipmentStatus;
 core_models_ShipmentStatus.DELETED = ["DELETED",4];
 core_models_ShipmentStatus.DELETED.toString = $estr;
 core_models_ShipmentStatus.DELETED.__enum__ = core_models_ShipmentStatus;
-var core_sorting_Filter = function() {
+var core_sorting_Filter = function(ordering,filterMap) {
+	this.ordering = ordering;
+	this.filterMap = filterMap;
 };
 core_sorting_Filter.__name__ = true;
 core_sorting_Filter.prototype = {
 	filter: function(data) {
-		return false;
+		var fieldData = this.ordering.orderData(data);
+		var _g = 0;
+		while(_g < fieldData.length) {
+			var field = fieldData[_g];
+			++_g;
+			var filterValue = this.filterMap.get(field.field.name);
+			if(filterValue != null && filterValue.length > 0) {
+				if(Std.string(field.data).indexOf(filterValue) == -1) return false;
+			}
+		}
+		return true;
+	}
+	,getFilterMap: function() {
+		return this.filterMap;
+	}
+	,setName: function(name) {
+		this.filterName = name;
+	}
+	,getName: function() {
+		return this.filterName;
 	}
 	,__class__: core_sorting_Filter
 };
@@ -1328,10 +1458,76 @@ var core_structure_TableStructure = function() {
 core_structure_TableStructure.__name__ = true;
 core_structure_TableStructure.prototype = {
 	addFilter: function(filter) {
+		console.log("Adding Filter: " + Std.string(filter));
 		this.filterMap.push(filter);
+		this.saveFilters();
 	}
 	,removeFilter: function(filter) {
 		HxOverrides.remove(this.filterMap,filter);
+		this.saveFilters();
+	}
+	,getFilters: function() {
+		return this.filterMap;
+	}
+	,setFilterKey: function(filterKey) {
+		this.filterKey = filterKey;
+	}
+	,loadFilters: function() {
+		if(this.filterKey != null) {
+			var maps = core_dataaccess_PersistenceManager.get(this.filterKey,false);
+			if(maps != null && maps.filters != null) {
+				var ordering = this.generateDefaultOrder([]);
+				var temp = [];
+				var _g = 0;
+				var _g1 = maps.filters;
+				while(_g < _g1.length) {
+					var f = _g1[_g];
+					++_g;
+					if(f.data != null) {
+						var entires = f.data;
+						if(entires != null) {
+							var dataMap = new haxe_ds_StringMap();
+							var _g2 = 0;
+							while(_g2 < entires.length) {
+								var e = entires[_g2];
+								++_g2;
+								var k = e.key;
+								var v = e.val;
+								if(__map_reserved[k] != null) dataMap.setReserved(k,v); else dataMap.h[k] = v;
+								v;
+							}
+							var filter = new core_sorting_Filter(ordering,dataMap);
+							filter.setName(f.name);
+							temp.push(filter);
+						}
+					}
+				}
+				this.filterMap = temp;
+			}
+		}
+	}
+	,saveFilters: function() {
+		var filters = [];
+		var _g = 0;
+		var _g1 = this.filterMap;
+		while(_g < _g1.length) {
+			var filter = _g1[_g];
+			++_g;
+			var entires = [];
+			var dataMap = filter.getFilterMap();
+			var $it0 = dataMap.keys();
+			while( $it0.hasNext() ) {
+				var key = $it0.next();
+				var val;
+				val = __map_reserved[key] != null?dataMap.getReserved(key):dataMap.h[key];
+				entires.push({ key : key, val : val});
+			}
+			filters.push({ data : entires, name : filter.getName()});
+		}
+		if(this.filterKey != null) core_dataaccess_PersistenceManager.store(this.filterKey,{ filters : filters},false);
+	}
+	,createFilter: function(filters) {
+		throw new js__$Boot_HaxeError("You must override createFilter in ${Type.getClassName(Type.getClass(this))}.");
 	}
 	,filterData: function(data) {
 		var _g = this;
@@ -1363,17 +1559,6 @@ core_structure_TableStructure.prototype = {
 		throw new js__$Boot_HaxeError("You must override cellFormatter in ${Type.getClassName(Type.getClass(this))}.");
 	}
 	,__class__: core_structure_TableStructure
-};
-var core_view_UidGenerator = function() { };
-core_view_UidGenerator.__name__ = true;
-core_view_UidGenerator.nextId = function() {
-	if(core_view_UidGenerator.label == 16777215) core_view_UidGenerator.label = 0;
-	var result = core_view_UidGenerator.prefix + StringTools.hex(core_view_UidGenerator.label,8);
-	core_view_UidGenerator.label += 1;
-	return result;
-};
-core_view_UidGenerator.reset = function() {
-	core_view_UidGenerator.label = 0;
 };
 var core_view_abm_AbmViewMenu = function() {
 	React.Component.call(this);
@@ -2366,6 +2551,43 @@ core_view_shipment_modal_NewShpmntModalComponents.__name__ = true;
 core_view_shipment_modal_NewShpmntModalComponents.jt = function() {
 	return this;
 };
+var haxe_IMap = function() { };
+haxe_IMap.__name__ = true;
+var haxe_ds_StringMap = function() {
+	this.h = { };
+};
+haxe_ds_StringMap.__name__ = true;
+haxe_ds_StringMap.__interfaces__ = [haxe_IMap];
+haxe_ds_StringMap.prototype = {
+	get: function(key) {
+		if(__map_reserved[key] != null) return this.getReserved(key);
+		return this.h[key];
+	}
+	,setReserved: function(key,value) {
+		if(this.rh == null) this.rh = { };
+		this.rh["$" + key] = value;
+	}
+	,getReserved: function(key) {
+		if(this.rh == null) return null; else return this.rh["$" + key];
+	}
+	,keys: function() {
+		var _this = this.arrayKeys();
+		return HxOverrides.iter(_this);
+	}
+	,arrayKeys: function() {
+		var out = [];
+		for( var key in this.h ) {
+		if(this.h.hasOwnProperty(key)) out.push(key);
+		}
+		if(this.rh != null) {
+			for( var key in this.rh ) {
+			if(key.charCodeAt(0) == 36) out.push(key.substr(1));
+			}
+		}
+		return out;
+	}
+	,__class__: haxe_ds_StringMap
+};
 var js__$Boot_HaxeError = function(val) {
 	Error.call(this);
 	this.val = val;
@@ -2465,9 +2687,13 @@ msignal_Slot2.prototype = $extend(msignal_Slot.prototype,{
 	}
 	,__class__: msignal_Slot2
 });
+function $iterator(o) { if( o instanceof Array ) return function() { return HxOverrides.iter(o); }; return typeof(o.iterator) == 'function' ? $bind(o,o.iterator) : o.iterator; }
 var $_, $fid = 0;
 function $bind(o,m) { if( m == null ) return null; if( m.__id__ == null ) m.__id__ = $fid++; var f; if( o.hx__closures__ == null ) o.hx__closures__ = {}; else f = o.hx__closures__[m.__id__]; if( f == null ) { f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; o.hx__closures__[m.__id__] = f; } return f; }
 msignal_SlotList.NIL = new msignal_SlotList(null,null);
+var q = window.jQuery;
+var js = js || {}
+js.JQuery = q;
 if(Array.prototype.indexOf) HxOverrides.indexOf = function(a,o,i) {
 	return Array.prototype.indexOf.call(a,o,i);
 };
@@ -2495,9 +2721,7 @@ if(Array.prototype.filter == null) Array.prototype.filter = function(f1) {
 	}
 	return a1;
 };
-var q = window.jQuery;
-var js = js || {}
-js.JQuery = q;
+var __map_reserved = {}
 core_view_main_LoginDialog.displayName = "LoginDialog";
 core_view_job_modal_NewJobDialog.displayName = "NewJobDialog";
 core_view_job_modal_AddJobFilterDialog.displayName = "AddJobFilterDialog";
@@ -2509,9 +2733,11 @@ core_view_job_modal_ManageJobFilterDialog.displayName = "ManageJobFilterDialog";
 core_view_job_modal_EditJobDialog.options = [];
 core_view_job_modal_EditJobDialog.items = [];
 core_view_job_modal_EditJobDialog.displayName = "EditJobDialog";
+core_view_UidGenerator.prefix = "UID-";
+core_view_UidGenerator.label = 0;
 core_view_main_ManageFilterDialog.FILTERLISTITEM = React.createClass({ render : function() {
-	var key = "filter-" + (this.props.fid - key);
-	return React.createElement("div",{ key : key, className : "item"},React.createElement("div",{ className : "right floated content"},React.createElement("div",{ className : "ui mini button"},"Delete")),React.createElement("i",{ className : "filter icon"}),React.createElement("div",{ className : "content"},this.props.name));
+	var onClick = this.props.onClick;
+	return React.createElement("div",{ visible : this.props.visible, key : "filter-" + core_view_UidGenerator.nextId(), className : "item"},React.createElement("div",{ className : "right floated content"},React.createElement("div",{ filterIndex : this.props.fid, onClick : onClick, className : "ui mini button"},"Delete")),React.createElement("i",{ className : "filter icon"}),React.createElement("div",{ className : "content"},this.props.name));
 }});
 core_view_main_ManageFilterDialog.displayName = "ManageFilterDialog";
 core_view_dwg_modal_NewDwgDialog.displayName = "NewDwgDialog";
@@ -2524,6 +2750,43 @@ core_view_abm_modal_NewAbmDialog.displayName = "NewAbmDialog";
 core_view_abm_modal_EditAbmDialog.displayName = "EditAbmDialog";
 core_view_shipment_modal_NewShipmentDialog.displayName = "NewShipmentDialog";
 core_view_shipment_modal_EditShipmentDialog.displayName = "EditShipmentDialog";
+core_view_job_modal_NewFilterDialog.statusTypes = ["ALL","INACTIVE","ACTIVE","COMPLETED","CANCELLED","DELETED"];
+core_view_job_modal_NewFilterDialog.prefixTypes = ["ALL","B","F","FC","FE","FR","FS","M","MF","MT","RG","BM","LM","MM","D","G","DR","EE","ME","MS","TM"];
+core_view_job_modal_NewFilterDialog.FIELD = React.createClass({ handleOnChange : function(e) {
+	var value = e.target.value;
+	var name = this.props.name;
+	this.props.onChange(name,value);
+	this.props.value = value;
+}, render : function() {
+	var p = this.props;
+	var type;
+	if(p.type == null) type = "text"; else type = p.type;
+	var pattern;
+	if(p.pattern == null) pattern = ""; else pattern = p.pattern;
+	return React.createElement("div",{ className : p.className},React.createElement("label",null,p.label),React.createElement("input",{ onChange : this.handleOnChange, name : p.name, value : this.props.value, type : type, ref : p.mask, placeholder : p.pholder, pattern : pattern}));
+}});
+core_view_job_modal_NewFilterDialog.DROPDOWN = React.createClass({ getInitialState : function() {
+	var items = [];
+	var rawItems = this.props.items;
+	var _g = 0;
+	while(_g < rawItems.length) {
+		var abr = rawItems[_g];
+		++_g;
+		items.push(React.createElement("div",{ 'data-value' : abr, key : "static-" + core_view_UidGenerator.nextId(), className : "item"},abr));
+	}
+	var title = this.props.title;
+	return { itms : items, firstSelected : this.props.def == null?"default":this.props.def, title : title};
+}, initialize : function(input) {
+	if(input == null) return;
+	var elem = js.JQuery(ReactDOM.findDOMNode(input));
+	elem.dropdown({ onChange : this.handleOnChange}).dropdown("set selected",this.state.firstSelected);
+}, handleOnChange : function(value,text,selectedItem) {
+	var name = this.props.label;
+	this.props.onChange(name,value);
+}, render : function() {
+	return React.createElement("div",{ ref : this.initialize, className : "ui search selection dropdown"},React.createElement("input",{ name : this.state.title, type : "hidden"}),React.createElement("i",{ className : "dropdown icon"}),React.createElement("div",{ className : "default text"},this.state.title),React.createElement("div",{ className : "menu"},this.state.itms));
+}});
+core_view_job_modal_NewFilterDialog.displayName = "NewFilterDialog";
 Core.viewChange = new msignal_Signal2();
 Core.modalChange = new msignal_Signal1();
 Core.jobSelected = new msignal_Signal1();
@@ -2554,7 +2817,7 @@ Core.MODALELEMENT = React.createClass({ componentDidMount : function() {
 		comp = React.createElement(core_view_job_modal_EditJobDialog,{ job : dataObj.editJobObj, id : "editjob-dialog", curJob : dataObj.editJobMainObj, key : "editjob-dialog"});
 		break;
 	case "mng-filter":
-		comp = React.createElement(core_view_main_ManageFilterDialog,{ id : "mfil-job-dialog", key : "mfil-job-dialog"});
+		comp = React.createElement(core_view_main_ManageFilterDialog,{ id : "mfil-job-dialog", structure : dataObj.structure, key : "mfil-job-dialog"});
 		break;
 	case "new-dwg":
 		comp = React.createElement(core_view_dwg_modal_NewDwgDialog,{ id : "newdwg-dialog", key : "newdwg-dialog"});
@@ -2586,6 +2849,9 @@ Core.MODALELEMENT = React.createClass({ componentDidMount : function() {
 	case "edit-shpmnt":
 		comp = React.createElement(core_view_shipment_modal_EditShipmentDialog,{ job : dataObj.curJob, id : "editmark-dialog", shpmnt : dataObj.editObj, key : "editmark-dialog"});
 		break;
+	case "job-filter":
+		comp = React.createElement(core_view_job_modal_NewFilterDialog,{ id : "newfilter-dialog", structure : dataObj.structure, key : "newfilter-dialog"});
+		break;
 	default:
 		comp = React.createElement("div",null);
 	}
@@ -2597,8 +2863,6 @@ core_dataaccess_PersistenceManager.localStorage = js_Browser.getLocalStorage();
 core_dataaccess_PersistenceManager.sessionStorage = js_Browser.getSessionStorage();
 core_dataaccess_ServiceAccessManager.baseUrl = "";
 core_dataaccess_ServiceAccessManager.contextRoot = "api/";
-core_view_UidGenerator.prefix = "UID-";
-core_view_UidGenerator.label = 0;
 core_view_abm_AbmViewMenu.displayName = "AbmViewMenu";
 core_view_abm_modal_NewAbmModalComponents.DIVHEADER = React.createClass({ render : function() {
 	return React.createElement("h4",{ className : "ui dividing header"},this.props.value);
@@ -3097,6 +3361,8 @@ core_view_rms_RmsViewMenu.displayName = "RmsViewMenu";
 core_view_main_ViewRegistry.views = { jobView : function(content) {
 	var structure = new core_view_job_structure_JobTableStructure();
 	var order = structure.generateDefaultOrder(content);
+	structure.setFilterKey("job-filter");
+	structure.loadFilters();
 	var cls = ["selectable"];
 	return React.createElement(core_view_components_TableComponent,{ ordering : order, classes : cls, structure : structure, data : content});
 }, jobMenu : function() {
@@ -3110,6 +3376,8 @@ core_view_main_ViewRegistry.views = { jobView : function(content) {
 }, dwgView : function(content1) {
 	var structure1 = new core_view_dwg_structure_DwgTableStructure();
 	var order1 = structure1.generateDefaultOrder(content1);
+	structure1.setFilterKey("dwg-filter");
+	structure1.loadFilters();
 	var cls1 = ["selectable"];
 	return React.createElement(core_view_components_TableComponent,{ ordering : order1, classes : cls1, structure : structure1, data : content1});
 }, shpmntMenu : function() {
@@ -3117,6 +3385,8 @@ core_view_main_ViewRegistry.views = { jobView : function(content) {
 }, shpmntView : function(content2) {
 	var structure2 = new core_view_shipment_structure_ShipmentTableStructure();
 	var order2 = structure2.generateDefaultOrder(content2);
+	structure2.setFilterKey("shpmnt-filter");
+	structure2.loadFilters();
 	var cls2 = ["selectable"];
 	return React.createElement(core_view_components_TableComponent,{ ordering : order2, classes : cls2, structure : structure2, data : content2});
 }, abmMenu : function() {
@@ -3124,6 +3394,8 @@ core_view_main_ViewRegistry.views = { jobView : function(content) {
 }, abmView : function(content3) {
 	var structure3 = new core_view_abm_structure_AbmTableStructure();
 	var order3 = structure3.generateDefaultOrder(content3);
+	structure3.setFilterKey("abm-filter");
+	structure3.loadFilters();
 	var cls3 = ["selectable"];
 	return React.createElement(core_view_components_TableComponent,{ ordering : order3, classes : cls3, structure : structure3, data : content3});
 }, markMenu : function() {
@@ -3131,6 +3403,8 @@ core_view_main_ViewRegistry.views = { jobView : function(content) {
 }, markView : function(content4) {
 	var structure4 = new core_view_mark_structure_MarkTableStructure();
 	var order4 = structure4.generateDefaultOrder(content4);
+	structure4.setFilterKey("mark-filter");
+	structure4.loadFilters();
 	var cls4 = ["selectable"];
 	return React.createElement(core_view_components_TableComponent,{ ordering : order4, classes : cls4, structure : structure4, data : content4});
 }, rmsMenu : function() {
@@ -3138,6 +3412,8 @@ core_view_main_ViewRegistry.views = { jobView : function(content) {
 }, rmsView : function(content5) {
 	var structure5 = new core_view_rms_structure_RmsTableStructure();
 	var order5 = structure5.generateDefaultOrder(content5);
+	structure5.setFilterKey("rms-filter");
+	structure5.loadFilters();
 	var cls5 = ["selectable"];
 	return React.createElement(core_view_components_TableComponent,{ ordering : order5, classes : cls5, structure : structure5, data : content5});
 }};
