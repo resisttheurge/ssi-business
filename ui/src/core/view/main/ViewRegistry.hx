@@ -34,6 +34,9 @@ class ViewRegistry {
 
             var order = structure.generateDefaultOrder(content);
 
+            structure.setFilterKey("job-filter");
+            structure.loadFilters();
+
             var cls = ["selectable"];
 
             return jsx('
@@ -67,6 +70,9 @@ class ViewRegistry {
 
             var order = structure.generateDefaultOrder(content);
 
+            structure.setFilterKey("dwg-filter");
+            structure.loadFilters();
+
             var cls = ["selectable"];
 
             return jsx('
@@ -83,6 +89,9 @@ class ViewRegistry {
             var structure = new ShipmentTableStructure();
 
             var order = structure.generateDefaultOrder(content);
+
+            structure.setFilterKey("shpmnt-filter");
+            structure.loadFilters();
 
             var cls = ["selectable"];
 
@@ -101,6 +110,9 @@ class ViewRegistry {
 
             var order = structure.generateDefaultOrder(content);
 
+            structure.setFilterKey("abm-filter");
+            structure.loadFilters();
+
             var cls = ["selectable"];
 
             return jsx('
@@ -118,6 +130,9 @@ class ViewRegistry {
 
             var order = structure.generateDefaultOrder(content);
 
+            structure.setFilterKey("mark-filter");
+            structure.loadFilters();
+
             var cls = ["selectable"];
 
             return jsx('
@@ -134,6 +149,9 @@ class ViewRegistry {
             var structure = new RmsTableStructure();
 
             var order = structure.generateDefaultOrder(content);
+
+            structure.setFilterKey("rms-filter");
+            structure.loadFilters();
 
             var cls = ["selectable"];
 
