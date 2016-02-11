@@ -69,7 +69,7 @@ class NewFilterDialog extends ReactComponent {
 
         var i = 1;
         for (field in this.fields) {
-            row.push(jsx('<$FIELD key=${UidGenerator.nextId()} name="${field.name}" label="${field.rep}" value="" onChange="$handleOnChange"/>'));
+            row.push(jsx('<$FIELD key=${UidGenerator.nextId()} className="sixteen wide field" name="${field.name}" label="${field.rep}" value="" onChange="$handleOnChange"/>'));
         }
 
 
@@ -81,7 +81,7 @@ class NewFilterDialog extends ReactComponent {
                 </div>
                 <div className="content">
                     <div className="ui grid">x
-                        <div className="nine wide right floated column" >
+                        <div className="twenty wide center floated column" >
                             <div>
                                 <$FIELD key=${UidGenerator.nextId()} name="filterName" label="Filter Name" value="" onChange="$handleOnChange"/>
                             </div>
