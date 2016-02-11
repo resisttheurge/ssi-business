@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Layout Drawing List</title>
+<title>Detail Drawing List</title>
 
 <style type="text/css">
 @page {
@@ -70,7 +70,7 @@ p{
 	<div id="header">
 		<img src="/ssilogo.png" alt="Southern Systems, Inc."
 			style="height: 75px;" />
-		<p class="head1">Layout Drawing List</p>
+		<p class="head1">Detail Drawing List</p>
 	</div>
 
 	<table border="1" cellspacing="0" cellpadding="0" align="center">
@@ -92,7 +92,7 @@ p{
 <!-- 		<tr style="background: #C4D79B"> -->
 <!-- 			</#if> -->
 		<tr>
-			<#if drawing[i-1].drawingType=='LAYOUT'>
+			<#if drawing[i-1].drawingType=='DETAIL'>
 			<td width="11%" align="center">${drawing[i-1].label}</td>
 			<td width="7%" align="center">${drawing[i-1].revision}</td>
 			<td width="35" align="center">${drawing[i-1].title}</td>

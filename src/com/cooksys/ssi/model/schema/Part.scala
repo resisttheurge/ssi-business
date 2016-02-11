@@ -31,7 +31,7 @@ object Part {
 
   object JsonProtocol extends JsonProtocol
 
-  trait JsonProtocol extends DefaultJsonProtocol {
+  trait JsonProtocol extends RootJsonProtocol {
 
     implicit val `JSON PartsRow` = jsonFormat4(PartsRow)
 

@@ -1,0 +1,150 @@
+<!DOCTYPE html [
+    <!ENTITY nbsp "&#160;"> 
+]>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Shipment Report</title>
+
+<style type="text/css">
+@page {
+	size: A4 portrait;
+	@bottom-right{
+	    font-size:80%;
+	    content: "Page " counter(page)  " of " counter(pages);
+    }
+}
+
+.head1 {
+	color: #000;
+	font-size: x-large;
+}
+
+.head2 {
+	color: #496192;
+	font-size: large;
+}
+
+.head3 {
+	color: #000;
+	font-size: medium
+}
+
+.paragraph {
+	text-align: justify;
+}
+
+.toc {
+	list-style-type: none;
+}
+
+.toc a::after {
+	content: leader('.') target-counter(attr(href), page);
+}
+
+#mainTable {
+	-fs-table-paginate: paginate;
+	page-break-inside: avoid;
+}
+
+#mainTH, #mainTD {
+	border: 1px solid black;
+}
+
+th{
+	font-size: 15px;
+	text-align: center;
+}
+
+td{
+	font-size: 13px;
+	text-align: left;
+	padding-left: 5px;
+}
+</style>
+
+</head>
+
+<body>
+	<div id="header">
+		<img src="/ssilogo.png" alt="Southern Systems, Inc."
+			style="height: 75px;" />
+		<p class="head1">Shipment Report</p>
+	</div>
+
+	<table style="display: block; float: left; width: 30%">
+		<tr>
+			<td align="left"><strong>JOB #</strong></td>
+			<td align="right">${js[0].prefix}-${js[0].year}-${js[0].label}</td>
+		</tr>
+		<tr>
+			<td align="left"><strong>SHIPMENT #</strong></td>
+			<td align="right">${js[0].shipmentNumber}</td>
+		</tr>
+		<tr>
+			<td align="left"><strong>WEIGHT</strong></td>
+			<td align="right">${js[0].weight}</td>
+		</tr>
+		<tr>
+			<td align="left"><strong>SHIP FROM</strong></td>
+			<td align="right">${js[0].shipFrom}</td>
+		</tr>
+		<tr>
+			<td align="left"><strong>SHIP VIA</strong></td>
+			<td align="right">UPS</td>
+		</tr>
+		<tr>
+			<td align="left"><strong>BILL OF LADING</strong></td>
+			<td align="right">016624</td>
+		</tr>
+		<tr>
+			<td align="left"><strong>DATE</strong></td>
+			<td align="right">1/11/11</td>
+		</tr>
+		<tr>
+			<td align="left"><strong>COLLECT</strong></td>
+			<td align="right"><input type="checkbox" /></td>
+		</tr>
+		<tr>
+			<td align="left"><strong>PREPAID</strong></td>
+			<td align="right"><input type="checkbox" /></td>
+		</tr>
+	</table>
+
+	<table
+		style="border: none; cellspacing: 0; cellpadding: 0; display: block; float: left; width: 70%'">
+		<tr>
+			<td align="left">&nbsp;${js[0].contact}</td>
+		</tr>
+		<tr>
+			<td align="left">&nbsp;${js[0].address}</td>
+		</tr>
+		<tr>
+			<td align="left">&nbsp;${js[0].city},${js[0].state}
+				${js[0].zip} ${js[0].country}</td>
+		</tr>
+	</table>
+
+	<table id="mainTable" style="display: block; float: left; margin: 0px;">
+		<thead>
+			<tr style="background: #CCC0DA">
+				<th id="mainTH" align="center">MARK</th>
+				<th id="mainTH" align="center">DESCRIPTION</th>
+				<th id="mainTH" align="center">QTY REQUIRED</th>
+				<th id="mainTH" align="center">QTY SHIPPED</th>
+			</tr>
+		</thead>
+		<#list js[0].jobShipmentInfo as info>
+		<tr>
+			<td width="15%" id="mainTD" align="center"><p align="center">${info.mark}</p></td>
+			<td width="55%" id="mainTD" align="center"><p align="center">${info.description}</p></td>
+			<td width="15%" id="mainTD" align="center"><p align="center">${info.qtyReqd}</p></td>
+			<td width="15%" id="mainTD" align="center"><p align="center">${info.qtyShpd}</p></td>
+		</tr>
+		</#list>
+
+	</table>
+
+</body>
+</html>

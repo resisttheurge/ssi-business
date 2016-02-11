@@ -1,9 +1,9 @@
 package com.cooksys.ssi.route
 
+import akka.http.scaladsl.server.Route
 import com.cooksys.ssi.model.schema.Carrier
 import slick.driver.MySQLDriver.api._
 import slick.schema.Tables._
-import spray.routing.Route
 
 import scala.concurrent.{ExecutionContext, Future}
 

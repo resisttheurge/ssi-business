@@ -5,6 +5,7 @@ lazy val `ssi-business` =
     .settings(
       name := "ssi-business",
       libraryDependencies ++= deps.main,
+      addCompilerPlugin("org.scalamacros" %% "paradise" % "2.1.+" cross CrossVersion.full),
       unmanagedSourceDirectories in Compile += baseDirectory.value / "generated",
       slick <<= slickCodeGenTask
     )
@@ -50,7 +51,7 @@ lazy val shared = Seq(
 
 lazy val deps = new {
 
-  lazy val main = akka ++ spray ++ config ++ logging
+  lazy val main = akka ++ spray ++ slick ++ mysql ++ config ++ logging ++ utils
 
   lazy val codegen = slick ++ mysql ++ logging
 
@@ -67,14 +68,17 @@ lazy val deps = new {
     "com.typesafe" % "config" % "1.3.+"
   )
 
-  lazy val akka = Seq(
+  lazy val akka = spray ++ Seq(
     "com.typesafe.akka" %% "akka-actor" % "2.3.+",
-    "com.typesafe.akka" %% "akka-slf4j" % "2.3.+"
+    "com.typesafe.akka" %% "akka-slf4j" % "2.3.+",
+    "com.typesafe.akka" %% "akka-stream-experimental" % "2.0.+",
+    "com.typesafe.akka" %% "akka-http-core-experimental" % "2.0.+",
+    "com.typesafe.akka" %% "akka-http-experimental" % "2.0.+",
+    "com.typesafe.akka" %% "akka-http-spray-json-experimental" % "2.0.+" +
+      ""
   )
 
   lazy val spray = Seq(
-    "io.spray" %% "spray-can" % "1.3.+",
-    "io.spray" %% "spray-routing" % "1.3.+",
     "io.spray" %% "spray-json" % "1.3.+"
   )
 
@@ -82,6 +86,16 @@ lazy val deps = new {
     "com.typesafe.slick" %% "slick-codegen" % "3.1.+",
     "com.typesafe.slick" %% "slick-hikaricp" % "3.1.+",
     "com.typesafe.slick" %% "slick" % "3.1.+"
+  )
+
+  lazy val utils = monocle ++ Seq(
+    "org.scalaz" %% "scalaz-core" % "7.2.+"
+  )
+
+  lazy val monocle = Seq(
+    "com.github.julien-truffaut"  %%  "monocle-core"    % "1.2.+",
+    "com.github.julien-truffaut"  %%  "monocle-macro"   % "1.2.+",
+    "com.github.julien-truffaut"  %%  "monocle-state"   % "1.2.+"
   )
 
   lazy val mysql = Seq(

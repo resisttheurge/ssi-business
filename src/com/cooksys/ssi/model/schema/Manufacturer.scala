@@ -31,7 +31,7 @@ object Manufacturer {
 
   object JsonProtocol extends JsonProtocol
 
-  trait JsonProtocol extends DefaultJsonProtocol {
+  trait JsonProtocol extends RootJsonProtocol {
 
     implicit val `JSON ManufacturersRow` = jsonFormat2(ManufacturersRow)
 
