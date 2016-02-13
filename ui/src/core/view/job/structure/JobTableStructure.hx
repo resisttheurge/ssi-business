@@ -15,6 +15,7 @@ import core.structure.TableStructure;
 import api.react.ReactComponent.ReactComponentOfState;
 import api.react.ReactMacro.jsx;
 
+
 class JobTableStructure extends TableStructure<Job> {
     private static inline function jt(){return untyped __js__('this');}
 
