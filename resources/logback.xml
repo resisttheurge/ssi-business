@@ -9,7 +9,7 @@
     </appender>
 
     <logger name="com.zaxxer.hikari">
-        <level value="info"/>
+        <level value="debug"/>
     </logger>
 
     <logger name="server">

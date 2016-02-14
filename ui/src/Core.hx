@@ -1,3 +1,4 @@
+import core.view.job.modal.NewFilterDialog;
 import haxe.Json;
 import core.view.main.ManageFilterDialog;
 import core.view.shipment.modal.EditShipmentDialog;
@@ -113,7 +114,7 @@ class Core extends ReactComponent {
         var modalsElem = Browser.document.getElementById("modals");
 
         var dataObj = {editJobObj: state.editJobObj,
-            editJobMainObj: state.editJobMainObj, editObj: state.editObj};
+            editJobMainObj: state.editJobMainObj, editObj: state.editObj, structure: state.content.props.structure};
 
         ReactDOM.render(jsx('<$MODALELEMENT dataObj=$dataObj index=${state.currentModal} />'), modalsElem);
     }
@@ -121,8 +122,10 @@ class Core extends ReactComponent {
     public override function componentDidUpdate(prevProps:Dynamic, prevState:Dynamic):Void {
         var modalsElem = Browser.document.getElementById("modals");
 
+//        untyped console.log("Structure: " + state.content.props.structure);
+
         var dataObj = {editJobObj: state.editJobObj,
-                editJobMainObj: state.editJobMainObj, editObj: state.editObj};
+                editJobMainObj: state.editJobMainObj, editObj: state.editObj, structure: state.content.props.structure};
 
         ReactDOM.render(jsx('<$MODALELEMENT dataObj=$dataObj index=${state.currentModal} />'), modalsElem);
     }
@@ -167,7 +170,8 @@ class Core extends ReactComponent {
                 case "mng-job"  :comp = jsx('<$ManageJobFilterDialog key="mfil-job-dialog" id="mfil-job-dialog" />');
                 case "edit-job" :comp = jsx('<$EditJobDialog key="editjob-dialog" job=${dataObj.editJobObj}
                                                 curJob=${dataObj.editJobMainObj} id="editjob-dialog"/>');
-                case "mng-filter"  :comp = jsx('<$ManageFilterDialog key="mfil-job-dialog" id="mfil-job-dialog" />');
+                case "mng-filter"  :comp = jsx('<$ManageFilterDialog key="mfil-job-dialog" id="mfil-job-dialog"
+                                                    structure=${dataObj.structure}/>');
                 case "new-dwg"  :comp = jsx('<$NewDwgDialog  key="newdwg-dialog" id="newdwg-dialog"/>');
                 case "edit-dwg" :comp = jsx('<$EditDwgDialog  key="editdwg-dialog" id="editdwg-dialog"
                                                 dwg=${dataObj.editObj} job=${dataObj.curJob} />');
@@ -183,6 +187,10 @@ class Core extends ReactComponent {
                 case "new-shpmnt"  :comp = jsx('<$NewShipmentDialog  key="newmark-dialog" id="newmark-dialog"/>');
                 case "edit-shpmnt" :comp = jsx('<$EditShipmentDialog  key="editmark-dialog" id="editmark-dialog"
                                                 shpmnt=${dataObj.editObj} job=${dataObj.curJob}/>');
+
+                case "job-filter" :comp = jsx('<$NewFilterDialog key="newfilter-dialog" id="newfilter-dialog"
+                                                structure=${dataObj.structure} />');
+
                 default: comp = jsx('<div />');
             }
 
