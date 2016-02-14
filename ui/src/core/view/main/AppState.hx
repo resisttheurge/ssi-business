@@ -8,6 +8,11 @@ typedef AppState = {
     var menu: ReactComponent;
     var content: ReactComponent;
 
-
 //    var options: Array<MenuOption>;
+}
+
+typedef AuthenticationState = {
+    var authenticated: Bool;
+    @:optional
+    var user: User;
 }
