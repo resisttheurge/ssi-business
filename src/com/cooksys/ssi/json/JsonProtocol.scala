@@ -20,9 +20,9 @@ trait JsonProtocol
           Date.valueOf(x)
         } catch {
           case t: IllegalArgumentException =>
-            deserializationError("Expected Date with format `yyyy-[m]m-[d]d`, but got " + x, t)
+            deserializationError(s"Expected Date with format `yyyy-[m]m-[d]d`, but got $x", t)
         }
-      case x => deserializationError("Expected Date as JsString, but got " + x)
+      case x => deserializationError(s"Expected Date as JsString, but got $x")
     }
   }
 
@@ -35,12 +35,27 @@ trait JsonProtocol
           Timestamp.valueOf(x)
         } catch {
           case t: IllegalArgumentException =>
-            deserializationError("Expected Timestamp with format `yyyy-[m]m-[d]d hh:mm:ss[.f...]`, but got " + x, t)
+            deserializationError(s"Expected Timestamp with format `yyyy-[m]m-[d]d hh:mm:ss[.f...]`, but got $x", t)
         }
-      case x => deserializationError("Expected Timestamp as JsString, but got " + x)
+      case x => deserializationError(s"Expected Timestamp as JsString, but got $x")
     }
   }
 
+  implicit object JobAddressTypeFormatter extends JsonFormat[JobAddressType] {
+    override def write(obj: JobAddressType): JsValue = JsString(obj)
+
+    override def read(json: JsValue): JobAddressType = json match {
+      case JsString(x) =>
+        try {
+          x: JobAddressType
+        } catch {
+          case t: Throwable =>
+            deserializationError(s"Expected JobAddressType to be one of ${JobAddressType.all.mkString("[",", ","]")}, but got $x", t)
+        }
+      case x => deserializationError(s"Expected JobAddressType as JsString, but got $x")
+    }
+  }
+  
   implicit object JobPrefixFormatter extends JsonFormat[JobPrefix] {
     override def write(obj: JobPrefix): JsValue = JsString(obj)
 
@@ -50,9 +65,9 @@ trait JsonProtocol
           x: JobPrefix
         } catch {
           case t: Throwable =>
-            deserializationError(s"Expected JobPrefix to be one of ${JobPrefix.all}, but got " + x, t)
+            deserializationError(s"Expected JobPrefix to be one of ${JobPrefix.all.mkString("[",", ","]")}, but got $x", t)
         }
-      case x => deserializationError("Expected JobPrefix as JsString, but got " + x)
+      case x => deserializationError(s"Expected JobPrefix as JsString, but got $x")
     }
   }
 
@@ -65,9 +80,54 @@ trait JsonProtocol
           x: JobStatus
         } catch {
           case t: Throwable =>
-            deserializationError(s"Expected JobStatus to be one of ${JobStatus.all}, but got " + x, t)
+            deserializationError(s"Expected JobStatus to be one of ${JobStatus.all.mkString("[",", ","]")}, but got $x", t)
         }
-      case x => deserializationError("Expected JobStatus as JsString, but got " + x)
+      case x => deserializationError(s"Expected JobStatus as JsString, but got $x")
+    }
+  }
+
+  implicit object PartTypeFormatter extends JsonFormat[PartType] {
+    override def write(obj: PartType): JsValue = JsString(obj)
+
+    override def read(json: JsValue): PartType = json match {
+      case JsString(x) =>
+        try {
+          x: PartType
+        } catch {
+          case t: Throwable =>
+            deserializationError(s"Expected PartType to be one of ${PartType.all.mkString("[",", ","]")}, but got $x", t)
+        }
+      case x => deserializationError(s"Expected PartType as JsString, but got $x")
+    }
+  }
+
+  implicit object ScheduleTypeFormatter extends JsonFormat[ScheduleType] {
+    override def write(obj: ScheduleType): JsValue = JsString(obj)
+
+    override def read(json: JsValue): ScheduleType = json match {
+      case JsString(x) =>
+        try {
+          x: ScheduleType
+        } catch {
+          case t: Throwable =>
+            deserializationError(s"Expected ScheduleType to be one of ${ScheduleType.all.mkString("[",", ","]")}, but got $x", t)
+        }
+      case x => deserializationError(s"Expected ScheduleType as JsString, but got $x")
+    }
+  }
+
+  implicit object UserRoleTypeFormatter extends JsonFormat[UserRoleType] {
+    override def write(obj: UserRoleType): JsValue = JsString(obj)
+
+    override def read(json: JsValue): UserRoleType = json match {
+      case JsString(x) =>
+        try {
+          x: UserRoleType
+        } catch {
+          case t: Throwable =>
+            deserializationError(s"Expected UserRoleType to be one of ${UserRoleType.all.mkString("[",", ","]")}, but got $x", t)
+        }
+      case x => deserializationError(s"Expected UserRoleType as JsString, but got $x")
     }
   }
 

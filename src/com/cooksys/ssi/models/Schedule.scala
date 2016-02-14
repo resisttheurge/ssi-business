@@ -4,6 +4,6 @@ import java.sql.Date
 
 case class Schedule(id: Option[Int],
                     jobId: Int,
-                    scheduleType: String,
+                    scheduleType: ScheduleType,
                     startDate: Option[Date],
                     completeDate: Option[Date])

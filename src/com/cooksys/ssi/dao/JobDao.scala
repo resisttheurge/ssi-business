@@ -1,10 +1,9 @@
 package com.cooksys.ssi.dao
 
 import com.cooksys.ssi.models._
-import shapeless.syntax.std.tuple._
 import slick.schema.Tables._
 
-object JobDao extends BaseDao[Job] {
+object JobDao extends CrudDao[Job] {
 
   val indexQuery =
     Compiled(Jobs.withDependents)

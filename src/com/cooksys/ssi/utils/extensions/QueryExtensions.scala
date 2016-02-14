@@ -37,7 +37,7 @@ trait QueryExtensions {
 
     def update(job: Job) =
       self
-        .map(r =>
+        .map(r => r.*
           (r.prefix, r.year, r.label, r.status, r.description, r.contractPrice, r.startDate, r.dueDate,
             r.shopId, r.salespersonId, r.customerId, r.contactId, r.completeDate)
         )

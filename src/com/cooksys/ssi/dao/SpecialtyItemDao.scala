@@ -3,7 +3,7 @@ package com.cooksys.ssi.dao
 import com.cooksys.ssi.models._
 import slick.schema.Tables._
 
-object SpecialtyItemDao extends BaseDao[SpecialtyItem] {
+object SpecialtyItemDao extends CrudDao[SpecialtyItem] {
 
   override def indexAction(implicit ec: EC) =
     for (carriers <- SpecialtyItems.result)
