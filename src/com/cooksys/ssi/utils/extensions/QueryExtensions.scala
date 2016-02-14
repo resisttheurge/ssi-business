@@ -1,11 +1,14 @@
 package com.cooksys.ssi.utils.extensions
 
 
-import slick.schema.Tables._
-import slick.driver.MySQLDriver.api._
 import com.cooksys.ssi.models._
+import slick.driver.MySQLDriver.api._
+import slick.schema.Tables._
+import com.cooksys.ssi.utils.conversions._
+import shapeless.syntax.std.tuple._
 
 object QueryExtensions extends QueryExtensions
+
 trait QueryExtensions {
 
   implicit class AddendaQueryExtensions[C[_]](self: Query[Addenda, AddendaRow, C]) {
@@ -31,6 +34,14 @@ trait QueryExtensions {
         }
       } yield
         (job, shop, salesperson, customer, contact)
+
+    def update(job: Job) =
+      self
+        .map(r =>
+          (r.prefix, r.year, r.label, r.status, r.description, r.contractPrice, r.startDate, r.dueDate,
+            r.shopId, r.salespersonId, r.customerId, r.contactId, r.completeDate)
+        )
+        .update((job: JobsRow).tail)
 
   }
 
@@ -73,7 +84,7 @@ trait QueryExtensions {
 
     def inactive = self filterNot (_.active)
 
-    def byUserId(id: Int) = self filter(_.userId === id)
+    def byUserId(id: Int) = self filter (_.userId === id)
 
     def byRoles(roles: Seq[String]) = self filter (_.role inSet roles)
 

@@ -88,6 +88,7 @@ lazy val deps = new {
   )
 
   lazy val utils = monocle ++ Seq(
+    "com.chuusai" %% "shapeless" % "2.2.+",
     "org.scalaz" %% "scalaz-core" % "7.2.+"
   )
 
