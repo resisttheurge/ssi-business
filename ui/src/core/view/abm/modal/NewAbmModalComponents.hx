@@ -75,19 +75,25 @@ class NewAbmModalComponents {
         handleOnChange: function(value, text, selectedItem){
             var name = jt().props.name;
             jt().props.onChange(name, value);
+
+            if (value == 'Create New') jt().setState({createNew: true});
         },
         render: function(){
-
-            return jsx('
-                    <div ref=${jt().initialize} className="ui search selection dropdown">
-                        <input type="hidden" name="manufacturer"></input>
-                        <i className="dropdown icon"></i>
-                        <div className="default text">Manufacturer</div>
-                        <div className="menu">
-                            ${jt().state.itms}
-                        </div>
-                    </div>
-                ');
+            if (jt().state.createNew) {
+              return jsx('<$FIELD className="field" name="manufacturer" onChange=${jt().handleOnChange}/>');
+            } else {
+              return jsx('
+                      <div ref=${jt().initialize} className="ui search selection dropdown">
+                          <input type="hidden" name="manufacturer"></input>
+                          <i className="dropdown icon"></i>
+                          <div className="default text">Manufacturer</div>
+                          <div className="menu">
+                              ${jt().state.itms}
+                              <div className="item" data-value="Create New">Create New</div>
+                          </div>
+                      </div>
+                  ');
+            }
         }
     });
 
@@ -125,19 +131,28 @@ class NewAbmModalComponents {
         handleOnChange: function(value, text, selectedItem){
             var name = jt().props.name;
             jt().props.onChange(name, value);
+
+            if (value == 'Create New') jt().setState({createNew: true});
         },
         render: function(){
-
+          if (jt().state.createNew) {
+            return jsx('<$FIELD className="three wide field" label="Vendor" name="vendor" onChange=${jt().handleOnChange}/>');
+          } else {
             return jsx('
+                  <div className="field">
+                    <label>Vendor</label>
                     <div ref=${jt().initialize} className="ui search selection dropdown">
                         <input type="hidden" name="vendor"></input>
                         <i className="dropdown icon"></i>
                         <div className="default text">Vendor</div>
                         <div className="menu">
                             ${jt().state.itms}
+                            <div className="item" data-value="Create New">Create New</div>
                         </div>
                     </div>
+                  </div>
                 ');
+          }
         }
     });
 
@@ -177,7 +192,6 @@ class NewAbmModalComponents {
             jt().props.onChange(name, value);
         },
         render: function(){
-
             return jsx('
                     <div ref=${jt().initialize} className="ui search selection dropdown">
                         <input type="hidden" name="part"></input>
@@ -185,6 +199,7 @@ class NewAbmModalComponents {
                         <div className="default text">Part NO</div>
                         <div className="menu">
                             ${jt().state.itms}
+                            <div className="item" data-value="Create New">Create New</div>
                         </div>
                     </div>
                 ');

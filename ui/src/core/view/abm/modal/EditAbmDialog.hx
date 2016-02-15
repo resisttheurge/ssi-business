@@ -57,10 +57,7 @@ class EditAbmDialog extends ReactComponent {
                 <div className="content">
                     <form className="ui form">
                         <div className="fields">
-                        <div className="field">
-                          <label>Vendor</label>
-                          <$VENDORDROPDOWN className="three wide dropdown" label="Vendor" value=${editAbm.part.type} name="vendor" onChange=$handleOnChange/>
-                        </div>
+                        <$VENDORDROPDOWN className="three wide dropdown" label="Vendor" value=${editAbm.part.type} name="vendor" onChange=$handleOnChange/>
                         <div className="field">
                           <label>Part NO</label>
                           <$PARTDROPDOWN className="five wide dropdown" label="Part NO" value=${editAbm.part.number} name="number" onChange=$handleOnChange/>
