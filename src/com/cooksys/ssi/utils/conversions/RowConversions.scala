@@ -214,4 +214,93 @@ trait RowConversions {
   implicit def fromVendorsRow(vendorsRow: VendorsRow): Vendor =
     Vendor(Option(vendorsRow.id), vendorsRow.label)
 
+  implicit def toShippingRequestsRow(drawing: ShippingRequest): ShippingRequestsRow =
+    ShippingRequestsRow(
+      id = drawing.id.getOrElse(-1),
+      tagType = drawing.tagType.map(t => t: String),
+        title = drawing.title,
+        revision = drawing.revision,
+        revisionDate = drawing.revisionDate,
+        startDate = drawing.startDate,
+        shopDate = drawing.shopDate,
+        fieldDate = drawing.fieldDate,
+        requestDate = drawing.requestDate,
+        requestedBy = drawing.requestedBy,
+        preparedBy = drawing.preparedBy,
+        filePath = drawing.filePath,
+        shopId = drawing.shop.flatMap(_.id),
+        carrierId = drawing.carrier.flatMap(_.id),
+        contactId = drawing.contact.flatMap(_.id),
+        addressId = drawing.address.flatMap(_.id)
+    )
+
+  implicit def fromShippingRequestsRow(row: ShippingRequestsRow): ShippingRequest =
+    ShippingRequest(
+      id = row.id,
+      tagType = row.tagType.map(t => t: String),
+      title = row.title,
+      revision = row.revision,
+      revisionDate = row.revisionDate,
+      startDate = row.startDate,
+      shopDate = row.shopDate,
+      fieldDate = row.fieldDate,
+      requestDate = row.requestDate,
+      requestedBy = row.requestedBy,
+      preparedBy = row.preparedBy,
+      filePath = row.filePath
+    )
+
+  implicit def fromShippingRequestsRowWithDependents(row: (ShippingRequestsRow, Option[ShopsRow], Option[CarriersRow], Option[ContactsRow], Option[AddressesRow])): ShippingRequest =
+    (row._1: ShippingRequest).copy(
+      shop = row._2.map(r => r: Shop),
+      carrier = row._3.map(r => r: Carrier),
+      contact = row._4.map(r => r: Contact),
+      address = row._5.map(r => r: Address)
+    )
+
+  implicit def toDrawingsRow(drawing: Drawing): DrawingsRow =
+    DrawingsRow(
+      id = drawing.id.getOrElse(-1),
+      jobId = drawing.jobId,
+      label = drawing.label,
+      drawingType = drawing.drawingType,
+      specialtyItemId = drawing.specialtyItem.flatMap(_.id),
+      shippingRequestId = drawing.info.flatMap(_.id)
+    )
+
+  implicit def fromDrawingsRow(row: DrawingsRow): Drawing =
+    Drawing(
+      id = row.id,
+      jobId = row.jobId,
+      label = row.label,
+      drawingType = row.drawingType
+    )
+
+  implicit def fromDrawingsRowWithDependents(row: (DrawingsRow, Option[SpecialtyItemsRow], Option[(ShippingRequestsRow, Option[ShopsRow], Option[CarriersRow], Option[ContactsRow], Option[AddressesRow])])): Drawing =
+    (row._1: Drawing).copy(
+      specialtyItem = row._2.map(r => r: SpecialtyItem),
+      info = row._3.map(r => r: ShippingRequest)
+    )
+
+  implicit def toShippingGroupsRow(drawing: ShippingGroup): ShippingGroupsRow =
+    ShippingGroupsRow(
+      id = drawing.id.getOrElse(-1),
+      jobId = drawing.jobId,
+      label = drawing.label,
+      rush = drawing.rush,
+      shippingRequestId = drawing.info.flatMap(_.id)
+    )
+
+  implicit def fromShippingGroupsRow(row: ShippingGroupsRow): ShippingGroup =
+    ShippingGroup(
+      id = row.id,
+      jobId = row.jobId,
+      label = row.label,
+      rush = row.rush
+    )
+
+  implicit def fromShippingGroupsRowWithDependents(row: (ShippingGroupsRow, Option[(ShippingRequestsRow, Option[ShopsRow], Option[CarriersRow], Option[ContactsRow], Option[AddressesRow])])): ShippingGroup =
+    (row._1: ShippingGroup).copy(
+      info = row._2.map(r => r: ShippingRequest)
+    )
 }

@@ -16,7 +16,7 @@ trait BaseRoute
     with JsonProtocol
     with AllUtilities {
 
-  implicit def unwrapRootJsonFormatFuture[T : RootJsonFormat](future: => Future[T])(implicit ec: ExecutionContext) =
+  implicit def unwrapRootJsonFormatFuture[T : RootJsonFormat](future: => Future[T])(implicit ec: ExecutionContext): Route =
     complete(future)
 
   override def apply(rc: RequestContext): Future[RouteResult] = internal(rc)

@@ -6,6 +6,16 @@ object EnumConversions extends EnumConversions
 
 trait EnumConversions {
 
+  implicit def fromDrawingType(x: DrawingType): String = x.toString
+
+  implicit def toDrawingType(x: String): DrawingType =
+    x match {
+      case "DETAIL" => DrawingType.DETAIL
+      case "LAYOUT" => DrawingType.LAYOUT
+      case "VOID" => DrawingType.VOID
+    }
+
+
   implicit def fromJobAddressType(x: JobAddressType): String = x.toString
 
   implicit def toJobAddressType(x: String): JobAddressType =
@@ -68,6 +78,14 @@ trait EnumConversions {
       case "ELECTRICAL" => ScheduleType.ELECTRICAL
       case "SHIPPING" => ScheduleType.SHIPPING
       case "INSTALLATION" => ScheduleType.INSTALLATION
+    }
+
+  implicit def fromTagType(x: TagType): String = x.toString
+
+  implicit def toTagType(x: String): TagType =
+    x match {
+      case "S" => TagType.S
+      case "W" => TagType.W
     }
 
   implicit def fromUserRoleType(x: UserRoleType): String = x.toString

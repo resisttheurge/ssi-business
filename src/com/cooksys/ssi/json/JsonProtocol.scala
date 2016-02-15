@@ -41,6 +41,21 @@ trait JsonProtocol
     }
   }
 
+  implicit object DrawingTypeFormatter extends JsonFormat[DrawingType] {
+    override def write(obj: DrawingType): JsValue = JsString(obj)
+
+    override def read(json: JsValue): DrawingType = json match {
+      case JsString(x) =>
+        try {
+          x: DrawingType
+        } catch {
+          case t: Throwable =>
+            deserializationError(s"Expected DrawingType to be one of ${DrawingType.all.mkString("[",", ","]")}, but got $x", t)
+        }
+      case x => deserializationError(s"Expected DrawingType as JsString, but got $x")
+    }
+  }
+
   implicit object JobAddressTypeFormatter extends JsonFormat[JobAddressType] {
     override def write(obj: JobAddressType): JsValue = JsString(obj)
 
@@ -116,6 +131,21 @@ trait JsonProtocol
     }
   }
 
+  implicit object TagTypeFormatter extends JsonFormat[TagType] {
+    override def write(obj: TagType): JsValue = JsString(obj)
+
+    override def read(json: JsValue): TagType = json match {
+      case JsString(x) =>
+        try {
+          x: TagType
+        } catch {
+          case t: Throwable =>
+            deserializationError(s"Expected TagType to be one of ${TagType.all.mkString("[",", ","]")}, but got $x", t)
+        }
+      case x => deserializationError(s"Expected TagType as JsString, but got $x")
+    }
+  }
+
   implicit object UserRoleTypeFormatter extends JsonFormat[UserRoleType] {
     override def write(obj: UserRoleType): JsValue = JsString(obj)
 
@@ -138,6 +168,12 @@ trait JsonProtocol
   implicit val AddendumFormatter = rootFormat(jsonFormat8(Addendum))
 
   implicit val AddressFormatter = rootFormat(jsonFormat6(Address))
+
+  implicit val ShippingRequestFormatter = rootFormat(jsonFormat16(ShippingRequest))
+
+  implicit val DrawingFormatter = rootFormat(jsonFormat6(Drawing))
+
+  implicit val ShippingGroupFormatter = rootFormat(jsonFormat5(ShippingGroup))
 
   implicit val AuthorizationFormatter = rootFormat(jsonFormat2(Authorization))
 

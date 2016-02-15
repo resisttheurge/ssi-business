@@ -107,7 +107,7 @@ object UserDao extends CrudDao[User] {
       existing <- UserRoles.byUserId(id).map(_.role).result
       created <- UserRoles ++= roles.diff(existing).map(role => UserRolesRow(id, role, active = true))
       activated <- UserRoles.inactive.byUserId(id).byRoles(roles).map(_.active).update(true)
-      deactivated <- UserRoles.active.byUserId(id).filterNot(_.role inSet roles).map(_.active).update(false)
+      deactivated <- UserRoles.active.byUserId(id).filterNot(_.role inSet roles.map(r => r: String)).map(_.active).update(false)
     } yield {
       (created, activated, deactivated)
     }

@@ -122,7 +122,7 @@ case class ReportRoute(path: String)(implicit val ec: ExecutionContext) extends 
               )
             }
           }
-        } ~ path("specialty-items-by=part-type") {
+        } ~ path("specialty-items-by-part-type") {
           entity(as[SpecialtyItemsByPartTypeReportRequest]) { params =>
             Future {
               Report(
@@ -139,7 +139,8 @@ case class ReportRoute(path: String)(implicit val ec: ExecutionContext) extends 
               Report(
                 title = "RMS",
                 data = ReportUtil.SHIPPING_GROUP_SHIPPER.generate(
-                  params.jobId.toString
+                  params.jobId.toString,
+                  params.shippingGroupId.toString
                 )
               )
             }

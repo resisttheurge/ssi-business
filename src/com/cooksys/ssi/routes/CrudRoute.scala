@@ -25,7 +25,7 @@ case class CrudRoute[Model: RootJsonFormat](path: String,
           entity(as[Model]) { model =>
             dao.create(model)
           }
-        }
+        } ~ innerRoute
       } ~ pathPrefix(IntNumber) { id: Int =>
         pathEndOrSingleSlash {
           get {
@@ -37,7 +37,7 @@ case class CrudRoute[Model: RootJsonFormat](path: String,
           } ~ delete {
             dao.destroy(id)
           }
-        }
+        } ~ innerRouteWithId(id)
       }
     }
 
