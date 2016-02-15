@@ -177,5 +177,48 @@ trait QueryExtensions {
 
   }
 
+  implicit class ShippingItemZonesQueryExtensions[C[_]](self: Query[ShippingItemZones, ShippingItemZonesRow, C]) {
+    def withDependents =
+      self
+        .join(Zones).on(_.zoneId === _.id)
+
+  }
+
+  implicit class ShipmentsQueryExtensions[C[_]](self: Query[Shipments, ShipmentsRow, C]) {
+    def withDependents =
+      for {
+        ((((shipment, shop), carrier), contact), address) <- {
+          self
+            .joinLeft(Shops).on(_.shopId === _.id)
+            .joinLeft(Carriers).on(_._1.carrierId === _.id)
+            .joinLeft(Contacts).on(_._1._1.contactId === _.id)
+            .joinLeft(Addresses).on(_._1._1._1.addressId === _.id)
+        }
+      } yield {
+        (shipment, shop, carrier, contact, address)
+      }
+  }
+
+  implicit class ShipmentItemsQueryExtensions[C[_]](self: Query[ShipmentItems, ShipmentItemsRow, C]) {
+    def withDependents =
+      self
+        .join(ShippingItems).on(_.shippingItemId === _.id)
+
+  }
+
+  implicit class ShippingGroupItemsQueryExtensions[C[_]](self: Query[ShippingGroupItems, ShippingGroupItemsRow, C]) {
+    def withDependents =
+      self
+        .join(ShippingItems).on(_.shippingItemId === _.id)
+
+  }
+
+  implicit class MarksQueryExtensions[C[_]](self: Query[Marks, MarksRow, C]) {
+    def withDependents =
+      self
+        .join(ShippingItems).on(_.shippingItemId === _.id)
+
+  }
+
 }
 

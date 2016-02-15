@@ -230,20 +230,20 @@ trait RowConversions {
     ShippingRequestsRow(
       id = drawing.id.getOrElse(-1),
       tagType = drawing.tagType.map(t => t: String),
-        title = drawing.title,
-        revision = drawing.revision,
-        revisionDate = drawing.revisionDate,
-        startDate = drawing.startDate,
-        shopDate = drawing.shopDate,
-        fieldDate = drawing.fieldDate,
-        requestDate = drawing.requestDate,
-        requestedBy = drawing.requestedBy,
-        preparedBy = drawing.preparedBy,
-        filePath = drawing.filePath,
-        shopId = drawing.shop.flatMap(_.id),
-        carrierId = drawing.carrier.flatMap(_.id),
-        contactId = drawing.contact.flatMap(_.id),
-        addressId = drawing.address.flatMap(_.id)
+      title = drawing.title,
+      revision = drawing.revision,
+      revisionDate = drawing.revisionDate,
+      startDate = drawing.startDate,
+      shopDate = drawing.shopDate,
+      fieldDate = drawing.fieldDate,
+      requestDate = drawing.requestDate,
+      requestedBy = drawing.requestedBy,
+      preparedBy = drawing.preparedBy,
+      filePath = drawing.filePath,
+      shopId = drawing.shop.flatMap(_.id),
+      carrierId = drawing.carrier.flatMap(_.id),
+      contactId = drawing.contact.flatMap(_.id),
+      addressId = drawing.address.flatMap(_.id)
     )
 
   implicit def fromShippingRequestsRow(row: ShippingRequestsRow): ShippingRequest =
@@ -359,20 +359,20 @@ trait RowConversions {
   implicit def toPartOrdersRow(por: PartOrder): PartOrdersRow =
     PartOrdersRow(
       id = por.id.getOrElse(-1),
-        jobId = por.jobId,
-        drawingId = por.drawingId,
-        status = por.status,
-        partId = por.part.flatMap(_.id),
-        manufacturerId = por.manufacturer.flatMap(_.id),
-        vendorId = por.vendor.flatMap(_.id),
-        po = por.po,
-        requestedQuantity = por.requestedQuantity,
-        stockQuantity = por.stockQuantity,
-        purchaseQuantity = por.purchaseQuantity,
-        requestDate = por.requestDate,
-        purchaseDate = por.purchaseDate,
-        releaseDate = por.releaseDate,
-        releasedBy = por.releasedBy
+      jobId = por.jobId,
+      drawingId = por.drawingId,
+      status = por.status,
+      partId = por.part.flatMap(_.id),
+      manufacturerId = por.manufacturer.flatMap(_.id),
+      vendorId = por.vendor.flatMap(_.id),
+      po = por.po,
+      requestedQuantity = por.requestedQuantity,
+      stockQuantity = por.stockQuantity,
+      purchaseQuantity = por.purchaseQuantity,
+      requestDate = por.requestDate,
+      purchaseDate = por.purchaseDate,
+      releaseDate = por.releaseDate,
+      releasedBy = por.releasedBy
     )
 
   implicit def fromPartOrdersRow(por: PartOrdersRow): PartOrder =
@@ -393,8 +393,107 @@ trait RowConversions {
 
   implicit def fromPartOrdersRowWithDependents(por: (PartOrdersRow, Option[PartsRow], Option[VendorsRow], Option[ManufacturersRow])): PartOrder =
     (por._1: PartOrder).copy(
-      part = por._2.map(p => p:Part),
-      vendor = por._3.map(p => p:Vendor),
-      manufacturer = por._4.map(p => p:Manufacturer)
+      part = por._2.map(p => p: Part),
+      vendor = por._3.map(p => p: Vendor),
+      manufacturer = por._4.map(p => p: Manufacturer)
     )
+
+  implicit def toShippingItemZonesRow(siz: ShippingItemZone): ShippingItemZonesRow =
+    ShippingItemZonesRow(
+      id = siz.id.getOrElse(-1),
+      shippingItemId = siz.shippingItemId,
+      zoneId = siz.zone.id.get,
+      quantity = siz.quantity
+    )
+
+  implicit def fromShippingItemZonesRow(siz: (ShippingItemZonesRow, ZonesRow)): ShippingItemZone =
+    ShippingItemZone(
+      id = siz._1.id,
+      shippingItemId = siz._1.shippingItemId,
+      zone = siz._2: Zone,
+      quantity = siz._1.quantity
+    )
+
+  implicit def toShipmentsRow(sh: Shipment): ShipmentsRow =
+    ShipmentsRow(
+      id = sh.id.getOrElse(-1),
+      jobId = sh.jobId,
+      number = sh.number,
+      status = sh.status,
+      shopId = sh.shop.flatMap(_.id),
+      carrierId = sh.carrier.flatMap(_.id),
+      weight = sh.weight,
+      billOfLading = sh.billOfLading,
+      shipDate = sh.shipDate,
+      contactId = sh.contact.flatMap(_.id),
+      addressId = sh.address.flatMap(_.id)
+    )
+
+  implicit def fromShipmentsRow(sh: ShipmentsRow): Shipment =
+    Shipment(
+      id = sh.id,
+      jobId = sh.jobId,
+      number = sh.number,
+      status = sh.status,
+      weight = sh.weight,
+      billOfLading = sh.billOfLading,
+      shipDate = sh.shipDate
+    )
+
+  implicit def fromShipmentsRowWithDependents(sh: (ShipmentsRow, Option[ShopsRow], Option[CarriersRow], Option[ContactsRow], Option[AddressesRow])): Shipment =
+    (sh._1: Shipment).copy(
+      shop = sh._2.map(s => s: Shop),
+      carrier = sh._3.map(c => c: Carrier),
+      contact = sh._4.map(c => c: Contact),
+      address = sh._5.map(a => a: Address)
+    )
+
+  implicit def toShipmentItemsRow(siz: ShipmentItem): ShipmentItemsRow =
+    ShipmentItemsRow(
+      id = siz.id.getOrElse(-1),
+      shippingItemId = siz.shippingItem.id.get,
+      shipmentId = siz.shipmentId,
+      quantity = siz.quantity
+    )
+
+  implicit def fromShipmentItemsRow(siz: (ShipmentItemsRow, ShippingItemsRow)): ShipmentItem =
+    ShipmentItem(
+      id = siz._1.id,
+      shippingItem = siz._2,
+      shipmentId = siz._1.shipmentId,
+      quantity = siz._1.quantity
+    )
+
+  implicit def toShippingGroupItemsRow(siz: ShippingGroupItem): ShippingGroupItemsRow =
+    ShippingGroupItemsRow(
+      id = siz.id.getOrElse(-1),
+      shippingItemId = siz.shippingItem.id.get,
+      shippingGroupId = siz.shippingGroupId,
+      label = siz.label
+    )
+
+  implicit def fromShippingGroupItemsRow(siz: (ShippingGroupItemsRow, ShippingItemsRow)): ShippingGroupItem =
+    ShippingGroupItem(
+      id = siz._1.id,
+      shippingItem = siz._2,
+      shippingGroupId = siz._1.shippingGroupId,
+      label = siz._1.label
+    )
+
+  implicit def toMarksRow(siz: Mark): MarksRow =
+    MarksRow(
+      id = siz.id.getOrElse(-1),
+      shippingItemId = siz.shippingItem.id.get,
+      drawingId = siz.drawingId,
+      label = siz.label
+    )
+
+  implicit def fromMarksRow(siz: (MarksRow, ShippingItemsRow)): Mark =
+    Mark(
+      id = siz._1.id,
+      shippingItem = siz._2,
+      drawingId = siz._1.drawingId,
+      label = siz._1.label
+    )
+  
 }

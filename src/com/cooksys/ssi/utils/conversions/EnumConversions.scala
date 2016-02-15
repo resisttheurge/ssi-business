@@ -132,4 +132,15 @@ trait EnumConversions {
       case "EMPLOYEE" => UserRoleType.EMPLOYEE
     }
 
+  implicit def fromShipmentStatus(x: ShipmentStatus): String = x.toString
+
+  implicit def toShipmentStatus(x: String): ShipmentStatus =
+    x match {
+      case "ACTIVE" => ShipmentStatus.ACTIVE
+      case "POSTED" => ShipmentStatus.POSTED
+      case "COMPLETED" => ShipmentStatus.COMPLETED
+      case "CANCELLED" => ShipmentStatus.CANCELLED
+      case "DELETED" => ShipmentStatus.DELETED
+    }
+  
 }

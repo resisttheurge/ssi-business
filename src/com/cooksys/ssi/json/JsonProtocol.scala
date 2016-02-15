@@ -1,7 +1,6 @@
 package com.cooksys.ssi.json
 
 import java.sql.{Date, Timestamp}
-
 import com.cooksys.ssi.models._
 import com.cooksys.ssi.utils._
 import spray.json._
@@ -191,6 +190,21 @@ trait JsonProtocol
     }
   }
 
+  implicit object ShipmentStatusFormatter extends JsonFormat[ShipmentStatus] {
+    override def write(obj: ShipmentStatus): JsValue = JsString(obj)
+
+    override def read(json: JsValue): ShipmentStatus = json match {
+      case JsString(x) =>
+        try {
+          x: ShipmentStatus
+        } catch {
+          case t: Throwable =>
+            deserializationError(s"Expected ShipmentStatus to be one of ${ShipmentStatus.all.mkString("[",", ","]")}, but got $x", t)
+        }
+      case x => deserializationError(s"Expected ShipmentStatus as JsString, but got $x")
+    }
+  }
+
   implicit val LabelRecordFormatter = rootFormat(jsonFormat2(LabelRecord))
 
   implicit val ContactFormatter = rootFormat(jsonFormat5(Contact))
@@ -242,6 +256,16 @@ trait JsonProtocol
   implicit val ShippingItemFormatter = rootFormat(jsonFormat7(ShippingItem))
 
   implicit val PartOrderFormatter = rootFormat(jsonFormat15(PartOrder))
+
+  implicit val ShippingItemZoneFormatter = rootFormat(jsonFormat4(ShippingItemZone))
+
+  implicit val ShipmentFormatter = rootFormat(jsonFormat11(Shipment))
+
+  implicit val ShipmentItemFormatter = rootFormat(jsonFormat4(ShipmentItem))
+
+  implicit val ShippingGroupItemFormatter = rootFormat(jsonFormat4(ShippingGroupItem))
+
+  implicit val MarkFormatter = rootFormat(jsonFormat4(Mark))
 
   implicit def ResponseFormatter[T: JsonFormat] = rootFormat(jsonFormat3(Response[T]))
 

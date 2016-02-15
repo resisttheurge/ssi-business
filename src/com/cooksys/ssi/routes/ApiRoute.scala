@@ -15,13 +15,18 @@ case class ApiRoute(path: String)(implicit db: Database, ec: ExecutionContext) e
         CrudRoute("drawings", DrawingDao) ~
         CrudRoute("jobs", JobDao, innerWithId = (id: Int) => InnerJobRoute(id)) ~
         CrudRoute("manufacturers", ManufacturerDao) ~
+        CrudRoute("marks", MarkDao) ~
         CrudRoute("part-orders", PartOrderDao) ~
         CrudRoute("parts", PartDao) ~
         ReportRoute("reports") ~
         CrudRoute("salespeople", SalespersonDao) ~
         CrudRoute("schedules", ScheduleDao) ~
+        CrudRoute("shipments", ShipmentDao) ~
+        CrudRoute("shipment-items", ShipmentItemDao) ~
         CrudRoute("shipping-groups", ShippingGroupDao) ~
+        CrudRoute("shipping-group-items", ShippingGroupItemDao) ~
         CrudRoute("shipping-items", ShippingItemDao) ~
+        CrudRoute("shipping-item-zones", ShippingItemZoneDao) ~
         CrudRoute("shops", ShopDao) ~
         CrudRoute("specialty-items", SpecialtyItemDao) ~
         CrudRoute("system-types", SystemTypeDao) ~
