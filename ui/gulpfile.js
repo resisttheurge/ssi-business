@@ -8,12 +8,17 @@ var projectDir 		= jetpack;
 var distDir     	= projectDir.cwd('./dist');
 var binDir    		= projectDir.cwd('./bin');
 var resourceDir     = projectDir.cwd('./resources');
+var semanticSrcDir     = projectDir.cwd('./semantic/dist');
+var semanticDestDir     = projectDir.cwd('./bin/semantic/dist');
 
 gulp.task('mkdirs', function(){
     mkdirp.sync('./dist/js', function (err) {
         if (err) console.error(err)
     });
     mkdirp.sync('./dist/style', function (err) {
+        if (err) console.error(err)
+    });
+    mkdirp.sync('./dist/semantic/dist', function (err) {
         if (err) console.error(err)
     });
     mkdirp.sync('./bin/js', function (err) {
@@ -40,6 +45,11 @@ gulp.task('make', shell.task([
 ]));
 
 gulp.task('assemble', function () {
+    projectDir.copyAsync(semanticSrcDir.path(), semanticDestDir.path(), {
+        overwrite: true, matching: [
+            './**/*'
+        ]
+    });
     projectDir.copyAsync(resourceDir.path(), binDir.path(), {
         overwrite: true, matching: [
             './**/*'

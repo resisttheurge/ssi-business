@@ -25,7 +25,6 @@ import core.view.main.LoginDialog;
 import core.view.main.ViewRegistry;
 import core.view.main.ContentManager;
 import core.view.job.modal.NewJobDialog;
-import core.view.main.AppState;
 import api.react.ReactComponent.ReactComponentOfState;
 import api.react.ReactComponent;
 
@@ -73,14 +72,16 @@ class Core extends ReactComponent {
     }
 
     public function handleViewChange(view: String, info: Dynamic){
-        if(view != "home" && state.currentView == view) return;
+        if(view != "home" && view != "refresh" && state.currentView == view) return;
 
-        var content = ContentManager.buildContent(view + "View", info);
+        var nextView = view != "refresh" ? view : state.currentView;
+
+        var content = ContentManager.buildContent(nextView + "View", info);
 
         this.setState({
-            currentView: view,
-            menu: ViewRegistry.buildView(view + "Menu", content),
-            content: ViewRegistry.buildView(view + "View", content)
+            currentView: nextView,
+            menu: ViewRegistry.buildView(nextView + "Menu", content),
+            content: ViewRegistry.buildView(nextView + "View", content)
         });
     }
 
