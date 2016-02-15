@@ -25,7 +25,6 @@ import core.view.main.LoginDialog;
 import core.view.main.ViewRegistry;
 import core.view.main.ContentManager;
 import core.view.job.modal.NewJobDialog;
-import core.view.main.AppState;
 import api.react.ReactComponent.ReactComponentOfState;
 import api.react.ReactComponent;
 
