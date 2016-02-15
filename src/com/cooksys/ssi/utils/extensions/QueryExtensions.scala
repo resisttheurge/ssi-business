@@ -85,6 +85,12 @@ trait QueryExtensions {
 
   }
 
+  implicit class ShippingItemsQueryExtensions[C[_]](self: Query[ShippingItems, ShippingItemsRow, C]) {
+    def withDependents =
+      self
+        .joinLeft(Shops).on(_.shopId === _.id)
+  }
+
   implicit class ShippingRequestsQueryExtensions[C[_]](self: Query[ShippingRequests, ShippingRequestsRow, C]) {
 
     def byId(id: Rep[Int]) = self filter (_.id === id)
@@ -156,6 +162,63 @@ trait QueryExtensions {
 
   }
 
-}
+  implicit class PartOrdersQueryExtensions[C[_]](self: Query[PartOrders, PartOrdersRow, C]) {
+    def withDependents =
+      for {
+        (((po, part), vendor), manufacturer) <- {
+          self
+            .joinLeft(Parts).on(_.partId === _.id)
+            .joinLeft(Vendors).on(_._1.vendorId === _.id)
+            .joinLeft(Manufacturers).on(_._1._1.manufacturerId === _.id)
+        }
+      } yield {
+        (po, part, vendor, manufacturer)
+      }
 
+  }
+
+  implicit class ShippingItemZonesQueryExtensions[C[_]](self: Query[ShippingItemZones, ShippingItemZonesRow, C]) {
+    def withDependents =
+      self
+        .join(Zones).on(_.zoneId === _.id)
+
+  }
+
+  implicit class ShipmentsQueryExtensions[C[_]](self: Query[Shipments, ShipmentsRow, C]) {
+    def withDependents =
+      for {
+        ((((shipment, shop), carrier), contact), address) <- {
+          self
+            .joinLeft(Shops).on(_.shopId === _.id)
+            .joinLeft(Carriers).on(_._1.carrierId === _.id)
+            .joinLeft(Contacts).on(_._1._1.contactId === _.id)
+            .joinLeft(Addresses).on(_._1._1._1.addressId === _.id)
+        }
+      } yield {
+        (shipment, shop, carrier, contact, address)
+      }
+  }
+
+  implicit class ShipmentItemsQueryExtensions[C[_]](self: Query[ShipmentItems, ShipmentItemsRow, C]) {
+    def withDependents =
+      self
+        .join(ShippingItems).on(_.shippingItemId === _.id)
+
+  }
+
+  implicit class ShippingGroupItemsQueryExtensions[C[_]](self: Query[ShippingGroupItems, ShippingGroupItemsRow, C]) {
+    def withDependents =
+      self
+        .join(ShippingItems).on(_.shippingItemId === _.id)
+
+  }
+
+  implicit class MarksQueryExtensions[C[_]](self: Query[Marks, MarksRow, C]) {
+    def withDependents =
+      self
+        .join(ShippingItems).on(_.shippingItemId === _.id)
+
+  }
+
+}
 

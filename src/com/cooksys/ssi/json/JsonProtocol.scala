@@ -1,7 +1,6 @@
 package com.cooksys.ssi.json
 
 import java.sql.{Date, Timestamp}
-
 import com.cooksys.ssi.models._
 import com.cooksys.ssi.utils._
 import spray.json._
@@ -101,6 +100,21 @@ trait JsonProtocol
     }
   }
 
+  implicit object PartOrderStatusFormatter extends JsonFormat[PartOrderStatus] {
+    override def write(obj: PartOrderStatus): JsValue = JsString(obj)
+
+    override def read(json: JsValue): PartOrderStatus = json match {
+      case JsString(x) =>
+        try {
+          x: PartOrderStatus
+        } catch {
+          case t: Throwable =>
+            deserializationError(s"Expected PartOrderStatus to be one of ${PartOrderStatus.all.mkString("[",", ","]")}, but got $x", t)
+        }
+      case x => deserializationError(s"Expected PartOrderStatus as JsString, but got $x")
+    }
+  }
+
   implicit object PartTypeFormatter extends JsonFormat[PartType] {
     override def write(obj: PartType): JsValue = JsString(obj)
 
@@ -131,6 +145,21 @@ trait JsonProtocol
     }
   }
 
+  implicit object ShippingItemStatusFormatter extends JsonFormat[ShippingItemStatus] {
+    override def write(obj: ShippingItemStatus): JsValue = JsString(obj)
+
+    override def read(json: JsValue): ShippingItemStatus = json match {
+      case JsString(x) =>
+        try {
+          x: ShippingItemStatus
+        } catch {
+          case t: Throwable =>
+            deserializationError(s"Expected ShippingItemStatus to be one of ${ShippingItemStatus.all.mkString("[",", ","]")}, but got $x", t)
+        }
+      case x => deserializationError(s"Expected ShippingItemStatus as JsString, but got $x")
+    }
+  }
+
   implicit object TagTypeFormatter extends JsonFormat[TagType] {
     override def write(obj: TagType): JsValue = JsString(obj)
 
@@ -158,6 +187,21 @@ trait JsonProtocol
             deserializationError(s"Expected UserRoleType to be one of ${UserRoleType.all.mkString("[",", ","]")}, but got $x", t)
         }
       case x => deserializationError(s"Expected UserRoleType as JsString, but got $x")
+    }
+  }
+
+  implicit object ShipmentStatusFormatter extends JsonFormat[ShipmentStatus] {
+    override def write(obj: ShipmentStatus): JsValue = JsString(obj)
+
+    override def read(json: JsValue): ShipmentStatus = json match {
+      case JsString(x) =>
+        try {
+          x: ShipmentStatus
+        } catch {
+          case t: Throwable =>
+            deserializationError(s"Expected ShipmentStatus to be one of ${ShipmentStatus.all.mkString("[",", ","]")}, but got $x", t)
+        }
+      case x => deserializationError(s"Expected ShipmentStatus as JsString, but got $x")
     }
   }
 
@@ -206,6 +250,22 @@ trait JsonProtocol
   implicit val SpecialtyItemsByPartTypeReportRequestFormatter = rootFormat(jsonFormat1(SpecialtyItemsByPartTypeReportRequest))
 
   implicit val UserFormatter = rootFormat(jsonFormat5(User))
+
+  implicit val ZoneFormatter = rootFormat(jsonFormat4(Zone))
+
+  implicit val ShippingItemFormatter = rootFormat(jsonFormat7(ShippingItem))
+
+  implicit val PartOrderFormatter = rootFormat(jsonFormat15(PartOrder))
+
+  implicit val ShippingItemZoneFormatter = rootFormat(jsonFormat4(ShippingItemZone))
+
+  implicit val ShipmentFormatter = rootFormat(jsonFormat11(Shipment))
+
+  implicit val ShipmentItemFormatter = rootFormat(jsonFormat4(ShipmentItem))
+
+  implicit val ShippingGroupItemFormatter = rootFormat(jsonFormat4(ShippingGroupItem))
+
+  implicit val MarkFormatter = rootFormat(jsonFormat4(Mark))
 
   implicit def ResponseFormatter[T: JsonFormat] = rootFormat(jsonFormat3(Response[T]))
 

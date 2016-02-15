@@ -8,6 +8,7 @@ import core.view.main.FieldMask;
 import js.JQuery;
 import api.react.React;
 import api.react.ReactMacro.jsx;
+import core.dataaccess.ServiceAccessManager;
 
 class NewJobModalComponents {
     private static inline function jt(){return untyped __js__('this');}
@@ -77,10 +78,10 @@ class NewJobModalComponents {
                         <$FIELD className="field" name="year" type="number" min="1000" max="9999"
                             onChange=${jt().handleId} label="Year" />
                     </div>
-                    <$FIELD className="field" name="customer"
+                    <$CUSTDROPDOWN className="field" name="customer"
                         onChange=${jt().handleCustomer} label="Customer"/>
                     <div className="two fields">
-                        <$FIELD className="field" name="salesman"
+                        <$SALESDROPDOWN className="field" name="salesman"
                             onChange=${jt().handleSalesman} label="Salesman"/>
                         <$FIELD className="field" name="customer"
                             onChange=${jt().handleOnChange} label="Contract Price"  />
@@ -281,6 +282,126 @@ class NewJobModalComponents {
                         </div>
                     </div>
                 ');
+        }
+    });
+
+    public static var CUSTDROPDOWN = untyped React.createClass({
+        getInitialState: function(){
+            var items = [];
+            var customers: Array<Dynamic> = [];
+
+            ServiceAccessManager.getData(
+              EndPoint.CUSTOMER,
+              {
+                success: function(res) {
+                  customers = cast res.data;
+                },
+                error: function() {}
+              }
+            );
+
+            for(customer in customers){
+                items.push(jsx('
+                    <div key=${'static-' + UidGenerator.nextId()} className="item" data-value=${customer.label}>${customer.label}</div>
+                '));
+            }
+
+            return {itms: items, firstSelected: jt().props.def == null ? "default" : jt().props.def};
+        },
+        initialize: function(input: Dynamic){
+            if(input == null) return;
+            var elem = new JQuery(ReactDOM.findDOMNode(input));
+
+            untyped elem.dropdown({
+                onChange: jt().handleOnChange
+            }).dropdown("set selected", jt().state.firstSelected);
+        },
+        handleOnChange: function(value, text, selectedItem){
+            var name = jt().props.name;
+            jt().props.onChange(name, value);
+
+            if (value == 'Create New') jt().setState({createNew: true});
+        },
+        render: function(){
+            if (jt().state.createNew) {
+              return jsx('<$FIELD className="field" name="label"
+                  onChange=${jt().handleCustomer} label="Customer" />');
+            } else {
+              return jsx('
+                  <div className="field">
+                    <label>Customer</label>
+                      <div ref=${jt().initialize} className="ui search selection dropdown">
+                          <input type="hidden" name="customer"></input>
+                          <i className="dropdown icon"></i>
+                          <div className="default text">Customer</div>
+                          <div className="menu">
+                              ${jt().state.itms}
+                              <div className="item" data-value="Create New">Create New</div>
+                          </div>
+                      </div>
+                    </div>
+                  ');
+            }
+        }
+    });
+
+    public static var SALESDROPDOWN = untyped React.createClass({
+        getInitialState: function(){
+            var items = [];
+            var salesmen: Array<Dynamic> = [];
+
+            ServiceAccessManager.getData(
+              EndPoint.SALESPERSON,
+              {
+                success: function(res) {
+                  salesmen = cast res.data;
+                },
+                error: function() {}
+              }
+            );
+
+            for(salesman in salesmen){
+                items.push(jsx('
+                    <div key=${'static-' + UidGenerator.nextId()} className="item" data-value=${salesman.label}>${salesman.label}</div>
+                '));
+            }
+
+            return {itms: items, firstSelected: jt().props.def == null ? "default" : jt().props.def};
+        },
+        initialize: function(input: Dynamic){
+            if(input == null) return;
+            var elem = new JQuery(ReactDOM.findDOMNode(input));
+
+            untyped elem.dropdown({
+                onChange: jt().handleOnChange
+            }).dropdown("set selected", jt().state.firstSelected);
+        },
+        handleOnChange: function(value, text, selectedItem){
+            var name = jt().props.name;
+            jt().props.onChange(name, value);
+
+            if (value == 'Create New') jt().setState({createNew: true});
+        },
+        render: function(){
+            if (jt().state.createNew) {
+              return jsx('<$FIELD className="field" name="label"
+                  onChange=${jt().handleSalesman} label="Salesman" />');
+            } else {
+              return jsx('
+                  <div className="field">
+                    <label>Salesman</label>
+                      <div ref=${jt().initialize} className="ui search selection dropdown">
+                          <input type="hidden" name="salesman"></input>
+                          <i className="dropdown icon"></i>
+                          <div className="default text">Salesman</div>
+                          <div className="menu">
+                              ${jt().state.itms}
+                              <div className="item" data-value="Create New">Create New</div>
+                          </div>
+                      </div>
+                    </div>
+                  ');
+            }
         }
     });
 }

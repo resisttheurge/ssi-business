@@ -61,6 +61,16 @@ trait EnumConversions {
       case "DELETED" => JobStatus.DELETED
     }
 
+  implicit def fromPartOrderStatus(x: PartOrderStatus): String = x.toString
+
+  implicit def toPartOrderStatus(x: String): PartOrderStatus =
+    x match {
+      case "ACTIVE" => PartOrderStatus.ACTIVE
+      case "COMPLETED" => PartOrderStatus.COMPLETED
+      case "CANCELLED" => PartOrderStatus.CANCELLED
+      case "DELETED" => PartOrderStatus.DELETED
+    }
+
   implicit def fromPartType(x: PartType): String = x.toString
 
   implicit def toPartType(x: String): PartType =
@@ -80,6 +90,32 @@ trait EnumConversions {
       case "INSTALLATION" => ScheduleType.INSTALLATION
     }
 
+  implicit def fromShippingItemStatus(x: ShippingItemStatus): String = x.toString
+
+  implicit def toShippingItemStatus(x: String): ShippingItemStatus =
+    x match {
+      case "FAB" => ShippingItemStatus.FAB
+      case "FTS" => ShippingItemStatus.FTS
+      case "HOLD" => ShippingItemStatus.HOLD
+      case "MACH" => ShippingItemStatus.MACH
+      case "MEM" => ShippingItemStatus.MEM
+      case "MOO" => ShippingItemStatus.MOO
+      case "NEXT" => ShippingItemStatus.NEXT
+      case "NS" => ShippingItemStatus.NS
+      case "PAINT" => ShippingItemStatus.PAINT
+      case "PREFAB" => ShippingItemStatus.PREFAB
+      case "REWORK" => ShippingItemStatus.REWORK
+      case "RTA" => ShippingItemStatus.RTA
+      case "RTP" => ShippingItemStatus.RTP
+      case "RTS" => ShippingItemStatus.RTS
+      case "SAMPLE" => ShippingItemStatus.SAMPLE
+      case "SHPD" => ShippingItemStatus.SHPD
+      case "SIP" => ShippingItemStatus.SIP
+      case "VOID" => ShippingItemStatus.VOID
+      case "W.O.REV." => ShippingItemStatus.`W.O.REV.`
+      case "WP" => ShippingItemStatus.WP
+    }
+
   implicit def fromTagType(x: TagType): String = x.toString
 
   implicit def toTagType(x: String): TagType =
@@ -96,4 +132,15 @@ trait EnumConversions {
       case "EMPLOYEE" => UserRoleType.EMPLOYEE
     }
 
+  implicit def fromShipmentStatus(x: ShipmentStatus): String = x.toString
+
+  implicit def toShipmentStatus(x: String): ShipmentStatus =
+    x match {
+      case "ACTIVE" => ShipmentStatus.ACTIVE
+      case "POSTED" => ShipmentStatus.POSTED
+      case "COMPLETED" => ShipmentStatus.COMPLETED
+      case "CANCELLED" => ShipmentStatus.CANCELLED
+      case "DELETED" => ShipmentStatus.DELETED
+    }
+  
 }
