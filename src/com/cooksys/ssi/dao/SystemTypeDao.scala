@@ -5,6 +5,28 @@ import slick.schema.Tables._
 
 object SystemTypeDao extends CrudDao[SystemType] {
 
+  val indexByJobIdQuery =
+      Compiled((jobId: Rep[Int]) =>
+        for {
+          jobSystemType <- JobSystemTypes.filter(_.jobId === jobId)
+          systemType <- SystemTypes.filter(_.id === jobSystemType.systemTypeId)
+        } yield {
+          systemType
+        }
+      )
+
+  def indexByJobId(jobId: Int)(implicit db: DB, ec: EC) =
+    run(
+      for {
+      types <- indexByJobIdQuery(jobId).result
+      } yield {
+        Response[Seq[SystemType]](
+          success = true,
+          data = types.map(t => t: SystemType)
+        )
+      }
+    )
+
   override def indexAction(implicit ec: EC) =
     for (carriers <- SystemTypes.result)
       yield Response[Seq[SystemType]](

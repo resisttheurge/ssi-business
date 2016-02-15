@@ -20,6 +20,18 @@ trait RowConversions {
       created = Some(row.created)
     )
 
+  implicit def fromAddendaRowWithDependents(row: (AddendaRow, Option[SalespeopleRow], Option[ContactsRow])): Addendum =
+    Addendum(
+      id = Some(row._1.id),
+      jobId = row._1.jobId,
+      label = row._1.label,
+      description = row._1.description,
+      contractPrice = row._1.contractPrice,
+      salesperson = row._2.map(r => r: Salesperson),
+      contact = row._3.map(r => r: Contact),
+      created = Some(row._1.created)
+    )
+
   implicit def toAddendaRow(addendum: Addendum): AddendaRow =
     AddendaRow(
       id = addendum.id.getOrElse(-1),
@@ -302,5 +314,87 @@ trait RowConversions {
   implicit def fromShippingGroupsRowWithDependents(row: (ShippingGroupsRow, Option[(ShippingRequestsRow, Option[ShopsRow], Option[CarriersRow], Option[ContactsRow], Option[AddressesRow])])): ShippingGroup =
     (row._1: ShippingGroup).copy(
       info = row._2.map(r => r: ShippingRequest)
+    )
+
+  implicit def toZonesRow(zone: Zone): ZonesRow =
+    ZonesRow(
+      id = zone.id.getOrElse(-1),
+      jobId = zone.jobId,
+      number = zone.number,
+      fieldDate = zone.fieldDate
+    )
+
+  implicit def fromZonesRow(row: ZonesRow): Zone =
+    Zone(
+      id = row.id,
+      jobId = row.jobId,
+      number = row.number,
+      fieldDate = row.fieldDate
+    )
+
+  implicit def toShippingItemsRow(si: ShippingItem): ShippingItemsRow =
+    ShippingItemsRow(
+      id = si.id.getOrElse(-1),
+      status = si.status,
+      label = si.label,
+      requested = si.requested,
+      completed = si.completed,
+      remarks = si.remarks,
+      shopId = si.shop.flatMap(_.id)
+    )
+
+  implicit def fromShippingItemsRow(row: ShippingItemsRow): ShippingItem =
+    ShippingItem(
+      id = row.id,
+      status = row.status,
+      label = row.label,
+      requested = row.requested,
+      completed = row.completed,
+      remarks = row.remarks
+    )
+
+  implicit def fromShippingItemsRowWithDependents(row: (ShippingItemsRow, Option[ShopsRow])): ShippingItem =
+    (row._1: ShippingItem).copy(shop = row._2.map(s => s: Shop))
+
+  implicit def toPartOrdersRow(por: PartOrder): PartOrdersRow =
+    PartOrdersRow(
+      id = por.id.getOrElse(-1),
+        jobId = por.jobId,
+        drawingId = por.drawingId,
+        status = por.status,
+        partId = por.part.flatMap(_.id),
+        manufacturerId = por.manufacturer.flatMap(_.id),
+        vendorId = por.vendor.flatMap(_.id),
+        po = por.po,
+        requestedQuantity = por.requestedQuantity,
+        stockQuantity = por.stockQuantity,
+        purchaseQuantity = por.purchaseQuantity,
+        requestDate = por.requestDate,
+        purchaseDate = por.purchaseDate,
+        releaseDate = por.releaseDate,
+        releasedBy = por.releasedBy
+    )
+
+  implicit def fromPartOrdersRow(por: PartOrdersRow): PartOrder =
+    PartOrder(
+      id = por.id,
+      jobId = por.jobId,
+      drawingId = por.drawingId,
+      status = por.status,
+      po = por.po,
+      requestedQuantity = por.requestedQuantity,
+      stockQuantity = por.stockQuantity,
+      purchaseQuantity = por.purchaseQuantity,
+      requestDate = por.requestDate,
+      purchaseDate = por.purchaseDate,
+      releaseDate = por.releaseDate,
+      releasedBy = por.releasedBy
+    )
+
+  implicit def fromPartOrdersRowWithDependents(por: (PartOrdersRow, Option[PartsRow], Option[VendorsRow], Option[ManufacturersRow])): PartOrder =
+    (por._1: PartOrder).copy(
+      part = por._2.map(p => p:Part),
+      vendor = por._3.map(p => p:Vendor),
+      manufacturer = por._4.map(p => p:Manufacturer)
     )
 }
