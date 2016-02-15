@@ -1,5 +1,6 @@
 package core.view.rms.modal;
 
+import core.reporting.ReportManager;
 import api.react.React;
 import js.JQuery;
 import api.react.ReactDOM;
@@ -32,6 +33,10 @@ class EditRmsDialog extends ReactComponent {
 
         var style = {margin: 0};
 
+        var openRMSReport = function(event){
+            ReportManager.showReport("rms", props.rms);
+        }
+
         return jsx('
             <div ref=$tabInit id="editdwg-modal" className="ui small modal">
                 <div className="header">
@@ -55,11 +60,14 @@ class EditRmsDialog extends ReactComponent {
                         </form>
                     </div>
                 </div>
-                <div  className="actions">
+                <div style=$style className="actions ui basic segment">
+                    <div className="ui black left floated button" onClick=$openRMSReport>
+                        RMS Report
+                    </div>
                     <div className="ui black cancel button">
                         Cancel
                     </div>
-                    <div className="ui approve right labeled icon button">
+                    <div className="ui approve right floated labeled icon button">
                         Submit Drawing Changes
                         <i className="checkmark icon"></i>
                     </div>

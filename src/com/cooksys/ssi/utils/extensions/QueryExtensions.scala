@@ -85,6 +85,12 @@ trait QueryExtensions {
 
   }
 
+  implicit class ShippingItemsQueryExtensions[C[_]](self: Query[ShippingItems, ShippingItemsRow, C]) {
+    def withDependents =
+      self
+        .joinLeft(Shops).on(_.shopId === _.id)
+  }
+
   implicit class ShippingRequestsQueryExtensions[C[_]](self: Query[ShippingRequests, ShippingRequestsRow, C]) {
 
     def byId(id: Rep[Int]) = self filter (_.id === id)
@@ -156,6 +162,20 @@ trait QueryExtensions {
 
   }
 
-}
+  implicit class PartOrdersQueryExtensions[C[_]](self: Query[PartOrders, PartOrdersRow, C]) {
+    def withDependents =
+      for {
+        (((po, part), vendor), manufacturer) <- {
+          self
+            .joinLeft(Parts).on(_.partId === _.id)
+            .joinLeft(Vendors).on(_._1.vendorId === _.id)
+            .joinLeft(Manufacturers).on(_._1._1.manufacturerId === _.id)
+        }
+      } yield {
+        (po, part, vendor, manufacturer)
+      }
 
+  }
+
+}
 

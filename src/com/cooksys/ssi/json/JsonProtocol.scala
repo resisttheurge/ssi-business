@@ -101,6 +101,21 @@ trait JsonProtocol
     }
   }
 
+  implicit object PartOrderStatusFormatter extends JsonFormat[PartOrderStatus] {
+    override def write(obj: PartOrderStatus): JsValue = JsString(obj)
+
+    override def read(json: JsValue): PartOrderStatus = json match {
+      case JsString(x) =>
+        try {
+          x: PartOrderStatus
+        } catch {
+          case t: Throwable =>
+            deserializationError(s"Expected PartOrderStatus to be one of ${PartOrderStatus.all.mkString("[",", ","]")}, but got $x", t)
+        }
+      case x => deserializationError(s"Expected PartOrderStatus as JsString, but got $x")
+    }
+  }
+
   implicit object PartTypeFormatter extends JsonFormat[PartType] {
     override def write(obj: PartType): JsValue = JsString(obj)
 
@@ -128,6 +143,21 @@ trait JsonProtocol
             deserializationError(s"Expected ScheduleType to be one of ${ScheduleType.all.mkString("[",", ","]")}, but got $x", t)
         }
       case x => deserializationError(s"Expected ScheduleType as JsString, but got $x")
+    }
+  }
+
+  implicit object ShippingItemStatusFormatter extends JsonFormat[ShippingItemStatus] {
+    override def write(obj: ShippingItemStatus): JsValue = JsString(obj)
+
+    override def read(json: JsValue): ShippingItemStatus = json match {
+      case JsString(x) =>
+        try {
+          x: ShippingItemStatus
+        } catch {
+          case t: Throwable =>
+            deserializationError(s"Expected ShippingItemStatus to be one of ${ShippingItemStatus.all.mkString("[",", ","]")}, but got $x", t)
+        }
+      case x => deserializationError(s"Expected ShippingItemStatus as JsString, but got $x")
     }
   }
 
@@ -206,6 +236,12 @@ trait JsonProtocol
   implicit val SpecialtyItemsByPartTypeReportRequestFormatter = rootFormat(jsonFormat1(SpecialtyItemsByPartTypeReportRequest))
 
   implicit val UserFormatter = rootFormat(jsonFormat5(User))
+
+  implicit val ZoneFormatter = rootFormat(jsonFormat4(Zone))
+
+  implicit val ShippingItemFormatter = rootFormat(jsonFormat7(ShippingItem))
+
+  implicit val PartOrderFormatter = rootFormat(jsonFormat15(PartOrder))
 
   implicit def ResponseFormatter[T: JsonFormat] = rootFormat(jsonFormat3(Response[T]))
 

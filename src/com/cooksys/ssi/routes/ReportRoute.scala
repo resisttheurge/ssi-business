@@ -6,11 +6,12 @@ import com.cooksys.ssi.models._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-case class ReportRoute(path: String)(implicit val ec: ExecutionContext) extends BaseRoute{
+case class ReportRoute(path: String)(implicit val ec: ExecutionContext) extends BaseRoute {
 
   override def internal: Route =
-    post {
-      pathPrefix(path) {
+
+    pathPrefix(path) {
+      post {
         path("layout-drawing") {
           entity(as[LayoutDrawingReportRequest]) { params =>
             Future {
