@@ -95,6 +95,8 @@ class NewShpmntModalComponents {
                     i += 1;
                 }
 
+                untyped console.log(items);
+
                 jt().setState({addingItem: false, items: items, selected: {}});
             }
         },
@@ -140,20 +142,18 @@ class NewShpmntModalComponents {
             var tabs = [];
             var page = [];
 
-            untyped console.log(jt().state.selected);
-
             var items: Array<Dynamic> = jt().state.items;
 
             if(items == null)
                 items = jt().state.internalItems;
 
             var tabCount = Math.ceil(items.length / 5.0);
-
+            var index = 0;
             for(i in 0...(tabCount)){
                 var rows = [];
                 var start = i * 5;
 
-                var index = 0;
+
                 for(item in items.slice(start, start + 5)){
                     var checked = jt().state.selected[index] == true;
 
@@ -177,9 +177,10 @@ class NewShpmntModalComponents {
 
                 var dataTab = 'sitemtab-$i';
 
+                untyped console.log(i);
                 var tbcls = untyped classNames("ui", "basic", "tab", {active: i == 0}, "segment");
                 tabs.push(jsx('
-                    <div key=${'tseg-' + dataTab} className=$tbcls data-tab=$dataTab>
+                    <div key=${'tseg-' + dataTab + '-' + items.length} className=$tbcls data-tab=$dataTab>
                         <table className="ui very basic table">
                             <thead>
                                 <tr>
@@ -204,8 +205,10 @@ class NewShpmntModalComponents {
                     untyped tab.tab();
                 };
 
+                untyped console.log({active: i == 0});
+
                 var cls = untyped classNames("item", {active: i == 0});
-                page.push(jsx('<a key=${'key-' + dataTab} ref=$tabInitialize className=$cls data-tab=$dataTab>${i + 1}</a>'));
+                page.push(jsx('<a key=${'key-' + dataTab + '-' + items.length} ref=$tabInitialize className=$cls data-tab=$dataTab>${i + 1}</a>'));
             }
 
             var addingItem = jt().state.addingItem;
