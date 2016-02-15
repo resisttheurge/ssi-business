@@ -3,7 +3,7 @@ package com.cooksys.ssi.dao
 import com.cooksys.ssi.models._
 import slick.schema.Tables._
 
-object UserDao extends BaseDao[User] {
+object UserDao extends CrudDao[User] {
 
   def authorize(credentials: Credentials)(implicit dB: DB, eC: EC) =
     run(authorizeAction(credentials))
@@ -99,15 +99,15 @@ object UserDao extends BaseDao[User] {
       )
     }
 
-  def createRoles(id: Int, roles: Seq[String])(implicit ec: EC) =
+  def createRoles(id: Int, roles: Seq[UserRoleType])(implicit ec: EC) =
     UserRoles ++= roles.map(role => UserRolesRow(id, role, active = true))
 
-  def updateRoles(id: Int, roles: Seq[String])(implicit ec: EC) =
+  def updateRoles(id: Int, roles: Seq[UserRoleType])(implicit ec: EC) =
     for {
       existing <- UserRoles.byUserId(id).map(_.role).result
       created <- UserRoles ++= roles.diff(existing).map(role => UserRolesRow(id, role, active = true))
       activated <- UserRoles.inactive.byUserId(id).byRoles(roles).map(_.active).update(true)
-      deactivated <- UserRoles.active.byUserId(id).filterNot(_.role inSet roles).map(_.active).update(false)
+      deactivated <- UserRoles.active.byUserId(id).filterNot(_.role inSet roles.map(r => r: String)).map(_.active).update(false)
     } yield {
       (created, activated, deactivated)
     }

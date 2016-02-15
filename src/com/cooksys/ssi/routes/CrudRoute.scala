@@ -1,14 +1,14 @@
 package com.cooksys.ssi.routes
 
 import akka.http.scaladsl.server.Route
-import com.cooksys.ssi.dao.BaseDao
+import com.cooksys.ssi.dao.CrudDao
 import slick.driver.MySQLDriver.api._
 import spray.json.RootJsonFormat
 
 import scala.concurrent.ExecutionContext
 
 case class CrudRoute[Model: RootJsonFormat](path: String,
-                                            dao: BaseDao[Model],
+                                            dao: CrudDao[Model],
                                             inner: Option[Route] = None,
                                             innerWithId: Option[Int => Route] = None)
                                            (implicit db: Database, ec: ExecutionContext)
@@ -25,7 +25,7 @@ case class CrudRoute[Model: RootJsonFormat](path: String,
           entity(as[Model]) { model =>
             dao.create(model)
           }
-        }
+        } ~ innerRoute
       } ~ pathPrefix(IntNumber) { id: Int =>
         pathEndOrSingleSlash {
           get {
@@ -37,7 +37,7 @@ case class CrudRoute[Model: RootJsonFormat](path: String,
           } ~ delete {
             dao.destroy(id)
           }
-        }
+        } ~ innerRouteWithId(id)
       }
     }
 

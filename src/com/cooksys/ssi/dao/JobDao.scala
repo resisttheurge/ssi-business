@@ -1,16 +1,60 @@
 package com.cooksys.ssi.dao
 
+import com.cooksys.ssi.models
 import com.cooksys.ssi.models._
-import shapeless.syntax.std.tuple._
+import slick.schema.Tables
 import slick.schema.Tables._
 
-object JobDao extends BaseDao[Job] {
+object JobDao extends CrudDao[Job] {
 
   val indexQuery =
     Compiled(Jobs.withDependents)
 
   val readQuery =
     Compiled((id: Rep[Int]) => Jobs.filter(_.id === id).withDependents)
+
+  val addressesByJobIdQuery =
+      Compiled((id: Rep[Int]) =>
+        for {
+          jobAddress <- Tables.JobAddresses.filter(_.jobId === id)
+          address <- Addresses.filter(_.id === jobAddress.addressId)
+        } yield {
+          (jobAddress.addressType, address)
+        }
+      )
+
+  val schedulesByJobIdQuery =
+    Compiled((id: Rep[Int]) =>
+      for {
+        schedule <- Tables.Schedules.filter(_.jobId === id)
+      } yield {
+        (schedule.scheduleType, schedule)
+      }
+    )
+
+  def addressesByJobId(id: Int)(implicit db: DB, ec: EC) =
+    run(
+      for {
+        addresses <- addressesByJobIdQuery(id).result
+      } yield {
+        Response[models.JobAddresses](
+          success = true,
+          data = addresses.map(a => (a._1: JobAddressType, a._2: Address)).toMap: models.JobAddresses
+        )
+      }
+    )
+
+  def schedulesByJobId(id: Int)(implicit db: DB, ec: EC) =
+    run(
+      for {
+        schedules <- schedulesByJobIdQuery(id).result
+      } yield {
+        Response[JobSchedules](
+          success = true,
+          data = schedules.map(s => (s._1: ScheduleType, s._2: Schedule)).toMap: JobSchedules
+        )
+      }
+    )
 
   def indexAction(implicit ec: EC) =
     for (jobs <- indexQuery.result)

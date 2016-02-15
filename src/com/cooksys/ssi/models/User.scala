@@ -10,4 +10,4 @@ case class User(id: Option[Int],
                 username: String,
                 password: Option[String],
                 active: Option[Boolean],
-                roles: Option[Seq[String]] = None)
+                roles: Option[Seq[UserRoleType]] = None)

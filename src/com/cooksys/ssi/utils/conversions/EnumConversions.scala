@@ -1,11 +1,31 @@
 package com.cooksys.ssi.utils.conversions
 
-import com.cooksys.ssi.models.{JobStatus, JobPrefix}
+import com.cooksys.ssi.models._
 
 object EnumConversions extends EnumConversions
 
 trait EnumConversions {
+
+  implicit def fromDrawingType(x: DrawingType): String = x.toString
+
+  implicit def toDrawingType(x: String): DrawingType =
+    x match {
+      case "DETAIL" => DrawingType.DETAIL
+      case "LAYOUT" => DrawingType.LAYOUT
+      case "VOID" => DrawingType.VOID
+    }
+
+
+  implicit def fromJobAddressType(x: JobAddressType): String = x.toString
+
+  implicit def toJobAddressType(x: String): JobAddressType =
+    x match {
+      case "SHIPPING" => JobAddressType.SHIPPING
+      case "INVOICING" => JobAddressType.INVOICING
+    }
+
   implicit def fromJobPrefix(x: JobPrefix): String = x.toString
+
   implicit def toJobPrefix(x: String): JobPrefix =
     x match {
       case "B" => JobPrefix.B
@@ -31,7 +51,8 @@ trait EnumConversions {
     }
 
   implicit def fromJobStatus(x: JobStatus): String = x.toString
-  implicit def toJobStatus(x: String): JobStatus=
+
+  implicit def toJobStatus(x: String): JobStatus =
     x match {
       case "INACTIVE" => JobStatus.INACTIVE
       case "ACTIVE" => JobStatus.ACTIVE
@@ -39,4 +60,40 @@ trait EnumConversions {
       case "CANCELLED" => JobStatus.CANCELLED
       case "DELETED" => JobStatus.DELETED
     }
+
+  implicit def fromPartType(x: PartType): String = x.toString
+
+  implicit def toPartType(x: String): PartType =
+    x match {
+      case "MECH" => PartType.MECH
+      case "ELEC" => PartType.ELEC
+    }
+
+  implicit def fromScheduleType(x: ScheduleType): String = x.toString
+
+  implicit def toScheduleType(x: String): ScheduleType =
+    x match {
+      case "ENGINEERING" => ScheduleType.ENGINEERING
+      case "MECHANICAL" => ScheduleType.MECHANICAL
+      case "ELECTRICAL" => ScheduleType.ELECTRICAL
+      case "SHIPPING" => ScheduleType.SHIPPING
+      case "INSTALLATION" => ScheduleType.INSTALLATION
+    }
+
+  implicit def fromTagType(x: TagType): String = x.toString
+
+  implicit def toTagType(x: String): TagType =
+    x match {
+      case "S" => TagType.S
+      case "W" => TagType.W
+    }
+
+  implicit def fromUserRoleType(x: UserRoleType): String = x.toString
+
+  implicit def toUserRoleType(x: String): UserRoleType =
+    x match {
+      case "ADMIN" => UserRoleType.ADMIN
+      case "EMPLOYEE" => UserRoleType.EMPLOYEE
+    }
+
 }
