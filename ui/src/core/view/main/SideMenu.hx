@@ -1,5 +1,7 @@
 package core.view.main;
 
+import core.reporting.ReportManager;
+import core.reporting.ReportingService;
 import api.react.ReactDOM;
 import core.authentication.AuthenticationManager;
 import core.view.main.ContentManager.Content;
@@ -51,9 +53,10 @@ class SideMenu extends ReactComponent{
         var login = {display: props.authenticated ? "none" : ""};
         var logout = {display: props.authenticated ? "" : "none"};
 
-        var item      : Array<Dynamic> = ['item'];
-        var canDisable: Array<Dynamic> = [{disabled: !props.authenticated}, item];
-        var canHide   : Array<Dynamic> = [canDisable, 'transition', 'hidden'];
+        var item             : Array<Dynamic> = ['item'];
+        var canDisable       : Array<Dynamic> = [{disabled: !props.authenticated}, item];
+        var canHide          : Array<Dynamic> = [canDisable, 'transition', 'hidden'];
+        var canHideDropdown  : Array<Dynamic> = [canHide, 'dropdown', 'ui'];
 
         var cls: Dynamic -> String = untyped classNames;
         var popup = function(input){
@@ -77,11 +80,17 @@ class SideMenu extends ReactComponent{
             if(input == null || state.shouldTransition != true) return;
             var elem = new JQuery(ReactDOM.findDOMNode(input));
 
+            if(elem.hasClass("dropdown")) untyped elem.dropdown();
+
             untyped elem.transition({
                 animation  : 'slide down',
                 duration   : '400ms'
             });
 
+        };
+
+        var openReport = function(reportId: String, event){
+            ReportManager.showReport(reportId, jobId);
         };
 
         return jsx('
@@ -96,6 +105,20 @@ class SideMenu extends ReactComponent{
                 <div id="selectedJob" ref=$popup className="ui center aligned basic segment"
                     data-content="Double click to edit this job." data-variation="mini inverted">$jobId</div>
             </a>
+            <div ref=$transition className="${cls(canHideDropdown)}" tabIndex="0">
+                <i className="dropdown icon"></i>
+                    Job Reports
+                <div className="menu" tabIndex="-1">
+                    <a className="item" onClick=${openReport.bind('specialtyItems', _)}>Specialty Items</a>
+                    <a className="item" onClick=${openReport.bind('layoutDrawing', _)}>Layout Drawing</a>
+                    <a className="item" onClick=${openReport.bind('detailDrawing', _)}>Detail Drawing</a>
+                    <a className="item" onClick=${openReport.bind('computerDrawing', _)}>Computer Drawing</a>
+                    <a className="item" onClick=${openReport.bind('zone', _)}>Zone</a>
+                    <a className="item" onClick=${openReport.bind('materialShipper', _)}>Material Shipper</a>
+                    <a className="item" onClick=${openReport.bind('shipVia', _)}>Ship Via</a>
+                    <a className="item" onClick=${openReport.bind('jobShipments', _)}>Job Shipments</a>
+                </div>
+            </div>
             <a ref=$transition className=${cls(canHide)} onClick=${toggleView.bind('dwg', _)}>Drawing</a>
             <div ref=$transition className=${cls(canHide)}>
                 Shippable
@@ -208,4 +231,3 @@ class SideMenu extends ReactComponent{
 
 
 }
-

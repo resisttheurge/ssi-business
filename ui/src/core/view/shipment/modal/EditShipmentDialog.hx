@@ -1,5 +1,6 @@
 package core.view.shipment.modal;
 
+import core.reporting.ReportManager;
 import core.models.CoreTypes.Shipment;
 import api.react.ReactDOM;
 import core.dataaccess.PersistenceManager;
@@ -62,6 +63,12 @@ class EditShipmentDialog extends ReactComponent {
 
         var items = shp.items;
 
+        var style = {margin: 0};
+
+        var openShipmentReport = function(event){
+            ReportManager.showReport("shipment", props.shpmnt);
+        }
+
         return jsx('
             <div id="editshp-modal" className="ui modal">
                 <div className="header">
@@ -121,7 +128,10 @@ class EditShipmentDialog extends ReactComponent {
                         </div>
                     </form>
                 </div>
-                <div className="actions">
+                <div style=$style className="actions ui basic segment">
+                    <div className="ui left floated black button" onClick=$openShipmentReport>
+                        Shipment Report
+                    </div>
                     <div className="ui black cancel button">
                         Cancel
                     </div>

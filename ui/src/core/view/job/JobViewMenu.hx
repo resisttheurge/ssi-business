@@ -1,5 +1,6 @@
 package core.view.job;
 
+import core.reporting.ReportManager;
 import js.JQuery;
 import api.react.ReactComponent;
 import api.react.ReactMacro.jsx;
@@ -20,14 +21,13 @@ class JobViewMenu extends ReactComponent{
         var openManageFilterDialog = function(){
             Core.modalChange.dispatch("mng-filter");
         };
-        var openReportViewer = function() {
-            var w = js.Browser.window.open("pdf/web/viewer.html?file=" + ReportingService.retrieveReport("managementReview"), "_blank", "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no");
-
-            untyped w.document.onpropertychange = function(){
-                if (untyped w.event.propertyName == "title") {
-                    untyped alert("title changed");
-                }
-            };
+        var openManagementReviewReport = function() {
+            Core.modalChange.dispatch("mr-report");
+//            ReportManager.showReport("managementReview");
+        };
+        var openProductionScheduleReport = function() {
+            Core.modalChange.dispatch("ps-report");
+//            ReportManager.showReport("productionSchedule");
         };
         var forceUpdate = function(){
             Core.viewChange.dispatch("refresh", null);
@@ -42,7 +42,11 @@ class JobViewMenu extends ReactComponent{
                 <i className="filter icon"></i>
                 Manage Filters
             </a>
-            <a className="item" onClick=$openReportViewer>
+            <a className="item" onClick=$openManagementReviewReport>
+                <i className="suitcase icon"></i>
+                Management Review
+            </a>
+            <a className="item" onClick=$openProductionScheduleReport>
                 <i className="calendar icon"></i>
                 Production Schedule
             </a>

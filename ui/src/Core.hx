@@ -1,3 +1,5 @@
+import core.view.job.modal.ProdReportDialog;
+import core.view.job.modal.MngReportDialog;
 import core.view.job.modal.NewFilterDialog;
 import haxe.Json;
 import core.view.main.ManageFilterDialog;
@@ -189,9 +191,11 @@ class Core extends ReactComponent {
                 case "edit-shpmnt" :comp = jsx('<$EditShipmentDialog  key="editmark-dialog" id="editmark-dialog"
                                                 shpmnt=${dataObj.editObj} job=${dataObj.curJob}/>');
 
-                case "job-filter" :comp = jsx('<$NewFilterDialog key="newfilter-dialog" id="newfilter-dialog"
+                case "job-filter"  :comp = jsx('<$NewFilterDialog key="newfilter-dialog" id="newfilter-dialog"
                                                 structure=${dataObj.structure} />');
 
+                case "mr-report"   :comp = jsx('<$MngReportDialog  key="mr-report-dialog" id="mr-report-dialog"/>');
+                case "ps-report"   :comp = jsx('<$ProdReportDialog  key="ps-report-dialog" id="ps-report-dialog"/>');
                 default: comp = jsx('<div />');
             }
 
