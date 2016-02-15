@@ -57,10 +57,14 @@ class EditAbmDialog extends ReactComponent {
                 <div className="content">
                     <form className="ui form">
                         <div className="fields">
-                            <$FIELD key="v1" className="three wide field" label="Type" value=${editAbm.part.type}
-                                name="type" onChange=$handleOnChange/>
-                            <$FIELD key="v2" className="five wide field" label="Part NO" value=${editAbm.part.number}
-                                name="number" onChange=$handleOnChange/>
+                        <div className="field">
+                          <label>Vendor</label>
+                          <$VENDORDROPDOWN className="three wide dropdown" label="Vendor" value=${editAbm.part.type} name="vendor" onChange=$handleOnChange/>
+                        </div>
+                        <div className="field">
+                          <label>Part NO</label>
+                          <$PARTDROPDOWN className="five wide dropdown" label="Part NO" value=${editAbm.part.number} name="number" onChange=$handleOnChange/>
+                        </div>
                             <$FIELD key="v3" className="three wide field" label="Quantity" value=${editAbm.quantity}
                                 name="quantity" onChange=$handleOnChange/>
                             <$FIELD key="v4" className="five wide field" label="Status" value=${editAbm.status}
@@ -68,8 +72,8 @@ class EditAbmDialog extends ReactComponent {
                         </div>
                         <div className="two fields">
                             <div className="field">
-                                <$FIELD className="field" label="Manufacturer" value=${editAbm.manufacturer.label}
-                                        name="manufacturer" onChange=$handleOnChange/>
+                                <label>Manufacturer</label>
+                                <$MFACTDROPDOWN className="dropdown" label="Manufacturer" value=${editAbm.manufacturer.label} name="manufacturer" onChange=$handleOnChange/>
                                 <div className="field">
                                     <label>Description</label>
                                     <textarea rows="5" onChange=$handleDescChange

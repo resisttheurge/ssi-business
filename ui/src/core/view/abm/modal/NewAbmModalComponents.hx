@@ -5,6 +5,7 @@ import api.react.ReactDOM;
 import js.JQuery;
 import api.react.React;
 import api.react.ReactMacro.jsx;
+import core.dataaccess.ServiceAccessManager;
 
 class NewAbmModalComponents {
     private static inline function jt(){return untyped __js__('this');}
@@ -39,5 +40,156 @@ class NewAbmModalComponents {
                 ');
         }
     });
+
+    public static var MFACTDROPDOWN = untyped React.createClass({
+        getInitialState: function(){
+            var items = [];
+            var mfacts: Array<Dynamic> = [];
+
+            ServiceAccessManager.getData(
+              EndPoint.MFACT,
+              {
+                success: function(res) {
+                  mfacts = cast res.data;
+                },
+                error: function() {}
+              }
+            );
+
+            for(mfact in mfacts){
+                items.push(jsx('
+                    <div key=${'static-' + UidGenerator.nextId()} className="item" data-value=${mfact.label}>${mfact.label}</div>
+                '));
+            }
+
+            return {itms: items, firstSelected: jt().props.def == null ? "default" : jt().props.def};
+        },
+        initialize: function(input: Dynamic){
+            if(input == null) return;
+            var elem = new JQuery(ReactDOM.findDOMNode(input));
+
+            untyped elem.dropdown({
+                onChange: jt().handleOnChange
+            }).dropdown("set selected", jt().state.firstSelected);
+        },
+        handleOnChange: function(value, text, selectedItem){
+            var name = jt().props.name;
+            jt().props.onChange(name, value);
+        },
+        render: function(){
+
+            return jsx('
+                    <div ref=${jt().initialize} className="ui search selection dropdown">
+                        <input type="hidden" name="manufacturer"></input>
+                        <i className="dropdown icon"></i>
+                        <div className="default text">Manufacturer</div>
+                        <div className="menu">
+                            ${jt().state.itms}
+                        </div>
+                    </div>
+                ');
+        }
+    });
+
+    public static var VENDORDROPDOWN = untyped React.createClass({
+        getInitialState: function(){
+            var items = [];
+            var vendors: Array<Dynamic> = [];
+
+            ServiceAccessManager.getData(
+              EndPoint.VENDOR,
+              {
+                success: function(res) {
+                  vendors = cast res.data;
+                },
+                error: function() {}
+              }
+            );
+
+            for(v in vendors){
+                items.push(jsx('
+                    <div key=${'static-' + UidGenerator.nextId()} className="item" data-value=${v.label}>${v.label}</div>
+                '));
+            }
+
+            return {itms: items, firstSelected: jt().props.def == null ? "default" : jt().props.def};
+        },
+        initialize: function(input: Dynamic){
+            if(input == null) return;
+            var elem = new JQuery(ReactDOM.findDOMNode(input));
+
+            untyped elem.dropdown({
+                onChange: jt().handleOnChange
+            }).dropdown("set selected", jt().state.firstSelected);
+        },
+        handleOnChange: function(value, text, selectedItem){
+            var name = jt().props.name;
+            jt().props.onChange(name, value);
+        },
+        render: function(){
+
+            return jsx('
+                    <div ref=${jt().initialize} className="ui search selection dropdown">
+                        <input type="hidden" name="vendor"></input>
+                        <i className="dropdown icon"></i>
+                        <div className="default text">Vendor</div>
+                        <div className="menu">
+                            ${jt().state.itms}
+                        </div>
+                    </div>
+                ');
+        }
+    });
+
+    public static var PARTDROPDOWN = untyped React.createClass({
+        getInitialState: function(){
+            var items = [];
+            var parts: Array<Dynamic> = [];
+
+            ServiceAccessManager.getData(
+              EndPoint.PART,
+              {
+                success: function(res) {
+                  parts = cast res.data;
+                },
+                error: function() {}
+              }
+            );
+
+            for(part in parts){
+                items.push(jsx('
+                    <div key=${'static-' + UidGenerator.nextId()} className="item" data-value=${part.number}>${part.number}</div>
+                '));
+            }
+
+            return {itms: items, firstSelected: jt().props.def == null ? "default" : jt().props.def};
+        },
+        initialize: function(input: Dynamic){
+            if(input == null) return;
+            var elem = new JQuery(ReactDOM.findDOMNode(input));
+
+            untyped elem.dropdown({
+                onChange: jt().handleOnChange
+            }).dropdown("set selected", jt().state.firstSelected);
+        },
+        handleOnChange: function(value, text, selectedItem){
+            var name = jt().props.name;
+            jt().props.onChange(name, value);
+        },
+        render: function(){
+
+            return jsx('
+                    <div ref=${jt().initialize} className="ui search selection dropdown">
+                        <input type="hidden" name="part"></input>
+                        <i className="dropdown icon"></i>
+                        <div className="default text">Part NO</div>
+                        <div className="menu">
+                            ${jt().state.itms}
+                        </div>
+                    </div>
+                ');
+        }
+    });
+
 
 }

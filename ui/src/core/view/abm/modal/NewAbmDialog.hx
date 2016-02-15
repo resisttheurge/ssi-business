@@ -55,18 +55,25 @@ class NewAbmDialog extends ReactComponent {
                 <div className="content">
                     <form className="ui form">
                         <div className="fields">
-                            <$FIELD className="three wide field" label="Type"  name="type" onChange=$handleOnChange/>
-                            <$FIELD className="five wide field" label="Part NO"  name="number" onChange=$handleOnChange/>
+                          <div className="field">
+                            <label>Vendor</label>
+                            <$VENDORDROPDOWN className="three wide dropdown" label="Vendor" name="vendor" onChange=$handleOnChange/>
+                          </div>
+                          <div className="field">
+                            <label>Part NO</label>
+                            <$PARTDROPDOWN className="five wide dropdown" label="Part NO"  name="number" onChange=$handleOnChange/>
+                          </div>
                             <$FIELD className="three wide field" label="Quantity"  name="quantity" onChange=$handleOnChange/>
                             <$FIELD className="five wide field" label="Status"  name="status" onChange=$handleOnChange/>
                         </div>
                         <div className="two fields">
                             <div className="field">
-                                <$FIELD className="field" label="Manufacturer" name="manufacturer" onChange=$handleOnChange/>
-                                <div className="field">
-                                    <label>Description</label>
-                                    <textarea rows="5" onChange=$handleDescChange></textarea>
-                                </div>
+                              <label>Manufacturer</label>
+                              <$MFACTDROPDOWN className="dropdown" label="Manufacturer" name="manufacturer" onChange=$handleOnChange/>
+                              <div className="field">
+                                  <label>Description</label>
+                                  <textarea rows="5" onChange=$handleDescChange></textarea>
+                              </div>
                             </div>
                             <div className="field">
                                 <$FIELD className="field" label="Released By" name="releasedBy" onChange=$handleOnChange/>
