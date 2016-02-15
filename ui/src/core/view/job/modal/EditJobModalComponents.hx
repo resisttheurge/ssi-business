@@ -392,8 +392,7 @@ class EditJobModalComponents {
                     <div className=${p.className}>
                         <label>${p.label}</label>
                         <input type=$type ref=${p.mask} name=${p.name} pattern=$pattern
-                            placeholder=${p.pholder} onChange=${jt().handleOnChange}
-                            defaultValue=${jt().props.defaultValue} value=${jt().props.value}></input>
+                            placeholder=${p.pholder} onChange=${jt().handleOnChange} value=${jt().props.value}></input>
                     </div>
                 ');
         }
