@@ -42,20 +42,20 @@ class EditJobDialog extends ReactComponent {
                 job.id = value.id;
 
             };
-            case "custInfo":{
-                job.addresses.shipping = value.addresses.shipping;
-                job.contact = value.contact;
-
-            };
-            case "invInfo":{
-                job.addresses.invoicing = value;
-            };
+//            case "custInfo":{
+//                job.addresses.shipping = value.addresses.shipping;
+//                job.contact = value.contact;
+//
+//            };
+//            case "invInfo":{
+//                job.addresses.invoicing = value;
+//            };
             case "descInfo":{
                 job.description = value;
             };
-            case "schInfo":{
-                job.schedules = value;
-            };
+//            case "schInfo":{
+//                job.schedules = value;
+//            };
         }
 
         this.setState({job: job});

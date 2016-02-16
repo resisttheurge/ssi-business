@@ -14,12 +14,19 @@ typedef AjaxCallbacks = {
     @optional var then: Dynamic -> Void;
 }
 
-enum EndPoint {CARRIER;CUSTOMER;JOB;JOBDWG;JOBMARK;JOBSHPGRP;JOBITEM;JOBSHPMNT;MFACT;PART;SALESPERSON;SHOP;USER;USERROLE;VENDOR;}
+typedef Response<T> = {
+    var success: Bool;
+    @optional var data: T;
+    @optional var message: String;
+}
+
+enum EndPoint {AUTH;CARRIER;CUSTOMER;JOB;JOBDWG;JOBMARK;JOBSHPGRP;JOBITEM;JOBSHPMNT;MFACT;PART;SALESPERSON;SHOP;USER;USERROLE;VENDOR;}
 class ServiceAccessManager {/* for Intellij, Ignore or Delete if Necessary */ #if display private var CARRIER: EndPoint;private var CUSTOMER: EndPoint;private var JOB: EndPoint;private var JOBDWG: EndPoint;private var JOBMARK: EndPoint;private var JOBSHPGRP: EndPoint;private var JOBITEM: EndPoint;private var JOBSHPMNT: EndPoint;private var MFACT: EndPoint;private var PART: EndPoint;private var SALESPERSON: EndPoint;private var SHOP: EndPoint;private var USER: EndPoint;private var USERROLE: EndPoint;private var VENDOR: EndPoint; #end
-    private static var baseUrl = "";
-    private static var contextRoot = "api/";
+    private static var baseUrl = "http://localhost/";
+    private static var contextRoot = "api";
     private static function urlObj(url: EndPoint, ?data: Dynamic){
         switch url {
+            case AUTH: return '/auth';
             case CARRIER:{if(data == null) return '/carriers';return '/carriers/${data.pk}}';}
             case CUSTOMER:{if(data == null) return '/customers';return '/customers/${data.pk}';}
             case JOB:{if(data == null) return '/jobs';return '/jobs/${data.pk}}';}
@@ -55,13 +62,15 @@ class ServiceAccessManager {/* for Intellij, Ignore or Delete if Necessary */ #i
         }).always(callbacks.always).fail(callbacks.fail).done(callbacks.done).then(callbacks.then);
     }
 
-    public static function postData(ep: EndPoint, callbacks: Dynamic, data: Dynamic){
+    public static function postData(ep: EndPoint, data: Dynamic, callbacks: Dynamic){
         var url = buildUrl(ep, data);
-
+        untyped console.log('${data}');
         return ajax({
             url: url,
             type: 'POST',
-            content: data.content,
+            data: haxe.Json.stringify(data),
+            contentType: 'application/json',
+            processData: false,
             error: callbacks.error,
             success: callbacks.success
         }).always(callbacks.always).fail(callbacks.fail).done(callbacks.done).then(callbacks.then);

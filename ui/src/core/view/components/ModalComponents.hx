@@ -19,14 +19,14 @@ class ModalComponents {
         },
         render: function(){
             var job: Job = jt().props.job;
-            var label: String = job.id.label + ('${job.id.year}'.substr(2, 2));
+            var label: String = job.identifier.label + ('${job.identifier.year}'.substr(2, 2));
 
             var current = job;
             return jsx('
                 <div className="field">
                     <div className="inline fields">
                         <$FIELD className="six wide field" label=${'Job'+ String.fromCharCode(160) +'ID'}
-                                name="id-prefix" pholder="Prefix" value=${job.id.prefix} />
+                                name="id-prefix" pholder="Prefix" value=${job.identifier.prefix} />
                         <$FIELD className="ten wide field" name="id-label" pholder="ID" value=$label />
                     </div>
                     <div  className="fields">
@@ -37,8 +37,8 @@ class ModalComponents {
                         <$FIELD className="field" name="customer" pholder="Contract Price" value=${current.contractPrice} />
                     </div>
                     <div  className="two fields">
-                        <$FIELD className="field" name="customer" mask=${FieldMask.dateField} pholder="Start Date" value=${current.start} />
-                        <$FIELD className="field" name="customer" mask=${FieldMask.dateField} pholder="Due Date" value=${current.due} />
+                        <$FIELD className="field" name="customer" mask=${FieldMask.dateField} pholder="Start Date" value=${current.startDate} />
+                        <$FIELD className="field" name="customer" mask=${FieldMask.dateField} pholder="Due Date" value=${current.dueDate} />
                     </div>
                 </div>
             ');

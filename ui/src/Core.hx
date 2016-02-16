@@ -64,13 +64,24 @@ class Core extends ReactComponent {
         this.state = {
             menu: ViewRegistry.buildView("homeMenu", null),
             content: ViewRegistry.buildView("homeView", null),
-            editJobObj: ContentManager.buildContent("jobView", null)[0],
             currentModal: "",
             authenticated: props.authenticated
         };
 
         this.callback = viewChange.add(handleViewChange);
         this.callback2 = modalChange.add(handleModalChange);
+
+        ContentManager.buildContent("jobView", null, function(content){
+            this.setState({
+                menu: ViewRegistry.buildView("homeMenu", null),
+                content: ViewRegistry.buildView("homeView", null),
+                editJobObj: content[0],
+                currentModal: "",
+                authenticated: props.authenticated
+            });
+        });
+
+
     }
 
     public function handleViewChange(view: String, info: Dynamic){
@@ -78,12 +89,12 @@ class Core extends ReactComponent {
 
         var nextView = view != "refresh" ? view : state.currentView;
 
-        var content = ContentManager.buildContent(nextView + "View", info);
-
-        this.setState({
-            currentView: nextView,
-            menu: ViewRegistry.buildView(nextView + "Menu", content),
-            content: ViewRegistry.buildView(nextView + "View", content)
+        ContentManager.buildContent(nextView + "View", info, function(content){
+            this.setState({
+                currentView: nextView,
+                menu: ViewRegistry.buildView(nextView + "Menu", content),
+                content: ViewRegistry.buildView(nextView + "View", content)
+            });
         });
     }
 
@@ -138,13 +149,12 @@ class Core extends ReactComponent {
         if(nextState.authenticated == true && AuthenticationManager.isLoggedIn() != true){
             var view = "home";
 
-            var content = ContentManager.buildContent(view + "View", null);
-
-            nextState.authenticated = false;
-            nextState.currentView = view;
-            nextState.menu = ViewRegistry.buildView(view + "Menu", content);
-            nextState.content = ViewRegistry.buildView(view + "View", content);
-
+            ContentManager.buildContent(view + "View", null, function(content){
+                nextState.authenticated = false;
+                nextState.currentView = view;
+                nextState.menu = ViewRegistry.buildView(view + "Menu", content);
+                nextState.content = ViewRegistry.buildView(view + "View", content);
+            });
         }
     }
 
