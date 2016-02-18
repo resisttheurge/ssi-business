@@ -1966,34 +1966,62 @@ core_view_components_ModalComponents.jt = function() {
 };
 var core_view_components_TableComponent = function() {
 	React.Component.call(this);
-	this.state = { rows : [], subrows : [], rowtoggled : [], displayed : []};
+	this.state = { rows : [], subrows : [], rowtoggled : [], displayed : [], lazyDisplay : 0, topSpacer : { height : "0px", display : "none"}, bottomSpacer : { height : "0px", display : "none"}};
 };
 core_view_components_TableComponent.__name__ = true;
 core_view_components_TableComponent.__super__ = React.Component;
 core_view_components_TableComponent.prototype = $extend(React.Component.prototype,{
 	render: function() {
+		var _g = this;
 		var structure = this.props.structure;
 		var order = this.props.ordering;
 		var data = structure.filterData(this.props.data);
 		structure.init(this);
 		var rows = [];
-		var _g = 0;
-		while(_g < data.length) {
-			var d = data[_g];
-			++_g;
+		var _g1 = 0;
+		while(_g1 < data.length) {
+			var d = data[_g1];
+			++_g1;
 			var children = [];
-			var _g1 = 0;
+			var _g11 = 0;
 			var _g2 = order.orderData(d);
-			while(_g1 < _g2.length) {
-				var fd = _g2[_g1];
-				++_g1;
+			while(_g11 < _g2.length) {
+				var fd = _g2[_g11];
+				++_g11;
 				var child = structure.cellFormatter(fd,order);
 				children.push(child);
 			}
 			rows = rows.concat(structure.generateRows(d,children));
 		}
 		var cls = classNames("ui","single","line","unstackable","small",this.props.classes,"celled","table");
-		return React.createElement("table",{ id : "mainTable", className : cls},structure.generateHeader(order),React.createElement("tbody",null,rows));
+		var rowsLength = rows.length;
+		var rowSize = 38;
+		var rowsToDisplay = 300;
+		var rowsBuffer = 75;
+		var lazyLoader = function(input) {
+			if(input == null || rowsLength < 300) return;
+			var elem = js.JQuery(ReactDOM.findDOMNode(input));
+			var maxLazyDisplay = (rowsLength - rowsToDisplay) / rowsBuffer;
+			elem.visibility({ onTopVisible : function(calculations) {
+			}, onBottomVisible : function(calculations1) {
+			}, onUpdate : function(calculations2) {
+				var pctage = Math.floor(100 * calculations2.percentagePassed);
+				if(pctage < 10 && _g.state.lazyDisplay != 0) {
+					_g.state.lazyDisplay -= 1;
+					var topHeight = _g.state.lazyDisplay * rowsBuffer * rowSize;
+					var botHeight = (rowsLength - (_g.state.lazyDisplay * rowsBuffer + rowsToDisplay)) * rowSize;
+					_g.setState({ topSpacer : { height : "" + topHeight + "px"}, botSpacer : { height : "" + botHeight + "px"}, displayTop : false});
+				} else if(pctage > 90 && maxLazyDisplay < rowsLength) {
+					_g.state.lazyDisplay += 1;
+					var topHeight1 = _g.state.lazyDisplay * rowsBuffer * rowSize;
+					var botHeight1 = (rowsLength - (_g.state.lazyDisplay * rowsBuffer + rowsToDisplay)) * rowSize;
+					_g.setState({ topSpacer : { height : "" + topHeight1 + "px"}, botSpacer : { height : "" + botHeight1 + "px"}, displayBot : false});
+				} else if(_g.state.lazyDisplay == 0 && _g.state.displayTop == false) _g.setState({ topSpacer : { height : "0px", display : "none"}, displayTop : true}); else if(_g.state.lazyDisplay == maxLazyDisplay && _g.state.displayBot == false) _g.setState({ botSpacer : { height : "0px", display : "none"}, displayBot : true});
+			}});
+		};
+		var displayableRows;
+		if(rows.length > 300) displayableRows = rows.splice(Math.floor(this.state.lazyDisplay * rowsBuffer),rowsToDisplay); else displayableRows = rows;
+		return React.createElement("table",{ id : "mainTable", className : cls},structure.generateHeader(order),React.createElement("tbody",null,React.createElement("tr",{ id : "tableSpacerTop", style : this.state.topSpacer},React.createElement("td",{ colSpan : "200"}))),React.createElement("tbody",{ ref : lazyLoader},displayableRows),React.createElement("tbody",null,React.createElement("tr",{ id : "tableSpacerBottom", style : this.state.bottomSpacer},React.createElement("td",{ colSpan : "200"}))));
 	}
 	,__class__: core_view_components_TableComponent
 });

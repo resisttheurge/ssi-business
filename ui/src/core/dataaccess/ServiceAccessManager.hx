@@ -69,7 +69,7 @@ class ServiceAccessManager {/* for Intellij, Ignore or Delete if Necessary */ #i
             url: url,
             type: 'POST',
             data: haxe.Json.stringify(data),
-            contentType: 'application/json',
+            contentType: 'app/json',
             processData: false,
             error: callbacks.error,
             success: callbacks.success

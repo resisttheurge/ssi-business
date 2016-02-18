@@ -65,7 +65,7 @@ class ShipmentTableStructure extends TableStructure<Shipment> {
         var array = [];
 
         var onClick = function(){
-            Core.application.setState({editObj: shpment}, function(){
+            Core.app.setState({editObj: shpment}, function(){
                 Core.modalChange.dispatch("edit-shpmnt");
             });
         }

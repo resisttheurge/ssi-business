@@ -229,7 +229,7 @@ class JobTableStructure extends TableStructure<Job> {
                     parentTable.setState({subrows: subrows, rowtoggled: toggled});
                 },
                 onClick : function(){
-                    Core.application.setState({editJobObj: job, editJobMainObj: parentTable.props.realjob}, function(){
+                    Core.app.setState({editJobObj: job, editJobMainObj: parentTable.props.realjob}, function(){
                         Core.modalChange.dispatch("edit-job");
                     });
                 }
