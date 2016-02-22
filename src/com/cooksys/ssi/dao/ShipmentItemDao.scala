@@ -5,6 +5,18 @@ import slick.schema.Tables._
 
 object ShipmentItemDao extends CrudDao[ShipmentItem] {
 
+  def indexByShipmentId(id: Int) =
+    run(
+      for {
+        items <- ShipmentItems.filter(_.shipmentId === id).withDependents.result
+      } yield {
+        Response[Seq[ShipmentItem]](
+          success = true,
+          data = items.map(i => i: ShipmentItem)
+        )
+      }
+    )
+
   override def indexAction(implicit ec: EC) =
     for (carriers <- ShipmentItems.withDependents.result)
       yield Response[Seq[ShipmentItem]](

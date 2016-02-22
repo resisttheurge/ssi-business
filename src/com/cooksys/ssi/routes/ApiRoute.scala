@@ -12,7 +12,9 @@ case class ApiRoute(path: String)(implicit db: Database, ec: ExecutionContext) e
         CrudRoute("addresses", AddressDao) ~
         AuthRoute("auth") ~
         CrudRoute("carriers", CarrierDao) ~
-        CrudRoute("drawings", DrawingDao) ~
+        CrudRoute("contacts", ContactDao) ~
+        CrudRoute("customers", CustomerDao) ~
+        CrudRoute("drawings", DrawingDao, innerWithId = (id: Int) => InnerDrawingRoute(id)) ~
         CrudRoute("jobs", JobDao, innerWithId = (id: Int) => InnerJobRoute(id)) ~
         CrudRoute("manufacturers", ManufacturerDao) ~
         CrudRoute("marks", MarkDao) ~
@@ -21,11 +23,11 @@ case class ApiRoute(path: String)(implicit db: Database, ec: ExecutionContext) e
         ReportRoute("reports") ~
         CrudRoute("salespeople", SalespersonDao) ~
         CrudRoute("schedules", ScheduleDao) ~
-        CrudRoute("shipments", ShipmentDao) ~
+        CrudRoute("shipments", ShipmentDao, innerWithId = (id: Int) => InnerShipmentRoute(id)) ~
         CrudRoute("shipment-items", ShipmentItemDao) ~
-        CrudRoute("shipping-groups", ShippingGroupDao) ~
+        CrudRoute("shipping-groups", ShippingGroupDao, innerWithId = (id: Int) => InnerShippingGroupRoute(id)) ~
         CrudRoute("shipping-group-items", ShippingGroupItemDao) ~
-        CrudRoute("shipping-items", ShippingItemDao) ~
+        CrudRoute("shipping-items", ShippingItemDao, innerWithId = (id: Int) => InnerShippingItemRoute(id)) ~
         CrudRoute("shipping-item-zones", ShippingItemZoneDao) ~
         CrudRoute("shops", ShopDao) ~
         CrudRoute("specialty-items", SpecialtyItemDao) ~

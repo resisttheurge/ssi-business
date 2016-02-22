@@ -5,7 +5,74 @@ import com.cooksys.ssi.models._
 import slick.schema.Tables
 import slick.schema.Tables._
 
+import scala.concurrent.Future
+
 object JobDao extends CrudDao[Job] {
+
+  def createJobAddresses(id: Int, addresses: models.JobAddresses) =
+    (addresses.shipping, addresses.invoicing) match {
+      case (Some(s), Some(i)) =>
+        run(
+          for {
+            _ <- Tables.JobAddresses += JobAddressesRow(-1, id, JobAddressType.SHIPPING, s.id.get)
+            _ <- Tables.JobAddresses += JobAddressesRow(-1, id, JobAddressType.INVOICING, i.id.get)
+            result <- addressesByJobId(id)
+          } yield {
+            result
+          }
+        )
+      case (Some(s), None) =>
+        run(
+          for {
+            _ <- Tables.JobAddresses += JobAddressesRow(-1, id, JobAddressType.SHIPPING, s.id.get)
+            result <- addressesByJobId(id)
+          } yield {
+            result
+          }
+        )
+      case (None, Some(i)) =>
+        run(
+          for {
+            _ <- Tables.JobAddresses += JobAddressesRow(-1, id, JobAddressType.INVOICING, i.id.get)
+            result <- addressesByJobId(id)
+          } yield {
+            result
+          }
+        )
+      case _ =>
+        Future.successful(
+          Response[models.JobAddresses](
+            success = true,
+            data = addresses
+          )
+        )
+    }
+
+  def addSystemType(id: Int, st: SystemType) =
+    run(
+      for {
+        _ <- JobSystemTypes += JobSystemTypesRow(-1, id, st.id.get)
+        result <- SystemTypeDao.indexByJobIdQuery(id).result
+      } yield {
+        Response[Seq[SystemType]](
+          success = true,
+          data = result.map(s => s: SystemType)
+        )
+      }
+    )
+
+  def removeSystemType(id: Int, st: SystemType) =
+    run(
+      for {
+        _ <- JobSystemTypes.filter(st => st.jobId === id && st.systemTypeId === st.id.get).delete
+        result <- SystemTypeDao.indexByJobIdQuery(id).result
+      } yield {
+        Response[Seq[SystemType]](
+          success = true,
+          data = result.map(s => s: SystemType)
+        )
+      }
+    )
 
   val indexQuery =
     Compiled(Jobs.withDependents)
@@ -14,14 +81,14 @@ object JobDao extends CrudDao[Job] {
     Compiled((id: Rep[Int]) => Jobs.filter(_.id === id).withDependents)
 
   val addressesByJobIdQuery =
-      Compiled((id: Rep[Int]) =>
-        for {
-          jobAddress <- Tables.JobAddresses.filter(_.jobId === id)
-          address <- Addresses.filter(_.id === jobAddress.addressId)
-        } yield {
-          (jobAddress.addressType, address)
-        }
-      )
+    Compiled((id: Rep[Int]) =>
+      for {
+        jobAddress <- Tables.JobAddresses.filter(_.jobId === id)
+        address <- Addresses.filter(_.id === jobAddress.addressId)
+      } yield {
+        (jobAddress.addressType, address)
+      }
+    )
 
   val schedulesByJobIdQuery =
     Compiled((id: Rep[Int]) =>

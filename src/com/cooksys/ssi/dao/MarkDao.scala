@@ -5,6 +5,18 @@ import slick.schema.Tables._
 
 object MarkDao extends CrudDao[Mark] {
 
+  def indexByDrawingId(id: Int) =
+    run(
+      for {
+        marks <- Marks.filter(_.drawingId === id).withDependents.result
+      } yield {
+        Response[Seq[Mark]](
+          success = true,
+          data = marks.map(m => m: Mark)
+        )
+      }
+    )
+
   override def indexAction(implicit ec: EC) =
     for (carriers <- Marks.withDependents.result)
       yield Response[Seq[Mark]](

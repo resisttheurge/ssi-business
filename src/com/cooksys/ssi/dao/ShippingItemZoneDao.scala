@@ -6,6 +6,18 @@ import slick.schema.Tables._
 
 object ShippingItemZoneDao extends CrudDao[ShippingItemZone] {
 
+  def indexByShippingItemId(id: Int) =
+    run(
+      for {
+        zones <- ShippingItemZones.filter(_.shippingItemId === id).withDependents.result
+      } yield {
+        Response[Seq[ShippingItemZone]](
+          success = true,
+          data = zones.map(z => z: ShippingItemZone)
+        )
+      }
+    )
+
   override def indexAction(implicit ec: EC) =
     for (carriers <- ShippingItemZones.withDependents.result)
       yield Response[Seq[ShippingItemZone]](
