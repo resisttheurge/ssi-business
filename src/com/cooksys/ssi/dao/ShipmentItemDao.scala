@@ -5,7 +5,7 @@ import slick.schema.Tables._
 
 object ShipmentItemDao extends CrudDao[ShipmentItem] {
 
-  def indexByShipmentId(id: Int) =
+  def indexByShipmentId(id: Int)(implicit db: DB, ec: EC) =
     run(
       for {
         items <- ShipmentItems.filter(_.shipmentId === id).withDependents.result

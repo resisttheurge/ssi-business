@@ -5,7 +5,7 @@ import slick.schema.Tables._
 
 object MarkDao extends CrudDao[Mark] {
 
-  def indexByDrawingId(id: Int) =
+  def indexByDrawingId(id: Int)(implicit db: DB, ec: EC) =
     run(
       for {
         marks <- Marks.filter(_.drawingId === id).withDependents.result

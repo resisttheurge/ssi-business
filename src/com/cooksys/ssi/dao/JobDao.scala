@@ -9,34 +9,43 @@ import scala.concurrent.Future
 
 object JobDao extends CrudDao[Job] {
 
-  def createJobAddresses(id: Int, addresses: models.JobAddresses) =
+  def createJobAddresses(id: Int, addresses: models.JobAddresses)(implicit db: DB, ec: EC) =
     (addresses.shipping, addresses.invoicing) match {
       case (Some(s), Some(i)) =>
         run(
           for {
             _ <- Tables.JobAddresses += JobAddressesRow(-1, id, JobAddressType.SHIPPING, s.id.get)
             _ <- Tables.JobAddresses += JobAddressesRow(-1, id, JobAddressType.INVOICING, i.id.get)
-            result <- addressesByJobId(id)
+            result <- addressesByJobIdQuery(id).result
           } yield {
-            result
+            Response[models.JobAddresses](
+              success = true,
+              data = result.map(a => (a._1: JobAddressType, a._2: Address)).toMap: models.JobAddresses
+            )
           }
         )
       case (Some(s), None) =>
         run(
           for {
             _ <- Tables.JobAddresses += JobAddressesRow(-1, id, JobAddressType.SHIPPING, s.id.get)
-            result <- addressesByJobId(id)
+            result <- addressesByJobIdQuery(id).result
           } yield {
-            result
+            Response[models.JobAddresses](
+              success = true,
+              data = result.map(a => (a._1: JobAddressType, a._2: Address)).toMap: models.JobAddresses
+            )
           }
         )
       case (None, Some(i)) =>
         run(
           for {
             _ <- Tables.JobAddresses += JobAddressesRow(-1, id, JobAddressType.INVOICING, i.id.get)
-            result <- addressesByJobId(id)
+            result <- addressesByJobIdQuery(id).result
           } yield {
-            result
+            Response[models.JobAddresses](
+              success = true,
+              data = result.map(a => (a._1: JobAddressType, a._2: Address)).toMap: models.JobAddresses
+            )
           }
         )
       case _ =>
@@ -48,7 +57,7 @@ object JobDao extends CrudDao[Job] {
         )
     }
 
-  def addSystemType(id: Int, st: SystemType) =
+  def addSystemType(id: Int, st: SystemType)(implicit db: DB, ec: EC) =
     run(
       for {
         _ <- JobSystemTypes += JobSystemTypesRow(-1, id, st.id.get)
@@ -61,7 +70,7 @@ object JobDao extends CrudDao[Job] {
       }
     )
 
-  def removeSystemType(id: Int, st: SystemType) =
+  def removeSystemType(id: Int, st: SystemType)(implicit db: DB, ec: EC) =
     run(
       for {
         _ <- JobSystemTypes.filter(st => st.jobId === id && st.systemTypeId === st.id.get).delete
