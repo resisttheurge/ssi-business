@@ -12,13 +12,13 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow()
 
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/app/index.html')
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // Maximize the window
+  mainWindow.maximize()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {
