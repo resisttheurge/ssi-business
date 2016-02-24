@@ -4,18 +4,48 @@
     <meta charset="utf-8">
     <title>ssi-ui</title>
 
+    <!-- bootstrap css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
 
+    <!-- bower dependencies -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
 
+    <!-- main application module -->
     <script src="js/app.js"></script>
+
+    <!-- controller modules -->
     <script src="js/controllers.js"></script>
+    <script src="js/controllers/carrierControllers.js"></script>
+    <script src="js/controllers/coreControllers.js"></script>
+    <script src="js/controllers/customerControllers.js"></script>
+    <script src="js/controllers/drawingControllers.js"></script>
+    <script src="js/controllers/jobControllers.js"></script>
+    <script src="js/controllers/manufacturerControllers.js"></script>
+    <script src="js/controllers/markControllers.js"></script>
+    <script src="js/controllers/partControllers.js"></script>
+    <script src="js/controllers/partOrderControllers.js"></script>
+    <script src="js/controllers/salespersonControllers.js"></script>
+    <script src="js/controllers/shipmentControllers.js"></script>
+    <script src="js/controllers/shipmentItemControllers.js"></script>
+    <script src="js/controllers/shippingGroupControllers.js"></script>
+    <script src="js/controllers/shippingGroupItemControllers.js"></script>
+    <script src="js/controllers/shippingItemControllers.js"></script>
+    <script src="js/controllers/specialtyItemControllers.js"></script>
+    <script src="js/controllers/systemTypeControllers.js"></script>
+    <script src="js/controllers/userControllers.js"></script>
+    <script src="js/controllers/vendorControllers.js"></script>
+    <script src="js/controllers/zoneControllers.js"></script>
+
+    <!-- service modules -->
     <script src="js/services.js"></script>
+    <script src="js/services/apiServices.js"></script>
+    <script src="js/services/coreServices.js"></script>
+
   </head>
-  <body>
+  <body ng-controller="RootController">
     <div class="view-container">
       <div ng-view class="view-frame"></div>
     </div>

@@ -1,3 +1,6 @@
+node_modules/
+bower_components/
+
 /resources/evolutions/ssi-business.mwb.bak
 
 ### JetBrains template
