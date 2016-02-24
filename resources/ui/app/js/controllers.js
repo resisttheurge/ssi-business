@@ -1,7 +1,8 @@
 'use strict'
 
-var ssiControllers =
-  angular.module('ssiControllers', [
+var ssiControllers = angular.module(
+  'ssiControllers',
+  [
     'carrierControllers',
     'coreControllers',
     'customerControllers',
@@ -22,4 +23,5 @@ var ssiControllers =
     'userControllers',
     'vendorControllers',
     'zoneControllers'
-  ])
+  ]
+)
