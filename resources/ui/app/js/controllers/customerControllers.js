@@ -1,10 +1,10 @@
 'use strict'
 
-var customerControllers = angular.module('customerControllers' [])
+var customerControllers = angular.module('customerControllers', [])
 
 customerControllers.controller('CustomerListController', ['$scope', '$routeParams', 'Customer',
   function($scope, $routeParams, Customer){
-    console.log.('getting all Customers');
+    console.log('getting all Customers');
     Customer.query(function(response) {
       $scope.loading = true
       console.log('this is the customers: ' + JSON.stringify(response))
@@ -21,7 +21,7 @@ customerControllers.controller('CustomerListController', ['$scope', '$routeParam
 
 customerControllers.controller('CustomerDetailController', ['$scope', '$routeParams', 'Customer',
   function($scope, $routeParams, Customer){
-    console.log.('getting all Customer');
+    console.log('getting all Customer');
     Customer.get({customerId: $routeParams.customerId}, function(response){
       $scope.loading = true;
       // console.log

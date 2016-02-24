@@ -1,6 +1,6 @@
 var userControllers = angular.module('userControllers', [])
 
-systemTypeControllers.controller('SystemTypeListController', ['$scope', 'User',
+userControllers.controller('UserListController', ['$scope', 'User',
   function($scope, User) {
     // console.log('getting the ShippingGroupDetail');
     User.query(function(response) {
@@ -16,7 +16,7 @@ systemTypeControllers.controller('SystemTypeListController', ['$scope', 'User',
     })
   }
 
-systemTypeControllers.controller('SystemTypeDetailController', ['$scope', '$routeParams', 'User',
+userControllers.controller('UserDetailController', ['$scope', '$routeParams', 'User',
   function($scope, $routeParams, User) {
     // console.log('getting the ShippingGroupDetail');
     User.get({userId: $routeParams.userId}, function(response){

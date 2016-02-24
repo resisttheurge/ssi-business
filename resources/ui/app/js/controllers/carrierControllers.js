@@ -4,7 +4,7 @@ var carrierControllers = angular.module('carrierControllers', [])
 
 carrierControllers.controller('CarrierListController', ['$scope', 'Carrier',
   function($scope, Carrier){
-    console.log.('getting all carriers');
+    console.log('getting all carriers');
     Carrier.query(function(response) {
       $scope.loading = true
       console.log('this is the carriers: ' + JSON.stringify(response))
@@ -21,7 +21,7 @@ carrierControllers.controller('CarrierListController', ['$scope', 'Carrier',
 
 carrierControllers.controller('CarrierDetailController', ['$scope', '$routeParams', 'Car',
   function($scope, $routeParams, Carrier){
-    console.log.('getting a single carrier');
+    console.log('getting a single carrier');
     Carrier.get({carrierId: $routeParams.carrierId}, function(response){
       $scope.loading = true;
       // console.log

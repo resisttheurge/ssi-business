@@ -1,4 +1,6 @@
-var shippingGroupItemControllers = angular.module('shippingGroupItemControllers' [])
+'use strict'
+
+var shippingGroupItemControllers = angular.module('shippingGroupItemControllers', [])
 
 shippingGroupItemControllers.controller('ShippingGroupItemListController', ['$scope', 'ShippingGroupItem',
   function($scope, ShippingGroup) {
