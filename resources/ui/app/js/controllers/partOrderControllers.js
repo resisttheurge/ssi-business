@@ -1,5 +1,5 @@
 'use strict'
-var partOrderControllers = angular.module('partControllers', [])
+var partOrderControllers = angular.module('partOrderControllers', [])
 partOrderControllers.controller('PartOrderListController', ['$scope', 'PartOrder',
   function($scope, PartOrder) {
     // console.log('getting the single Drawing');

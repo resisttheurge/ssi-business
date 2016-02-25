@@ -17,7 +17,7 @@ var ssiControllers = angular.module(
     'shipmentItemControllers',
     'shippingGroupControllers',
     'shippingGroupItemControllers',
-    'shippingItemControllers',
+    // 'shippingItemControllers',
     'specialtyItemControllers',
     'systemTypeControllers',
     'userControllers',

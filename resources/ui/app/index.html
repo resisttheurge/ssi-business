@@ -5,19 +5,16 @@
     <title>ssi-ui</title>
 
     <!-- bootstrap css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 
     <!-- bower dependencies -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
 
-    <!-- main application module -->
-    <script src="js/app.js"></script>
-
     <!-- controller modules -->
-    <script src="js/controllers.js"></script>
     <script src="js/controllers/carrierControllers.js"></script>
     <script src="js/controllers/coreControllers.js"></script>
     <script src="js/controllers/customerControllers.js"></script>
@@ -32,22 +29,40 @@
     <script src="js/controllers/shipmentItemControllers.js"></script>
     <script src="js/controllers/shippingGroupControllers.js"></script>
     <script src="js/controllers/shippingGroupItemControllers.js"></script>
-    <script src="js/controllers/shippingItemControllers.js"></script>
+    <!-- <script src="js/controllers/shippingItemControllers.js"></script> -->
     <script src="js/controllers/specialtyItemControllers.js"></script>
     <script src="js/controllers/systemTypeControllers.js"></script>
     <script src="js/controllers/userControllers.js"></script>
     <script src="js/controllers/vendorControllers.js"></script>
     <script src="js/controllers/zoneControllers.js"></script>
+    <script src="js/controllers.js"></script>
 
     <!-- service modules -->
-    <script src="js/services.js"></script>
     <script src="js/services/apiServices.js"></script>
     <script src="js/services/coreServices.js"></script>
+    <script src="js/services.js"></script>
+
+    <!-- main application module -->
+    <script src="js/app.js"></script>
 
   </head>
   <body ng-controller="RootController">
-    <div class="view-container">
-      <div ng-view class="view-frame"></div>
+    <div class="container-fluid">
+      <div class="col-md-2">
+        <div class="row">
+          hello
+        </div>
+        <div class="row">
+          my
+        </div>
+        <div class="row">
+          friend
+        </div>
+        <div class="row">
+          <a href="#/jobs">jobs</a>
+        </div>
+      </div>
+      <div ng-view class="col-md-10"></div>
     </div>
   </body>
 </html>

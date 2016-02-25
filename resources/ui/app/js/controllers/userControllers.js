@@ -15,6 +15,7 @@ userControllers.controller('UserListController', ['$scope', 'User',
       $scope.loading = false
     })
   }
+])
 
 userControllers.controller('UserDetailController', ['$scope', '$routeParams', 'User',
   function($scope, $routeParams, User) {
