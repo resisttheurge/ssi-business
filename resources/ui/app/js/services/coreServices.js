@@ -7,9 +7,9 @@ coreServices.factory(
   function() {
 
     var user = {
-      isLoggedIn: true,
-      username: 'admin',
-      roles: ['ADMIN', 'EMPLOYEE']
+      isLoggedIn: false,
+      username: '',
+      roles: []
     }
 
     var reset = function() {
@@ -23,5 +23,18 @@ coreServices.factory(
       logout: reset
     }
 
+  }
+)
+
+coreServices.factory(
+  'selectionService',
+  function() {
+    var selected = {
+      job: null
+    }
+
+    return {
+      selected: selected
+    }
   }
 )
