@@ -16,10 +16,25 @@ coreControllers.controller(
   'LoginController',
   [
     '$scope',
+    '$location',
     'userService',
-    'Auth',
-    function($scope, userService, Auth) {
+    'AuthService',
+    function($scope, $location, userService, AuthService) {
+      $scope.user = {
+        username: '',
+        password: ''
+      }
+      $scope.login = function(user) {
 
+        AuthService.login(user, function(response){
+          if(response.success){
+            userService.user.isLoggedIn = true
+            userService.user.username = response.data.username
+            userService.user.roles = response.data.roles
+            $location.path('/home')
+          }
+        })
+      }
     }
   ]
 )
@@ -38,8 +53,10 @@ coreControllers.controller(
 
       // grab the user and logout function
       $scope.user = userService.user
-      $scope.logout = userService.logout
-
+      $scope.logout = function() {
+        userService.logout()
+        $location.path('/login')
+      }
       // handle login-based access restriction
       $scope.$on('$routeChangeStart', function(event, next, current) {
         if (next.access != undefined) {
@@ -84,10 +101,10 @@ coreControllers.controller(
 
                   var allow = false
 
-                  for(var i in userService.user.roles) {
-                    console.log('checking user role ' + userService.user.roles[i])
-                    if(routes[i].access.allowedRoles.indexOf(userService.user.roles[i]) != -1){
-                      console.log('role ' + userService.user.roles[i] + ' is allowed')
+                  for(var j in userService.user.roles) {
+                    console.log('checking user role ' + userService.user.roles[j])
+                    if(routes[i].access.allowedRoles.indexOf(userService.user.roles[j]) != -1){
+                      console.log('role ' + userService.user.roles[j] + ' is allowed')
                       allow = true
                     }
                   }

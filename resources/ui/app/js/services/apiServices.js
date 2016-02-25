@@ -27,7 +27,7 @@ apiServices.factory('Address', ['$resource', 'endpointUrl',
   }
 ])
 
-apiServices.factory('Auth', ['$resource', 'endpointUrl',
+apiServices.factory('AuthService', ['$resource', 'endpointUrl',
   function($resource, endpointUrl) {
     return $resource(endpointUrl + '/auth', {}, {
       login: {method: 'POST'}

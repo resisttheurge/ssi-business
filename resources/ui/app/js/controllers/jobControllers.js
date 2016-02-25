@@ -4,10 +4,8 @@ var jobControllers = angular.module('jobControllers', [])
 
 jobControllers.controller('JobListController', ['$scope', 'Job',
   function($scope, Job) {
-    console.log('getting the jerbs');
     Job.query(function(response) {
       $scope.loading = true
-      console.log('this is the jobs: ' + JSON.stringify(response))
       if(response.success) {
         $scope.jobs = response.data
       } else {
@@ -22,10 +20,8 @@ jobControllers.controller('JobListController', ['$scope', 'Job',
 
 jobControllers.controller('JobDetailController', ['$scope', '$routeParams', 'Job',
   function($scope, $routeParams, Job) {
-    console.log('getting the single jerb');
     Job.get({jobId: $routeParams.jobId}, function(response){
       $scope.loading = true
-      console.log('this is the job: ' + JSON.stringify(response))
       if(response.success) {
         $scope.job = response.data
       } else {
