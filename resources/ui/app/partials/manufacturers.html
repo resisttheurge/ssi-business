@@ -10,8 +10,7 @@
 
       <table class="manufacturers">
         <tr ng-repeat="manufacturer in manufacturers | filter:query" class="thumbnail job-listing">
-          <a href="#/manufacturers/{{manufacturer.id}}">{{manufacturer.id + '-' + manufacturer.label}}</a>
-          <td>{{manufacturer.label}}</td>
+          <td><a href="#/manufacturers/{{manufacturer.id}}">{{manufacturer.id + '-' + manufacturer.label}}</a></td>
         </tr>
       </table>
 

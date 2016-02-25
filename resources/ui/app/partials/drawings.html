@@ -8,12 +8,12 @@
     <div class="col-md-10">
       <!--Body content-->
 
-      <ul class="drawings">
-        <li ng-repeat="drawing in drawings | filter:query" class="thumbnail drawing-listing">
+      <table class="drawings">
+        <tr ng-repeat="drawing in drawings | filter:query" class="thumbnail drawing-listing">
           <a href="#/drawings/{{drawing.id}}">{{drawing.id + '-' + drawing.label}}</a>
-          <p>{{drawing.id + '-' + drawing.jobId + '-'  + drawing.label + '-' + drawing.drawingType + '-' + specialtyItem.label + '-' + drawing.info.label}}</p>
-        </li>
-      </ul>
+          <td>{{drawing.label}}</td>
+        </tr>
+      </table>
 
     </div>
   </div>

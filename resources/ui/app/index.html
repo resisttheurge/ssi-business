@@ -47,9 +47,10 @@
     <script src="js/app.js"></script>
 
   </head>
-  <body ng-controller="RootController">
-    <div class="container-fluid">
-      <div class="col-md-2">
+  <body ng-controller="RootController" style="height: 100vh;">
+    <div class="container-fluid" >
+      <div class="row" style="height: 100vh;">
+      <div class="col-md-2 col-sm-2 col-xs-10 pull-left" >
         <div class="row">
           <div class="btn btn-default" ng-click="logout()">Logout</div>
         </div>
@@ -66,22 +67,31 @@
           <a href="#/customers">customers</a>
         </div>
         <div class="row">
-          <a href="#/drawings">drawings</a>
+          <a href="#/manufacturers">manufacturers</a>
         </div>
         <div class="row">
-          <a href="#/manufacturers">manufacturers</a>
+          <a href="#/parts">parts</a>
         </div>
         <div class="row">
           <a href="#/salespeople">salespeople</a>
         </div>
         <div class="row">
+          <a href="#/specialty-items">specialty-items</a>
+        </div>
+        <div class="row">
           <a href="#/system-types">system-types</a>
+        </div>
+        <div class="row">
+          <a href="#/users">users</a>
         </div>
         <div class="row">
           <a href="#/vendors">vendors</a>
         </div>
       </div>
-      <div ng-view class="col-md-10"/>
+      <div class="col-md-10 col-sm-10 col-xs-10 pull-right" >
+        <ng-view></ng-view>
+      </div>
+    </div>
     </div>
   </body>
 </html>

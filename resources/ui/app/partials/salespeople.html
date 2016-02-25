@@ -8,10 +8,9 @@
     <div class="col-md-10">
       <!--Body content-->
 
-      <table class="salespeople">
-        <tr ng-repeat="salesperson in salespersons | filter:query" class="thumbnail salesperson-listing">
-          <a href="#/salespeople/{{salesperson.id}}">{{salesperson.id + '-' + salesperson.label}}</a>
-          <td>{{salesperson.label}}</td>
+      <table class="salesPeople">
+        <tr ng-repeat="salesperson in salesPeople | filter:query" class="thumbnail salesperson-listing">
+          <td><a href="#/salespeople/{{salesperson.id}}">{{salesperson.id + '-' + salesperson.label}}</a></td>
         </tr>
       </table>
 

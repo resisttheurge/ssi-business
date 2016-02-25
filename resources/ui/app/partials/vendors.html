@@ -10,8 +10,7 @@
 
       <table class="vendors">
         <tr ng-repeat="vendor in vendors | filter:query" class="thumbnail vendor-listing">
-          <a href="#/vendors/{{vendor.id}}">{{vendor.id + '-' + vendor.label}}</a>
-          <td>{{vendor.label}}</td>
+          <td>  <a href="#/vendors/{{vendor.id}}">{{vendor.id + '-' + vendor.label}}</a></td>
         </tr>
       </table>
 

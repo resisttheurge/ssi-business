@@ -10,8 +10,7 @@
 
       <table class="systemTypes">
         <tr ng-repeat="systemType in systemTypes | filter:query" class="thumbnail systemType-listing">
-          <a href="#/systemTypes/{{systemType.id}}">{{systemType.id + '-' + systemType.label}}</a>
-          <td>{{systemType.label}}</td>
+          <td><a href="#/system-types/{{systemType.id}}">{{systemType.id + '-' + systemType.label}}</a></td>
         </tr>
       </table>
 
