@@ -1,0 +1,20 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <!--Sidebar content-->
+
+      Search: <input ng-model="query">
+    </div>
+    <div class="col-md-10">
+      <!--Body content-->
+
+      <table class="systemTypes">
+        <tr ng-repeat="systemType in systemTypes | filter:query" class="thumbnail systemType-listing">
+          <a href="#/systemTypes/{{systemType.id}}">{{systemType.id + '-' + systemType.label}}</a>
+          <td>{{systemType.label}}</td>
+        </tr>
+      </table>
+
+    </div>
+  </div>
+</div>

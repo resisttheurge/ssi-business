@@ -1,0 +1,20 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <!--Sidebar content-->
+
+      Search: <input ng-model="query">
+    </div>
+    <div class="col-md-10">
+      <!--Body content-->
+
+      <table class="salespersons">
+        <tr ng-repeat="salesperson in salespersons | filter:query" class="thumbnail salesperson-listing">
+          <a href="#/salespersons/{{salesperson.id}}">{{salesperson.id + '-' + salesperson.label}}</a>
+          <td>{{salesperson.label}}</td>
+        </tr>
+      </table>
+
+    </div>
+  </div>
+</div>
