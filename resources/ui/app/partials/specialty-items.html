@@ -9,9 +9,8 @@
       <!--Body content-->
 
       <table class="specialtyItems">
-        <tr ng-repeat="specialtyItem in specialtyItems | filter:query" class="thumbnail job-listing">
-          <a href="#/specialtyItems/{{specialtyItem.id}}">{{specialtyItem.id + '-' + specialtyItem.label}}</a>
-          <td>{{systemType.label}}</td>
+        <tr ng-repeat="specialtyItem in specialtyItems | filter:query" class="thumbnail specialtyItem-listing">
+          <td>  <a href="#/specialty-items/{{specialtyItem.id}}">{{specialtyItem.id + '-' + specialtyItem.label}}</a></td>
         </tr>
       </table>
 

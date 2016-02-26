@@ -19,7 +19,7 @@ carrierControllers.controller('CarrierListController', ['$scope', 'Carrier',
   }
 ])
 
-carrierControllers.controller('CarrierDetailController', ['$scope', '$routeParams', 'Car',
+carrierControllers.controller('CarrierDetailController', ['$scope', '$routeParams', 'Carrier',
   function($scope, $routeParams, Carrier){
     console.log('getting a single carrier');
     Carrier.get({carrierId: $routeParams.carrierId}, function(response){

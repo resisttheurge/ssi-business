@@ -1,0 +1,20 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <!--Sidebar content-->
+
+      Search: <input ng-model="query">
+    </div>
+    <div class="col-md-10">
+      <!--Body content-->
+
+      <table class="marks">
+        <tr ng-repeat="mark in marks | filter:query" class="thumbnail mark-listing">
+
+          <td><a href="#/marks/{{mark.id}}">{{mark.id + '-' + mark.label}}</a></td>
+        </tr>
+      </table>
+
+    </div>
+  </div>
+</div>

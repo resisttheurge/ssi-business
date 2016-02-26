@@ -1,0 +1,20 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <!--Sidebar content-->
+
+      Search: <input ng-model="query">
+    </div>
+    <div class="col-md-10">
+      <!--Body content-->
+
+      <table class="shippingGroupItems">
+        <tr ng-repeat="shippingGroupItem in shippingGroupItems | filter:query" class="thumbnail shippingGroupItem-listing">
+
+          <td><a href="#/shipping-group-items/{{shippingGroupItem.id}}">{{shippingGroupItem.id + '-' + shippingGroup.label}}</a></td>
+        </tr>
+      </table>
+
+    </div>
+  </div>
+</div>

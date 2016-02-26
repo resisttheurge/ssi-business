@@ -8,10 +8,10 @@
     <div class="col-md-10">
       <!--Body content-->
 
-      <table class="jobs">
+      <table class="carriers">
         <tr ng-repeat="carrier in carriers | filter:query" class="thumbnail carrier-listing">
-          <a href="#/carriers/{{carrier.id}}">{{carrier.id + '-' + carrier.label}}</a>
-          <td>{{carrier.label}}</td>
+          <!-- <a href="#/carriers/{{carrier.id}}">{{carrier.id + '-' + carrier.label}}</a> -->
+          <td><a href="#/carriers/{{carrier.id}}">{{carrier.id + '-' + carrier.label}}</a></td>
         </tr>
       </table>
 

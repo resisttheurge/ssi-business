@@ -1,0 +1,20 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <!--Sidebar content-->
+
+      Search: <input ng-model="query">
+    </div>
+    <div class="col-md-10">
+      <!--Body content-->
+
+      <table class="drawings">
+        <tr ng-repeat="drawing in drawings | filter:query" class="thumbnail drawing-listing">
+          <a href="#/drawings/{{drawing.id}}">{{drawing.id + '-' + drawing.label}}</a>
+          <td>{{drawing.label}}</td>
+        </tr>
+      </table>
+
+    </div>
+  </div>
+</div>

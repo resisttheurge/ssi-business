@@ -7,7 +7,7 @@ salespersonControllers.controller('SalespersonListController', ['$scope', 'Sales
       $scope.loading = true
       console.log('this is the salesPersons: ' + JSON.stringify(response))
       if(response.success) {
-        $scope.salesPersons = response.data
+        $scope.salesPeople = response.data
       } else {
         $scope.error = true
         $scope.message = response.message

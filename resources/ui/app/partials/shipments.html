@@ -1,0 +1,19 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <!--Sidebar content-->
+
+      Search: <input ng-model="query">
+    </div>
+    <div class="col-md-10">
+      <!--Body content-->
+
+      <table class="shipments">
+        <tr ng-repeat="shipment in shipments | filter:query" class="thumbnail shipment-listing">
+          <td><a href="#/shipments/{{shipment.id}}">{{shipment.id + '-' + shipment.label}}</a></td>
+        </tr>
+      </table>
+
+    </div>
+  </div>
+</div>
