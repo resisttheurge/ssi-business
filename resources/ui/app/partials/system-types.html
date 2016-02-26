@@ -1,19 +1,12 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-2">
-      <!--Sidebar content-->
-
-      Search: <input ng-model="query">
-    </div>
-    <div class="col-md-10">
-      <!--Body content-->
-
-      <table class="systemTypes">
-        <tr ng-repeat="systemType in systemTypes | filter:query" class="thumbnail systemType-listing">
-          <td><a href="#/system-types/{{systemType.id}}">{{systemType.id + '-' + systemType.label}}</a></td>
-        </tr>
-      </table>
-
-    </div>
-  </div>
-</div>
+<md-content layout-padding layout="column" class="ssi-table">
+  <md-progress-linear ng-show="loading" md-mode="indeterminate"></md-progress-linear>
+  <md-list class="ssi-table-list">
+    <md-virtual-repeat-container ng-hide="loading" class="ssi-table-list-virtual-repeat-container">
+      <md-list-item md-virtual-repeat="systemType in systemTypes" class="ssi-table-list-item">
+        <md-button ng-href="#/system-types/{{systemType.id}}">
+          {{systemType.label}}
+        </md-button>
+      </md-list-item>
+    </md-virtual-repeat-container>
+  </md-list>
+</md-content>

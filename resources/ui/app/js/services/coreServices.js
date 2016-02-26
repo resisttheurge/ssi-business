@@ -36,7 +36,8 @@ coreServices.factory(
       shippingGroup: undefined,
       shippingGroupItem: undefined,
       shipment: undefined,
-      partOrder: undefined
+      partOrder: undefined,
+      zone: undefined
     }
 
     var reset = function(){
@@ -48,6 +49,7 @@ coreServices.factory(
       selected.shipment = undefined
       selected.shipmentItem = undefined
       selected.partOrder = undefined
+      selected.zone = undefined
     }
 
     var selectJob = function(job){
@@ -82,6 +84,14 @@ coreServices.factory(
       selected.shipmentItem = shipmentItem
     }
 
+    var selectPartOrder = function(partOrder) {
+      selected.partOrder = partOrder
+    }
+
+    var selectZone = function(zone) {
+      selected.zone = zone
+    }
+
     return {
       selected: selected,
       reset: reset,
@@ -91,7 +101,9 @@ coreServices.factory(
       selectShippingGroup: selectShippingGroup,
       selectShippingGroupItem: selectShippingGroupItem,
       selectShipment: selectShipment,
-      selectShipmentItem: selectShipmentItem
+      selectShipmentItem: selectShipmentItem,
+      selectPartOrder: selectPartOrder,
+      selectZone: selectZone
     }
   }
 )

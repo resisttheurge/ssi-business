@@ -1,11 +1,11 @@
 'use strict'
 var partOrderControllers = angular.module('partOrderControllers', [])
-partOrderControllers.controller('PartOrderListController', ['$scope', 'PartOrder',
-  function($scope, PartOrder) {
-    // console.log('getting the single Drawing');
-    PartOrder.query(function(response) {
-      $scope.loading = true
-      console.log('this is the partOrders: ' + JSON.stringify(response))
+partOrderControllers.controller('PartOrderListController', ['$scope', '$routeParams', 'selectionService', 'PartOrderByJob',
+  function($scope, $routeParams, selectionService, PartOrderByJob) {
+    $scope.loading = true
+    $scope.selected = selectionService.selected
+    $scope.selectPartOrder = selectionService.selectPartOrder
+    PartOrderByJob.query($routeParams, function(response) {
       if(response.success) {
         $scope.partOrders = response.data
       } else {
@@ -19,10 +19,8 @@ partOrderControllers.controller('PartOrderListController', ['$scope', 'PartOrder
 
 partOrderControllers.controller('PartOrderDetailController', ['$scope', '$routeParams', 'PartOrder',
   function($scope, $routeParams, PartOrder) {
-    console.log('getting the single PartOrder');
-    PartOrder.get({partOrderId: $routeParams.partOrderId}, function(response){
+    PartOrder.get($routeParams, function(response){
       $scope.loading = true
-      console.log('this is the partOrder: ' + JSON.stringify(response))
       if(response.success) {
         $scope.partOrder = response.data
       } else {

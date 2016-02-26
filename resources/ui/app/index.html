@@ -73,29 +73,91 @@
             <label ng-show='selected.job'>
               {{selected.job.id}}
             </label>
-            <md-divider />
-          </md-list-item>
-          <md-list-item ng-show="selected.job != undefined">
-            <md-button ng-href="#/jobs/{{selected.job.id}}/drawings" flex>
+            <md-button  ng-show="selected.job != undefined"
+                        ng-href="#/jobs/{{selected.job.id}}/drawings" flex>
               Drawings
             </md-button>
-            <md-divider />
-          </md-list-item>
-          <md-list-item ng-show="selected.drawing != undefined">
-            <md-button ng-href="#/jobs/{{selected.job.id}}/drawings/{{selected.drawing.id}}/marks" flex>
+            <md-button  ng-show="selected.drawing != undefined"
+                        ng-href="#/jobs/{{selected.job.id}}/drawings/{{selected.drawing.id}}/marks" flex>
               Marks
             </md-button>
-            <md-divider />
-          </md-list-item>
-          <md-list-item ng-show="selected.job != undefined">
-            <md-button ng-href="#/jobs/{{selected.job.id}}/shipping-groups" flex>
+            <md-button  ng-show="selected.job != undefined"
+                        ng-href="#/jobs/{{selected.job.id}}/shipping-groups" flex>
               Shipping Groups
+            </md-button>
+            <md-button  ng-show="selected.shippingGroup != undefined"
+                        ng-href="#/jobs/{{selected.job.id}}/shipping-groups/{{selected.shippingGroup.id}}/items" flex>
+              Shipping Group Items
+            </md-button>
+            <md-button  ng-show="selected.job != undefined"
+                        ng-href="#/jobs/{{selected.job.id}}/part-orders" flex>
+              Part Orders
+            </md-button>
+            <md-button  ng-show="selected.job != undefined"
+                        ng-href="#/jobs/{{selected.job.id}}/shipments" flex>
+              Shipments
+            </md-button>
+            <md-button  ng-show="selected.shipment != undefined"
+                        ng-href="#/jobs/{{selected.job.id}}/shipments/{{selected.shipment.id}}/items" flex>
+              Shipment Items
+            </md-button>
+            <md-button  ng-show="selected.job != undefined"
+                        ng-href="#/jobs/{{selected.job.id}}/zones" flex>
+              Zones
             </md-button>
             <md-divider />
           </md-list-item>
-          <md-list-item ng-show="selected.shippingGroup != undefined">
-            <md-button ng-href="#/jobs/{{selected.job.id}}/shipping-groups/{{selected.shippingGroup.id}}/items" flex>
-              Shipping Group Items
+          <md-list-item>
+            <md-button ng-href="#/carriers" flex>
+              Carriers
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/customers" flex>
+              Customers
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/manufacturers" flex>
+              manufacturers
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/parts" flex>
+              parts
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/salespeople" flex>
+              salespeople
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/specialty-items" flex>
+              specialty items
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/system-types" flex>
+              system types
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/users" flex>
+              users
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/vendors" flex>
+              vendors
             </md-button>
             <md-divider />
           </md-list-item>
@@ -116,7 +178,7 @@
           <h3>SSI Business</h3>
         </div>
       </md-toolbar>
-      <div ng-view />
+      <ng-view layout-padding/>
     </div>
   </body>
 </html>

@@ -2,12 +2,12 @@ var zoneControllers = angular.module('zoneControllers', [])
 
 
 // ShipmentItemByShipment??
-zoneControllers.controller('ZoneListController', ['$scope', 'Zone',
-  function($scope, Zone) {
-    // console.log('getting the ShippingGroupDetail');
-    Zone.query(function(response) {
-      $scope.loading = true
-      console.log('this is the zones: ' + JSON.stringify(response))
+zoneControllers.controller('ZoneListController', ['$scope', '$routeParams', 'selectionService', 'ZoneByJob',
+  function($scope, $routeParams, selectionService, ZoneByJob) {
+    $scope.loading = true
+    $scope.selected = selectionService.selected
+    $scope.selectZone = selectionService.selectZone
+    ZoneByJob.query($routeParams, function(response) {
       if(response.success) {
         $scope.zones = response.data
       } else {
@@ -21,10 +21,8 @@ zoneControllers.controller('ZoneListController', ['$scope', 'Zone',
 
 zoneControllers.controller('ZoneDetailController', ['$scope', '$routeParams', 'Zone',
   function($scope, $routeParams, Zone) {
-    // console.log('getting the ShippingGroupDetail');
-    Zone.get({zoneId: $routeParams.zoneId}, function(response){
-      $scope.loading = true
-      console.log('this is the zoneId: ' + JSON.stringify(response))
+    $scope.loading = true
+    Zone.get($routeParams, function(response){
       if(response.success) {
         $scope.zoneId = response.data
       } else {

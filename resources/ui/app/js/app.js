@@ -181,7 +181,7 @@ ssiApp.constant('routes', {
       allowedRoles: ['ADMIN', 'EMPLOYEE']
     }
   },
-  '/jobs/:jobId/shipments/:shipmentId/items/:itemId': {
+  '/jobs/:jobId/shipments/:shipmentId/items/:shipmentItemId': {
     templateUrl: 'partials/shipment-item-detail.html',
     controller: 'ShipmentItemDetailController',
     access: {

@@ -1,19 +1,12 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-2">
-      <!--Sidebar content-->
-
-      Search: <input ng-model="query">
-    </div>
-    <div class="col-md-10">
-      <!--Body content-->
-
-      <table class="vendors">
-        <tr ng-repeat="vendor in vendors | filter:query" class="thumbnail vendor-listing">
-          <td>  <a href="#/vendors/{{vendor.id}}">{{vendor.id + '-' + vendor.label}}</a></td>
-        </tr>
-      </table>
-
-    </div>
-  </div>
-</div>
+<md-content layout-padding layout="column" class="ssi-table">
+  <md-progress-linear ng-show="loading" md-mode="indeterminate"></md-progress-linear>
+  <md-list class="ssi-table-list">
+    <md-virtual-repeat-container ng-hide="loading" class="ssi-table-list-virtual-repeat-container">
+      <md-list-item md-virtual-repeat="vendor in vendors" class="ssi-table-list-item">
+        <md-button ng-href="#/vendors/{{vendor.id}}">
+          {{vendor.label}}
+        </md-button>
+      </md-list-item>
+    </md-virtual-repeat-container>
+  </md-list>
+</md-content>

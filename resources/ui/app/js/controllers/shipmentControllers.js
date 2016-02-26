@@ -1,12 +1,12 @@
 'use strict'
 var shipmentControllers = angular.module('shipmentControllers', [])
 
-shipmentControllers.controller('ShipmentListController', ['$scope', 'Shipment',
-  function($scope, Shipment) {
-    // console.log('getting the ShippingGroupDetail');
-    Shipment.query(function(response) {
-      $scope.loading = true
-      console.log('this is the shipments: ' + JSON.stringify(response))
+shipmentControllers.controller('ShipmentListController', ['$scope', '$routeParams', 'selectionService', 'ShipmentByJob',
+  function($scope, $routeParams, selectionService, ShipmentByJob) {
+    $scope.loading = true
+    $scope.selected = selectionService.selected
+    $scope.selectShipment = selectionService.selectShipment
+    ShipmentByJob.query($routeParams, function(response) {
       if(response.success) {
         $scope.shipments = response.data
       } else {
@@ -20,10 +20,8 @@ shipmentControllers.controller('ShipmentListController', ['$scope', 'Shipment',
 
 shipmentControllers.controller('ShipmentDetailController', ['$scope', '$routeParams', 'Shipment',
   function($scope, $routeParams, Shipment) {
-    // console.log('getting the ShippingGroupDetail');
+    $scope.loading = true
     Shipment.get({shipmentId: $routeParams.shipmentId}, function(response){
-      $scope.loading = true
-      console.log('this is the shipment: ' + JSON.stringify(response))
       if(response.success) {
         $scope.shipment = response.data
       } else {

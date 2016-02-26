@@ -1,20 +1,12 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-2">
-      <!--Sidebar content-->
-
-      Search: <input ng-model="query">
-    </div>
-    <div class="col-md-10">
-      <!--Body content-->
-
-      <table class="parts">
-        <tr ng-repeat="part in parts | filter:query" class="thumbnail part-listing">
-          
-          <td><a href="#/parts/{{part.id}}">{{part.id + '-' + part.description}}</a></td>
-        </tr>
-      </table>
-
-    </div>
-  </div>
-</div>
+<md-content layout-padding layout="column" class="ssi-table">
+  <md-progress-linear ng-show="loading" md-mode="indeterminate"></md-progress-linear>
+  <md-list class="ssi-table-list">
+    <md-virtual-repeat-container ng-hide="loading" class="ssi-table-list-virtual-repeat-container">
+      <md-list-item md-virtual-repeat="part in parts" class="ssi-table-list-item">
+        <md-button ng-href="#/parts/{{part.id}}">
+          {{part.description}}
+        </md-button>
+      </md-list-item>
+    </md-virtual-repeat-container>
+  </md-list>
+</md-content>

@@ -2,11 +2,18 @@
 
 var drawingControllers = angular.module('drawingControllers', [])
 
-drawingControllers.controller('DrawingListController', ['$scope', 'Drawing',
-  function($scope, Drawing) {
-    console.query(function(response) {
-      $scope.loading = true
-      console.log('this is the drawings: ' + JSON.stringify(response))
+drawingControllers.controller(
+  'DrawingListController',
+  [
+    '$scope',
+    '$routeParams',
+    'selectionService',
+    'DrawingByJob',
+  function($scope, $routeParams, selectionService, DrawingByJob) {
+    $scope.loading = true
+    $scope.selected = selectionService.selected
+    $scope.selectDrawing = selectionService.selectDrawing
+    DrawingByJob.query($routeParams,function(response) {
       if(response.success) {
         $scope.drawings = response.data
       } else {
@@ -20,10 +27,8 @@ drawingControllers.controller('DrawingListController', ['$scope', 'Drawing',
 
 drawingControllers.controller('DrawingDetailController', ['$scope', '$routeParams', 'Drawing',
   function($scope, $routeParams, Drawing) {
-    console.log('getting the single Drawing');
-    Drawing.get({drawingId: $routeParams.drawingId}, function(response){
+    Drawing.get($routeParams, function(response){
       $scope.loading = true
-      console.log('this is the drawing: ' + JSON.stringify(response))
       if(response.success) {
         $scope.drawing = response.data
       } else {

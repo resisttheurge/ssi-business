@@ -1,19 +1,12 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-2">
-      <!--Sidebar content-->
-
-      Search: <input ng-model="query">
-    </div>
-    <div class="col-md-10">
-      <!--Body content-->
-
-      <table class="manufacturers">
-        <tr ng-repeat="manufacturer in manufacturers | filter:query" class="thumbnail job-listing">
-          <td><a href="#/manufacturers/{{manufacturer.id}}">{{manufacturer.id + '-' + manufacturer.label}}</a></td>
-        </tr>
-      </table>
-
-    </div>
-  </div>
-</div>
+<md-content layout-padding layout="column" class="ssi-table">
+  <md-progress-linear ng-show="loading" md-mode="indeterminate"></md-progress-linear>
+  <md-list class="ssi-table-list">
+    <md-virtual-repeat-container ng-hide="loading" class="ssi-table-list-virtual-repeat-container">
+      <md-list-item md-virtual-repeat="manufacturer in manufacturers" class="ssi-table-list-item">
+        <md-button ng-href="#/manufacturers/{{manufacturer.id}}">
+          {{manufacturer.label}}
+        </md-button>
+      </md-list-item>
+    </md-virtual-repeat-container>
+  </md-list>
+</md-content>

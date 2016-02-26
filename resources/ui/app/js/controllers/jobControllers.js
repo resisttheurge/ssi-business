@@ -2,10 +2,16 @@
 
 var jobControllers = angular.module('jobControllers', [])
 
-jobControllers.controller('JobListController', ['$scope', 'Job',
-  function($scope, Job) {
+jobControllers.controller(
+  'JobListController',
+  [
+    '$scope',
+    'selectionService',
+    'Job',
+  function($scope, selectionService, Job) {
+    $scope.loading = true
+    $scope.selectJob = selectionService.selectJob
     Job.query(function(response) {
-      $scope.loading = true
       if(response.success) {
         $scope.jobs = response.data
       } else {

@@ -1,12 +1,13 @@
 'use strict'
 var markControllers = angular.module('markControllers', [])
 
-markControllers.controller('MarkListController', ['$scope', 'Mark',
-  function($scope, Mark) {
-    console.log('getting the marks');
-    Mark.query(function(response) {
-      $scope.loading = true
-      console.log('this is the marks: ' + JSON.stringify(response))
+markControllers.controller('MarkListController', ['$scope', '$routeParams', 'selectionService', 'MarkByDrawing',
+  function($scope, $routeParams, selectionService, MarkByDrawing) {
+    $scope.loading = true
+    $scope.selected = selectionService.selected
+    $scope.selectMark = selectionService.selectMark
+    MarkByDrawing.query($routeParams, function(response) {
+
       if(response.success) {
         $scope.marks = response.data
       } else {
@@ -21,10 +22,8 @@ markControllers.controller('MarkListController', ['$scope', 'Mark',
 // Come back to this one
 markControllers.controller('MarkDetailController', ['$scope', '$routeParams', 'Mark',
   function($scope, $routeParams, Mark) {
-    console.log('getting the single Mark');
-    Mark.get({markId: $routeParams.markId}, function(response){
+    Mark.get($routeParams, function(response){
       $scope.loading = true
-      console.log('this is the mark: ' + JSON.stringify(response))
       if(response.success) {
         $scope.mark = response.data
       } else {

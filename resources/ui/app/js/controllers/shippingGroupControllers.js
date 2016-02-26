@@ -1,11 +1,11 @@
 var shippingGroupControllers = angular.module('shippingGroupControllers', [])
 
-shippingGroupControllers.controller('ShippingGroupListController', ['$scope', 'ShippingGroup',
-  function($scope,  ShippingGroup) {
-    console.log('getting the ShippingGroup');
-    ShippingGroup.query(function(response) {
-      $scope.loading = true
-      console.log('this is the shippingGroups: ' + JSON.stringify(response))
+shippingGroupControllers.controller('ShippingGroupListController', ['$scope', '$routeParams', 'selectionService', 'ShippingGroupByJob',
+  function($scope, $routeParams, selectionService, ShippingGroupByJob) {
+    $scope.loading = true
+    $scope.selected = selectionService.selected
+    $scope.selectShippingGroup = selectionService.selectShippingGroup
+    ShippingGroupByJob.query($routeParams, function(response) {
       if(response.success) {
         $scope.shippingGroups = response.data
       } else {
@@ -19,10 +19,8 @@ shippingGroupControllers.controller('ShippingGroupListController', ['$scope', 'S
 
 shippingGroupControllers.controller('ShippingGroupDetailController', ['$scope', '$routeParams', 'ShippingGroup',
   function($scope, $routeParams, ShippingGroup) {
-    console.log('getting the ShippingGroupDetail');
-    ShippingGroup.get({shippingGroupId: $routeParams.shippingGroupId}, function(response){
-      $scope.loading = true
-      console.log('this is the shippingGroup: ' + JSON.stringify(response))
+    $scope.loading = true
+    ShippingGroup.get($routeParams, function(response){
       if(response.success) {
         $scope.shippingGroup = response.data
       } else {

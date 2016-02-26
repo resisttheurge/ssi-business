@@ -126,9 +126,25 @@ apiServices.factory('DrawingByJob', ['$resource', 'endpointUrl',
   }
 ])
 
+apiServices.factory('PartOrderByJob', ['$resource', 'endpointUrl',
+  function($resource, endpointUrl) {
+    return $resource(endpointUrl + '/jobs/:jobId/part-orders', {}, {
+      query: {method: 'GET'}
+    })
+  }
+])
+
 apiServices.factory('ShippingGroupByJob', ['$resource', 'endpointUrl',
   function($resource, endpointUrl) {
     return $resource(endpointUrl + '/jobs/:jobId/shipping-groups', {}, {
+      query: {method: 'GET'}
+    })
+  }
+])
+
+apiServices.factory('ShipmentByJob', ['$resource', 'endpointUrl',
+  function($resource, endpointUrl) {
+    return $resource(endpointUrl + '/jobs/:jobId/shipments', {}, {
       query: {method: 'GET'}
     })
   }

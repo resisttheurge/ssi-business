@@ -4,10 +4,9 @@ var vendorControllers = angular.module('vendorControllers', [])
 
 vendorControllers.controller('VendorListController', ['$scope', 'Vendor',
   function($scope, Vendor) {
-    // console.log('getting the ShippingGroupDetail');
+    $scope.loading = true
     Vendor.query(function(response) {
-      $scope.loading = true
-      console.log('this is the vendors: ' + JSON.stringify(response))
+
       if(response.success) {
         $scope.vendors = response.data
       } else {
@@ -21,10 +20,8 @@ vendorControllers.controller('VendorListController', ['$scope', 'Vendor',
 
 vendorControllers.controller('VendorDetailController', ['$scope', '$routeParams', 'Vendor',
   function($scope, $routeParams, Vendor) {
-    // console.log('getting the ShippingGroupDetail');
     Vendor.get({vendorId: $routeParams.vendorId}, function(response){
       $scope.loading = true
-      console.log('this is the vendor: ' + JSON.stringify(response))
       if(response.success) {
         $scope.vendor = response.data
       } else {
