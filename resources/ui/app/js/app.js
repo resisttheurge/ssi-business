@@ -4,6 +4,7 @@ var ssiApp = angular.module(
   "ssiApp",
   [
     'ngRoute',
+    'ngMaterial',
     'ssiControllers',
     'ssiServices'
   ]

@@ -17,23 +17,38 @@ coreControllers.controller(
   [
     '$scope',
     '$location',
+    '$mdToast',
     'userService',
     'AuthService',
-    function($scope, $location, userService, AuthService) {
+    function($scope, $location, $mdToast, userService, AuthService) {
       $scope.user = {
         username: '',
         password: ''
       }
-      $scope.login = function(user) {
 
-        AuthService.login(user, function(response){
+      $scope.reset = function(){
+        $scope.user.username = ''
+        $scope.user.password = ''
+      }
+
+      $scope.login = function(user) {
+        AuthService.login(angular.copy(user), function(response){
           if(response.success){
             userService.user.isLoggedIn = true
             userService.user.username = response.data.username
             userService.user.roles = response.data.roles
             $location.path('/home')
+          } else {
+            $mdToast.show(
+              $mdToast.simple()
+                .textContent(response.message)
+                .action('OK')
+                .highlightAction(false)
+                .position('bottom right')
+            )
           }
         })
+        $scope.reset()
       }
     }
   ]
@@ -47,9 +62,23 @@ coreControllers.controller(
     '$routeParams',
     '$location',
     '$rootScope',
+    '$mdSidenav',
+    '$mdMedia',
     'userService',
+    'selectionService',
     'routes',
-    function($scope, $route, $routeParams, $location, $rootScope, userService, routes) {
+    function (
+      $scope,
+      $route,
+      $routeParams,
+      $location,
+      $rootScope,
+      $mdSidenav,
+      $mdMedia,
+      userService,
+      selectionService,
+      routes
+    ) {
 
       // grab the user and logout function
       $scope.user = userService.user
@@ -57,6 +86,22 @@ coreControllers.controller(
         userService.logout()
         $location.path('/login')
       }
+
+      $scope.selected = selectionService.selected
+
+      $scope.isUserLoggedIn = function() {
+        return $scope.user.isLoggedIn
+      }
+
+      $scope.isNavLockedOpen = function() {
+        return $scope.user.isLoggedIn() && $mdMedia('gt-sm')
+      }
+
+      // set up sidenav toggling
+      $scope.toggleSidenav = function() {
+        $mdSidenav('sidenav').toggle()
+      }
+
       // handle login-based access restriction
       $scope.$on('$routeChangeStart', function(event, next, current) {
         if (next.access != undefined) {

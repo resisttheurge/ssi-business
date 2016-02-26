@@ -1,26 +1,18 @@
-<div class="container-fluid">
-  <div class="panel panel-default">
-    <div class="panel-heading">Please login</div>
-    <div class="panel-body">
-      <form class="form-horizontal">
-        <div class="form-group">
-          <label for="username" class="col-sm-2 control-label">Username</label>
-          <div class="col-sm-10">
-            <input ng-model="user.username" class="form-control" type="text" id="username" placeholder="Username" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="password" class="col-sm-2 control-label">Password</label>
-          <div class="col-sm-10">
-            <input ng-model="user.password" class="form-control" type="password" id="password" placeholder="Password" />
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" ng-click="login(user)" class="btn btn-default">Sign in</button>
-          </div>
-        </div>
-      </form>
-    </div>
+<md-content layout-padding >
+  <div layout-gt-xs="row" layout-align="center center">
+    <form layout-align="center end">
+      <md-input-container class="md-block" flex-gt-sm>
+        <label>Username</label>
+        <input type="text" ng-model="user.username">
+      </md-input-container>
+      <md-input-container class="md-block" flex-gt-sm>
+        <label>Password</label>
+        <input type="password" ng-model="user.password">
+      </md-input-container>
+      <md-button class="md-raised md-primary" ng-click="login(user)"
+        ng-disabled="user.username.length == 0 || user.password.length == 0">
+        Login
+      </md-button>
+    </form>
   </div>
-</div>
+</md-content>

@@ -1,41 +1,6 @@
 /* app css stylesheet */
 
-body {
-  padding-top: 20px;
-}
-
-.jobs {
-  list-style: none;
-}
-
-.jobs li {
-  clear: both;
-  height: 115px;
-  padding-top: 15px;
-}
-
-ul.specs {
-  clear: both;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-ul.specs > li{
-  display: inline-block;
-  width: 200px;
-  vertical-align: top;
-}
-
-ul.specs > li > span{
-  font-weight: bold;
-  font-size: 1.2em;
-}
-
-ul.specs dt {
-  font-weight: bold;
-}
-
-h1 {
-  border-bottom: 1px solid gray;
+md-toolbar h3 {
+  margin: auto;
+  font-weight: 500;
 }
