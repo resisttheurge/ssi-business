@@ -45,7 +45,7 @@ class SideMenu extends ReactComponent{
         var editSelectedJob = function(){
             if(state.selectedJob == null) return;
 
-            Core.application.setState({editJobObj: state.selectedJob}, function(){
+            Core.app.setState({editJobObj: state.selectedJob}, function(){
                 Core.modalChange.dispatch("edit-job");
             });
         }

@@ -66,7 +66,7 @@ class AbmTableStructure extends TableStructure<ABM> {
         var array = [];
 
         var handleDoubleClick = function(){
-            Core.application.setState({editObj: abm}, function(){
+            Core.app.setState({editObj: abm}, function(){
                 Core.modalChange.dispatch("edit-abm");
             });
         };

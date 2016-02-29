@@ -114,7 +114,7 @@ class RmsTableStructure extends TableStructure<ShippingGroup> {
         };
 
         var handleDoubleClick = function(){
-            Core.application.setState({editObj: shpGrp}, function(){
+            Core.app.setState({editObj: shpGrp}, function(){
                 Core.modalChange.dispatch("edit-rms");
             });
         };

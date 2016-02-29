@@ -41,11 +41,11 @@ class JobTableStructure extends TableStructure<Job> {
         if(jobTable){
             arr.push({rep: "Id", name: "id"});
             arr.push({rep: "Customer", name: "customer"});
-            arr.push({rep: "City", name: "addresses.shipping.city"});
-            arr.push({rep: "State", name: "addresses.shipping.stateOrProvince"});
+//            arr.push({rep: "City", name: "addresses.shipping.city"});
+//            arr.push({rep: "State", name: "addresses.shipping.stateOrProvince"});
         } else {
             arr.push({rep: "Revision", name: "id"});
-            arr.push({rep: "Description", name: "revisions"});
+//            arr.push({rep: "Description", name: "revisions"});
         }
 
 
@@ -71,7 +71,7 @@ class JobTableStructure extends TableStructure<Job> {
             case "id": {
                 if(!jobTable) return revIndex + 1;
 
-                var jid = org.id;
+                var jid = org.identifier;
                 var id:StringBuf = new StringBuf();
 
                 id.add(jid.prefix);
@@ -84,47 +84,47 @@ class JobTableStructure extends TableStructure<Job> {
 
                 return id.toString();
             };
-            case "shipping": {
-                var add = org.addresses.shipping;
-                return '[${add.lines}] ${add.city}, ${add.stateOrProvince}';
-            };
-            case "invoicing": {
-                var add = org.addresses.invoicing;
-                return '[${add.lines}] ${add.city}, ${add.stateOrProvince}';
-            };
+//            case "shipping": {
+//                var add = org.addresses.shipping;
+//                return '[${add.lines}] ${add.city}, ${add.stateOrProvince}';
+//            };
+//            case "invoicing": {
+//                var add = org.addresses.invoicing;
+//                return '[${add.lines}] ${add.city}, ${add.stateOrProvince}';
+//            };
             case "salesperson": {
                 return org.salesperson.label;
             };
             case "shop": {
                 return org.shop.label;
             };
-            case "systemTypes": {
-                return "[" + org.systemTypes.map(function(s){return s.label;}).join(", ") + "]";
-            };
-            case "schedule": {
-                var sch = org.schedules;
-
-                var electricalDate = '[Start: ${sch.electrical.start}, Complete: ${sch.electrical.complete}';
-                var engineeringDate = '[Start: ${sch.engineering.start}, Complete: ${sch.engineering.complete}';
-                var mechanicalDate = '[Start: ${sch.mechanical.start}, Complete: ${sch.mechanical.complete}';
-                var shippingDate = '[Start: ${sch.shipping.start}, Complete: ${sch.shipping.complete}';
-                var installationDate = '[Start: ${sch.installation.start}, Complete: ${sch.installation.complete}';
-
-                return 'Elec: $electricalDate, Eng: $engineeringDate, Mech: $mechanicalDate, Ship: $shippingDate, Inst: $installationDate';
-            };
+//            case "systemTypes": {
+//                return "[" + org.systemTypes.map(function(s){return s.label;}).join(", ") + "]";
+//            };
+//            case "schedule": {
+//                var sch = org.schedules;
+//
+//                var electricalDate = '[Start: ${sch.electrical.start}, Complete: ${sch.electrical.complete}';
+//                var engineeringDate = '[Start: ${sch.engineering.start}, Complete: ${sch.engineering.complete}';
+//                var mechanicalDate = '[Start: ${sch.mechanical.start}, Complete: ${sch.mechanical.complete}';
+//                var shippingDate = '[Start: ${sch.shipping.start}, Complete: ${sch.shipping.complete}';
+//                var installationDate = '[Start: ${sch.installation.start}, Complete: ${sch.installation.complete}';
+//
+//                return 'Elec: $electricalDate, Eng: $engineeringDate, Mech: $mechanicalDate, Ship: $shippingDate, Inst: $installationDate';
+//            };
             case "status": {
                 return '${org.status}';
             };
             case "customer": {
                 return '${org.customer.label}';
             };
-            case "revisions": {
-                var rev = org.revisions[revIndex];
-
-                if(rev == null) return null;
-
-                return rev.description;
-            };
+//            case "revisions": {
+//                var rev = org.revisions[revIndex];
+//
+//                if(rev == null) return null;
+//
+//                return rev.description;
+//            };
 
             default: return data.data;
         }
@@ -207,8 +207,8 @@ class JobTableStructure extends TableStructure<Job> {
     public override function generateRows(job:Job, children:Array<ReactComponent>):Array<ReactComponent> {
         var rows = new Array<ReactComponent>();
 
-        var key = '${job.id.prefix}-${job.id.year.substr(2, 2)}-${job.id.label}';
-        var revs = job.revisions != null && job.revisions.length > 0;
+        var key = '${job.identifier.prefix}-${job.identifier.year.toString().substr(2, 2)}-${job.identifier.label}';
+        var revs = false; //job.revisions != null && job.revisions.length > 0;
 
         revs = revs && jobTable;
 
@@ -229,7 +229,7 @@ class JobTableStructure extends TableStructure<Job> {
                     parentTable.setState({subrows: subrows, rowtoggled: toggled});
                 },
                 onClick : function(){
-                    Core.application.setState({editJobObj: job, editJobMainObj: parentTable.props.realjob}, function(){
+                    Core.app.setState({editJobObj: job, editJobMainObj: parentTable.props.realjob}, function(){
                         Core.modalChange.dispatch("edit-job");
                     });
                 }
@@ -248,9 +248,9 @@ class JobTableStructure extends TableStructure<Job> {
 
         if(revs && jobTable){
             var content: Array<Job> = [];
-            for(j in job.revisions){
-                content.push(job);
-            }
+//            for(j in job.revisions){
+//                content.push(job);
+//            }
 
             var structure = new JobTableStructure(false);
             var order = structure.generateDefaultOrder(content);

@@ -1,17 +1,17 @@
 package core.authentication;
 
 import core.dataaccess.ServiceAccessManager.EndPoint;
+import core.dataaccess.ServiceAccessManager.EndPoint;
 import core.dataaccess.ServiceAccessManager;
 import core.dataaccess.PersistenceManager;
 
 
-enum Role {Admin; User; Annon;
+enum Role {ADMIN; EMPLOYEE; Annon;
 }
 
 typedef User = {
     var username:String;
-    var role:Role;
-    var token:String;
+    var roles:Array<Role>;
 }
 
 class AuthenticationManager {
@@ -23,10 +23,25 @@ class AuthenticationManager {
     }
 
 
-    public static function authenticate(username: String, password: String, onSuccess: User -> Void, ?onError: Dynamic -> Void):Void {
-      currentUser = {username: username, role: Admin, token: password};
-      PersistenceManager.store("user", currentUser);
-      onSuccess(currentUser);
+    public static function authenticate(username:String, password:String, onSuccess:User -> Void, ?onError:Dynamic -> Void):Void {
+        ServiceAccessManager.postData(
+            EndPoint.AUTH,
+            {
+                username: username,
+                password: password
+            },
+            {
+                success: function(response:Response<User>) {
+                    untyped console.log('received response: $response');
+                    if (response.success) {
+                        PersistenceManager.store("user", response.data);
+                        onSuccess(response.data);
+                    } else {
+
+                    }
+                }
+            }
+        );
     }
 
     public static function getCurrentUser():User {
@@ -38,13 +53,17 @@ class AuthenticationManager {
         return currentUser;
     }
 
-    public static function isUserAdmin():Bool {return getUserRole() == Role.Admin;}
+    public static function isUserAdmin():Bool {
+        return (getUserRoles().filter(function(role: Role) {return role == Role.ADMIN;}).length != 0);
+    }
 
-    public static function isUserUser():Bool {return getUserRole() == Role.User;}
+    public static function isUserEmployee():Bool {
+        return (getUserRoles().filter(function(role: Role) {return role == Role.EMPLOYEE;}).length != 0);
+    }
 
-    public static function getUserRole():Role {
+    public static function getUserRoles():Array<Role> {
 
-        return getCurrentUser() == null ? Role.Annon : getCurrentUser().role;
+        return getCurrentUser() == null ? [Role.Annon] : getCurrentUser().roles;
     }
 
     public static function isLoggedIn():Bool { return getCurrentUser() != null;}

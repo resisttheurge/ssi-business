@@ -216,108 +216,106 @@ class ContentManager {
     ';
 
     private static var contentMap = {
-        jobView: function(info){
-            var jobArray = [];
+        jobView: function(info, callback){
 
-            var a: Job = haxe.Json.parse(STATICJOB);
-            var b: Job = haxe.Json.parse(STATICJOB);
-            var c: Job = haxe.Json.parse(STATICJOB);
-
-            b.id.label = a.id.label + "2";
-            c.id.label = a.id.label + "3";
-            a.id.label += "1";
-
-            jobArray = jobArray.concat([a, b, c]);
-
-            return jobArray;
-        },
-        dwgView: function(info){
-            var job: Job = info;
-
-            return job.drawings;
-        },
-        abmView: function(info){
-            var job: Job = info;
-
-            if(job.purchaseOrders == null) job.purchaseOrders = [];
-
-            return job.purchaseOrders;
-        },
-        shpmntView: function(info){
-            var job: Job = info;
-            var a0 = haxe.Json.parse(STATICSHIPMENT);
-            var b0 = haxe.Json.parse(STATICSHIPMENT);
-            var c0 = haxe.Json.parse(STATICSHIPMENT);
-            var a1 = haxe.Json.parse(STATICSHIPMENT);
-            var b1 = haxe.Json.parse(STATICSHIPMENT);
-            var c1 = haxe.Json.parse(STATICSHIPMENT);
-            var a2 = haxe.Json.parse(STATICSHIPMENT);
-            var b2 = haxe.Json.parse(STATICSHIPMENT);
-            var c2 = haxe.Json.parse(STATICSHIPMENT);
-
-            return [a0,b0,c0,a1,b1,c1,a2,b2,c2];
-        },
-        markView: function(info){
-            var job: Job = info;
-
-            var markArray = [];
-
-            if(job.drawings == null) job.drawings = [];
-
-            for(dwg in job.drawings){
-                for(mk in dwg.marks) mk.drawingId = dwg.label;
-
-                markArray = markArray.concat(dwg.marks);
-            }
-
-            return markArray;
-        },
-        rmsView: function(info){
-            var job: Job = info;
-
-            var s = '
-            {
-              "pk": 1,
-              "jobPk": 1,
-              "label": "RMS-456",
-              "rush": false,
-              "items": [
-                  {
-                    "pk": 3,
-                    "status": "PREFAB",
-                    "label": "SI-30",
-                    "requested": 300,
-                    "completed": 20,
-                    "remarks": "Things",
-                    "shop": "MEM",
-                    "zones":
-                        {
-                          "pk": 1,
-                          "quantity": "420",
-                          "zone":{}
-
+            ServiceAccessManager.getData(
+                EndPoint.JOB,
+                {
+                    success: function(response: Response<Array<Job>>){
+                        if(response.success){
+                            callback(response.data);
                         }
-                  }
-              ]
-            }';
-
-            var a0: ShippingGroup = haxe.Json.parse(s);
-            var a1: ShippingGroup = haxe.Json.parse(s);
-            var a2: ShippingGroup = haxe.Json.parse(s);
-            var a3: ShippingGroup = haxe.Json.parse(s);
-
-            a0.pk = 1; a1.pk = 2; a2.pk = 3; a3.pk = 4;
-
-            var rmsArray = [a0,a1,a2,a3];
-
-            return rmsArray;
-        }
+                    }
+                }
+            );
+        }//,
+//        dwgView: function(info, callback){
+//            var job: Job = info;
+//
+//            return callback(job.drawings);
+//        },
+//        abmView: function(info, callback){
+//            var job: Job = info;
+//
+//            if(job.purchaseOrders == null) job.purchaseOrders = [];
+//
+//            return callback(job.purchaseOrders);
+//        },
+//        shpmntView: function(info, callback){
+//            var job: Job = info;
+//            var a0 = haxe.Json.parse(STATICSHIPMENT);
+//            var b0 = haxe.Json.parse(STATICSHIPMENT);
+//            var c0 = haxe.Json.parse(STATICSHIPMENT);
+//            var a1 = haxe.Json.parse(STATICSHIPMENT);
+//            var b1 = haxe.Json.parse(STATICSHIPMENT);
+//            var c1 = haxe.Json.parse(STATICSHIPMENT);
+//            var a2 = haxe.Json.parse(STATICSHIPMENT);
+//            var b2 = haxe.Json.parse(STATICSHIPMENT);
+//            var c2 = haxe.Json.parse(STATICSHIPMENT);
+//
+//            return callback([a0,b0,c0,a1,b1,c1,a2,b2,c2]);
+//        },
+//        markView: function(info, callback){
+//            var job: Job = info;
+//
+//            var markArray = [];
+//
+//            if(job.drawings == null) job.drawings = [];
+//
+//            for(dwg in job.drawings){
+//                for(mk in dwg.marks) mk.drawingId = dwg.label;
+//
+//                markArray = markArray.concat(dwg.marks);
+//            }
+//
+//            return callback(markArray);
+//        },
+//        rmsView: function(info, callback){
+//            var job: Job = info;
+//
+//            var s = '
+//            {
+//              "pk": 1,
+//              "jobPk": 1,
+//              "label": "RMS-456",
+//              "rush": false,
+//              "items": [
+//                  {
+//                    "pk": 3,
+//                    "status": "PREFAB",
+//                    "label": "SI-30",
+//                    "requested": 300,
+//                    "completed": 20,
+//                    "remarks": "Things",
+//                    "shop": "MEM",
+//                    "zones":
+//                        {
+//                          "pk": 1,
+//                          "quantity": "420",
+//                          "zone":{}
+//
+//                        }
+//                  }
+//              ]
+//            }';
+//
+//            var a0: ShippingGroup = haxe.Json.parse(s);
+//            var a1: ShippingGroup = haxe.Json.parse(s);
+//            var a2: ShippingGroup = haxe.Json.parse(s);
+//            var a3: ShippingGroup = haxe.Json.parse(s);
+//
+//            a0.pk = 1; a1.pk = 2; a2.pk = 3; a3.pk = 4;
+//
+//            var rmsArray = [a0,a1,a2,a3];
+//
+//            return callback(rmsArray);
+//        }
     };
 
 
 
-    public static function buildContent(viewId: String, info: Dynamic): Dynamic{
+    public static function buildContent(viewId: String, info: Dynamic, callback): Dynamic{
         if(untyped contentMap[viewId] == null) return null;
-        return untyped contentMap[viewId](info);
+        return untyped contentMap[viewId](info, callback);
     }
 }

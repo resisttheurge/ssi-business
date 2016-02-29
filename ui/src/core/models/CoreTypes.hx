@@ -35,13 +35,13 @@ typedef CoreTypes = {}
 
 
 typedef Job = {
-    var pk: String;
-    var id: JobId;
+    var id: String;
+    var identifier: JobId;
     var status: JobStatus;
     var description: String;
     var contractPrice: String;
-    var start: String;
-    var due: String;
+    var startDate: String;
+    var dueDate: String;
 
 
     var shop: Shop;
@@ -50,19 +50,6 @@ typedef Job = {
     var customer: Customer;
 
     var contact: Contact;
-
-    var schedules: JobSchedule;
-    var addresses: JobAddresses;
-
-    var revisions: Array<Revision>;
-
-    var drawings: Array<Drawing>;
-
-    var purchaseOrders: Array<ABM>;
-
-    var systemTypes: Array<SystemType>;
-
-    var shippingGroups: Array<ShippingGroup>;
 }
 
 typedef ABM = {

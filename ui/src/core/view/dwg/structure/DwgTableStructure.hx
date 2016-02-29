@@ -60,7 +60,7 @@ class DwgTableStructure extends TableStructure<Drawing> {
         var array = [];
 
         var handleDblClick = function(e){
-            Core.application.setState({editObj: dwg}, function(){
+            Core.app.setState({editObj: dwg}, function(){
                 Core.modalChange.dispatch("edit-dwg");
             });
         }
