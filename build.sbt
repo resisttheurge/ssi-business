@@ -7,6 +7,7 @@ lazy val `ssi-business` =
       libraryDependencies ++= deps.main,
       addCompilerPlugin("org.scalamacros" %% "paradise" % "2.1.+" cross CrossVersion.full),
       unmanagedSourceDirectories in Compile += baseDirectory.value / "generated",
+      resourceDirectories in Compile += baseDirectory.value / "ui" / "dist",
       slick <<= slickCodeGenTask
     )
     .dependsOn(codegen, reporting)

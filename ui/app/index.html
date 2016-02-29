@@ -1,184 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- metadata -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <!-- title -->
+    <title>SSI Business</title>
+    <!-- favicons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="assets/images/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="assets/images/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="assets/images/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/images/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="assets/images/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/images/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="assets/images/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/images/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="assets/images/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/images/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="/assets/images/icons/favicon.ico">
+    <link rel="manifest" href="assets/images/icons/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="assets/images/icons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <!-- material design fonts and icons -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" >
-    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
-    <link rel="stylesheet" href="css/app.css">
-    <title>ssi-ui</title>
-
-    <!-- bower dependencies -->
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-aria/angular-aria.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-material/angular-material.js"></script>
-
-    <!-- service modules -->
-    <script src="js/services/apiServices.js"></script>
-    <script src="js/services/coreServices.js"></script>
-    <script src="js/services.js"></script>
-
-    <!-- controller modules -->
-    <script src="js/controllers/carrierControllers.js"></script>
-    <script src="js/controllers/coreControllers.js"></script>
-    <script src="js/controllers/customerControllers.js"></script>
-    <script src="js/controllers/drawingControllers.js"></script>
-    <script src="js/controllers/jobControllers.js"></script>
-    <script src="js/controllers/manufacturerControllers.js"></script>
-    <script src="js/controllers/markControllers.js"></script>
-    <script src="js/controllers/partControllers.js"></script>
-    <script src="js/controllers/partOrderControllers.js"></script>
-    <script src="js/controllers/salespersonControllers.js"></script>
-    <script src="js/controllers/shipmentControllers.js"></script>
-    <script src="js/controllers/shipmentItemControllers.js"></script>
-    <script src="js/controllers/shippingGroupControllers.js"></script>
-    <script src="js/controllers/shippingGroupItemControllers.js"></script>
-    <!-- <script src="js/controllers/shippingItemControllers.js"></script> -->
-    <script src="js/controllers/specialtyItemControllers.js"></script>
-    <script src="js/controllers/systemTypeControllers.js"></script>
-    <script src="js/controllers/userControllers.js"></script>
-    <script src="js/controllers/vendorControllers.js"></script>
-    <script src="js/controllers/zoneControllers.js"></script>
-    <script src="js/controllers.js"></script>
-
-    <!-- main application module -->
-    <script src="js/app.js"></script>
-
+    <!-- html5 location base -->
+    <base href="/">
   </head>
-  <body ng-app="ssiApp" ng-controller="RootController" ng-cloak layout="row">
-    <md-sidenav md-component-id="sidenav" md-is-locked-open="user.isLoggedIn && $mdMedia('gt-sm')">
-      <md-toolbar layout="row">
-        <div class="md-toolbar-tools">
-          <md-button class="md-icon-button" ng-show="user.isLoggedIn" hide-gt-sm ng-click="toggleSidenav()">
-            <md-icon class="material-icons">close</md-icon>
-          </md-button>
-        </div>
-      </md-toolbar>
-      <md-content flex>
-        <md-list layout-padding>
-          <md-list-item>
-            <md-button ng-href="#/home" flex>
-              Home
-            </md-button>
-            <md-divider />
-          </md-list-item>
-          <md-list-item layout="column" flex>
-            <md-button ng-href="#/jobs" flex>
-              Jobs
-            </md-button>
-            <label ng-show='selected.job'>
-              {{selected.job.id}}
-            </label>
-            <md-button  ng-show="selected.job != undefined"
-                        ng-href="#/jobs/{{selected.job.id}}/drawings" flex>
-              Drawings
-            </md-button>
-            <md-button  ng-show="selected.drawing != undefined"
-                        ng-href="#/jobs/{{selected.job.id}}/drawings/{{selected.drawing.id}}/marks" flex>
-              Marks
-            </md-button>
-            <md-button  ng-show="selected.job != undefined"
-                        ng-href="#/jobs/{{selected.job.id}}/shipping-groups" flex>
-              Shipping Groups
-            </md-button>
-            <md-button  ng-show="selected.shippingGroup != undefined"
-                        ng-href="#/jobs/{{selected.job.id}}/shipping-groups/{{selected.shippingGroup.id}}/items" flex>
-              Shipping Group Items
-            </md-button>
-            <md-button  ng-show="selected.job != undefined"
-                        ng-href="#/jobs/{{selected.job.id}}/part-orders" flex>
-              Part Orders
-            </md-button>
-            <md-button  ng-show="selected.job != undefined"
-                        ng-href="#/jobs/{{selected.job.id}}/shipments" flex>
-              Shipments
-            </md-button>
-            <md-button  ng-show="selected.shipment != undefined"
-                        ng-href="#/jobs/{{selected.job.id}}/shipments/{{selected.shipment.id}}/items" flex>
-              Shipment Items
-            </md-button>
-            <md-button  ng-show="selected.job != undefined"
-                        ng-href="#/jobs/{{selected.job.id}}/zones" flex>
-              Zones
-            </md-button>
-            <md-divider />
-          </md-list-item>
-          <md-list-item>
-            <md-button ng-href="#/carriers" flex>
-              Carriers
-            </md-button>
-            <md-divider />
-          </md-list-item>
-          <md-list-item>
-            <md-button ng-href="#/customers" flex>
-              Customers
-            </md-button>
-            <md-divider />
-          </md-list-item>
-          <md-list-item>
-            <md-button ng-href="#/manufacturers" flex>
-              manufacturers
-            </md-button>
-            <md-divider />
-          </md-list-item>
-          <md-list-item>
-            <md-button ng-href="#/parts" flex>
-              parts
-            </md-button>
-            <md-divider />
-          </md-list-item>
-          <md-list-item>
-            <md-button ng-href="#/salespeople" flex>
-              salespeople
-            </md-button>
-            <md-divider />
-          </md-list-item>
-          <md-list-item>
-            <md-button ng-href="#/specialty-items" flex>
-              specialty items
-            </md-button>
-            <md-divider />
-          </md-list-item>
-          <md-list-item>
-            <md-button ng-href="#/system-types" flex>
-              system types
-            </md-button>
-            <md-divider />
-          </md-list-item>
-          <md-list-item>
-            <md-button ng-href="#/users" flex>
-              users
-            </md-button>
-            <md-divider />
-          </md-list-item>
-          <md-list-item>
-            <md-button ng-href="#/vendors" flex>
-              vendors
-            </md-button>
-            <md-divider />
-          </md-list-item>
-          <md-list-item>
-            <md-button ng-click="logout()" flex>
-              Logout
-            </md-button>
-          </md-list-item>
-        </md-list>
-      </md-content>
-    </md-sidenav>
-    <div flex layout="column" tabindex="-1" role="main" class="md-whiteframe-z2">
-      <md-toolbar layout="row" layout-align="top center">
-        <div class="md-toolbar-tools">
-          <md-button class="md-icon-button" ng-show="user.isLoggedIn" hide-gt-sm ng-click="toggleSidenav()">
-            <md-icon class="material-icons">menu</md-icon>
-          </md-button>
-          <h3>SSI Business</h3>
-        </div>
-      </md-toolbar>
-      <ng-view layout-padding/>
-    </div>
+
+  <!-- `ng-app` specifies the main angular module to use -->
+  <!-- `ng-cloak` forces a style of `display: none;` until angular is ready -->
+  <body ng-app="ssi" ng-cloak>
+
+    <!-- `ui-view` is angular-ui-router's view injector -->
+    <!-- although empty, this tag is not self-closing due to restrictions on non-native html tags -->
+    <ui-view></ui-view>
+
   </body>
 </html>
