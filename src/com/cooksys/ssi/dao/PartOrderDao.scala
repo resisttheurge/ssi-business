@@ -7,6 +7,18 @@ import shapeless.syntax.std.tuple._
 
 object PartOrderDao extends CrudDao[PartOrder] {
 
+  def indexByJobId(id: Int)(implicit ec: EC, db: DB) =
+    run(
+      for {
+        pos <- PartOrders.filter(_.jobId === id).withDependents.result
+      } yield {
+        Response[Seq[PartOrder]](
+          success = true,
+          data = pos.map(po => po: PartOrder)
+        )
+      }
+    )
+
   override def indexAction(implicit ec: EC) =
     for (carriers <- PartOrders.withDependents.result)
       yield Response[Seq[PartOrder]](
