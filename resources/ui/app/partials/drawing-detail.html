@@ -1,11 +1,48 @@
-<div>drawing.id</div>
+<!-- <div>drawing.id</div>
 <div>drawing.jobId</div>
 <div>drawing.label</div>
 <div>drawing.drawingType</div>
 <div>drawing.specialtyItem</div>
-<div>drawing.info</div>
+<div>drawing.info</div> -->
+<h1>Drawing Detail</h1>
 
+<form>
+  <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <div>
 
+      <md-input-container>
+        <label>Id</label>
+        <input ng-model="drawing.id" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Job Id</label>
+        <input ng-model="drawing.jobId" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Label</label>
+        <input ng-model="drawing.label" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Type</label>
+        <input ng-model="drawing.drawingType" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Specialty Item</label>
+        <input ng-model="drawing.specialtyItem" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Info</label>
+        <input ng-model="drawing.info" type="text">
+      </md-input-container>
+
+    </div>
+  </md-content>
+<form>
 
 
 <!-- id: Option[Int],

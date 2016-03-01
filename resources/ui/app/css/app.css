@@ -21,7 +21,7 @@ ng-view {
 
 .ssi-table-list {
   box-sizing: border-box;
-  height: inherit;
+  height: 80vh;
 }
 
 .ssi-table-list-virtual-repeat-container {

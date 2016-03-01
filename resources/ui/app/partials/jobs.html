@@ -1,5 +1,41 @@
 <md-content layout-padding layout="column" class="ssi-table">
   <md-progress-linear ng-show="loading" md-mode="indeterminate"></md-progress-linear>
+
+<!--
+  <md-menu>
+   <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button" aria-label="Open sample menu">
+     <md-icon class="material-icons">filter_list</md-icon>
+   </md-button>
+   <md-menu-content>
+     <md-menu-item><md-button ng-click="filterJobs('')">All Jobs</md-button></md-menu-item>
+     <md-menu-item><md-button ng-click="filterJobs('M')">M Jobs</md-button></md-menu-item>
+     <md-menu-item><md-button ng-click="filterJobs('MF')">MF Jobs</md-button></md-menu-item>
+     <md-menu-item><md-button ng-click="filterJobs('F')">F Jobs</md-button></md-menu-item>
+     <md-menu-item><md-button ng-click="filterJobs('RG')">RG Jobs</md-button></md-menu-item>
+     <md-menu-item><md-button ng-click="filterJobs('B')">B Jobs</md-button></md-menu-item>
+   </md-menu-content>
+  </md-menu>
+-->
+
+  <md-fab-toolbar md-open="fabIsOpen" count="count"
+                md-direction="right">
+  <md-fab-trigger class="align-with-text">
+    <md-button aria-label="menu" class="md-fab md-primary">
+      <md-icon class="material-icons">filter_list</md-icon>
+    </md-button>
+  </md-fab-trigger>
+  <md-toolbar>
+    <md-fab-actions class="md-toolbar-tools">
+      <md-button ng-click="filterJobs('')">All Jobs</md-button>
+      <md-button ng-click="filterJobs('M')">M Jobs</md-button>
+      <md-button ng-click="filterJobs('MF')">MF Jobs</md-button>
+      <md-button ng-click="filterJobs('F')">F Jobs</md-button>
+      <md-button ng-click="filterJobs('RG')">RG Jobs</md-button>
+      <md-button ng-click="filterJobs('B')">B Jobs</md-button>
+    </md-fab-actions>
+  </md-toolbar>
+</md-fab-toolbar>
+
   <md-list class="ssi-table-list">
     <md-virtual-repeat-container ng-hide="loading" class="ssi-table-list-virtual-repeat-container">
       <md-list-item md-virtual-repeat="job in jobs" class="ssi-table-list-item">
@@ -9,4 +45,5 @@
       </md-list-item>
     </md-virtual-repeat-container>
   </md-list>
+
 </md-content>

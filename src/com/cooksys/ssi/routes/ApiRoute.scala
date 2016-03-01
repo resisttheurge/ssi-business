@@ -17,7 +17,7 @@ case class ApiRoute(path: String)(implicit db: Database, ec: ExecutionContext) e
           CrudRoute("contacts", ContactDao) ~
           CrudRoute("customers", CustomerDao) ~
           CrudRoute("drawings", DrawingDao, innerWithId = (id: Int) => InnerDrawingRoute(id)) ~
-          CrudRoute("jobs", JobDao, innerWithId = (id: Int) => InnerJobRoute(id)) ~
+          CrudRoute("jobs", JobDao, InnerJobsRoute(), innerWithId = (id: Int) => InnerJobRoute(id)) ~
           CrudRoute("manufacturers", ManufacturerDao) ~
           CrudRoute("marks", MarkDao) ~
           CrudRoute("part-orders", PartOrderDao) ~

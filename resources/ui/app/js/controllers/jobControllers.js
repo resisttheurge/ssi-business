@@ -11,15 +11,33 @@ jobControllers.controller(
   function($scope, selectionService, Job) {
     $scope.loading = true
     $scope.selectJob = selectionService.selectJob
+
     Job.query(function(response) {
       if(response.success) {
-        $scope.jobs = response.data
+        $scope.jobs = Job.jobsFullList = response.data
       } else {
         $scope.error = true
         $scope.message = response.message
       }
       $scope.loading = false
     })
+
+    $scope.filterJobs = function(filterVal)
+    {
+      $scope.loading = true;
+      if(filterVal === null || filterVal === "")
+      {
+        $scope.jobs = Job.jobsFullList;
+        $scope.loading = false;
+        return;
+      }
+
+      var regex = new RegExp("^" + filterVal + "$");
+      $scope.jobs = Job.jobsFullList.filter(function(item){
+          return regex.test(item.identifier.prefix);
+        });
+      $scope.loading = false;
+    }
   }
 ])
 
