@@ -1,0 +1,12 @@
+<md-content layout-padding layout="column" class="ssi-table">
+  <md-progress-linear ng-show="loading" md-mode="indeterminate"></md-progress-linear>
+  <md-list class="ssi-table-list">
+    <md-virtual-repeat-container ng-hide="loading" class="ssi-table-list-virtual-repeat-container">
+      <md-list-item md-virtual-repeat="drawing in drawings" class="ssi-table-list-item">
+        <md-button ui-sref=".detail({drawingId: drawing.id})" ng-click="selectDrawing(drawing)">
+          {{drawing.label}}
+        </md-button>
+      </md-list-item>
+    </md-virtual-repeat-container>
+  </md-list>
+</md-content>

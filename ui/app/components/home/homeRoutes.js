@@ -6,7 +6,7 @@ export default function($stateProvider) {
       url: '/home',
       template: homeTemplate,
       controller: 'HomeController',
-      access: {
+      data: {
         allowAnonymous: false,
         allowedRoles: ['ADMIN', 'EMPLOYEE']
       }

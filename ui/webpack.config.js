@@ -112,6 +112,7 @@ function buildConfig() {
       path.resolve(__dirname, 'app/'),
       path.resolve(__dirname, 'node_modules/')
     ],
+    exclude: path.resolve(__dirname, 'app/assets/'),
     // this is really complicated! too complicated for comments.
     // if you really need to know, ask someone or look at the webpack
     // documentation in general as well as the documentation for the
@@ -121,14 +122,15 @@ function buildConfig() {
       production
         ? ExtractTextPlugin.extract(
             'style',
-            'css?sourceMap&minimize&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass'
+            'css?sourceMap&minimize!sass'
           )
-        : 'style!css?sourceMap&minimize&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass'
+        : 'style!css?sourceMap&minimize!sass'
   }, {
     // asset loading
     // Reference: https://github.com/webpack/url-loader
     test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
     include: path.resolve(__dirname, 'app/'),
+    exclude: path.resolve(__dirname, 'app/assets/'),
     loader: 'url?limit=10000'
   }, {
     // html loading
@@ -136,6 +138,7 @@ function buildConfig() {
     // Reference: https://github.com/webpack/html-loader
     test: /\.html$/,
     include: path.resolve(__dirname, 'app/'),
+    exclude: path.resolve(__dirname, 'app/assets/'),
     loader: 'html'
   }]
 
@@ -162,7 +165,7 @@ function buildConfig() {
     // Reference: https://github.com/kevlened/copy-webpack-plugin
     new CopyWebpackPlugin([{
       from: path.resolve(__dirname, 'app/assets'),
-      to: 'assets'
+      to: 'assets/'
     }])
   ]
 

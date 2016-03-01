@@ -2,18 +2,14 @@ import angular from 'angular'
 
 export default class LoginController {
 
-  constructor($state, $mdToast, userService, AuthService) {
+  constructor($state, $mdToast, $user) {
 
     this.reset()
 
-    this.authenticate = () => {
-      AuthService.login(angular.copy(this.user), (response) => {
-        if(response.success){
-          userService.user.isLoggedIn = true
-          userService.user.username = response.data.username
-          userService.user.roles = response.data.roles
-          $state.go('home')
-        } else {
+    this.login = (user) => {
+      console.log('logging in user ' + JSON.stringify(user))
+      $user.login(user.username, user.password, ($user) => {
+        if($user.didLastLoginFail()) {
           $mdToast.show(
             $mdToast.simple()
               .textContent(response.message)
@@ -21,6 +17,8 @@ export default class LoginController {
               .highlightAction(false)
               .position('bottom right')
           )
+        } else {
+          $state.go('home')
         }
       })
       this.reset()
@@ -28,7 +26,7 @@ export default class LoginController {
 
   }
 
-  resetUser() {
+  reset() {
     this.user = {
       username: '',
       password: ''

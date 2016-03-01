@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="ssi" lang="en">
   <head>
     <!-- metadata -->
     <meta charset="utf-8">
@@ -30,15 +30,148 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" >
     <!-- html5 location base -->
     <base href="/">
+    <!-- ng-cloak fix for injected angular -->
+    <style>
+      [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+        display: none !important;
+      }
+    </style>
   </head>
 
   <!-- `ng-app` specifies the main angular module to use -->
   <!-- `ng-cloak` forces a style of `display: none;` until angular is ready -->
-  <body ng-app="ssi" ng-cloak>
-
-    <!-- `ui-view` is angular-ui-router's view injector -->
-    <!-- although empty, this tag is not self-closing due to restrictions on non-native html tags -->
-    <ui-view></ui-view>
-
+  <body ng-controller="RootController" layout="row" ng-cloak>
+    <md-sidenav md-component-id="sidenav" md-is-locked-open="user.isLoggedIn() && $mdMedia('gt-sm')">
+      <md-toolbar layout="row">
+        <div class="md-toolbar-tools">
+          <md-button class="md-icon-button" ng-show="user.isLoggedIn()" hide-gt-sm ng-click="toggleSidenav()">
+            <md-icon class="material-icons">close</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+      <md-content flex>
+        <md-list layout-padding>
+          <md-list-item>
+            <md-button ui-sref="home" flex>
+              Home
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item layout="column" flex>
+            <md-button ui-sref="jobs" flex>
+              Jobs
+            </md-button>
+            <label ng-show='selected.job'>
+              {{selected.job.id}}
+            </label>
+            <md-button  ng-show="selected.job"
+                        ui-sref="jobs.detail.drawings({jobId: selected.job.id})" flex>
+              Drawings
+            </md-button>
+            <md-button  ng-show="selected.drawing"
+                        ui-sref="jobs.detail.drawings.detail.marks({jobId: selected.job.id, drawingId: selected.drawing.id})" flex>
+              Marks
+            </md-button>
+            <md-button  ng-show="selected.job"
+                        ui-sref="jobs.detail.shippingGroups({jobId: selected.job.id})" flex>
+              Shipping Groups
+            </md-button>
+            <md-button  ng-show="selected.shippingGroup"
+                        ui-sref="jobs.detail.shippingGroups.detail.items({jobId: selected.job.id, shippingGroupId: selected.shippingGroup.id})" flex>
+              Shipping Group Items
+            </md-button>
+            <md-button  ng-show="selected.job"
+                        ui-sref="jobs.detail.partOrders({jobId: selected.job.id})" flex>
+              Part Orders
+            </md-button>
+            <md-button  ng-show="selected.job"
+                        ui-sref="jobs.detail.shipments({jobId: selected.job.id})" flex>
+              Shipments
+            </md-button>
+            <md-button  ng-show="selected.shipment"
+                        ui-sref="jobs.detail.shipments.detail.items({jobId: selected.job.id, shipmentId: selected.shipment.id})" flex>
+              Shipment Items
+            </md-button>
+            <md-button  ng-show="selected.job"
+                        ui-sref="jobs.detail.zones({jobId: selected.job.id})" flex>
+              Zones
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ui-sref="carriers" flex>
+              Carriers
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ui-sref="customers" flex>
+              Customers
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ui-sref="manufacturers" flex>
+              manufacturers
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ui-sref="parts" flex>
+              parts
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ui-sref="salespeople" flex>
+              salespeople
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ui-sref="specialtyItems" flex>
+              specialty items
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ui-sref="systemTypes" flex>
+              system types
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ui-sref="users" flex>
+              users
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ui-sref="vendors" flex>
+              vendors
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-click="logout()" flex>
+              Logout
+            </md-button>
+          </md-list-item>
+        </md-list>
+      </md-content>
+    </md-sidenav>
+    <div flex layout="column" tabindex="-1" role="main" class="md-whiteframe-z2">
+      <md-toolbar layout="row" layout-align="top center">
+        <div class="md-toolbar-tools">
+          <md-button class="md-icon-button" ng-show="user.loggedIn" hide-gt-sm ng-click="toggleSidenav()">
+            <md-icon class="material-icons">menu</md-icon>
+          </md-button>
+          <h3>SSI Business</h3>
+        </div>
+      </md-toolbar>
+      <!-- `ui-view` is angular-ui-router's view injector -->
+      <!-- although empty, this tag is not self-closing due to restrictions on non-native html tags -->
+      <ui-view layout-padding></ui-view>
+    </div>
   </body>
 </html>

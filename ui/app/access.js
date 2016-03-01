@@ -1,13 +1,13 @@
-export default function($rootScope, $state, userService) {
+export default function($rootScope, $state, $user) {
   $rootScope.$on('$stateChangeStart', function(event, next) {
 
     let allowed = true
     
-    if(next.access && !next.access.allowAnonymous){
+    if(next.data && !next.data.allowAnonymous){
       allowed = false
-      if(userService.user.isLoggedIn){
-        for (role of userService.user.roles) {
-          allowed = allowed || (access.allowedRoles.indexOf(role) !== -1)
+      if($user.isLoggedIn() ){
+        for (let role of next.data.allowedRoles) {
+          allowed = allowed || $user.hasRole(role)
         }
       }
     }

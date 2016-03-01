@@ -6,7 +6,8 @@ export default function($stateProvider) {
       url: '/login',
       template: loginTemplate,
       controller: 'LoginController',
-      access: {
+      controllerAs: 'loginController',
+      data: {
         allowAnonymous: true,
         allowedRoles: ['ADMIN', 'EMPLOYEE']
       }

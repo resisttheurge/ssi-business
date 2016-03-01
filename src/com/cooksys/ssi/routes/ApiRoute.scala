@@ -1,14 +1,14 @@
 package com.cooksys.ssi.routes
 
-import akka.http.scaladsl.model.headers.RawHeader
+import akka.http.scaladsl.model.headers._
 import com.cooksys.ssi.dao._
 import slick.driver.MySQLDriver.api._
 
 import scala.concurrent.ExecutionContext
 
-case class ApiRoute(path: String)(implicit db: Database, ec: ExecutionContext) extends BaseRoute {
+case class ApiRoute(path: String)(implicit db: Database, ec: ExecutionContext) extends BaseRoute with CorsSupport {
   override def internal =
-    respondWithHeaders(RawHeader("Access-Control-Allow-Origin", "*")) {
+    cors {
       pathPrefix(path) {
         CrudRoute("addenda", AddendumDao) ~
           CrudRoute("addresses", AddressDao) ~
