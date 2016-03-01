@@ -9,6 +9,26 @@ import scala.concurrent.Future
 
 object JobDao extends CrudDao[Job] {
 
+  val filteredIndexQuery = Compiled(
+    (active: Rep[Option[Boolean]], prefix: Rep[Option[String]]) =>
+      Jobs
+        .filter(job => active.map(_ === (job.status === "ACTIVE")).getOrElse(true: Rep[Boolean]))
+        .filter(job => prefix.map(_ === job.prefix).getOrElse(true: Rep[Boolean]))
+        .withDependents
+  )
+
+  def filteredIndex(active: Option[Boolean], prefix: Option[JobPrefix])(implicit db: DB, ec: EC) =
+    run(
+      for {
+        jobs <- filteredIndexQuery(active, prefix.map(p => p: String)).result
+      } yield {
+        Response[Seq[Job]](
+          success = true,
+          data = jobs.map(j => j: Job)
+        )
+      }
+    )
+
   def createJobAddresses(id: Int, addresses: models.JobAddresses)(implicit db: DB, ec: EC) =
     (addresses.shipping, addresses.invoicing) match {
       case (Some(s), Some(i)) =>
