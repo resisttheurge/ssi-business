@@ -15,6 +15,76 @@
 <div>{{partOrder.releasedBy}}</div>
 
 
+<h1>Job Detail</h1>
+<form>
+  <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <div>
+
+      <md-input-container>
+        <label>Id</label>
+        <input ng-model="partOrder.id" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Job Id</label>
+        <input ng-model="partOrder.jobId" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Status</label>
+        <input ng-model="partOrder.status" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Part</label>
+        <input ng-model="partOrder.part" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Manufacturer</label>
+        <input ng-model="partOrder.manufacturer" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Vendor</label>
+        <input ng-model="partOrder.vendor" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>PO</label>
+        <input ng-model="partOrder.po" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Requested Quantity</label>
+        <input ng-model="partOrder.requestedQuantity" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Stock Quantity</label>
+        <input ng-model="partOrder.stockQuantity" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Purchase Quantity</label>
+        <input ng-model="partOrder.purchaseQuantity" type="text">
+      </md-input-container>
+
+      <md-datepicker ng-model="partOrder.requestDate" md-placeholder="Request Date"></md-datepicker>
+      <md-datepicker ng-model="partOrder.purchaseDate" md-placeholder="Purchase Date"></md-datepicker>
+      <md-datepicker ng-model="partOrder.releaseDate" md-placeholder="Release Date"></md-datepicker>
+
+      <md-input-container>
+        <label>Released By</label>
+        <input ng-model="partOrder.releasedBy" type="text">
+      </md-input-container>
+
+    </div>
+  </md-content>
+<form>
+
+
+
 <!-- id: Option[Int],
                      jobId: Int,
                      drawingId: Option[Int] = None,

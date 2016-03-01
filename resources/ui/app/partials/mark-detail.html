@@ -1,4 +1,28 @@
-<div>{{mark.id}}</div>
+<!-- <div>{{mark.id}}</div>
  <div>{{mark.drawingId}}</div>
  <div>{{mark.shippingItem}}</div>
- <div>{{mark.label}}</div>
+ <div>{{mark.label}}</div> -->
+
+ <h1>Mark Detail</h1>
+ <form>
+   <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+     <div>
+       <md-input-container>
+         <label>Id</label>
+         <input ng-model="mark.id" type="text">
+       </md-input-container>
+       <md-input-container>
+         <label>Drawing Id</label>
+         <input ng-model="mark.drawingId" type="text">
+       </md-input-container>
+       <md-input-container>
+         <label>Shipping Item</label>
+         <input ng-model="mark.shippingItem" type="text">
+       </md-input-container>
+       <md-input-container>
+         <label>Label</label>
+         <input ng-model="mark.label" type="text">
+       </md-input-container>
+     </div>
+   </md-content>
+ <form>
