@@ -1,6 +1,12 @@
+'use strict'
+
 var salespersonControllers = angular.module('salespersonControllers', [])
 
-salespersonControllers.controller('SalespersonListController', ['$scope', 'Salesperson',
+salespersonControllers.controller(
+  'SalespersonListController',
+  [
+    '$scope',
+     'Salesperson',
   function($scope, Salesperson) {
     $scope.loading = true
     Salesperson.query(function(response) {
@@ -15,7 +21,12 @@ salespersonControllers.controller('SalespersonListController', ['$scope', 'Sales
   }
 ])
 
-salespersonControllers.controller('SalespersonDetailController', ['$scope', '$routeParams', 'Salesperson',
+salespersonControllers.controller(
+  'SalespersonDetailController',
+  [
+      '$scope',
+      '$routeParams',
+      'Salesperson',
   function($scope, $routeParams, Salesperson) {
     Salesperson.get({salespersonId: $routeParams.salespersonId}, function(response){
       $scope.loading = true

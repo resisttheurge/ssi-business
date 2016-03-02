@@ -10,66 +10,114 @@
 <div>{{job.completeDate}}</div>
 <div>{{job.shop}}</div>
 <div>{{job.salesperson}}</div>
-<div>{{job.customer}}</div>a
+<div>{{job.customer}}</div>
 <div>{{job.contact}}</div> -->
-
+<div>{{job.startDate}}</div>
 <h1>Job Detail</h1>
-<form>
   <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
-    <div>
+    <form name="jobForm" flex style="overflow-x : hidden">
+    <div layout-gt-sm="row">
 
-      <md-input-container>
+      <md-input-container flex>
         <label>Id</label>
         <input ng-model="job.id" type="text">
       </md-input-container>
 
-      <md-input-container>
-        <label>Identifier</label>
-        <input ng-model="job.identifier" type="text">
+
+    <div layout="row" layout-align="start center" flex>
+      <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
+        <md-select ng-model="job.identifier.prefix">
+          <md-option ng-repeat="prefix in prefixes" ng-value="prefix">
+                 {{prefix}}
+          </md-option>
+        </md-select>
       </md-input-container>
 
-      <md-input-container>
-        <label>Status</label>
-        <input ng-model="job.status" type="text">
-      </md-input-container>
+        <md-input-container flex style="margin-top: 24px;">
+          <input ng-model="job.identifier.year" type="number" maxlength="2" >
+        </md-input-container>
 
-      <md-input-container>
+        <md-input-container flex style="margin-top: 24px;">
+          <input ng-model="job.identifier.label" type="text">
+        </md-input-container>
+
+
+        <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
+          <label>Status</label>
+          <md-select ng-model="job.status">
+            <md-option ng-repeat="status in jobStatuses" ng-value="status">
+                   {{status}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+
+    </div>
+
+</div>
+
+<div layout-gt-sm="row">
+      <md-input-container class="md-block" flex-gt-sm>
         <label>Description</label>
         <textarea ng-model="job.description" rows="5" md-select-on-focus></textarea>
       </md-input-container>
+</div>
 
-      <md-input-container>
+
+
+<div layout-gt-sm="row">
+<!-- fix the dates here -->
+      <md-datepicker flex ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
+      <md-datepicker flex-offset-gt-sm="10" flex ng-model="dueDateDisplay" md-placeholder="Due Date"></md-datepicker>
+      <md-datepicker flex-offset-gt-sm="10" flex ng-model="completeDateDisplay" md-placeholder="Complete Date"></md-datepicker>
+</div>
+<!-- object -->
+
+  <div layout-gt-sm="row">
+      <md-input-container flex>
+        <label>Shop</label>
+        <md-select ng-model="job.shop" ng-model-options="{trackBy: '$value.id'}">
+          <md-option ng-repeat="shop in shops" ng-value="shop">
+                 {{shop.label}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+      <md-input-container flex-offset-gt-sm="10" flex>
         <label>Contract Price</label>
         <input ng-model="job.contractPrice" type="text">
       </md-input-container>
+    </div>
 
-      <md-datepicker ng-model="job.startDate" md-placeholder="Start Date"></md-datepicker>
-      <md-datepicker ng-model="job.dueDate" md-placeholder="Due Date"></md-datepicker>
-      <md-datepicker ng-model="job.completeDate" md-placeholder="Complete Date"></md-datepicker>
+    <div layout-gt-sm="row">
 
-      <md-input-container>
-        <label>Shop</label>
-        <input ng-model="job.shop" type="text">
-      </md-input-container>
-
-      <md-input-container>
+      <md-input-container flex>
         <label>Salesperson</label>
-        <input ng-model="job.salesperson" type="text">
+          <md-select ng-model="job.salesperson" ng-model-options="{trackBy: '$value.id'}">
+            <md-option ng-repeat="salesperson in salespeople" ng-value="salesperson">
+                   {{salesperson.label}}
+            </md-option>
+          </md-select>
       </md-input-container>
 
-      <md-input-container>
+      <md-input-container flex-offset-gt-sm="10" flex>
         <label>Customer</label>
-        <input ng-model="job.customer" type="text">
+        <md-select ng-model="job.customer" ng-model-options="{trackBy: '$value.id'}">
+          <md-option ng-repeat="customer in customers" ng-value="customer">
+                 {{customer.label}}
+          </md-option>
+        </md-select>
       </md-input-container>
 
-      <md-input-container>
+      <md-input-container flex-offset-gt-sm="10" flex>
         <label>Contact</label>
         <input ng-model="job.contact" type="text">
       </md-input-container>
 
     </div>
+    </div>
+    <form>
   </md-content>
-<form>
+
 
 
 <!-- id: Option[Int],

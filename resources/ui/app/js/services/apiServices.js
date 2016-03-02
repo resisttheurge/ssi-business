@@ -55,13 +55,41 @@ apiServices.factory('Contact', ['$resource', 'endpointUrl',
   }
 ])
 
-apiServices.factory('Customer', ['$resource', 'endpointUrl',
+apiServices.service('Customer', ['$resource', 'endpointUrl',
   function($resource, endpointUrl) {
-    return $resource(endpointUrl + '/customers/:customerId', {}, {
+
+    var service = this;
+
+    var resultExtension = function(response){
+      service.$scope.loading = true
+      if(response.success){
+        angular.extend(service.resultObj, response.data);
+      } else {
+        service.$scope.error = true;
+        service.$scope.message = response.message
+      }
+      service.$scope.loading = false
+    }
+
+    this.endpoint = $resource(endpointUrl + '/customers/:customerId', {}, {
       create: {method: 'POST'},
       update: {method: 'PATCH'},
       query: {method: 'GET', params:{customerId: ''}}
-    })
+    });
+
+    this.get = function($scope, resultObj, customerId)
+    {
+      service.$scope = $scope;
+      service.resultObj = resultObj;
+      this.endpoint.get({'customerId': customerId}, resultExtension)
+    }
+
+    this.get = function($scope, resultObj)
+    {
+      service.$scope = $scope;
+      service.resultObj = resultObj;
+      this.endpoint.get(resultExtension)
+    }
   }
 ])
 
@@ -83,13 +111,36 @@ apiServices.factory('MarkByDrawing', ['$resource', 'endpointUrl',
   }
 ])
 
-apiServices.factory('Job', ['$resource', 'endpointUrl',
+apiServices.service('Job', ['$resource', 'endpointUrl',
   function($resource, endpointUrl) {
-    return $resource(endpointUrl + '/jobs/:jobId', {}, {
+
+    var service = this;
+
+    var resultExtension = function(response){
+      service.$scope.loading = true
+      if(response.success) {
+        angular.extend(service.resultObj, response.data);
+      } else {
+        service.$scope.error = true
+        service.$scope.message = response.message
+      }
+      service.$scope.loading = false
+    }
+
+
+     this.endpoint = $resource(endpointUrl + '/jobs/:jobId', {}, {
       create: {method: 'POST'},
       update: {method: 'PATCH'},
       query: {method: 'GET', params:{jobId: ''}}
-    })
+    });
+
+    this.get = function($scope, resultObj, jobId)
+    {
+      service.$scope = $scope;
+      service.resultObj = resultObj;
+      this.endpoint.get({'jobId' : jobId}, resultExtension);
+    }
+
   }
 ])
 
@@ -216,13 +267,41 @@ apiServices.factory('Report', ['$resource', 'endpointUrl',
   }
 ])
 
-apiServices.factory('Salesperson', ['$resource', 'endpointUrl',
+apiServices.service('Salesperson', ['$resource', 'endpointUrl',
   function($resource, endpointUrl) {
-    return $resource(endpointUrl + '/salespeople/:salespersonId', {}, {
+
+    var service = this;
+
+    var resultExtension = function(response){
+      service.$scope.loading = true
+      if(response.success) {
+        angular.extend(service.resultObj, response.data);
+      } else {
+        service.$scope.error = true
+        service.$scope.message = response.message
+      }
+      service.$scope.loading = false
+    }
+
+    this.endpoint = $resource(endpointUrl + '/salespeople/:salespersonId', {}, {
       create: {method: 'POST'},
       update: {method: 'PATCH'},
       query: {method: 'GET', params:{salespersonId: ''}}
-    })
+    });
+
+    this.get = function($scope, resultObj, salespersonId)
+    {
+      service.$scope = $scope;
+      service.resultObj = resultObj;
+      this.endpoint.get({'salespersonId': salespersonId}, resultExtension)
+    }
+
+    this.get = function($scope, resultObj)
+    {
+      service.$scope = $scope;
+      service.resultObj = resultObj;
+      this.endpoint.get(resultExtension)
+    }
   }
 ])
 
@@ -320,13 +399,41 @@ apiServices.factory('ShippingItemZone', ['$resource', 'endpointUrl',
   }
 ])
 
-apiServices.factory('Shop', ['$resource', 'endpointUrl',
+apiServices.service('Shop', ['$resource', 'endpointUrl',
   function($resource, endpointUrl) {
-    return $resource(endpointUrl + '/shops/:shopId', {}, {
+
+    var service = this;
+
+    var resultExtension = function(response){
+      service.$scope.loading = true
+      if(response.success) {
+        angular.extend(service.resultObj, response.data);
+      } else {
+        service.$scope.error = true
+        service.$scope.message = response.message
+      }
+      service.$scope.loading = false
+    }
+
+    this.endpoint = $resource(endpointUrl + '/shops/:shopId', {}, {
       create: {method: 'POST'},
       update: {method: 'PATCH'},
       query: {method: 'GET', params:{shopId: ''}}
-    })
+    });
+
+    this.get = function($scope, resultObj, shopId)
+    {
+      service.$scope = $scope;
+      service.resultObj = resultObj;
+      this.endpoint.get({'shopId': shopId}, resultExtension)
+    }
+
+    this.get = function($scope, resultObj)
+    {
+      service.$scope = $scope;
+      service.resultObj = resultObj;
+      this.endpoint.get(resultExtension)
+    }
   }
 ])
 

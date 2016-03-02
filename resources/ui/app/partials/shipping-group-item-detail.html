@@ -1,4 +1,27 @@
-<div>{{shippingGroupItem.id}}</div>
-<div>{{shippingGroupItem.shippingGroupId</div>
-<div>{{shippingGroupItem.shippingItem</div>
-<div>{{shippingGroupItem.label</div>
+<!-- <div>{{shippingGroupItem.id}}</div>
+<div>{{shippingGroupItem.shippingGroupId}}</div>
+<div>{{shippingGroupItem.shippingItem}}</div>
+<div>{{shippingGroupItem.label}}</div> -->
+
+  <form>
+    <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+      <div>
+        <md-input-container>
+          <label>Id</label>
+          <input ng-model="shippingGroupItem.id" type="text">
+        </md-input-container>
+        <md-input-container>
+          <label>Shipping Group Id</label>
+          <input ng-model="shippingGroupItem.shippingGroupId" type="text">
+        </md-input-container>
+        <md-input-container>
+          <label>Shipping Item</label>
+          <textarea ng-model="shippingGroupItem.shippingItem" rows="5" md-select-on-focus></textarea>
+        </md-input-container>
+        <md-input-container>
+          <label>Label</label>
+          <input ng-model="shippingGroupItem.label" type="text">
+        </md-input-container>
+      </div>
+    </md-content>
+  <form>

@@ -1,2 +1,18 @@
-<div>{{systemType.id}}</div>
-<div>{{systemType.label}}</div>
+<!-- <div>{{systemType.id}}</div>
+<div>{{systemType.label}}</div> -->
+
+<h1>System Type Detail</h1>
+<form>
+  <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <div>
+      <md-input-container>
+        <label>Id</label>
+        <input ng-model="systemType.id" type="text">
+      </md-input-container>
+      <md-input-container>
+        <label>Label</label>
+        <input ng-model="systemType.label" type="text">
+      </md-input-container>
+    </div>
+  </md-content>
+<form>

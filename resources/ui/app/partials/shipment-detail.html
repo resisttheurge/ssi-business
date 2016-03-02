@@ -1,5 +1,5 @@
-<div>{{shipment.id}}</div>
-<div>{{shipment.jobId}}</div>
+<!-- <div>{{shipment.id}}</div>
+<div>{{shipment.shipmentId}}</div>
 <div>{{shipment.number}}</div>
 <div>{{shipment.status}}</div>
 <div>{{shipment.shop}}</div>
@@ -8,4 +8,65 @@
 <div>{{shipment.billOfLanding}}</div>
 <div>{{shipment.shipDate}}</div>
 <div>{{shipment.contact}}</div>
-<div>{{shipment.address}}}}</div>
+<div>{{shipment.address}}}}</div> -->
+
+<h1>Shipment Detail</h1>
+<form>
+  <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <div>
+
+      <md-input-container>
+        <label>Id</label>
+        <input ng-model="shipment.id" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>shipmentId</label>
+        <input ng-model="shipment.shipmentId" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Number</label>
+        <input ng-model="shipment.number" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Description</label>
+        <textarea ng-model="shipment.status" rows="5" md-select-on-focus></textarea>
+      </md-input-container>
+
+      <md-input-container>
+        <label>Shop</label>
+        <input ng-model="shipment.shop" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Carrier</label>
+        <input ng-model="shipment.carrier" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Weight</label>
+        <input ng-model="shipment.weight" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Bill Of Landing</label>
+        <input ng-model="shipment.billOfLanding" type="text">
+      </md-input-container>
+
+      <md-datepicker ng-model="shipment.shipDate" md-placeholder="Ship Date"></md-datepicker>
+
+      <md-input-container>
+        <label>Contact</label>
+        <input ng-model="shipment.contact" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Address</label>
+        <input ng-model="shipment.address" type="text">
+      </md-input-container>
+
+    </div>
+  </md-content>
+<form>

@@ -1,5 +1,28 @@
-<div>{{user.id}}</div>
+<!-- <div>{{user.id}}</div>
 <div>{{user.username}}</div>
-<div>{{user.password}}</div>
 <div>{{user.active}}</div>
-<div>{{user.roles}}</div>
+<div>{{user.roles}}</div> -->
+
+<h1>User Detail</h1>
+<form>
+  <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <div>
+      <md-input-container>
+        <label>Id</label>
+        <input ng-model="user.id" type="text">
+      </md-input-container>
+      <md-input-container>
+        <label>Username</label>
+        <input ng-model="user.username" type="text">
+      </md-input-container>
+      <md-input-container>
+        <label>Active</label>
+        <input ng-model="user.active" type="text">
+      </md-input-container>
+      <md-input-container>
+        <label>Roles</label>
+        <input ng-model="user.roles" type="text">
+      </md-input-container>
+    </div>
+  </md-content>
+<form>

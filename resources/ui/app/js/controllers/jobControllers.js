@@ -11,7 +11,7 @@ jobControllers.controller(
   function($scope, selectionService, Job) {
     $scope.loading = true
     $scope.selectJob = selectionService.selectJob
-    Job.query(function(response) {
+    Job.endpoint.query(function(response) {
       if(response.success) {
         $scope.jobs = response.data
       } else {
@@ -24,17 +24,33 @@ jobControllers.controller(
 ])
 
 
-jobControllers.controller('JobDetailController', ['$scope', '$routeParams', 'Job',
-  function($scope, $routeParams, Job) {
-    Job.get({jobId: $routeParams.jobId}, function(response){
-      $scope.loading = true
-      if(response.success) {
-        $scope.job = response.data
-      } else {
-        $scope.error = true
-        $scope.message = response.message
-      }
-      $scope.loading = false
-    })
+jobControllers.controller(
+  'JobDetailController',
+[
+    '$scope',
+    '$routeParams',
+    'Customer',
+    'Job',
+    'Shop',
+    'Salesperson',
+    'prefixService',
+    'jobStatusService',
+  function($scope, $routeParams, Customer, Job, Shop, Salesperson, prefixService, jobStatusService) {
+
+    Customer.get($scope, $scope.customers = {});
+    Job.get($scope, $scope.job = {}, $routeParams.jobId);
+    Shop.get($scope, $scope.shops = {});
+    Salesperson.get($scope, $scope.salespeople = {});
+    $scope.prefixes = prefixService.prefixes;
+    $scope.jobStatuses = jobStatusService.jobStatuses;
+
+    var done = $scope.$watch('job', function()
+    {
+      $scope.startDateDisplay = new Date($scope.job.startDate)
+      $scope.dueDateDisplay = new Date($scope.job.dueDate)
+      $scope.completeDateDisplay = new Date($scope.job.completeDate)
+    });
+    //done();
+
   }
 ])
