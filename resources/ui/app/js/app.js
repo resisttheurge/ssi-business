@@ -3,9 +3,14 @@
 var ssiApp = angular.module(
   "ssiApp",
   [
+    'md.data.table',
+    'ngAnimate',
+    'ngAria',
+    'ngResource',
     'ngRoute',
     'ngMaterial',
     'ssiControllers',
+    'ssi.filters',
     'ssiServices'
   ]
 )

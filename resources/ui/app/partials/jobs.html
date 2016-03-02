@@ -1,12 +1,36 @@
-<md-content layout-padding layout="column" class="ssi-table">
-  <md-progress-linear ng-show="loading" md-mode="indeterminate"></md-progress-linear>
-  <md-list class="ssi-table-list">
-    <md-virtual-repeat-container ng-hide="loading" class="ssi-table-list-virtual-repeat-container">
-      <md-list-item md-virtual-repeat="job in jobs" class="ssi-table-list-item">
-        <md-button ng-href="#/jobs/{{job.id}}" ng-click="selectJob(job)">
-          {{job.identifier.prefix + '-' + job.identifier.year + '-' + job.identifier.label}}
-        </md-button>
-      </md-list-item>
-    </md-virtual-repeat-container>
-  </md-list>
-</md-content>
+<md-table-container>
+  <table md-table md-row-select ng-model="selected" md-progress="promise">
+    <thead md-head md-order="query.order" md-on-reorder="onReorder">
+      <tr md-row>
+        <th md-column>Job</th>
+        <th md-column>Status</th>
+      </tr>
+    </thead>
+    <tbody layout-padding md-body>
+      <tr md-row md-select="job" md-select-id="{{job.id}}" md-auto-select ng-repeat="job in jobs">
+        <td md-cell>{{job | jobTitle}}</td>
+        <td md-cell>{{job | jobStatus}}</td>
+      </tr>
+    </tbody>
+  </table>
+</md-table-container>
+
+<md-fab-toolbar md-open="fabIsOpen" count="count" md-direction="left">
+  <md-fab-trigger class="align-with-text">
+    <md-button aria-label="menu" class="md-fab md-primary">
+      <md-icon class="material-icons">filter_list</md-icon>
+    </md-button>
+  </md-fab-trigger>
+  <md-toolbar class="md-table-toolbar md-default">
+    <md-fab-actions class="md-toolbar-tools">
+      <md-button ng-click="filterJobs('')">All Jobs</md-button>
+      <md-button ng-click="filterJobs('M')">M Jobs</md-button>
+      <md-button ng-click="filterJobs('MF')">MF Jobs</md-button>
+      <md-button ng-click="filterJobs('F')">F Jobs</md-button>
+      <md-button ng-click="filterJobs('RG')">RG Jobs</md-button>
+      <md-button ng-click="filterJobs('B')">B Jobs</md-button>
+    </md-fab-actions>
+  </md-toolbar>
+</md-fab-toolbar>
+
+<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>

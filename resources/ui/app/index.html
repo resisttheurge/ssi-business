@@ -3,10 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- style sheets -->
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" >
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+    <link rel="stylesheet" href="bower_components/angular-material-data-table/dist/md-data-table.css">
     <link rel="stylesheet" href="css/app.css">
+
+    <!-- title (duh) -->
     <title>ssi-ui</title>
 
     <!-- bower dependencies -->
@@ -16,6 +20,14 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-material-data-table/dist/md-data-table.js"></script>
+
+    <!-- filter modules -->
+    <script src="js/filters/jobStatus.js"></script>
+    <script src="js/filters/jobTitle.js"></script>
+    <script src="js/filters/unwords.js"></script>
+    <script src="js/filters/words.js"></script>
+    <script src="js/filters.js"></script>
 
     <!-- service modules -->
     <script src="js/services/apiServices.js"></script>
@@ -178,7 +190,7 @@
           <h3>SSI Business</h3>
         </div>
       </md-toolbar>
-      <ng-view layout-padding/>
+      <ng-view layout-padding layout="column" layout-align="space-between stretch"/>
     </div>
   </body>
 </html>
