@@ -1,23 +1,5 @@
-<md-content layout-padding layout="column" class="ssi-table">
-  <md-progress-linear ng-show="loading" md-mode="indeterminate"></md-progress-linear>
-
-<!--
-  <md-menu>
-   <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button" aria-label="Open sample menu">
-     <md-icon class="material-icons">filter_list</md-icon>
-   </md-button>
-   <md-menu-content>
-     <md-menu-item><md-button ng-click="filterJobs('')">All Jobs</md-button></md-menu-item>
-     <md-menu-item><md-button ng-click="filterJobs('M')">M Jobs</md-button></md-menu-item>
-     <md-menu-item><md-button ng-click="filterJobs('MF')">MF Jobs</md-button></md-menu-item>
-     <md-menu-item><md-button ng-click="filterJobs('F')">F Jobs</md-button></md-menu-item>
-     <md-menu-item><md-button ng-click="filterJobs('RG')">RG Jobs</md-button></md-menu-item>
-     <md-menu-item><md-button ng-click="filterJobs('B')">B Jobs</md-button></md-menu-item>
-   </md-menu-content>
-  </md-menu>
--->
-
-  <md-fab-toolbar md-open="fabIsOpen" count="count" md-direction="right">
+<div>
+  <md-fab-toolbar md-direction="left">
     <md-fab-trigger class="align-with-text">
       <md-button aria-label="menu" class="md-fab md-primary">
         <md-icon class="material-icons">filter_list</md-icon>
@@ -25,12 +7,8 @@
     </md-fab-trigger>
     <md-toolbar>
       <md-fab-actions class="md-toolbar-tools">
-        <md-button ng-click="filterJobs('')">All Jobs</md-button>
-        <md-button ng-click="filterJobs('M')">M Jobs</md-button>
-        <md-button ng-click="filterJobs('MF')">MF Jobs</md-button>
-        <md-button ng-click="filterJobs('F')">F Jobs</md-button>
-        <md-button ng-click="filterJobs('RG')">RG Jobs</md-button>
-        <md-button ng-click="filterJobs('B')">B Jobs</md-button>
+        <md-button ng-click="onPrefixChange(undefined)">All Jobs</md-button>
+        <md-button ng-click="inPrefixChange(prefix)" ng-repeat="prefix in prefixes">{{prefix}} Orders</md-button>
       </md-fab-actions>
     </md-toolbar>
   </md-fab-toolbar>
@@ -43,7 +21,7 @@
           <th md-column>Status</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody layout-padding md-body>
         <tr md-row md-select="job" md-select-id="{{job.id}}" md-auto-select ng-repeat="job in jobs">
           <td md-cell>{{job | jobTitle}}</td>
           <td md-cell>{{job | jobStatus}}</td>
@@ -51,7 +29,6 @@
       </tbody>
     </table>
   </md-table-container>
+</div>
 
-  <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
-
-</md-content>
+<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>

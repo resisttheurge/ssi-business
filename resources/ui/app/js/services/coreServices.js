@@ -107,3 +107,13 @@ coreServices.factory(
     }
   }
 )
+
+coreServices.service('jobStatusService', function()
+{
+    this.jobStatuses = ['INACTIVE', 'ACTIVE', 'COMPLETED', 'CANCELLED', 'DELETED'];
+})
+
+coreServices.service('prefixService', function()
+{
+    this.prefixes = ['B', 'F', 'FC', 'FE', 'FR', 'FS', 'M', 'MF', 'MT', 'RG', 'BM', 'LM', 'MM', 'D', 'G', 'DR', 'EE', 'ME', 'MS', 'TM'];
+})

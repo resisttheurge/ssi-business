@@ -1,4 +1,29 @@
-<div>{{zone.id}}</div>
+<!-- <div>{{zone.id}}</div>
 <div>{{zone.jobId }}</div>
 <div>{{zone.number}}</div>
-<div>{{zone.fieldDate}}</div>
+<div>{{zone.fieldDate}}</div> -->
+
+<h1>Zone Detail</h1>
+<form>
+  <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <div>
+      <md-input-container>
+        <label>Id</label>
+        <input ng-model="zone.id" type="text">
+      </md-input-container>
+      <md-input-container>
+        <label>Label</label>
+        <input ng-model="zone.label" type="text">
+      </md-input-container>
+      <md-input-container>
+        <label>Number</label>
+        <input ng-model="zone.number" type="text">
+      </md-input-container>
+      <md-input-container>
+        <label>Field Date</label>
+        <input ng-model="zone.fieldDate" type="text">
+      </md-input-container>
+
+    </div>
+  </md-content>
+<form>

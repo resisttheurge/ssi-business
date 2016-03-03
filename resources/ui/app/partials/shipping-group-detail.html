@@ -3,3 +3,36 @@
 <div>{{shippingGroup.label}}</div>
 <div>{{shippingGroup.rush}}</div>
 <div>{{shippingGroup.info}}</div>
+
+<form>
+  <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <div>
+
+      <md-input-container>
+        <label>Id</label>
+        <input ng-model="shippingGroup.id" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Job Id</label>
+        <input ng-model="shippingGroup.jobId" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Label</label>
+        <input ng-model="shippingGroup.label" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Rush</label>
+        <textarea ng-model="shippingGroup.rush" rows="5" md-select-on-focus></textarea>
+      </md-input-container>
+
+      <md-input-container>
+        <label>Info</label>
+        <input ng-model="shippingGroup.info" type="text">
+      </md-input-container>
+
+    </div>
+  </md-content>
+<form>

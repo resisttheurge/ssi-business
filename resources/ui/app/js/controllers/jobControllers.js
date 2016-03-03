@@ -9,16 +9,51 @@ jobControllers.controller(
     'Job',
     '$filter',
     '$q',
-  function($scope, Job, $filter, $q) {
+    'selectionService',
+  function($scope, Job, $filter, $q, selectionService) {
     var orderBy = $filter('orderBy')
 
+    $scope.selectJob = selectionService.selectJob
+    $scope.prefixes = [
+      'B',
+      'F',
+      'FC',
+      'FE',
+      'FR',
+      'FS',
+      'M',
+      'MF',
+      'MT',
+      'RG',
+      'BM',
+      'LM',
+      'MM',
+      'D',
+      'G',
+      'DR',
+      'EE',
+      'ME',
+      'MS',
+      'TM'
+    ]
     $scope.selected = []
     $scope.query = {
       page: 1,
       limit: 10,
       order: 'id',
       filters: {
+        active: true
       }
+    }
+
+    $scope.onActiveChange = function(active) {
+      $scope.query.filters.active = active
+      return getJobs($scope.query)
+    }
+
+    $scope.onPrefixChange = function(prefix) {
+      $scope.query.filters.prefix = prefix
+      return getJobs($scope.query)
     }
 
     $scope.onPaginate = function (page, limit) {
@@ -31,7 +66,7 @@ jobControllers.controller(
 
     function getJobs(query) {
       return $scope.promise =
-        Job.query(query.filters).$promise
+        Job.endpoint.query(query.filters).$promise
           .then(unpackResponse)
           .then(total)
           .then(sort(query))
@@ -78,21 +113,5 @@ jobControllers.controller(
 
     getJobs($scope.query)
 
-  }
-])
-
-
-jobControllers.controller('JobDetailController', ['$scope', '$routeParams', 'Job',
-  function($scope, $routeParams, Job) {
-    Job.get({jobId: $routeParams.jobId}, function(response){
-      $scope.loading = true
-      if(response.success) {
-        $scope.job = response.data
-      } else {
-        $scope.error = true
-        $scope.message = response.message
-      }
-      $scope.loading = false
-    })
   }
 ])

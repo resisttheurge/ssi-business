@@ -33,6 +33,7 @@
     <script src="js/services/apiServices.js"></script>
     <script src="js/services/coreServices.js"></script>
     <script src="js/services.js"></script>
+    <script src="js/services/api/specialtyItem.js"></script>
 
     <!-- controller modules -->
     <script src="js/controllers/carrierControllers.js"></script>
@@ -40,6 +41,9 @@
     <script src="js/controllers/customerControllers.js"></script>
     <script src="js/controllers/drawingControllers.js"></script>
     <script src="js/controllers/jobControllers.js"></script>
+
+    <script src="js/controllers/jobDetailController.js"></script>
+
     <script src="js/controllers/manufacturerControllers.js"></script>
     <script src="js/controllers/markControllers.js"></script>
     <script src="js/controllers/partControllers.js"></script>
@@ -181,7 +185,7 @@
         </md-list>
       </md-content>
     </md-sidenav>
-    <div flex layout="column" tabindex="-1" role="main" class="md-whiteframe-z2">
+    <div flex layout="column" tabindex="-1" role="main">
       <md-toolbar layout="row" layout-align="top center">
         <div class="md-toolbar-tools">
           <md-button class="md-icon-button" ng-show="user.isLoggedIn" hide-gt-sm ng-click="toggleSidenav()">
@@ -190,7 +194,7 @@
           <h3>SSI Business</h3>
         </div>
       </md-toolbar>
-      <ng-view layout-padding/>
+      <ng-view flex layout="column" layout-fill/>
     </div>
   </body>
 </html>

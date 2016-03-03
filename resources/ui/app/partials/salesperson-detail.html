@@ -1,2 +1,18 @@
-<div>{{salesperson.id}}</div>
-<div>{{salesperson.label}}</div>
+<!-- <div>{{salesperson.id}}</div>
+<div>{{salesperson.label}}</div> -->
+
+<h1>Salesperson Detail</h1>
+<form>
+  <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <div>
+      <md-input-container>
+        <label>Id</label>
+        <input ng-model="salesperson.id" type="text">
+      </md-input-container>
+      <md-input-container>
+        <label>Label</label>
+        <input ng-model="salesperson.label" type="text">
+      </md-input-container>
+    </div>
+  </md-content>
+<form>
