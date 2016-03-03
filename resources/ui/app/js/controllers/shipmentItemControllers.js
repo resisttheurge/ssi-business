@@ -2,28 +2,81 @@ var shipmentItemControllers = angular.module('shipmentItemControllers', [])
 
 
 // ShipmentItemByShipment??
-shipmentItemControllers.controller('ShipmentItemListController', ['$scope', '$routeParams', 'selectionService', 'ShipmentItemByShipment',
-  function($scope, $routeParams, selectionService, ShipmentItemByShipment) {
-    $scope.loading = true
+shipmentItemControllers.controller('ShipmentItemListController', [
+  '$scope', 'ShipmentItemByShipment', '$filter', '$q', '$routeParams', 'selectionService',
+  function($scope, ShipmentItemByShipment, $filter, $q, $routeParams, selectionService){
     $scope.selected = selectionService.selected
     $scope.selectShipmentItem = selectionService.selectShipmentItem
-    ShipmentItemByShipment.query($routeParams,function(response) {
+    var orderBy = $filter('orderBy')
+    $scope.query = {
+      page: 1,
+      limit: 10,
+      order: 'id'
+    }
 
-      if(response.success) {
-        $scope.shipments = response.data
-      } else {
-        $scope.error = true
-        $scope.message = response.message
+    $scope.onPaginate = function (page, limit) {
+      return getShipmentItems(angular.extend({}, $scope.query, {page: page, limit: limit}))
+    }
+
+    $scope.onReorder = function (order) {
+      return getShipmentItems(angular.extend({}, $scope.query, {order: order}))
+    }
+
+    function getShipmentItems(query) {
+      return $scope.promise =
+        ShipmentItemByShipment.endpoint.query($routeParams).$promise
+          .then(unpackResponse)
+          .then(total)
+          .then(sort(query))
+          .then(page(query))
+          .then(store)
+    }
+
+    function unpackResponse(response) {
+      return $q(function(resolve, reject) {
+        if(response) {
+          if(response.success) {
+            return resolve(response.data)
+          } else {
+            return reject(response.message ? response.message : 'API response failed')
+          }
+        } else {
+          return reject('API response was undefined')
+        }
+      })
+    }
+
+    function total(array) {
+      $scope.total = array.length
+      return array
+    }
+
+    function sort(query) {
+      return function(array) {
+        return orderBy(array, query.order)
       }
-      $scope.loading = false
-    })
+    }
+
+    function page(query) {
+      var end = query.page * query.limit
+        , begin = end - query.limit
+      return function(array) {
+        return array.slice(begin, end)
+      }
+    }
+
+    function store(shipmentItems) {
+      return $scope.shipmentItems = shipmentItems
+    }
+
+    getShipmentItems($scope.query)
   }
 ])
 
 shipmentItemControllers.controller('ShipmentItemDetailController', ['$scope', '$routeParams', 'ShipmentItem',
   function($scope, $routeParams, ShipmentItem) {
     $scope.loading = true
-    ShipmentItem.get($routeParams, function(response){
+    ShipmentItem.endpoint.get($routeParams, function(response){
 
       if(response.success) {
         $scope.shipmentItem = response.data

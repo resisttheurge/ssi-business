@@ -2,25 +2,78 @@
 
 var carrierControllers = angular.module('carrierControllers', [])
 
-carrierControllers.controller('CarrierListController', ['$scope', 'Carrier',
-  function($scope, Carrier){
-    $scope.loading = true
-    Carrier.query(function(response) {
+carrierControllers.controller('CarrierListController', [
+  '$scope', 'Carrier', '$filter', '$q',
+  function($scope, Carrier, $filter, $q){
+    var orderBy = $filter('orderBy')
+    $scope.query = {
+      page: 1,
+      limit: 10,
+      order: 'id'
+    }
 
-      if(response.success) {
-        $scope.carriers = response.data
-      } else {
-        $scope.error = true
-        $scope.message = response.message
+    $scope.onPaginate = function (page, limit) {
+      return getCarriers(angular.extend({}, $scope.query, {page: page, limit: limit}))
+    }
+
+    $scope.onReorder = function (order) {
+      return getCarriers(angular.extend({}, $scope.query, {order: order}))
+    }
+
+    function getCarriers(query) {
+      return $scope.promise =
+        Carrier.endpoint.query().$promise
+          .then(unpackResponse)
+          .then(total)
+          .then(sort(query))
+          .then(page(query))
+          .then(store)
+    }
+
+    function unpackResponse(response) {
+      return $q(function(resolve, reject) {
+        if(response) {
+          if(response.success) {
+            return resolve(response.data)
+          } else {
+            return reject(response.message ? response.message : 'API response failed')
+          }
+        } else {
+          return reject('API response was undefined')
+        }
+      })
+    }
+
+    function total(array) {
+      $scope.total = array.length
+      return array
+    }
+
+    function sort(query) {
+      return function(array) {
+        return orderBy(array, query.order)
       }
-      $scope.loading = false
-    })
+    }
+
+    function page(query) {
+      var end = query.page * query.limit
+        , begin = end - query.limit
+      return function(array) {
+        return array.slice(begin, end)
+      }
+    }
+
+    function store(carriers) {
+      return $scope.carriers = carriers
+    }
+
+    getCarriers($scope.query)
   }
 ])
 
 carrierControllers.controller('CarrierDetailController', ['$scope', '$routeParams', 'Carrier',
   function($scope, $routeParams, Carrier){
-    Carrier.get({carrierId: $routeParams.carrierId}, function(response){
+    Carrier.endpoint.get({carrierId: $routeParams.carrierId}, function(response){
       $scope.loading = true;
       if(response.success) {
         $scope.carrier = response.data

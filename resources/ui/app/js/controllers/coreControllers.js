@@ -32,7 +32,7 @@ coreControllers.controller(
       }
 
       $scope.login = function(user) {
-        AuthService.login(angular.copy(user), function(response){
+        AuthService.endpoint.login(angular.copy(user), function(response){
           if(response.success){
             userService.user.isLoggedIn = true
             userService.user.username = response.data.username
