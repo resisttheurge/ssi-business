@@ -1,5 +1,4 @@
 'use strict'
-
 angular.module('ssiServices')
   .service('Job', ['$resource', 'endpointUrl',
     function($resource, endpointUrl) {

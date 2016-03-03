@@ -1,3 +1,4 @@
+'use strict'
 angular.module('ssiServices')
   .service('SpecialtyItem', ['$resource', 'endpointUrl',
     function($resource, endpointUrl) {

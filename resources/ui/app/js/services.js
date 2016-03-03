@@ -1,9 +1,2 @@
 'use strict'
-
-var ssiServices = angular.module(
-  'ssiServices',
-  [
-    'apiServices',
-    'coreServices'
-  ]
-)
+angular.module('ssiServices', ['coreServices'])
