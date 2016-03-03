@@ -81,14 +81,14 @@ apiServices.service('Customer', ['$resource', 'endpointUrl',
     {
       service.$scope = $scope;
       service.resultObj = resultObj;
-      this.endpoint.get({'customerId': customerId}, resultExtension)
+      return this.endpoint.get({'customerId': customerId}, resultExtension).$promise;
     }
 
     this.get = function($scope, resultObj)
     {
       service.$scope = $scope;
       service.resultObj = resultObj;
-      this.endpoint.get(resultExtension)
+      return this.endpoint.get(resultExtension).$promise;
     }
   }
 ])
@@ -138,7 +138,7 @@ apiServices.service('Job', ['$resource', 'endpointUrl',
     {
       service.$scope = $scope;
       service.resultObj = resultObj;
-      this.endpoint.get({'jobId' : jobId}, resultExtension);
+      return this.endpoint.get({'jobId' : jobId}, resultExtension).$promise;
     }
 
   }
@@ -325,6 +325,8 @@ apiServices.factory('Shipment', ['$resource', 'endpointUrl',
   }
 ])
 
+/*
+*/
 apiServices.factory('ShipmentItemByShipment', ['$resource', 'endpointUrl',
   function($resource, endpointUrl) {
     return $resource(endpointUrl + '/shipments/:shipmentId/items', {}, {
@@ -434,16 +436,6 @@ apiServices.service('Shop', ['$resource', 'endpointUrl',
       service.resultObj = resultObj;
       this.endpoint.get(resultExtension)
     }
-  }
-])
-
-apiServices.factory('SpecialtyItem', ['$resource', 'endpointUrl',
-  function($resource, endpointUrl) {
-    return $resource(endpointUrl + '/specialty-items/:specialtyItemId', {}, {
-      create: {method: 'POST'},
-      update: {method: 'PATCH'},
-      query: {method: 'GET', params:{specialtyItemId: ''}}
-    })
   }
 ])
 

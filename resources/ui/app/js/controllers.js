@@ -8,6 +8,7 @@ var ssiControllers = angular.module(
     'customerControllers',
     'drawingControllers',
     'jobControllers',
+    'ssi.controllers.jobDetail',
     'manufacturerControllers',
     'markControllers',
     'partControllers',

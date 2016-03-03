@@ -5,7 +5,7 @@ var customerControllers = angular.module('customerControllers', [])
 customerControllers.controller('CustomerListController', ['$scope', '$routeParams', 'Customer',
   function($scope, $routeParams, Customer){
     $scope.loading = true
-    Customer.query(function(response) {
+    Customer.endpoint.query(function(response) {
 
       if(response.success) {
         $scope.customers = response.data
@@ -20,7 +20,7 @@ customerControllers.controller('CustomerListController', ['$scope', '$routeParam
 
 customerControllers.controller('CustomerDetailController', ['$scope', '$routeParams', 'Customer',
   function($scope, $routeParams, Customer){
-    Customer.get({customerId: $routeParams.customerId}, function(response){
+    Customer.endpoint.get({customerId: $routeParams.customerId}, function(response){
       $scope.loading = true;
       if(response.success) {
         $scope.customer = response.data

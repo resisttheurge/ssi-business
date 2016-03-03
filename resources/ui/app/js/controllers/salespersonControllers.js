@@ -9,7 +9,7 @@ salespersonControllers.controller(
      'Salesperson',
   function($scope, Salesperson) {
     $scope.loading = true
-    Salesperson.query(function(response) {
+    Salesperson.endpoint.query(function(response) {
       if(response.success) {
         $scope.salespeople = response.data
       } else {
@@ -28,7 +28,7 @@ salespersonControllers.controller(
       '$routeParams',
       'Salesperson',
   function($scope, $routeParams, Salesperson) {
-    Salesperson.get({salespersonId: $routeParams.salespersonId}, function(response){
+    Salesperson.endpoint.get({salespersonId: $routeParams.salespersonId}, function(response){
       $scope.loading = true
       if(response.success) {
         $scope.salesperson = response.data

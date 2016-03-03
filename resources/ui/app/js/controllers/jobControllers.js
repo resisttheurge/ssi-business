@@ -9,15 +9,18 @@ jobControllers.controller(
     'Job',
     '$filter',
     '$q',
-  function($scope, Job, $filter, $q) {
+    'selectionService',
+  function($scope, Job, $filter, $q, selectionService) {
     var orderBy = $filter('orderBy')
 
+    $scope.selectJob = selectionService.selectJob
     $scope.selected = []
     $scope.query = {
       page: 1,
       limit: 10,
       order: 'id',
       filters: {
+        active:true, prefix:'M'
       }
     }
 
@@ -31,7 +34,7 @@ jobControllers.controller(
 
     function getJobs(query) {
       return $scope.promise =
-        Job.query(query.filters).$promise
+        Job.endpoint.query(query.filters).$promise
           .then(unpackResponse)
           .then(total)
           .then(sort(query))
@@ -82,33 +85,41 @@ jobControllers.controller(
 ])
 
 
-jobControllers.controller(
-  'JobDetailController',
-[
-    '$scope',
-    '$routeParams',
-    'Customer',
-    'Job',
-    'Shop',
-    'Salesperson',
-    'prefixService',
-    'jobStatusService',
-  function($scope, $routeParams, Customer, Job, Shop, Salesperson, prefixService, jobStatusService) {
+// jobControllers.controller(
+//   'JobDetailController',
+// [
+//     '$scope',
+//     '$routeParams',
+//     'Customer',
+//     'Job',
+//     'Shop',
+//     'Salesperson',
+//     'prefixService',
+//     'jobStatusService',
+//   function($scope, $routeParams, Customer, Job, Shop, Salesperson, prefixService, jobStatusService) {
+//
+//     Customer.get($scope, $scope.customers = {});
+//
+//     Job.get($scope, $scope.job = {}, $routeParams.jobId).then(function()
+//     {
+//       $scope.startDateDisplay = new Date($scope.job.startDate)
+//       $scope.dueDateDisplay = new Date($scope.job.dueDate)
+//       $scope.completeDateDisplay = new Date($scope.job.completeDate)
+//     });
+//
+//     Shop.get($scope, $scope.shops = {});
+//     Salesperson.get($scope, $scope.salespeople = {});
+//
+//     $scope.prefixes = prefixService.prefixes;
+//     $scope.jobStatuses = jobStatusService.jobStatuses;
 
-    Customer.get($scope, $scope.customers = {});
-    Job.get($scope, $scope.job = {}, $routeParams.jobId);
-    Shop.get($scope, $scope.shops = {});
-    Salesperson.get($scope, $scope.salespeople = {});
-    $scope.prefixes = prefixService.prefixes;
-    $scope.jobStatuses = jobStatusService.jobStatuses;
-
-    var done = $scope.$watch('job', function()
-    {
-      $scope.startDateDisplay = new Date($scope.job.startDate)
-      $scope.dueDateDisplay = new Date($scope.job.dueDate)
-      $scope.completeDateDisplay = new Date($scope.job.completeDate)
-    });
+    // var done = $scope.$watch('job', function()
+    // {
+    //   $scope.startDateDisplay = new Date($scope.job.startDate)
+    //   $scope.dueDateDisplay = new Date($scope.job.dueDate)
+    //   $scope.completeDateDisplay = new Date($scope.job.completeDate)
+    // });
     //done();
-
-  }
-])
+//
+  // }
+// ])
