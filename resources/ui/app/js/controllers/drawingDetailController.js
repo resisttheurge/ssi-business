@@ -1,6 +1,6 @@
 'use strict'
 
-var drawingDetailController = angular.module('ssi.controllers.DrawingDetail', [])
+var drawingDetailController = angular.module('drawingDetailController', [])
 
 drawingDetailController.controller(
   'DrawingDetailController',

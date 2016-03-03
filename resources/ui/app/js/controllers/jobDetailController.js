@@ -1,6 +1,6 @@
 'use strict'
 
-var jobDetailController = angular.module('ssi.controllers.jobDetail', [])
+var jobDetailController = angular.module('jobDetailController', [])
 
 jobDetailController.controller(
   'JobDetailController',
