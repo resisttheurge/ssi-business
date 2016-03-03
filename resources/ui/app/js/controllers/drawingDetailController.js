@@ -9,12 +9,19 @@ drawingDetailController.controller(
     '$routeParams',
     'specialtyItemService',
     'selectionService',
+    'enums',
  function($scope, $routeParams, Job, selectionService, specialtyItemService) {
 
         Shop.get($scope, $scope.shops = {});
 
+
         Drawing.get($scope, $scope.Drawing = {}, $routeParams.drawingId).then(function()
         {
+
+
+
+          $scope.drawingTypes               = enums.drawingTypes
+
           $scope.revisionDateDisplay        = $scope.drawing.revisionDate && new Date($scope.job.revisionDate)
           $scope.startDateDisplay           = $scope.drawing.startDate && new Date($scope.job.startDate)
           $scope.shopDateDisplay            = $scope.drawing.shopDate && new Date($scope.job.shopDate)
