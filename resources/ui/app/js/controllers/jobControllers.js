@@ -14,14 +14,46 @@ jobControllers.controller(
     var orderBy = $filter('orderBy')
 
     $scope.selectJob = selectionService.selectJob
+    $scope.prefixes = [
+      'B',
+      'F',
+      'FC',
+      'FE',
+      'FR',
+      'FS',
+      'M',
+      'MF',
+      'MT',
+      'RG',
+      'BM',
+      'LM',
+      'MM',
+      'D',
+      'G',
+      'DR',
+      'EE',
+      'ME',
+      'MS',
+      'TM'
+    ]
     $scope.selected = []
     $scope.query = {
       page: 1,
       limit: 10,
       order: 'id',
       filters: {
-        active:true, prefix:'M'
+        active: true
       }
+    }
+
+    $scope.onActiveChange = function(active) {
+      $scope.query.filters.active = active
+      return getJobs($scope.query)
+    }
+
+    $scope.onPrefixChange = function(prefix) {
+      $scope.query.filters.prefix = prefix
+      return getJobs($scope.query)
     }
 
     $scope.onPaginate = function (page, limit) {
@@ -83,43 +115,3 @@ jobControllers.controller(
 
   }
 ])
-
-
-// jobControllers.controller(
-//   'JobDetailController',
-// [
-//     '$scope',
-//     '$routeParams',
-//     'Customer',
-//     'Job',
-//     'Shop',
-//     'Salesperson',
-//     'prefixService',
-//     'jobStatusService',
-//   function($scope, $routeParams, Customer, Job, Shop, Salesperson, prefixService, jobStatusService) {
-//
-//     Customer.get($scope, $scope.customers = {});
-//
-//     Job.get($scope, $scope.job = {}, $routeParams.jobId).then(function()
-//     {
-//       $scope.startDateDisplay = new Date($scope.job.startDate)
-//       $scope.dueDateDisplay = new Date($scope.job.dueDate)
-//       $scope.completeDateDisplay = new Date($scope.job.completeDate)
-//     });
-//
-//     Shop.get($scope, $scope.shops = {});
-//     Salesperson.get($scope, $scope.salespeople = {});
-//
-//     $scope.prefixes = prefixService.prefixes;
-//     $scope.jobStatuses = jobStatusService.jobStatuses;
-
-    // var done = $scope.$watch('job', function()
-    // {
-    //   $scope.startDateDisplay = new Date($scope.job.startDate)
-    //   $scope.dueDateDisplay = new Date($scope.job.dueDate)
-    //   $scope.completeDateDisplay = new Date($scope.job.completeDate)
-    // });
-    //done();
-//
-  // }
-// ])
