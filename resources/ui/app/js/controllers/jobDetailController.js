@@ -11,9 +11,10 @@ jobDetailController.controller(
     'Job',
     'Shop',
     'Salesperson',
-    'prefixService',
-    'jobStatusService',
-  function($scope, $routeParams, Customer, Job, Shop, Salesperson, prefixService, jobStatusService) {
+    // 'prefixService',
+    // 'jobStatusService',
+    'enums',
+  function($scope, $routeParams, Customer, Job, Shop, Salesperson, enums) {
 
     Customer.get($scope, $scope.customers = {});
     Job.get($scope, $scope.job = {}, $routeParams.jobId).then(function()
@@ -25,8 +26,8 @@ jobDetailController.controller(
 
     Shop.get($scope, $scope.shops = {});
     Salesperson.get($scope, $scope.salespeople = {});
-    $scope.prefixes = prefixService.prefixes;
-    $scope.jobStatuses = jobStatusService.jobStatuses;
+    $scope.prefixes = enums.prefixes;
+    $scope.jobStatuses = enums.jobStatuses;
 
   }
 ])
