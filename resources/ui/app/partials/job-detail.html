@@ -16,9 +16,6 @@
 
 <h1>Job Detail</h1>
 
-<div>{{job.dueDate}}</div>
-
-
   <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
     <form name="jobForm" flex style="overflow-x : hidden">
     <div layout-gt-sm="row">
@@ -112,10 +109,28 @@
           </md-option>
         </md-select>
       </md-input-container>
+    </div>
+
+    <div layout-gt-sm="row">
 
       <md-input-container flex-offset-gt-sm="10" flex>
-        <label>Contact</label>
-        <input ng-model="job.contact" type="text">
+        <label>label</label>
+        <input ng-model="job.contact.label" type="text">
+      </md-input-container>
+
+      <md-input-container flex-offset-gt-sm="10" flex>
+        <label>phone</label>
+        <input ng-model="job.contact.phone" type="text">
+      </md-input-container>
+
+      <md-input-container flex-offset-gt-sm="10" flex>
+        <label>fax</label>
+        <input ng-model="job.contact.fax" type="text">
+      </md-input-container>
+
+      <md-input-container flex-offset-gt-sm="10" flex>
+        <label>email</label>
+        <input ng-model="job.contact.email" type="text">
       </md-input-container>
 
     </div>

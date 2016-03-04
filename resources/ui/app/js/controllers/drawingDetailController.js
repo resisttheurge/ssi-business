@@ -7,18 +7,13 @@ drawingDetailController.controller(
   [
     '$scope',
     '$routeParams',
-    'specialtyItemService',
+    'SpecialtyItem',
     'selectionService',
     'enums',
  function($scope, $routeParams, Job, selectionService, specialtyItemService) {
 
-        Shop.get($scope, $scope.shops = {});
-
-
         Drawing.get($scope, $scope.Drawing = {}, $routeParams.drawingId).then(function()
         {
-
-
 
           $scope.drawingTypes               = enums.drawingTypes
 
