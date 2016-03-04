@@ -16,7 +16,7 @@ var ssiApp = angular.module(
   ]
 )
 
-ssiApp.constant('endpointUrl', 'http://10.1.1.151/api')
+ssiApp.constant('endpointUrl', 'http://10.1.1.136/api')
 
 ssiApp.constant('routes', {
   '/login': {
