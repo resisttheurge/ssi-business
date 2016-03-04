@@ -11,8 +11,9 @@
 <div>{{shipment.address}}}}</div> -->
 
 <h1>Shipment Detail</h1>
-<form>
-  <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+
+<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+  <form name="shipmentDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
     <div>
 
       <md-input-container>
@@ -22,7 +23,7 @@
 
       <md-input-container>
         <label>shipmentId</label>
-        <input ng-model="shipment.shipmentId" type="text">
+        <input ng-model="shipment.jobId" type="text">
       </md-input-container>
 
       <md-input-container>
@@ -35,14 +36,22 @@
         <textarea ng-model="shipment.status" rows="5" md-select-on-focus></textarea>
       </md-input-container>
 
+      <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
+        <md-select ng-model="shipment.status.shipmentStatuses">
+          <md-option ng-repeat="shipmentStatus in shipmentStatuses" ng-value="shipmentStatus">
+                 {{shipmentStatus}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
       <md-input-container>
         <label>Shop</label>
-        <input ng-model="shipment.shop" type="text">
+        <input ng-model="shipment.shop.label" type="text">
       </md-input-container>
 
       <md-input-container>
         <label>Carrier</label>
-        <input ng-model="shipment.carrier" type="text">
+        <input ng-model="shipment.carrier.label" type="text">
       </md-input-container>
 
       <md-input-container>
@@ -57,10 +66,29 @@
 
       <md-datepicker ng-model="shipment.shipDate" md-placeholder="Ship Date"></md-datepicker>
 
-      <md-input-container>
-        <label>Contact</label>
-        <input ng-model="shipment.contact" type="text">
-      </md-input-container>
+      <div layout-gt-sm="row">
+
+        <md-input-container flex-offset-gt-sm="10" flex>
+          <label>label</label>
+          <input ng-model="shipment.contact.label" type="text">
+        </md-input-container>
+
+        <md-input-container flex-offset-gt-sm="10" flex>
+          <label>phone</label>
+          <input ng-model="shipment.contact.phone" type="text">
+        </md-input-container>
+
+        <md-input-container flex-offset-gt-sm="10" flex>
+          <label>fax</label>
+          <input ng-model="shipment.contact.fax" type="text">
+        </md-input-container>
+
+        <md-input-container flex-offset-gt-sm="10" flex>
+          <label>email</label>
+          <input ng-model="shipment.contact.email" type="text">
+        </md-input-container>
+
+      </div>
 
       <md-input-container>
         <label>Address</label>
@@ -68,5 +96,5 @@
       </md-input-container>
 
     </div>
-  </md-content>
-<form>
+  </form>
+</md-content>

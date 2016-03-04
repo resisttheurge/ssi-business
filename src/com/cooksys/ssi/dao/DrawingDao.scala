@@ -6,7 +6,7 @@ import slick.schema.Tables._
 object DrawingDao extends CrudDao[Drawing] {
 
   val indexQuery = Compiled(Drawings.withDependents)
-  val readQuery = Compiled((jobId: Rep[Int]) => Drawings.byJobId(jobId).withDependents)
+  val readQuery = Compiled((id: Rep[Int]) => Drawings.byId(id).withDependents)
 
   val indexByJobIdQuery = Compiled((jobId: Rep[Int]) => Drawings.byJobId(jobId).withDependents)
 
