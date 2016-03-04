@@ -16,7 +16,6 @@ angular.module('ssiServices')
         service.$scope.loading = false
       }
 
-
       this.endpoint = $resource(endpointUrl + '/shipping-groups/:shippingGroupId', {}, {
         create: {method: 'POST'},
         update: {method: 'PATCH'},
