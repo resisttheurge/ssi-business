@@ -12,9 +12,8 @@ jobDetailController.controller(
     'Job',
     'Shop',
     'Salesperson',
-    'prefixService',
-    'jobStatusService',
-  function($scope, $routeParams, $q, Customer, Job, Shop, Salesperson, prefixService, jobStatusService) {
+    'enums',
+  function($scope, $routeParams, $q, Customer, Job, Shop, Salesperson, enums) {
     var self = this
     var promises = []
 
@@ -71,8 +70,8 @@ jobDetailController.controller(
       })
     }
 
-    $scope.prefixes = prefixService.prefixes;
-    $scope.jobStatuses = jobStatusService.jobStatuses;
+    $scope.prefixes = enums.prefixes;
+    $scope.jobStatuses = enums.jobStatuses;
     $scope.$watch('promise', queue)
     refresh()
 

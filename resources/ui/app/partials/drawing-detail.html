@@ -30,6 +30,15 @@
         <input ng-model="drawing.drawingType" type="text">
       </md-input-container>
 
+      <div layout="row" layout-align="start center" flex>
+        <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
+          <md-select ng-model="drawing.drawingType">
+            <md-option ng-repeat="drawingType in drawingTypes" ng-value="prefix">
+                   {{drawingType}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+
       <md-input-container>
         <label>Specialty Item</label>
         <input ng-model="drawing.specialtyItem" type="text">
