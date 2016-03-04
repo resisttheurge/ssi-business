@@ -1,22 +1,29 @@
 'use strict'
 
-var drawingDetailController = angular.module('ssi.controllers.DrawingDetail', [])
+var drawingDetailController = angular.module('drawingDetailController', [])
 
 drawingDetailController.controller(
   'DrawingDetailController',
   [
     '$scope',
     '$routeParams',
-    'specialtyItemService',
+    'SpecialtyItem',
     'selectionService',
+    'enums',
  function($scope, $routeParams, Job, selectionService, specialtyItemService) {
 
-        Customer.get($scope, $scope.customers = {});
+        Drawing.get($scope, $scope.Drawing = {}, $routeParams.drawingId).then(function()
+        {
 
-        Shop.get($scope, $scope.shops = {});
-        Salesperson.get($scope, $scope.salespeople = {});
-        $scope.prefixes = prefixService.prefixes;
-        $scope.jobStatuses = jobStatusService.jobStatuses;
+          $scope.drawingTypes               = enums.drawingTypes
+
+          $scope.revisionDateDisplay        = $scope.drawing.revisionDate && new Date($scope.job.revisionDate)
+          $scope.startDateDisplay           = $scope.drawing.startDate && new Date($scope.job.startDate)
+          $scope.shopDateDisplay            = $scope.drawing.shopDate && new Date($scope.job.shopDate)
+          $scope.fieldDateDisplay           = $scope.job.fieldDate && new Date($scope.job.fieldDate)
+          $scope.requestDateDisplay         = $scope.job.requestDate && new Date($scope.job.requestDate)
+        });
+
 
       }
     ])

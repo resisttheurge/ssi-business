@@ -11,7 +11,8 @@ var ssiApp = angular.module(
     'ngMaterial',
     'ssiControllers',
     'ssi.filters',
-    'ssiServices'
+    'ssiServices',
+    'constants',
   ]
 )
 

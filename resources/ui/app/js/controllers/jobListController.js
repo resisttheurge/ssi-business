@@ -2,41 +2,13 @@
 
 var jobControllers = angular.module('jobControllers', [])
 
-jobControllers.controller(
-  'JobListController',
-  [
-    '$scope',
-    'Job',
-    '$filter',
-    '$q',
-    'selectionService',
+jobControllers.controller('JobListController', [
+  '$scope', 'Job', '$filter', '$q', 'selectionService',
   function($scope, Job, $filter, $q, selectionService) {
     var orderBy = $filter('orderBy')
 
     $scope.selectJob = selectionService.selectJob
-    $scope.prefixes = [
-      'B',
-      'F',
-      'FC',
-      'FE',
-      'FR',
-      'FS',
-      'M',
-      'MF',
-      'MT',
-      'RG',
-      'BM',
-      'LM',
-      'MM',
-      'D',
-      'G',
-      'DR',
-      'EE',
-      'ME',
-      'MS',
-      'TM'
-    ]
-    $scope.selected = []
+
     $scope.query = {
       page: 1,
       limit: 10,

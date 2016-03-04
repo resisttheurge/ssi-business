@@ -2,19 +2,72 @@
 
 var customerControllers = angular.module('customerControllers', [])
 
-customerControllers.controller('CustomerListController', ['$scope', '$routeParams', 'Customer',
-  function($scope, $routeParams, Customer){
-    $scope.loading = true
-    Customer.endpoint.query(function(response) {
+customerControllers.controller('CustomerListController', [
+  '$scope', 'Customer', '$filter', '$q',
+  function($scope, Customer, $filter, $q){
+    var orderBy = $filter('orderBy')
+    $scope.query = {
+      page: 1,
+      limit: 10,
+      order: 'id'
+    }
 
-      if(response.success) {
-        $scope.customers = response.data
-      } else {
-        $scope.error = true
-        $scope.message = response.message
+    $scope.onPaginate = function (page, limit) {
+      return getCustomers(angular.extend({}, $scope.query, {page: page, limit: limit}))
+    }
+
+    $scope.onReorder = function (order) {
+      return getCustomers(angular.extend({}, $scope.query, {order: order}))
+    }
+
+    function getCustomers(query) {
+      return $scope.promise =
+        Customer.endpoint.query().$promise
+          .then(unpackResponse)
+          .then(total)
+          .then(sort(query))
+          .then(page(query))
+          .then(store)
+    }
+
+    function unpackResponse(response) {
+      return $q(function(resolve, reject) {
+        if(response) {
+          if(response.success) {
+            return resolve(response.data)
+          } else {
+            return reject(response.message ? response.message : 'API response failed')
+          }
+        } else {
+          return reject('API response was undefined')
+        }
+      })
+    }
+
+    function total(array) {
+      $scope.total = array.length
+      return array
+    }
+
+    function sort(query) {
+      return function(array) {
+        return orderBy(array, query.order)
       }
-      $scope.loading = false
-    })
+    }
+
+    function page(query) {
+      var end = query.page * query.limit
+        , begin = end - query.limit
+      return function(array) {
+        return array.slice(begin, end)
+      }
+    }
+
+    function store(customers) {
+      return $scope.customers = customers
+    }
+
+    getCustomers($scope.query)
   }
 ])
 
