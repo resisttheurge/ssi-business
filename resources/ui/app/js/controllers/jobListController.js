@@ -3,11 +3,14 @@
 var jobControllers = angular.module('jobControllers', [])
 
 jobControllers.controller('JobListController', [
-  '$scope', 'Job', '$filter', '$q', 'selectionService',
-  function($scope, Job, $filter, $q, selectionService) {
+  '$scope', 'Job', '$filter', '$q', 'selectionService', 'enums',
+  function($scope, Job, $filter, $q, selectionService, enums) {
     var orderBy = $filter('orderBy')
+    $scope.prefixes = enums.prefixes;
 
     $scope.selectJob = selectionService.selectJob
+
+    $scope.$watch("search", function(x, y){ getJobs($scope.query) }, true)
 
     $scope.query = {
       page: 1,
@@ -40,10 +43,36 @@ jobControllers.controller('JobListController', [
       return $scope.promise =
         Job.endpoint.query(query.filters).$promise
           .then(unpackResponse)
+          .then(jobSearchFilter)
           .then(total)
           .then(sort(query))
           .then(page(query))
           .then(store)
+    }
+
+    function jobSearchFilter(jobs) {
+
+      var resultArray = [];
+      if($scope.search)
+      {
+        if(jobs)
+          jobs.forEach(function(job){
+
+              if($scope.search.prefix && job.identifier.prefix !== $scope.search.prefix){}
+                //don't add to results array
+              else if($scope.search.year && !job.identifier.year.toString().substring(2, 4).match(new RegExp("^" + $scope.search.year.toString() + ".*"))){}
+                //don't add to results array
+              else if($scope.search.label && !job.identifier.label.toUpperCase().match(new RegExp("^" + $scope.search.label.toUpperCase() + ".*"))){}
+                //don't add to results array
+              else
+                //doesn't violate constraints, add to results array
+                resultArray.push(job);
+          })
+          return resultArray;
+      }
+      else
+        return jobs;
+
     }
 
     function unpackResponse(response) {

@@ -10,7 +10,7 @@ var ssiApp = angular.module(
     'ngRoute',
     'ngMaterial',
     'ssiControllers',
-    'ssi.filters',
+    'ssiFilters',
     'ssiServices',
     'constants',
   ]

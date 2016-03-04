@@ -2,9 +2,33 @@
   <md-toolbar class="md-default md-table-toolbar">
     <div class="md-toolbar-tools">
       <h2>Jobs</h2>
-      <!-- search etc goes here -->
+
+      <div flex-offset-gt-sm="40">
+        <md-subheader>
+          Search:
+        </md-subheader>
+      </div>
+
+      <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
+        <md-select ng-model="search.prefix" style="width: 50px;">
+          <md-option ng-repeat="prefix in prefixes" ng-value="prefix">
+                 {{prefix}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+-
+        <md-input-container style="margin-top: 24px; width: 50px;">
+          <input ng-model="search.year" type="number">
+        </md-input-container>
+-
+        <md-input-container style="margin-top: 24px; width: 125px;">
+          <input ng-model="search.label" type="text">
+        </md-input-container>
+
     </div>
   </md-toolbar>
+
+
   <md-table-container>
     <table md-table md-progress="promise">
       <thead md-head md-order="query.order" md-on-reorder="onReorder">
