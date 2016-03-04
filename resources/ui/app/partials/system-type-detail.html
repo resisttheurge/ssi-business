@@ -2,8 +2,9 @@
 <div>{{systemType.label}}</div> -->
 
 <h1>System Type Detail</h1>
-<form>
+
   <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+<form name="systemTypeDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
     <div>
       <md-input-container>
         <label>Id</label>
@@ -14,5 +15,5 @@
         <input ng-model="systemType.label" type="text">
       </md-input-container>
     </div>
-  </md-content>
 <form>
+  </md-content>

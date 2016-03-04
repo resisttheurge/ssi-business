@@ -1,4 +1,4 @@
-<div>{{shipmentItem.id }}</div>
+<!-- <div>{{shipmentItem.id }}</div>
 <div>{{shipmentItem.jobId}}</div>
 <div>{{shipmentItem.number}}</div>
 <div>{{shipmentItem.status}}</div>
@@ -8,11 +8,13 @@
 <div>{{shipmentItem.billOfLading}}</div>
 <div>{{shipmentItem.shipDate}}</div>
 <div>{{shipmentItem.contact}}</div>
-<div>{{shipmentItem.address}}</div>
+<div>{{shipmentItem.address}}</div> -->
 
-<h1>shipmentItem Detail</h1>
-<form>
+<h1>Shipment Item Detail</h1>
+
   <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <form name="shipmentItemDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
+
     <div>
 
       <md-input-container>
@@ -22,51 +24,51 @@
 
       <md-input-container>
         <label>Job Id</label>
-        <input ng-model="shipmentItem.jobId" type="text">
+        <input ng-model="shipmentItem.shipmentId" type="text">
       </md-input-container>
 
       <md-input-container>
         <label>Number</label>
-        <input ng-model="shipmentItem.number" type="text">
+        <input ng-model="shipmentItem.shippingItem" type="text">
       </md-input-container>
 
-      <md-input-container>
-        <label>Description</label>
-        <textarea ng-model="shipmentItem.status" rows="5" md-select-on-focus></textarea>
+      <div>
+      <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
+        <md-select ng-model="shipmentItem.shippingItem.shippingItemStatus">
+          <md-option ng-repeat="shippingItemStatus in shippingItemStatuses" ng-value="shippingItemStatus">
+                 {{shippingItemStatus}}
+          </md-option>
+        </md-select>
       </md-input-container>
 
       <md-input-container>
         <label>Shop</label>
-        <input ng-model="shipmentItem.shop" type="text">
+        <input ng-model="shipmentItem.shippingItem.label" type="text">
       </md-input-container>
-
       <md-input-container>
-        <label>Carrier</label>
-        <input ng-model="shipmentItem.carrier" type="text">
+        <label>Shop</label>
+        <input ng-model="shipmentItem.shippingItem.requested" type="text">
       </md-input-container>
-
       <md-input-container>
-        <label>Weight</label>
-        <input ng-model="shipmentItem.weight" type="text">
+        <label>Shop</label>
+        <input ng-model="shipmentItem.shippingItem.completed" type="text">
       </md-input-container>
-
       <md-input-container>
-        <label>Bill Of Landing</label>
-        <input ng-model="shipmentItem.billOfLanding" type="text">
+        <label>Shop</label>
+        <input ng-model="shipmentItem.shippingItem.remarks" type="text">
       </md-input-container>
-
-      <md-datepicker ng-model="shipmentItem.shipDate" md-placeholder="Ship Date"></md-datepicker>
-
       <md-input-container>
-        <label>Contact</label>
-        <input ng-model="shipmentItem.contact" type="text">
-      </md-input-container>
-
-      <md-input-container>
-        <label>Address</label>
-        <input ng-model="shipmentItem.address" type="text">
+        <label>Shop</label>
+        <input ng-model="shipmentItem.shippingItem.shop.label" type="text">
       </md-input-container>
 
     </div>
+
+      <md-input-container>
+        <label>Description</label>
+        <textarea ng-model="shipmentItem.quantity" rows="5" md-select-on-focus></textarea>
+      </md-input-container>
+
+    </div>
+    </form>
   </md-content>
-<form>

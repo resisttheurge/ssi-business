@@ -2,8 +2,8 @@
 <div>{{manufacturer.label}}</div> -->
 
 <h1>Manufacturer Detail</h1>
-<form>
   <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <form name="manufacturerDetailForm" flex style="overflow-x : hidden">
     <div>
       <md-input-container>
         <label>Id</label>
@@ -14,5 +14,5 @@
         <input ng-model="manufacturer.label" type="text">
       </md-input-container>
     </div>
+    <form>
   </md-content>
-<form>
