@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('ssi.filters.jobStatus', [])
+angular.module('ssiFilters')
   .filter('jobStatus', [
     function() {
       return function jobStatus(job) {

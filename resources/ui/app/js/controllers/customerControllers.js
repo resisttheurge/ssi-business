@@ -12,6 +12,8 @@ customerControllers.controller('CustomerListController', [
       order: 'id'
     }
 
+    $scope.$watch("search", function(x, y){ getCustomers($scope.query) }, true)
+
     $scope.onPaginate = function (page, limit) {
       return getCustomers(angular.extend({}, $scope.query, {page: page, limit: limit}))
     }
@@ -24,11 +26,33 @@ customerControllers.controller('CustomerListController', [
       return $scope.promise =
         Customer.endpoint.query().$promise
           .then(unpackResponse)
+          .then(customerSearchFilter)
           .then(total)
           .then(sort(query))
           .then(page(query))
           .then(store)
     }
+
+    function customerSearchFilter(customers) {
+
+      var resultArray = [];
+      if($scope.search)
+      {
+        if(customers)
+          customers.forEach(function(customer){
+
+              if($scope.search && !customer.label.toUpperCase().match(new RegExp("^" + $scope.search.toUpperCase() + ".*"))){}
+                //don't add to results array
+              else
+                //doesn't violate constraints, add to results array
+                resultArray.push(customer);
+          })
+          return resultArray;
+      }
+      else
+        return customers;
+    }
+
 
     function unpackResponse(response) {
       return $q(function(resolve, reject) {

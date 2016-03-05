@@ -1,8 +1,8 @@
 <!-- <div>{{customer.id}}</h1>
 <div>{{customer.label}}</div> -->
 <h1>Customer Detail</h1>
-<form>
   <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <form name="customerDetailForm" flex style="overflow-x : hidden">
     <div>
       <md-input-container>
         <label>Customer Id</label>
@@ -13,5 +13,5 @@
         <input ng-model="customer.label" type="text">
       </md-input-container>
     </div>
+    <form>
   </md-content>
-<form>

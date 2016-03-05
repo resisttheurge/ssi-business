@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('ssi.filters.words', [])
+angular.module('ssiFilters')
   .filter('words', [
     function() {
       return function words(string, sep) {

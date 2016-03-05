@@ -1,8 +1,6 @@
 'use strict'
 
-angular.module('ssi.filters.jobTitle', [
-  'ssi.filters.unwords'
-])
+angular.module('ssiFilters')
   .filter('jobTitle', [
     '$filter',
     function($filter) {

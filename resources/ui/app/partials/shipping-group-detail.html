@@ -1,11 +1,8 @@
-<div>{{shippingGroup.id}}</div>
-<div>{{shippingGroup.jobId}}</div>
-<div>{{shippingGroup.label}}</div>
-<div>{{shippingGroup.rush}}</div>
-<div>{{shippingGroup.info}}</div>
 
-<form>
+<h1>Shipping Group Detail</h1>
+
   <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <form name="shippingGroupDetailForm" flex style="overflow-x : hidden">
     <div>
 
       <md-input-container>
@@ -24,15 +21,91 @@
       </md-input-container>
 
       <md-input-container>
-        <label>Rush</label>
-        <textarea ng-model="shippingGroup.rush" rows="5" md-select-on-focus></textarea>
+        <label>Type</label>
+        <input ng-model="shippingGroup.rush" type="text">
       </md-input-container>
 
       <md-input-container>
         <label>Info</label>
-        <input ng-model="shippingGroup.info" type="text">
+        <input ng-model="shippingGroup.info.id" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Tag Type</label>
+        <input ng-model="shippingGroup.info.tagType" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Title</label>
+        <input ng-model="shippingGroup.info.title" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Revision</label>
+        <input ng-model="shippingGroup.info.revision" type="text">
+      </md-input-container>
+
+<!-- Date -->
+      <md-input-container>
+        <label>Revision Date</label>
+        <input ng-model="shippingGroup.info.revisionDate" type="text">
+      </md-input-container>
+<!-- Date -->
+      <md-input-container>
+        <label>Start Date</label>
+        <input ng-model="shippingGroup.info.startDate" type="text">
+      </md-input-container>
+<!-- Date -->
+      <md-input-container>
+        <label>Shop Date</label>
+        <input ng-model="shippingGroup.info.shopDate" type="text">
+      </md-input-container>
+<!-- Date -->
+      <md-input-container>
+        <label>Field Date</label>
+        <input ng-model="shippingGroup.info.fieldDate" type="text">
+      </md-input-container>
+<!-- Date -->
+      <md-input-container>
+        <label>Request Date</label>
+        <input ng-model="shippingGroup.info.requestDate" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Requested By</label>
+        <input ng-model="shippingGroup.info.requestedBy" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Prepared By</label>
+        <input ng-model="shippingGroup.info.preparedBy" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>File Path</label>
+        <input ng-model="shippingGroup.info.filePath" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Shop</label>
+        <input ng-model="shippingGroup.info.shop.label" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Carrier</label>
+        <input ng-model="shippingGroup.info.carrier.label" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Contact</label>
+        <input ng-model="shippingGroup.info.contact" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Address</label>
+        <input ng-model="shippingGroup.info.address" type="text">
       </md-input-container>
 
     </div>
+    </form>
   </md-content>
-<form>

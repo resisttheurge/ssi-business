@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('ssi.filters.unwords', [])
+angular.module('ssiFilters')
   .filter('unwords', [
     function() {
       return function unwords(array, sep, start, end) {
