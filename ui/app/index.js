@@ -1,46 +1,78 @@
+//
+// import dependencies
+//
+
+// angular itself
 import angular from 'angular'
+
+// angular material peer dependencies
 import ngAnimate from 'angular-animate'
 import ngAria from 'angular-aria'
+import ngMessages from 'angular-messages'
+
+// angular material dependencies
 import ngMaterial from 'angular-material'
-import ngUiRouter from 'angular-ui-router'
+import ngMaterialDataTable from 'angular-material-data-table'
 
-// include angular-material css in html
-import 'angular-material/angular-material.scss'
+// angular material global styles
+import ngMaterialStyles from 'angular-material/angular-material.scss'
+import ngMaterialDataTableStyles from 'angular-material-data-table/dist/md-data-table.css'
 
-// include app-wide css
-import './styles.scss'
+// routing dependencies
+import ngComponentRouter from '@angular/router/angular1/angular_1_router.js'
 
-// shared
-import auth from 'auth'
-import constants from 'constants'
+// Restangular for api services
+import Restangular from 'restangular'
 
-// components
-import home from 'home'
-import login from 'login'
+//
+// create the module
+//
 
-// config
-import routing from './routing'
-import access from './access'
+// import sub modules
+import modules from 'modules'
 
-// legacy -- due for refactoring
-import oldControllers from 'old-controllers'
-import oldServices from 'old-services'
-import oldCore from 'old-core'
-
-export default
+// create the module from its external and sub-module dependencies,
+// then return its name so it can be imported similarly by dependent modules
+export const ssi =
   angular.module('ssi', [
+
+    // angular material peer dependencies
     ngAnimate,
     ngAria,
+    ngMessages,
+
+    // angular material dependencies
     ngMaterial,
-    ngUiRouter,
-    auth,
-    constants,
-    home,
-    login,
-    oldControllers,
-    oldServices,
-    oldCore
+    ngMaterialDataTable,
+
+    // routing dependencies
+    ngComponentRouter,
+
+    // api dependencies
+    Restangular,
+
+    // sub module dependencies
+    ...modules
   ])
-    .config(routing)
-    .run(access)
-    .name
+
+//
+// configure the module
+//
+
+// config router root component
+import ssiApp from 'components/ssi-app'
+ssi.value('$routerRootComponent', ssiApp)
+
+//
+// register injectables with the module
+//
+
+import components from 'components'
+components.forEach(({ name, config }) => ssi.component(name, config))
+
+//
+// export the module name
+//
+
+// return the name of the angular module
+export default ssi.name

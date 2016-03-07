@@ -1,0 +1,105 @@
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h2>{{job | jobTitle}}</h2>
+  </div>
+</md-toolbar>
+<md-progress-linear md-mode="{{mode}}"></md-progress-linear>
+<form name="jobForm" layout="column" layout-padding ng-hide="{{mode}}">
+
+  <div layout-gt-sm="row">
+    <md-autocomplete required
+        md-selected-item="job.identifier.prefix"
+        md-search-text="prefixSearchText"
+        md-items="prefix in queryPrefixes(prefixSearchText)"
+        md-item-text="prefix"
+        md-floating-label="Job Prefix">
+      <span>{{prefix}}</span>
+    </md-autocomplete>
+
+    <md-input-container>
+      <label>Year</label>
+      <input ng-model="job.identifier.year" type="number" >
+    </md-input-container>
+
+    <md-input-container>
+      <label>Label</label>
+      <input ng-model="job.identifier.label" type="text">
+    </md-input-container>
+
+    <md-autocomplete
+        md-selected-item="job.status"
+        md-search-text="statusSearchText"
+        md-items="status in queryStatuses(statusSearchText)"
+        md-item-text="status"
+        md-floating-label="Job Status">
+      <span>{{status}}</span>
+    </md-autocomplete>
+  </div>
+
+  <div layout-gt-sm="row">
+    <md-input-container class="md-block" flex-gt-sm>
+      <label>Description</label>
+      <textarea ng-model="job.description" rows="5" md-select-on-focus></textarea>
+    </md-input-container>
+  </div>
+
+  <div layout-gt-sm="row">
+    <md-datepicker ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
+    <md-datepicker ng-model="dueDateDisplay" md-placeholder="Due Date"></md-datepicker>
+    <md-datepicker ng-model="completeDateDisplay" md-placeholder="Complete Date"></md-datepicker>
+  </div>
+
+  <div layout-gt-sm="row">
+    <md-autocomplete
+        md-selected-item="job.shop"
+        md-search-text="shopSearchText"
+        md-items="shop in queryShops(shopSearchText)"
+        md-item-text="shop.label"
+        md-floating-label="Shop">
+      <span>{{shop.label}}</span>
+    </md-autocomplete>
+
+    <md-input-container>
+      <label>Contract Price</label>
+      <input ng-model="job.contractPrice" type="text">
+    </md-input-container>
+  </div>
+
+  <div layout-gt-sm="row">
+    <md-autocomplete
+        md-selected-item="job.salesperson"
+        md-search-text="salespersonSearchText"
+        md-items="salesperson in querySalespeople(salespersonSearchText)"
+        md-item-text="salesperson.label"
+        md-floating-label="Salesperson">
+      <span>{{salesperson.label}}</span>
+    </md-autocomplete>
+    <md-autocomplete
+        md-selected-item="job.customer"
+        md-search-text="customerSearchText"
+        md-items="customer in queryCustomers(customerSearchText)"
+        md-item-text="customer.label"
+        md-floating-label="Customer">
+      <span>{{customer.label}}</span>
+    </md-autocomplete>
+  </div>
+
+  <div layout-gt-sm="row">
+    <md-input-container >
+      <label>Contact</label>
+      <input ng-model="job.contact.label" type="text">
+    </md-input-container>
+    <md-input-container >
+      <label>Phone Number</label>
+      <input ng-model="job.contact.phone" type="text">
+    </md-input-container>
+    <md-input-container >
+      <label>Fax</label>
+      <input ng-model="job.contact.fax" type="text">
+    </md-input-container>
+    <md-input-container >
+      <label>Email</label>
+      <input ng-model="job.contact.email" type="text">
+    </md-input-container>
+  </div>
+</form>

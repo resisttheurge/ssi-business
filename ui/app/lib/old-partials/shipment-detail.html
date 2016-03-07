@@ -1,0 +1,100 @@
+<!-- <div>{{shipment.id}}</div>
+<div>{{shipment.shipmentId}}</div>
+<div>{{shipment.number}}</div>
+<div>{{shipment.status}}</div>
+<div>{{shipment.shop}}</div>
+<div>{{shipment.carrier}}</div>
+<div>{{shipment.weight}}</div>
+<div>{{shipment.billOfLanding}}</div>
+<div>{{shipment.shipDate}}</div>
+<div>{{shipment.contact}}</div>
+<div>{{shipment.address}}}}</div> -->
+
+<h1>Shipment Detail</h1>
+
+<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+  <form name="shipmentDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
+    <div>
+
+      <md-input-container>
+        <label>Id</label>
+        <input ng-model="shipment.id" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>shipmentId</label>
+        <input ng-model="shipment.jobId" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Number</label>
+        <input ng-model="shipment.number" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Description</label>
+        <textarea ng-model="shipment.status" rows="5" md-select-on-focus></textarea>
+      </md-input-container>
+
+      <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
+        <md-select ng-model="shipment.status.shipmentStatuses">
+          <md-option ng-repeat="shipmentStatus in shipmentStatuses" ng-value="shipmentStatus">
+                 {{shipmentStatus}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+      <md-input-container>
+        <label>Shop</label>
+        <input ng-model="shipment.shop.label" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Carrier</label>
+        <input ng-model="shipment.carrier.label" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Weight</label>
+        <input ng-model="shipment.weight" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Bill Of Landing</label>
+        <input ng-model="shipment.billOfLanding" type="text">
+      </md-input-container>
+
+      <md-datepicker ng-model="shipment.shipDate" md-placeholder="Ship Date"></md-datepicker>
+
+      <div layout-gt-sm="row">
+
+        <md-input-container flex-offset-gt-sm="10" flex>
+          <label>label</label>
+          <input ng-model="shipment.contact.label" type="text">
+        </md-input-container>
+
+        <md-input-container flex-offset-gt-sm="10" flex>
+          <label>phone</label>
+          <input ng-model="shipment.contact.phone" type="text">
+        </md-input-container>
+
+        <md-input-container flex-offset-gt-sm="10" flex>
+          <label>fax</label>
+          <input ng-model="shipment.contact.fax" type="text">
+        </md-input-container>
+
+        <md-input-container flex-offset-gt-sm="10" flex>
+          <label>email</label>
+          <input ng-model="shipment.contact.email" type="text">
+        </md-input-container>
+
+      </div>
+
+      <md-input-container>
+        <label>Address</label>
+        <input ng-model="shipment.address" type="text">
+      </md-input-container>
+
+    </div>
+  </form>
+</md-content>

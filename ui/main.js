@@ -11,10 +11,13 @@ let mainWindow = null
 const createWindow = () => {
   // Create the browser window
   mainWindow = new BrowserWindow()
+
   // and load the app (served by webpack-dev-server).
   mainWindow.loadURL('http://localhost:8080/')
+
   // Maximize the window
   mainWindow.maximize()
+
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
     // Dereference the window object, usually you would store windows

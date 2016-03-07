@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- style sheets -->
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" >
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+    <link rel="stylesheet" href="bower_components/angular-material-data-table/dist/md-data-table.css">
+    <link rel="stylesheet" href="css/app.css">
+
+    <!-- title (duh) -->
+    <title>ssi-ui</title>
+
+    <!-- bower dependencies -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-material-data-table/dist/md-data-table.js"></script>
+
+    <!-- filter modules -->
+    <script src="js/filters.js"></script>
+    <script src="js/filters/jobStatus.js"></script>
+    <script src="js/filters/jobTitle.js"></script>
+    <script src="js/filters/unwords.js"></script>
+    <script src="js/filters/words.js"></script>
+
+    <!-- service modules -->
+    <script src="js/services.js"></script>
+    <script src="js/services/coreServices.js"></script>
+    <script src="js/services/api/addendumByJobService.js"></script>
+    <script src="js/services/api/addendumService.js"></script>
+    <script src="js/services/api/addressService.js"></script>
+    <script src="js/services/api/authService.js"></script>
+    <script src="js/services/api/carrierService.js"></script>
+    <script src="js/services/api/contactService.js"></script>
+    <script src="js/services/api/customerService.js"></script>
+    <script src="js/services/api/drawingByJobService.js"></script>
+    <script src="js/services/api/drawingService.js"></script>
+    <script src="js/services/api/jobAddressesService.js"></script>
+    <script src="js/services/api/jobSchedulesService.js"></script>
+    <script src="js/services/api/jobService.js"></script>
+    <script src="js/services/api/manufacturerService.js"></script>
+    <script src="js/services/api/markByDrawingService.js"></script>
+    <script src="js/services/api/markService.js"></script>
+    <script src="js/services/api/partOrderByJobService.js"></script>
+    <script src="js/services/api/partOrderService.js"></script>
+    <script src="js/services/api/partService.js"></script>
+    <script src="js/services/api/reportService.js"></script>
+    <script src="js/services/api/salespersonService.js"></script>
+    <script src="js/services/api/scheduleService.js"></script>
+    <script src="js/services/api/shipmentByJobService.js"></script>
+    <script src="js/services/api/shipmentItemByShipmentService.js"></script>
+    <script src="js/services/api/shipmentItemService.js"></script>
+    <script src="js/services/api/shipmentService.js"></script>
+    <script src="js/services/api/shippingGroupByJobService.js"></script>
+    <script src="js/services/api/shippingGroupItemByShippingGroupService.js"></script>
+    <script src="js/services/api/shippingGroupItemService.js"></script>
+    <script src="js/services/api/shippingGroupService.js"></script>
+    <script src="js/services/api/shippingItemService.js"></script>
+    <script src="js/services/api/shippingItemZoneByShippingItemService.js"></script>
+    <script src="js/services/api/shippingItemZoneService.js"></script>
+    <script src="js/services/api/shopService.js"></script>
+    <script src="js/services/api/specialtyItemService.js"></script>
+    <script src="js/services/api/systemTypeByJobService.js"></script>
+    <script src="js/services/api/systemTypeService.js"></script>
+    <script src="js/services/api/unpackService.js"></script>
+    <script src="js/services/api/userService.js"></script>
+    <script src="js/services/api/vendorService.js"></script>
+    <script src="js/services/api/zoneByJobService.js"></script>
+    <script src="js/services/api/zoneService.js"></script>
+
+    <!-- controller modules -->
+    <script src="js/controllers/carrierControllers.js"></script>
+    <script src="js/controllers/coreControllers.js"></script>
+    <script src="js/controllers/customerControllers.js"></script>
+    <script src="js/controllers/drawingControllers.js"></script>
+    <script src="js/controllers/drawingDetailController.js"></script>
+    <script src="js/controllers/jobListController.js"></script>
+    <script src="js/controllers/jobDetailController.js"></script>
+    <script src="js/controllers/manufacturerControllers.js"></script>
+    <script src="js/controllers/markControllers.js"></script>
+    <script src="js/controllers/markDetailController.js"></script>
+    <script src="js/controllers/partControllers.js"></script>
+    <script src="js/controllers/partOrderControllers.js"></script>
+    <script src="js/controllers/salespersonControllers.js"></script>
+    <script src="js/controllers/shipmentControllers.js"></script>
+    <script src="js/controllers/shipmentItemControllers.js"></script>
+    <script src="js/controllers/shippingGroupControllers.js"></script>
+    <script src="js/controllers/shippingGroupDetailController.js"></script>
+    <script src="js/controllers/shippingGroupItemControllers.js"></script>
+    <!-- <script src="js/controllers/shippingItemControllers.js"></script> -->
+    <script src="js/controllers/specialtyItemControllers.js"></script>
+    <script src="js/controllers/systemTypeControllers.js"></script>
+    <script src="js/controllers/userControllers.js"></script>
+    <script src="js/controllers/vendorControllers.js"></script>
+    <script src="js/controllers/zoneControllers.js"></script>
+    <script src="js/controllers.js"></script>
+
+    <!-- contants -->
+    <script src="js/constants.js"></script>
+    <!-- main application module -->
+    <script src="js/app.js"></script>
+
+  </head>
+  <body ng-app="ssiApp" ng-controller="RootController" ng-cloak layout="row">
+    <md-sidenav md-component-id="sidenav" md-is-locked-open="user.isLoggedIn && $mdMedia('gt-sm')">
+      <md-toolbar layout="row">
+        <div class="md-toolbar-tools">
+          <md-button class="md-icon-button" ng-show="user.isLoggedIn" hide-gt-sm ng-click="toggleSidenav()">
+            <md-icon class="material-icons">close</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+      <md-content flex>
+        <md-list layout-padding>
+          <md-list-item>
+            <md-button ng-href="#/home" flex>
+              Home
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item layout="column" flex>
+            <md-button ng-href="#/jobs" flex>
+              Jobs
+            </md-button>
+            <label ng-show='selected.job'>
+              {{selected.job.id}}
+            </label>
+            <md-button  ng-show="selected.job != undefined"
+                        ng-href="#/jobs/{{selected.job.id}}/drawings" flex>
+              Drawings
+            </md-button>
+            <md-button  ng-show="selected.drawing != undefined"
+                        ng-href="#/jobs/{{selected.job.id}}/drawings/{{selected.drawing.id}}/marks" flex>
+              Marks
+            </md-button>
+            <md-button  ng-show="selected.job != undefined"
+                        ng-href="#/jobs/{{selected.job.id}}/shipping-groups" flex>
+              Shipping Groups
+            </md-button>
+            <md-button  ng-show="selected.shippingGroup != undefined"
+                        ng-href="#/jobs/{{selected.job.id}}/shipping-groups/{{selected.shippingGroup.id}}/items" flex>
+              Shipping Group Items
+            </md-button>
+            <md-button  ng-show="selected.job != undefined"
+                        ng-href="#/jobs/{{selected.job.id}}/part-orders" flex>
+              Part Orders
+            </md-button>
+            <md-button  ng-show="selected.job != undefined"
+                        ng-href="#/jobs/{{selected.job.id}}/shipments" flex>
+              Shipments
+            </md-button>
+            <md-button  ng-show="selected.shipment != undefined"
+                        ng-href="#/jobs/{{selected.job.id}}/shipments/{{selected.shipment.id}}/items" flex>
+              Shipment Items
+            </md-button>
+            <md-button  ng-show="selected.job != undefined"
+                        ng-href="#/jobs/{{selected.job.id}}/zones" flex>
+              Zones
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/carriers" flex>
+              Carriers
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/customers" flex>
+              Customers
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/manufacturers" flex>
+              manufacturers
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/parts" flex>
+              parts
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/salespeople" flex>
+              salespeople
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/specialty-items" flex>
+              specialty items
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/system-types" flex>
+              system types
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/users" flex>
+              users
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-href="#/vendors" flex>
+              vendors
+            </md-button>
+            <md-divider />
+          </md-list-item>
+          <md-list-item>
+            <md-button ng-click="logout()" flex>
+              Logout
+            </md-button>
+          </md-list-item>
+        </md-list>
+      </md-content>
+    </md-sidenav>
+    <div flex layout="column" tabindex="-1" role="main">
+      <md-toolbar layout="row" layout-align="top center">
+        <div class="md-toolbar-tools">
+          <md-button class="md-icon-button" ng-show="user.isLoggedIn" hide-gt-sm ng-click="toggleSidenav()">
+            <md-icon class="material-icons">menu</md-icon>
+          </md-button>
+          <h3>SSI Business</h3>
+        </div>
+      </md-toolbar>
+      <ng-view flex layout="column" layout-fill/>
+    </div>
+  </body>
+</html>

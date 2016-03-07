@@ -1,0 +1,125 @@
+<!-- <div>{{partOrder.id}}</div>
+<div>{{partOrder.jobId}}</div>
+<div>{{partOrder.drawingId}}</div>
+<div>{{partOrder.status}}</div>
+<div>{{partOrder.part}}</div>
+<div>{{partOrder.manufacturer}}</div>
+<div>{{partOrder.vendor}}</div>
+<div>{{partOrder.po}}</div>
+<div>{{partOrder.requestedQuantity}}</div>
+<div>{{partOrder.stockQuantity}}</div>
+<div>{{partOrder.purchaseQuantity}}</div>
+<div>{{partOrder.requestDate}}</div>
+<div>{{partOrder.purchaseDate}}</div>
+<div>{{partOrder.releaseDate}}</div>
+<div>{{partOrder.releasedBy}}</div> -->
+
+
+<h1>Job Detail</h1>
+  <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <form name="partOrderDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
+    <div>
+
+      <md-input-container>
+        <label>Id</label>
+        <input ng-model="partOrder.id" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Job Id</label>
+        <input ng-model="partOrder.jobId" type="text">
+      </md-input-container>
+
+      <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
+        <label>Status</label>
+        <md-select ng-model="partOrder.status">
+          <md-option ng-repeat="status in partOrderStatuses" ng-value="status">
+                 {{status}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+    <div>
+      <label>Part</label>
+      <md-input-container>
+        <label>Id</label>
+        <input ng-model="partOrder.part.id" type="text">
+      </md-input-container>
+      <md-input-container>
+        <label>PartType</label>
+        <input ng-model="partOrder.part.partType" type="text">
+      </md-input-container>
+      <md-input-container>
+        <label>Number</label>
+        <input ng-model="partOrder.part.number" type="text">
+      </md-input-container>
+      <div layout-gt-sm="row">
+            <md-input-container class="md-block" flex-gt-sm>
+              <label>Description</label>
+              <textarea ng-model="partOrder.part.description" rows="5" md-select-on-focus></textarea>
+            </md-input-container>
+      </div>
+
+    </div>
+
+      <md-input-container>
+        <label>Manufacturer</label>
+        <input ng-model="partOrder.manufacturer.label" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Vendor</label>
+        <input ng-model="partOrder.vendor.label" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>PO</label>
+        <input ng-model="partOrder.po" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Requested Quantity</label>
+        <input ng-model="partOrder.requestedQuantity" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Stock Quantity</label>
+        <input ng-model="partOrder.stockQuantity" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Purchase Quantity</label>
+        <input ng-model="partOrder.purchaseQuantity" type="text">
+      </md-input-container>
+
+      <md-datepicker ng-model="partOrder.requestDate" md-placeholder="Request Date"></md-datepicker>
+      <md-datepicker ng-model="partOrder.purchaseDate" md-placeholder="Purchase Date"></md-datepicker>
+      <md-datepicker ng-model="partOrder.releaseDate" md-placeholder="Release Date"></md-datepicker>
+
+      <md-input-container>
+        <label>Released By</label>
+        <input ng-model="partOrder.releasedBy" type="text">
+      </md-input-container>
+
+    </div>
+    <form>
+  </md-content>
+
+
+
+
+<!-- id: Option[Int],
+                     jobId: Int,
+                     drawingId: Option[Int] = None,
+                     status: PartOrderStatus,
+                     part: Option[Part] = None,
+                     manufacturer: Option[Manufacturer] = None,
+                     vendor: Option[Vendor] = None,
+                     po: Option[String] = None,
+                     requestedQuantity: Int = 0,
+                     stockQuantity: Int = 0,
+                     purchaseQuantity: Int = 0,
+                     requestDate: Option[Date] = None,
+                     purchaseDate: Option[Date] = None,
+                     releaseDate: Option[Date] = None,
+                     releasedBy: Option[String] = None) -->

@@ -1,0 +1,18 @@
+<!-- <div>{{specialtyItem.id}}</div>
+<div>{{specialtyItem.label}}</div> -->
+
+<h1>Specialty Item Detail</h1>
+  <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+<form name="specialtyItemDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
+    <div>
+      <md-input-container>
+        <label>Id</label>
+        <input ng-model="specialtyItem.id" type="text">
+      </md-input-container>
+      <md-input-container>
+        <label>Label</label>
+        <input ng-model="specialtyItem.label" type="text">
+      </md-input-container>
+    </div>
+    <form>
+  </md-content>
