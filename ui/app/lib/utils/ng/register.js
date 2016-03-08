@@ -19,7 +19,7 @@ const _objectTags = {
   values: 'value'
 }
 
-const _allTags = {
+export const _allTags = {
   ..._arrayTags,
   ..._objectTags
 }
@@ -42,7 +42,7 @@ const _registerObject =
   tag =>
     function _registerObject(registrees = {}) {
       const module = this
-      return registrees.keys().reduce(
+      return Object.keys(registrees).reduce(
         (_module, key) => _module[_objectTags[tag]](key, registrees[key]),
         module
       )
@@ -53,7 +53,7 @@ const register = tag => {
     throw new TypeError(strip`
       | invalid angular registration tag.
       | tag must be one of:
-      |   ${JSON.stringify([..._allTags.keys()])}
+      |   ${JSON.stringify([...Object.keys(_allTags)])}
       | but got:
       |   ${tag}
       `)
@@ -65,3 +65,5 @@ const register = tag => {
     return _registerObject(tag)
   }
 }
+
+export default register

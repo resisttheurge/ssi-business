@@ -28,7 +28,7 @@ import ngResource from 'angular-resource'
 //
 
 // import sub modules
-import _modules from 'modules'
+import modules from 'modules'
 
 // create the module from its external and sub-module dependencies,
 // then return its name so it can be imported similarly by dependent modules
@@ -53,7 +53,7 @@ export const ssi =
     ngResource,
 
     // sub module dependencies
-    ..._modules
+    ...modules
   ])
 
 //
@@ -61,18 +61,40 @@ export const ssi =
 //
 
 // import utilities
-import { controllers, filters, services } from 'utils/ng'
+import { bundle } from 'utils/ng'
 
 // import configurations
-import _controllers from 'controllers'
-import _filters from 'filters'
-import _services from 'services'
+import animations from 'animations'
+import components from 'components'
+import configs from 'configs'
+import constants from 'constants'
+import controllers from 'controllers'
+import decorators from 'decorators'
+import directives from 'directives'
+import factories from 'factories'
+import filters from 'filters'
+import providers from 'providers'
+import scripts from 'scripts'
+import services from 'services'
+import values from 'values'
 
 // run the configurations
 angular.module(ssi.name)
-  ::controllers(_controllers)
-  ::filters(_filters)
-  ::services(_services)
+  ::bundle({
+    animations,
+    components,
+    configs,
+    constants,
+    controllers,
+    decorators,
+    directives,
+    factories,
+    filters,
+    providers,
+    scripts,
+    services,
+    values
+  })
 
 //
 // export the module name

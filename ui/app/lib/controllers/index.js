@@ -1,6 +1,6 @@
 // core controllers
+import AppController from './AppController'
 import LoginController from './LoginController'
-import RootController from './RootController'
 
 // api model controllers
 import CarrierDetailController from './CarrierDetailController'
@@ -40,11 +40,11 @@ import VendorListController from './VendorListController'
 import ZoneDetailController from './ZoneDetailController'
 import ZoneListController from './ZoneListController'
 
-export default {
+export const controllers = {
   // core controllers
+  AppController,
   LoginController,
-  RootController,
-  
+
   // api model controllers
   CarrierDetailController,
   CarrierListController,
@@ -83,3 +83,5 @@ export default {
   ZoneDetailController,
   ZoneListController
 }
+
+export default controllers

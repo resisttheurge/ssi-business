@@ -69,11 +69,6 @@ const resolve = {
   ]
 }
 
-const css = {
-  sourceMap: true,
-  localIdentName: '[path][name]---[local]---[hash:base65:5]'
-}
-
 const _module = {
 
   preLoaders: [{
@@ -138,7 +133,11 @@ const plugins = [
   // safe reliance on filename hashing
   new webpack.optimize.OccurenceOrderPlugin(),
 
-  new NgAnnotatePlugin(),
+  new NgAnnotatePlugin({
+    add: true,
+    remove: true,
+    single_quotes: true
+  }),
   new HtmlWebpackPlugin({
     template: `html?interpolate!${path.resolve(__dirname, 'app/index.html')}`,
     inject: 'head'
