@@ -1,4 +1,4 @@
-// export all sub-modules in an array for convenience
+// placeholder for future modules
 export default [
 
 ]

@@ -1,7 +1,3 @@
-//
-// import dependencies
-//
-
 // angular itself
 import angular from 'angular'
 
@@ -19,17 +15,20 @@ import ngMaterialStyles from 'angular-material/angular-material.scss'
 import ngMaterialDataTableStyles from 'angular-material-data-table/dist/md-data-table.css'
 
 // routing dependencies
-import ngComponentRouter from '@angular/router/angular1/angular_1_router.js'
+// import ngComponentRouter from '@angular/router/angular1/angular_1_router.js'
+
+import ngRoute from 'angular-route'
 
 // Restangular for api services
-import Restangular from 'restangular'
+// import Restangular from 'restangular'
+import ngResource from 'angular-resource'
 
 //
 // create the module
 //
 
 // import sub modules
-import modules from 'modules'
+import _modules from 'modules'
 
 // create the module from its external and sub-module dependencies,
 // then return its name so it can be imported similarly by dependent modules
@@ -46,29 +45,34 @@ export const ssi =
     ngMaterialDataTable,
 
     // routing dependencies
-    ngComponentRouter,
+    // ngComponentRouter,
+    ngRoute,
 
     // api dependencies
-    Restangular,
+    // Restangular,
+    ngResource,
 
     // sub module dependencies
-    ...modules
+    ..._modules
   ])
 
 //
 // configure the module
 //
 
-// config router root component
-import ssiApp from 'components/ssi-app'
-ssi.value('$routerRootComponent', ssiApp)
+// import utilities
+import { controllers, filters, services } from 'utils/ng'
 
-//
-// register injectables with the module
-//
+// import configurations
+import _controllers from 'controllers'
+import _filters from 'filters'
+import _services from 'services'
 
-import components from 'components'
-components.forEach(({ name, config }) => ssi.component(name, config))
+// run the configurations
+angular.module(ssi.name)
+  ::controllers(_controllers)
+  ::filters(_filters)
+  ::services(_services)
 
 //
 // export the module name

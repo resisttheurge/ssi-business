@@ -48,10 +48,13 @@ const resolve = {
     // javascript library
     'lib',
 
+    // angular templates
+    'templates',
+
     // angular injectables
     'animations',
     'components',
-    'config',
+    'configs', // scripts executed by angular.module(...).config()
     'constants',
     'controllers',
     'decorators',
@@ -60,10 +63,15 @@ const resolve = {
     'filters',
     'modules',
     'providers',
-    'run',
+    'scripts', // scripts executed by angular.module(...).run()
     'services',
     'values'
   ]
+}
+
+const css = {
+  sourceMap: true,
+  localIdentName: '[path][name]---[local]---[hash:base65:5]'
 }
 
 const _module = {
@@ -94,15 +102,21 @@ const _module = {
   }, {
     test: /\.css$/,
     include: [/app/, /lib/, /assets/, /node_modules/],
-    loader: ExtractTextPlugin.extract('style', 'css?sourceMap')
+    loaders: [
+      'classnames',
+      ExtractTextPlugin.extract(
+        'style',
+        'css?sourceMap?localIdentName=[path][name]---[local]---[hash:base64:5]'
+      )
+    ]
   }, {
     test: /\.s[ca]ss$/,
     include: [/app/, /lib/, /assets/, /node_modules/],
-    loader: ExtractTextPlugin.extract('style', 'css?sourceMap!sass')
+    loaders: ['classnames', ExtractTextPlugin.extract('style', 'css?sourceMap!sass')]
   }, {
     test: /\.less$/,
     include: [/app/, /lib/, /assets/, /node_modules/],
-    loader: ExtractTextPlugin.extract('style', 'css?sourceMap!less')
+    loaders: ['classnames', ExtractTextPlugin.extract('style', 'css?sourceMap!less')]
   }, {
     test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|ico|json)$/,
     include: [/app/, /lib/, /assets/],
