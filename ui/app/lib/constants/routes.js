@@ -5,6 +5,7 @@ export const routes = {
   '/login': {
     templateUrl: urls.login,
     controller: controllers.LoginController.name,
+    controllerAs: '$login',
     access: {
       allowAnonymous: true,
       allowedRoles: ['ADMIN', 'EMPLOYEE']

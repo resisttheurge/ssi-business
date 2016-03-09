@@ -1,21 +1,30 @@
 export default class LoginController {
-  constructor($scope, $location, $mdToast, userService, AuthService) {
-    $scope.user = {
+
+  /*@ngInject*/
+  constructor($location, $mdToast, $ssiUser, $ssiAuth) {
+    this.$auth = $ssiAuth
+    this.$location = $location
+
+    this.user = {
       username: '',
       password: ''
     }
+  }
 
-    $scope.reset = function () {
-      $scope.user.username = ''
-      $scope.user.password = ''
-    }
+  reset() {
+    this.user.username = ''
+    this.user.password = ''
+  }
 
-    $scope.login = function (user) {
-      AuthService.endpoint.login(angular.copy(user), function (response) {
+  login() {
+    const _copy = angular.copy(this.user)
+    this.$auth.endpoint
+      .login(_copy).$promise
+      .then(function (response) {
         if (response.success) {
-          userService.user.isLoggedIn = true
-          userService.user.username = response.data.username
-          userService.user.roles = response.data.roles
+          $ssiUser.authenticated = true
+          $ssiUser.username = response.data.username
+          $ssiUser.roles = response.data.roles
           $location.path('/home')
         } else {
           $mdToast.show(
@@ -27,8 +36,11 @@ export default class LoginController {
           )
         }
       })
-
-      $scope.reset()
-    }
+      .then(function () {
+        this.reset()
+      })
+      .catch(function (reason) {
+        console.log('shit.')
+      })
   }
 }

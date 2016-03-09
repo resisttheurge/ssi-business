@@ -1,4 +1,5 @@
 export default class PartListController {
+  /*@ngInject*/
   constructor($scope, Part, $filter, $q) {
     var orderBy = $filter('orderBy')
     $scope.query = {

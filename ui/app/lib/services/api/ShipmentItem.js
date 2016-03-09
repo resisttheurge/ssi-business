@@ -1,6 +1,7 @@
 export default class ShipmentItem {
-  constructor ($resource, endpointUrl) {
-      this.endpoint = $resource(endpointUrl + '/shipment-items/:shipmentItemId', {}, {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
+      this.endpoint = $resource(endpoint + '/shipment-items/:shipmentItemId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ shipmentItemId: '' } }

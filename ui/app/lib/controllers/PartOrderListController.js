@@ -1,4 +1,5 @@
 export default class PartOrderListController {
+  /*@ngInject*/
   constructor($scope, PartOrderByJob, $filter, $q, $routeParams, selectionService) {
     $scope.selected = selectionService.selected
     $scope.selectPartOrder = selectionService.selectPartOrder

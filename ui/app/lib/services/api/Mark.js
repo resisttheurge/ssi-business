@@ -1,5 +1,6 @@
 export default class Mark {
-  constructor ($resource, endpointUrl) {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
 
     var service = this;
 
@@ -15,7 +16,7 @@ export default class Mark {
         service.$scope.loading = false
       }
 
-    this.endpoint = $resource(endpointUrl + '/marks/:markId', {}, {
+    this.endpoint = $resource(endpoint + '/marks/:markId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ markId: '' } }

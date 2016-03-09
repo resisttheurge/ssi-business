@@ -1,6 +1,7 @@
 export default class Report {
-  constructor ($resource, endpointUrl) {
-      this.endpoint = $resource(endpointUrl + '/reports/:reportTitle', {}, {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
+      this.endpoint = $resource(endpoint + '/reports/:reportTitle', {}, {
         generate: { method: 'POST' }
       })
     }

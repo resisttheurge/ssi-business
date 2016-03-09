@@ -1,6 +1,7 @@
 export default class User {
-  constructor ($resource, endpointUrl) {
-      this.endpoint = $resource(endpointUrl + '/users/:userId', {}, {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
+      this.endpoint = $resource(endpoint + '/users/:userId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ userId: '' } }

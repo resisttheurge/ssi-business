@@ -1,4 +1,5 @@
 export default class ManufacturerDetailController {
+  /*@ngInject*/
   constructor($scope, $routeParams, Manufacturer) {
     Manufacturer.endpoint.get({ manufacturerId: $routeParams.manufacturerId }, function (response) {
       $scope.loading = true

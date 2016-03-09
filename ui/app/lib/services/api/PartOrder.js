@@ -1,6 +1,7 @@
 export default class PartOrder {
-  constructor ($resource, endpointUrl) {
-      this.endpoint = $resource(endpointUrl + '/part-orders/:partOrderId', {}, {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
+      this.endpoint = $resource(endpoint + '/part-orders/:partOrderId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ partOrderId: '' } }

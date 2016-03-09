@@ -1,4 +1,5 @@
 export default class VendorDetailController {
+  /*@ngInject*/
   constructor($scope, $routeParams, Vendor) {
     Vendor.endpoint.get({ vendorId: $routeParams.vendorId }, function (response) {
       $scope.loading = true

@@ -1,5 +1,6 @@
 export default class ShippingGroupByJob {
-  constructor ($resource, endpointUrl) {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
 
     var service = this;
 
@@ -15,7 +16,7 @@ export default class ShippingGroupByJob {
         service.$scope.loading = false
       }
 
-    this.endpoint = $resource(endpointUrl + '/jobs/:jobId/shipping-groups', {}, {
+    this.endpoint = $resource(endpoint + '/jobs/:jobId/shipping-groups', {}, {
         query: { method: 'GET' }
       });
 

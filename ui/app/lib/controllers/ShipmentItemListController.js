@@ -1,4 +1,5 @@
 export default class ShipmentItemListController {
+  /*@ngInject*/
   constructor($scope, ShipmentItemByShipment, $filter, $q, $routeParams, selectionService) {
     $scope.selected = selectionService.selected
     $scope.selectShipmentItem = selectionService.selectShipmentItem

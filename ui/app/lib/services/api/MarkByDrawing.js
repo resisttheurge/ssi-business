@@ -1,5 +1,6 @@
 export default class MarkByDrawing {
-  constructor ($resource, endpointUrl) {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
 
     var service = this;
 
@@ -15,7 +16,7 @@ export default class MarkByDrawing {
         service.$scope.loading = false
       }
 
-    this.endpoint = $resource(endpointUrl + '/drawings/:drawingId/marks', {}, {
+    this.endpoint = $resource(endpoint + '/drawings/:drawingId/marks', {}, {
         query: { method: 'GET' }
       });
 

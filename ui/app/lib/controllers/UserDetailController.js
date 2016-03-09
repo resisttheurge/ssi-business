@@ -1,4 +1,5 @@
 export default class UserDetailController {
+  /*@ngInject*/
   constructor($scope, $routeParams, User) {
     User.endpoint.get({ userId: $routeParams.userId }, function (response) {
       $scope.loading = true

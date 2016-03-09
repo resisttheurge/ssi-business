@@ -1,4 +1,5 @@
 export default class ZoneListController {
+  /*@ngInject*/
   constructor($scope, ZoneByJob, $filter, $q, $routeParams, selectionService) {
     $scope.selected = selectionService.selected
     $scope.selectZone = selectionService.selectZone

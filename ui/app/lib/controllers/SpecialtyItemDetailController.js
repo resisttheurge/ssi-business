@@ -1,4 +1,5 @@
 export default class SpecialtyItemDetailController {
+  /*@ngInject*/
   constructor($scope, $routeParams, SpecialtyItem) {
     SpecialtyItem.endpoint.get({ specialtyItemId: $routeParams.specialtyItemId },
       function (response) {

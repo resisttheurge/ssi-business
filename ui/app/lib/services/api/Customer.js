@@ -1,5 +1,6 @@
 export default class Customer {
-  constructor ($resource, endpointUrl) {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
 
     var service = this;
 
@@ -15,7 +16,7 @@ export default class Customer {
         service.$scope.loading = false
       }
 
-    this.endpoint = $resource(endpointUrl + '/customers/:customerId', {}, {
+    this.endpoint = $resource(endpoint + '/customers/:customerId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ customerId: '' } }

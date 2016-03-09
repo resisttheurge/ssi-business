@@ -1,4 +1,5 @@
 export default class $ssiUser {
+  /*@ngInject*/
   constructor() {
     this.init()
   }
@@ -9,8 +10,8 @@ export default class $ssiUser {
     this.authenticated = false
   }
 
-  get reset() {
-    return (::this.init)
+  reset() {
+    return this.init()
   }
 
   hasRole(role) {

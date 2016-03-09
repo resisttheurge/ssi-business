@@ -1,4 +1,5 @@
 export default class CarrierDetailController {
+  /*@ngInject*/
   constructor($scope, $routeParams, Carrier) {
     Carrier.endpoint.get({ carrierId: $routeParams.carrierId }, function (response) {
       $scope.loading = true;

@@ -1,4 +1,5 @@
 export default class MarkListController {
+  /*@ngInject*/
   constructor($scope, MarkByDrawing, $filter, $q, $routeParams, selectionService) {
     $scope.selected = selectionService.selected
     $scope.selectMark = selectionService.selectMark

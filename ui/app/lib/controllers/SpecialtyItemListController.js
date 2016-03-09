@@ -1,4 +1,5 @@
 export default class SpecialtyItemListController {
+  /*@ngInject*/
   constructor($scope, SpecialtyItem, $filter, $q) {
     var orderBy = $filter('orderBy')
     $scope.query = {

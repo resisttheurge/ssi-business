@@ -1,4 +1,5 @@
 export default class SalespersonListController {
+  /*@ngInject*/
   constructor($scope, Salesperson, $filter, $q) {
     var orderBy = $filter('orderBy')
     $scope.query = {

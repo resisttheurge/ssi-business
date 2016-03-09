@@ -1,5 +1,10 @@
-import $ssiSelected from './$ssiSelected'
+import angular from 'angular'
 
-export default {
-  $ssiSelected
-}
+import $ssiSelected from './$ssiSelected'
+import $ssiUser from './$ssiUser'
+
+export default
+  angular
+    .module('ssi.services.state.old', [])
+    .service('$ssiSelected', $ssiSelected)
+    .service('$ssiUser', $ssiUser)

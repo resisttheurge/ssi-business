@@ -1,4 +1,5 @@
 export default class SystemTypeDetailController {
+  /*@ngInject*/
   constructor($scope, $routeParams, SystemType) {
     SystemType.endpoint.get({ systemTypeId: $routeParams.systemTypeId }, function (response) {
       $scope.loading = true

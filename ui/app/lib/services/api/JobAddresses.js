@@ -1,6 +1,7 @@
 export default class JobAddresses {
-  constructor ($q, $unpack, $resource, endpointUrl) {
-      this.endpoint = $resource(endpointUrl + '/jobs/:jobId/addresses', {}, {
+  /*@ngInject*/
+  constructor ($q, $unpack, $resource, endpoint) {
+      this.endpoint = $resource(endpoint + '/jobs/:jobId/addresses', {}, {
         create: { method: 'POST' },
         query: { method: 'GET' }
       })

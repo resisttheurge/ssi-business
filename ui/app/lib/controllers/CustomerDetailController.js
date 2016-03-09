@@ -1,4 +1,5 @@
 export default class CustomerDetailController {
+  /*@ngInject*/
   constructor($scope, $routeParams, Customer) {
     Customer.endpoint.get({ customerId: $routeParams.customerId }, function (response) {
       $scope.loading = true;

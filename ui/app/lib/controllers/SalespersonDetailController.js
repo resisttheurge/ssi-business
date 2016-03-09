@@ -1,4 +1,5 @@
 export default class SalespersonDetailController {
+  /*@ngInject*/
   constructor($scope, $routeParams, Salesperson) {
     Salesperson.endpoint.get({ salespersonId: $routeParams.salespersonId }, function (response) {
       $scope.loading = true

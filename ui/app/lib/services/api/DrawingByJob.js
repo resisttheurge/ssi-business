@@ -1,5 +1,6 @@
 export default class DrawingByJob {
-  constructor ($resource, endpointUrl) {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
 
     var service = this;
 
@@ -15,7 +16,7 @@ export default class DrawingByJob {
         service.$scope.loading = false
       }
 
-    this.endpoint = $resource(endpointUrl + '/jobs/:jobId/drawings', {}, {
+    this.endpoint = $resource(endpoint + '/jobs/:jobId/drawings', {}, {
         query: { method: 'GET' }
       });
 

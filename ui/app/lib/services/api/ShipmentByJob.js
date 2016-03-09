@@ -1,6 +1,7 @@
 export default class ShipmentByJob {
-  constructor ($resource, endpointUrl) {
-      this.endpoint = $resource(endpointUrl + '/jobs/:jobId/shipments', {}, {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
+      this.endpoint = $resource(endpoint + '/jobs/:jobId/shipments', {}, {
         query: { method: 'GET' }
       })
     }

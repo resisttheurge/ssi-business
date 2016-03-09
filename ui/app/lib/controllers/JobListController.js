@@ -1,4 +1,5 @@
 export default class JobListController {
+  /*@ngInject*/
   constructor($scope, Job, $filter, $q, selectionService, enums) {
     var orderBy = $filter('orderBy')
     $scope.prefixes = enums.prefixes;

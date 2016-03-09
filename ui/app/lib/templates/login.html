@@ -3,16 +3,16 @@
     <div class="login-input" layout-padding layout-gt-xs="row" layout-align="space-around stretch">
       <md-input-container class="md-block">
         <label>Username</label>
-        <input type="text" ng-model="user.username">
+        <input type="text" ng-model="$login.user.username">
       </md-input-container>
       <md-input-container class="md-block">
         <label>Password</label>
-        <input type="password" ng-model="user.password">
+        <input type="password" ng-model="$login.user.password">
       </md-input-container>
     </div>
     <div flex class="login-actions" layout="row" layout-align="end center">
-      <md-button class="md-raised md-primary" ng-click="login(user)"
-        ng-disabled="user.username.length == 0 || user.password.length == 0">
+      <md-button class="md-raised md-primary" ng-click="$login.login($login.user)"
+        ng-disabled="$login.user.username.length == 0 || $login.user.password.length == 0">
         Login
       </md-button>
     </div>

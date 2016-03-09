@@ -1,6 +1,7 @@
 export default class JobSchedules {
-  constructor ($q, $resource, $unpack, endpointUrl) {
-      this.endpoint = $resource(endpointUrl + '/jobs/:jobId/schedules', {}, {
+  /*@ngInject*/
+  constructor ($q, $resource, $unpack, endpoint) {
+      this.endpoint = $resource(endpoint + '/jobs/:jobId/schedules', {}, {
         query: { method: 'GET' }
       })
 

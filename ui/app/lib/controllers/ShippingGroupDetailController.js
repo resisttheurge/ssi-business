@@ -1,4 +1,5 @@
 export default class ShippingGroupDetailController {
+  /*@ngInject*/
   constructor($scope, $routeParams, ShippingGroup) {
     $scope.loading = true
     ShippingGroup.endpoint.get($routeParams, function (response) {

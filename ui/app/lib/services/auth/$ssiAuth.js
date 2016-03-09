@@ -1,6 +1,7 @@
 export default class $ssiAuth {
-  constructor($resource, endpointUrl) {
-    this.endpoint = $resource(endpointUrl + '/auth', {}, {
+  /*@ngInject*/
+  constructor($resource, endpoint) {
+    this.endpoint = $resource(endpoint + '/auth', {}, {
       login: { method: 'POST' }
     })
   }

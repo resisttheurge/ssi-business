@@ -1,5 +1,6 @@
 export default class Salesperson {
-  constructor ($resource, endpointUrl) {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
 
     var service = this;
 
@@ -15,7 +16,7 @@ export default class Salesperson {
         service.$scope.loading = false
       }
 
-    this.endpoint = $resource(endpointUrl + '/salespeople/:salespersonId', {}, {
+    this.endpoint = $resource(endpoint + '/salespeople/:salespersonId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ salespersonId: '' } }

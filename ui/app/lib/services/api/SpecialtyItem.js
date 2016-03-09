@@ -1,5 +1,6 @@
 export default class SpecialtyItem {
-  constructor ($resource, endpointUrl) {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
 
     var service = this;
 
@@ -15,7 +16,7 @@ export default class SpecialtyItem {
         service.$scope.loading = false
       }
 
-    this.endpoint = $resource(endpointUrl + '/specialty-items/:specialtyItemId', {}, {
+    this.endpoint = $resource(endpoint + '/specialty-items/:specialtyItemId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ specialtyItemId: '' } }

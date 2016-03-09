@@ -1,4 +1,5 @@
 export default class SystemTypeListController {
+  /*@ngInject*/
   constructor($scope, SystemType, $filter, $q) {
     var orderBy = $filter('orderBy')
     $scope.query = {

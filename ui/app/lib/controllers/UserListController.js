@@ -1,4 +1,5 @@
 export default class UserListController {
+  /*@ngInject*/
   constructor($scope, User, $filter, $q) {
     var orderBy = $filter('orderBy')
     $scope.query = {

@@ -1,4 +1,5 @@
 export default ($filter) => {
+  'ngInject'
   var limitTo = $filter('limitTo')
     , unwords = $filter('unwords')
   return function jobTitle(job) {

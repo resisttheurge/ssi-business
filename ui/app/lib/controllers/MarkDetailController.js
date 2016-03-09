@@ -1,4 +1,5 @@
 export default class MarkDetailController {
+  /*@ngInject*/
   constructor($scope, $routeParams, Mark) {
     Mark.endpoint.get($routeParams, function (response) {
       $scope.loading = true

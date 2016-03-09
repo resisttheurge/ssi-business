@@ -1,4 +1,5 @@
 export default class $ssiSelected {
+  /*@ngInject*/
   constructor() {
     this.init()
   }

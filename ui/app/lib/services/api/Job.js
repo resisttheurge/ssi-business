@@ -1,12 +1,13 @@
 export default class Job {
-  constructor ($q, $resource, $unpack, endpointUrl, JobAddresses, JobSchedules) {
+  /*@ngInject*/
+  constructor ($q, $resource, $unpack, endpoint, JobAddresses, JobSchedules) {
 
     var self = this
 
     self.addresses = JobAddresses
     self.schedules = JobSchedules
 
-    self.endpoint = $resource(endpointUrl + '/jobs/:jobId', {}, {
+    self.endpoint = $resource(endpoint + '/jobs/:jobId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ jobId: '' } }

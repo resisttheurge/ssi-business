@@ -1,5 +1,6 @@
 export default class ShippingGroup {
-  constructor ($resource, endpointUrl) {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
 
     var service = this;
 
@@ -15,7 +16,7 @@ export default class ShippingGroup {
         service.$scope.loading = false
       }
 
-    this.endpoint = $resource(endpointUrl + '/shipping-groups/:shippingGroupId', {}, {
+    this.endpoint = $resource(endpoint + '/shipping-groups/:shippingGroupId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ shippingGroupId: '' } }

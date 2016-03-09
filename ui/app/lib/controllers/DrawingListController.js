@@ -1,4 +1,5 @@
 export default class DrawingListController {
+  /*@ngInject*/
   constructor($scope, DrawingByJob, $filter, $q, $routeParams, selectionService) {
     $scope.selected = selectionService.selected
     $scope.selectDrawing = selectionService.selectDrawing

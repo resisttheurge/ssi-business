@@ -1,4 +1,5 @@
 export default class PartDetailController {
+  /*@ngInject*/
   constructor($scope, $routeParams, Part) {
     Part.endpoint.get({ partId: $routeParams.partId }, function (response) {
       $scope.loading = true

@@ -1,4 +1,5 @@
 export default class ZoneDetailController {
+  /*@ngInject*/
   constructor($scope, $routeParams, Zone) {
     $scope.loading = true
     Zone.endpoint.get($routeParams, function (response) {

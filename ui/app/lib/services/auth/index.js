@@ -1,2 +1,8 @@
+import angular from 'angular'
+
 import $ssiAuth from './$ssiAuth'
-import $ssiUser from './$ssiUser'
+
+export default
+  angular
+    .module('ssi.services.auth.old', [])
+    .service('$ssiAuth', $ssiAuth)

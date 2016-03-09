@@ -1,4 +1,5 @@
 export default class DrawingDetailController {
+  /*@ngInject*/
    constructor($scope, $routeParams, $q, Drawing, selectionService, SpecialtyItem, enums) {
      var self = this
      var promises = []

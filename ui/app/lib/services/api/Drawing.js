@@ -1,5 +1,6 @@
 export default class Drawing {
-  constructor ($resource, endpointUrl) {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
 
     var service = this;
 
@@ -15,7 +16,7 @@ export default class Drawing {
         service.$scope.loading = false
       }
 
-    this.endpoint = $resource(endpointUrl + '/drawings/:drawingId', {}, {
+    this.endpoint = $resource(endpoint + '/drawings/:drawingId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ drawingId: '' } }

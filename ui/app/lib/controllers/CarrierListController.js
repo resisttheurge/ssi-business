@@ -1,4 +1,5 @@
 export default class CarrierListController {
+  /*@ngInject*/
   constructor($scope, Carrier, $filter, $q) {
     var orderBy = $filter('orderBy')
     $scope.query = {

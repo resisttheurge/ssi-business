@@ -1,4 +1,5 @@
 export default class ManufacturerListController {
+  /*@ngInject*/
   constructor($scope, Manufacturer, $filter, $q) {
     var orderBy = $filter('orderBy')
     $scope.query = {

@@ -1,8 +1,7 @@
-// core controllers
-import AppController from './AppController'
-import LoginController from './LoginController'
+// that sweet sweet angular
+import angular from 'angular'
 
-// api model controllers
+import AppController from './AppController'
 import CarrierDetailController from './CarrierDetailController'
 import CarrierListController from './CarrierListController'
 import CustomerDetailController from './CustomerDetailController'
@@ -11,6 +10,7 @@ import DrawingDetailController from './DrawingDetailController'
 import DrawingListController from './DrawingListController'
 import JobDetailController from './JobDetailController'
 import JobListController from './JobListController'
+import LoginController from './LoginController'
 import ManufacturerDetailController from './ManufacturerDetailController'
 import ManufacturerListController from './ManufacturerListController'
 import MarkDetailController from './MarkDetailController'
@@ -41,11 +41,7 @@ import ZoneDetailController from './ZoneDetailController'
 import ZoneListController from './ZoneListController'
 
 export const controllers = {
-  // core controllers
   AppController,
-  LoginController,
-
-  // api model controllers
   CarrierDetailController,
   CarrierListController,
   CustomerDetailController,
@@ -54,6 +50,7 @@ export const controllers = {
   DrawingListController,
   JobDetailController,
   JobListController,
+  LoginController,
   ManufacturerDetailController,
   ManufacturerListController,
   MarkDetailController,
@@ -84,4 +81,44 @@ export const controllers = {
   ZoneListController
 }
 
-export default controllers
+export default
+  angular
+    .module('ssi.controllers.old', [])
+      .controller('AppController', AppController)
+      .controller('CarrierDetailController', CarrierDetailController)
+      .controller('CarrierListController', CarrierListController)
+      .controller('CustomerDetailController', CustomerDetailController)
+      .controller('CustomerListController', CustomerListController)
+      .controller('DrawingDetailController', DrawingDetailController)
+      .controller('DrawingListController', DrawingListController)
+      .controller('JobDetailController', JobDetailController)
+      .controller('JobListController', JobListController)
+      .controller('LoginController', LoginController)
+      .controller('ManufacturerDetailController', ManufacturerDetailController)
+      .controller('ManufacturerListController', ManufacturerListController)
+      .controller('MarkDetailController', MarkDetailController)
+      .controller('MarkListController', MarkListController)
+      .controller('PartDetailController', PartDetailController)
+      .controller('PartListController', PartListController)
+      .controller('PartOrderDetailController', PartOrderDetailController)
+      .controller('PartOrderListController', PartOrderListController)
+      .controller('SalespersonDetailController', SalespersonDetailController)
+      .controller('SalespersonListController', SalespersonListController)
+      .controller('ShipmentDetailController', ShipmentDetailController)
+      .controller('ShipmentListController', ShipmentListController)
+      .controller('ShipmentItemDetailController', ShipmentItemDetailController)
+      .controller('ShipmentItemListController', ShipmentItemListController)
+      .controller('ShippingGroupDetailController', ShippingGroupDetailController)
+      .controller('ShippingGroupListController', ShippingGroupListController)
+      .controller('ShippingGroupItemDetailController', ShippingGroupItemDetailController)
+      .controller('ShippingGroupItemListController', ShippingGroupItemListController)
+      .controller('SpecialtyItemDetailController', SpecialtyItemDetailController)
+      .controller('SpecialtyItemListController', SpecialtyItemListController)
+      .controller('SystemTypeDetailController', SystemTypeDetailController)
+      .controller('SystemTypeListController', SystemTypeListController)
+      .controller('UserDetailController', UserDetailController)
+      .controller('UserListController', UserListController)
+      .controller('VendorDetailController', VendorDetailController)
+      .controller('VendorListController', VendorListController)
+      .controller('ZoneDetailController', ZoneDetailController)
+      .controller('ZoneListController', ZoneListController)

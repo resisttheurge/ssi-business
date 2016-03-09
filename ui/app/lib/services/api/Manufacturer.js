@@ -1,6 +1,7 @@
 export default class Manufacturer {
-  constructor ($resource, endpointUrl) {
-      this.endpoint = $resource(endpointUrl + '/manufacturers/:manufacturerId', {}, {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
+      this.endpoint = $resource(endpoint + '/manufacturers/:manufacturerId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ manufacturerId: '' } }

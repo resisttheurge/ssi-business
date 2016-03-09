@@ -1,6 +1,7 @@
 export default class ShippingItemZone {
-  constructor ($resource, endpointUrl) {
-      this.endpoint = $resource(endpointUrl + '/shipping-item-zones/:shippingItemZoneId', {}, {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
+      this.endpoint = $resource(endpoint + '/shipping-item-zones/:shippingItemZoneId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ shippingItemZoneId: '' } }

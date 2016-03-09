@@ -1,3 +1,6 @@
+// can't stop won't stop
+import angular from 'angular'
+
 import home from './home'
 import login from './login'
 
@@ -79,4 +82,7 @@ export const urls = {
   zoneList
 }
 
-export default urls
+export default
+  angular
+    .module('ssi.templates.old', [])
+    .constant('urls', urls)

@@ -1,6 +1,7 @@
 export default class Schedule {
-  constructor ($resource, endpointUrl) {
-      this.endpoint = $resource(endpointUrl + '/schedules/:scheduleId', {}, {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
+      this.endpoint = $resource(endpoint + '/schedules/:scheduleId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ scheduleId: '' } }

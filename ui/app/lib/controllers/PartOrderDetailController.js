@@ -1,4 +1,5 @@
 export default class PartOrderDetailController {
+  /*@ngInject*/
   constructor($scope, $routeParams, PartOrder) {
     PartOrder.endpoint.get($routeParams, function (response) {
       $scope.loading = true

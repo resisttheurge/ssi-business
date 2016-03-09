@@ -1,6 +1,7 @@
 export default class AddendumByJobService {
-  constructor ($resource, endpointUrl) {
-    this.endpoint = $resource(endpointUrl + '/jobs/:jobId/addenda', {}, {
+  /*@ngInject*/
+  constructor ($resource, endpoint) {
+    this.endpoint = $resource(endpoint + '/jobs/:jobId/addenda', {}, {
       query: { method: 'GET' }
     })
   }
