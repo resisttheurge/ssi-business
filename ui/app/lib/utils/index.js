@@ -2,7 +2,6 @@
 import angular from 'angular'
 
 export strip from './strip'
-export unpack from './unpack'
 
 export default
   angular

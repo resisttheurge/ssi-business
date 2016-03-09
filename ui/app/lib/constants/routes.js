@@ -46,6 +46,7 @@ export const routes = {
   '/jobs': {
     templateUrl: urls.jobList,
     controller: controllers.JobListController.name,
+    controllerAs: '$jobs',
     access: {
       allowAnonymous: false,
       allowedRoles: ['ADMIN', 'EMPLOYEE']
