@@ -4,34 +4,29 @@ export default class AppController {
     $route, $routeParams, $location, $rootScope, $mdSidenav, $mdMedia,
     $ssiUser, $ssiSelected, routes
   ) {
-    // grab the user and logout function
+    // grab the user and selected states, and expose them to the scope
     this.user = $ssiUser
-    this.logout = function () {
-      $ssiUser.reset()
-      $location.path('/login')
-    }
-
     this.selected = $ssiSelected
 
-    this.isUserLoggedIn = function () {
-      return this.user.isLoggedIn
-    }
+    this.logout = () =>
+      $ssiUser.logout()
+        .then(() => $location.path('/login'))
 
-    this.isNavLockedOpen = function () {
-      return this.user.isLoggedIn && $mdMedia('gt-sm')
-    }
+    this.isNavLockedOpen = () =>
+      $ssiUser.isLoggedIn && $mdMedia('gt-sm')
 
-    // set up sidenav toggling
-    this.toggleSidenav = function () {
+    this.toggleSidenav = () =>
       $mdSidenav('sidenav').toggle()
-    }
 
     // handle login-based access restriction
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
-      if (next.access != undefined) {
-        if (!next.access.allowAnonymous) {
-          if (!$ssiUser.isLoggedIn || !$ssiUser.hasSomeRoles(next.access.allowedRoles)) {
+      console.log('[root scope] route change start')
+      if (next.$$route.access != undefined) {
+        if (!next.$$route.access.allowAnonymous) {
+          if (!$ssiUser.hasSomeRoles(next.$$route.access.allowedRoles)) {
+            event.preventDefault()
             $location.path('/login')
+            console.log('access denied [not logged in or disallowed role]')
           }
         }
       }
@@ -39,12 +34,15 @@ export default class AppController {
 
     // handle login-based access restriction
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
+      console.log('[root scope] location change start')
       for (var i in routes) {
         if (next.indexOf(i) != -1) {
           if (routes[i].access != undefined) {
             if (!routes[i].access.allowAnonymous) {
-              if (!$ssiUser.isLoggedIn || !$ssiUser.hasSomeRoles(routes[i].access.allowedRoles)) {
+              if (!$ssiUser.hasSomeRoles(routes[i].access.allowedRoles)) {
+                event.preventDefault()
                 $location.path('/login')
+                console.log('access denied [not logged in or disallowed role]')
               }
             }
           }

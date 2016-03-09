@@ -34,120 +34,114 @@
     <!-- index.js code will be injected into the <head/> element -->
   </head>
   <!-- 'ng-cloak' forces a style of 'display: none;' until angular is ready -->
-  <body ng-controller="AppController" ng-cloak layout="row">
-    <md-sidenav md-component-id="sidenav" md-is-locked-open="user.isLoggedIn && $mdMedia('gt-sm')">
+  <body ng-controller="AppController as $app" ng-cloak layout="row">
+    <md-sidenav md-component-id="sidenav" md-is-locked-open="$app.user.isLoggedIn && $mdMedia('gt-sm')">
       <md-toolbar layout="row">
         <div class="md-toolbar-tools">
-          <md-button class="md-icon-button" ng-show="user.isLoggedIn" hide-gt-sm ng-click="toggleSidenav()">
+          <md-button class="md-icon-button" ng-show="$app.user.isLoggedIn" hide-gt-sm ng-click="$app.toggleSidenav()">
             <md-icon class="material-icons">close</md-icon>
           </md-button>
         </div>
       </md-toolbar>
       <md-content flex>
         <md-list layout-padding>
-          <md-list-item>
-            <md-button ng-href="#/home" flex>
-              Home
-            </md-button>
-            <md-divider />
-          </md-list-item>
           <md-list-item layout="column" flex>
-            <md-button ng-href="#/jobs" flex>
+            <md-button ng-href="/jobs" flex>
               Jobs
             </md-button>
-            <label ng-show='selected.job'>
-              {{selected.job.id}}
+            <label ng-show="$app.selected.job">
+              {{$app.selected.job.id}}
             </label>
-            <md-button  ng-show="selected.job != undefined"
-                        ng-href="#/jobs/{{selected.job.id}}/drawings" flex>
+            <md-button  ng-show="$app.selected.job"
+                        ng-href="/jobs/{{$app.selected.job.id}}/drawings" flex>
               Drawings
             </md-button>
-            <md-button  ng-show="selected.drawing != undefined"
-                        ng-href="#/jobs/{{selected.job.id}}/drawings/{{selected.drawing.id}}/marks" flex>
+            <md-button  ng-show="$app.selected.drawing"
+                        ng-href="/jobs/{{$app.selected.job.id}}/drawings/{{$app.selected.drawing.id}}/marks" flex>
               Marks
             </md-button>
-            <md-button  ng-show="selected.job != undefined"
-                        ng-href="#/jobs/{{selected.job.id}}/shipping-groups" flex>
+            <md-button  ng-show="$app.selected.job"
+                        ng-href="/jobs/{{$app.selected.job.id}}/shipping-groups" flex>
               Shipping Groups
             </md-button>
-            <md-button  ng-show="selected.shippingGroup != undefined"
-                        ng-href="#/jobs/{{selected.job.id}}/shipping-groups/{{selected.shippingGroup.id}}/items" flex>
+            <md-button  ng-show="$app.selected.shippingGroup"
+                        ng-href="/jobs/{{$app.selected.job.id}}/shipping-groups/{{$app.selected.shippingGroup.id}}/items" flex>
               Shipping Group Items
             </md-button>
-            <md-button  ng-show="selected.job != undefined"
-                        ng-href="#/jobs/{{selected.job.id}}/part-orders" flex>
+            <md-button  ng-show="$app.selected.job"
+                        ng-href="/jobs/{{$app.selected.job.id}}/part-orders" flex>
               Part Orders
             </md-button>
-            <md-button  ng-show="selected.job != undefined"
-                        ng-href="#/jobs/{{selected.job.id}}/shipments" flex>
+            <md-button  ng-show="$app.selected.job"
+                        ng-href="/jobs/{{$app.selected.job.id}}/shipments" flex>
               Shipments
             </md-button>
-            <md-button  ng-show="selected.shipment != undefined"
-                        ng-href="#/jobs/{{selected.job.id}}/shipments/{{selected.shipment.id}}/items" flex>
+            <md-button  ng-show="$app.selected.shipment"
+                        ng-href="/jobs/{{$app.selected.job.id}}/shipments/{{$app.selected.shipment.id}}/items" flex>
               Shipment Items
             </md-button>
-            <md-button  ng-show="selected.job != undefined"
-                        ng-href="#/jobs/{{selected.job.id}}/zones" flex>
+            <md-button  ng-show="$app.selected.job"
+                        ng-href="/jobs/{{$app.selected.job.id}}/zones" flex>
               Zones
             </md-button>
             <md-divider />
           </md-list-item>
           <md-list-item>
-            <md-button ng-href="#/carriers" flex>
+            <md-button ng-href="/carriers" flex>
               Carriers
             </md-button>
             <md-divider />
           </md-list-item>
           <md-list-item>
-            <md-button ng-href="#/customers" flex>
+            <md-button ng-href="/customers" flex>
               Customers
             </md-button>
             <md-divider />
           </md-list-item>
           <md-list-item>
-            <md-button ng-href="#/manufacturers" flex>
+            <md-button ng-href="/manufacturers" flex>
               manufacturers
             </md-button>
             <md-divider />
           </md-list-item>
           <md-list-item>
-            <md-button ng-href="#/parts" flex>
+            <md-button ng-href="/parts" flex>
               parts
             </md-button>
             <md-divider />
           </md-list-item>
           <md-list-item>
-            <md-button ng-href="#/salespeople" flex>
+            <md-button ng-href="/salespeople" flex>
               salespeople
             </md-button>
             <md-divider />
           </md-list-item>
           <md-list-item>
-            <md-button ng-href="#/specialty-items" flex>
+            <md-button ng-href="/specialty-items" flex>
               specialty items
             </md-button>
             <md-divider />
           </md-list-item>
           <md-list-item>
-            <md-button ng-href="#/system-types" flex>
+            <md-button ng-href="/system-types" flex>
               system types
             </md-button>
             <md-divider />
           </md-list-item>
           <md-list-item>
-            <md-button ng-href="#/users" flex>
+            <md-button ng-href="/users" flex>
               users
             </md-button>
             <md-divider />
           </md-list-item>
           <md-list-item>
-            <md-button ng-href="#/vendors" flex>
+            <md-button ng-href="/vendors" flex>
               vendors
             </md-button>
             <md-divider />
           </md-list-item>
           <md-list-item>
-            <md-button ng-click="logout()" flex>
+            <md-button ng-click="$app.logout()" flex>
               Logout
             </md-button>
           </md-list-item>
@@ -157,13 +151,13 @@
     <div flex layout="column" tabindex="-1" role="main">
       <md-toolbar layout="row" layout-align="top center">
         <div class="md-toolbar-tools">
-          <md-button class="md-icon-button" ng-show="user.isLoggedIn" hide-gt-sm ng-click="toggleSidenav()">
+          <md-button class="md-icon-button" ng-show="user.isLoggedIn" hide-gt-sm ng-click="$app.toggleSidenav()">
             <md-icon class="material-icons">menu</md-icon>
           </md-button>
           <h3>SSI Business</h3>
         </div>
       </md-toolbar>
-      <ng-view flex layout="column" layout-fill/>
+      <ng-view flex layout="column" layout-fill></ng-view>
     </div>
   </body>
 </html>

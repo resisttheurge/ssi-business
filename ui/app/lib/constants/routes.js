@@ -44,7 +44,7 @@ export const routes = {
     }
   },
   '/jobs': {
-    templateUrl: urls.jobDetail,
+    templateUrl: urls.jobList,
     controller: controllers.JobListController.name,
     access: {
       allowAnonymous: false,

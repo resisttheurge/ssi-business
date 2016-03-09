@@ -11,8 +11,8 @@
       </md-input-container>
     </div>
     <div flex class="login-actions" layout="row" layout-align="end center">
-      <md-button class="md-raised md-primary" ng-click="$login.login($login.user)"
-        ng-disabled="$login.user.username.length == 0 || $login.user.password.length == 0">
+      <md-button class="md-raised md-primary" ng-click="$login.login()"
+        ng-disabled="$login.disabled">
         Login
       </md-button>
     </div>

@@ -1,7 +1,27 @@
 export default class $ssiUser {
   /*@ngInject*/
-  constructor() {
+  constructor($q, $ssiAuth) {
+
     this.init()
+
+    this.logout = () => $q((resolve, reject) => resolve(this.reset()))
+
+    this.login = ({ username, password }) =>
+      $ssiAuth.endpoint
+        .login({ username, password }).$promise
+        .then(response =>
+          $q((resolve, reject) =>
+            response.success
+              ? resolve(response.data)
+              : reject(response.message)
+          )
+        )
+        .then(data => {
+          this.username = data.username
+          this.roles = data.roles
+          this.authenticated = true
+          return data
+        })
   }
 
   init() {
@@ -18,12 +38,12 @@ export default class $ssiUser {
     return this.authenticated && this.roles.indexOf(role) >= 0
   }
 
-  hasSomeRoles(..._roles) {
+  hasSomeRoles(_roles) {
     return this.authenticated &&
       _roles.map(::this.hasRole).reduce((sum, next) => sum || next, false)
   }
 
-  hasAllRoles(..._roles) {
+  hasAllRoles(_roles) {
     return this.authenticated &&
       _roles.map(::this.hasRole).reduce((sum, next) => sum && next, true)
   }
