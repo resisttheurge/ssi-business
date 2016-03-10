@@ -93,7 +93,7 @@ export const routes = {
     }
   },
   '/jobs/:jobId/part-orders': {
-    templateUrl: urls.partLoaderList,
+    templateUrl: urls.partOrderList,
     controller: controllers.PartOrderListController.name,
     access: {
       allowAnonymous: false,
@@ -222,7 +222,7 @@ export const routes = {
   },
   '/salespeople': {
     templateUrl: urls.salespersonList,
-    controller: controllers.PartDetailController.name,
+    controller: controllers.SalespersonListController.name,
     access: {
       allowAnonymous: false,
       allowedRoles: ['ADMIN', 'EMPLOYEE']

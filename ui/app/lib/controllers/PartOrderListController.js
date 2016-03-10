@@ -1,8 +1,9 @@
-export default class PartOrderListController {
+import { ListController } from 'utils'
+
+export default class PartOrderListController extends ListController {
   /*@ngInject*/
-  constructor($scope, PartOrderByJob, $filter, $q, $routeParams, selectionService) {
-    $scope.selected = selectionService.selected
-    $scope.selectPartOrder = selectionService.selectPartOrder
+  constructor($scope, PartOrderByJob, $filter, $q, $routeParams) {
+    super()
     var orderBy = $filter('orderBy')
     $scope.query = {
       page: 1,

@@ -1,6 +1,9 @@
-export default class ManufacturerDetailController {
+import { DetailController } from 'utils'
+
+export default class ManufacturerDetailController extends DetailController {
   /*@ngInject*/
   constructor($scope, $routeParams, Manufacturer) {
+    super()
     Manufacturer.endpoint.get({ manufacturerId: $routeParams.manufacturerId }, function (response) {
       $scope.loading = true
       if (response.success) {

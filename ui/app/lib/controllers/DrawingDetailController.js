@@ -1,6 +1,9 @@
-export default class DrawingDetailController {
+import { DetailController } from 'utils'
+
+export default class DrawingDetailController extends DetailController {
   /*@ngInject*/
-   constructor($scope, $routeParams, $q, Drawing, selectionService, SpecialtyItem, enums) {
+   constructor($scope, $routeParams, $q, Drawing, SpecialtyItem, enums) {
+     super()
      var self = this
      var promises = []
 

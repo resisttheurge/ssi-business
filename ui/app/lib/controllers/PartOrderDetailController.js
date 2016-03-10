@@ -1,6 +1,9 @@
-export default class PartOrderDetailController {
+import { DetailController } from 'utils'
+
+export default class PartOrderDetailController extends DetailController {
   /*@ngInject*/
   constructor($scope, $routeParams, PartOrder) {
+    super()
     PartOrder.endpoint.get($routeParams, function (response) {
       $scope.loading = true
       if (response.success) {

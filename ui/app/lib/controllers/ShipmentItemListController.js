@@ -1,8 +1,9 @@
-export default class ShipmentItemListController {
+import { ListController } from 'utils'
+
+export default class ShipmentItemListController extends ListController {
   /*@ngInject*/
-  constructor($scope, ShipmentItemByShipment, $filter, $q, $routeParams, selectionService) {
-    $scope.selected = selectionService.selected
-    $scope.selectShipmentItem = selectionService.selectShipmentItem
+  constructor($scope, ShipmentItemByShipment, $filter, $q, $routeParams) {
+    super()
     var orderBy = $filter('orderBy')
     $scope.query = {
       page: 1,

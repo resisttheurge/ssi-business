@@ -7,10 +7,9 @@ export default () =>
         case 'COMPLETED': return 'Completed'
         case 'CANCELLED': return 'Cancelled'
         case 'DELETED': return 'Deleted'
+        default: return undefined
       }
     } else {
-      throw new TypeError(strip`
-        | input to the jobStatus filter must be a job object with a valid status field
-        `)
+      return undefined
     }
   }

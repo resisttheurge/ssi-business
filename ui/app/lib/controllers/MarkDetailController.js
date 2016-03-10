@@ -1,6 +1,9 @@
-export default class MarkDetailController {
+import { DetailController } from 'utils'
+
+export default class MarkDetailController extends DetailController {
   /*@ngInject*/
   constructor($scope, $routeParams, Mark) {
+    super()
     Mark.endpoint.get($routeParams, function (response) {
       $scope.loading = true
       if (response.success) {

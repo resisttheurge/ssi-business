@@ -1,6 +1,9 @@
-export default class SystemTypeListController {
+import { ListController } from 'utils'
+
+export default class SystemTypeListController extends ListController {
   /*@ngInject*/
   constructor($scope, SystemType, $filter, $q) {
+    super()
     var orderBy = $filter('orderBy')
     $scope.query = {
       page: 1,

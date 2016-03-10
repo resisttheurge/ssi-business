@@ -1,6 +1,9 @@
-export default class ZoneDetailController {
+import { DetailController } from 'utils'
+
+export default class ZoneDetailController extends DetailController {
   /*@ngInject*/
   constructor($scope, $routeParams, Zone) {
+    super()
     $scope.loading = true
     Zone.endpoint.get($routeParams, function (response) {
       if (response.success) {

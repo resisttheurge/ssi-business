@@ -1,10 +1,12 @@
-export default class JobDetailController {
+import { DetailController } from 'utils'
+
+export default class JobDetailController extends DetailController {
   /*@ngInject*/
   constructor(
     $scope, $routeParams, $q, Address, Customer, Job, Schedule,
     Shop, Salesperson, enums, $filter, $unpack
   ) {
-
+    super()
     function filter(expression, comparator) {
       return function (array) {
         return $q(function (resolve, reject) {

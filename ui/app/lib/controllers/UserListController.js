@@ -1,6 +1,9 @@
-export default class UserListController {
+import { ListController } from 'utils'
+
+export default class UserListController extends ListController {
   /*@ngInject*/
   constructor($scope, User, $filter, $q) {
+    super()
     var orderBy = $filter('orderBy')
     $scope.query = {
       page: 1,

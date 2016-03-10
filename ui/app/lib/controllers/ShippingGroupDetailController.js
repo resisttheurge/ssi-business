@@ -1,6 +1,9 @@
-export default class ShippingGroupDetailController {
+import { DetailController } from 'utils'
+
+export default class ShippingGroupDetailController extends DetailController {
   /*@ngInject*/
   constructor($scope, $routeParams, ShippingGroup) {
+    super()
     $scope.loading = true
     ShippingGroup.endpoint.get($routeParams, function (response) {
       if (response.success) {

@@ -1,6 +1,9 @@
-export default class SpecialtyItemDetailController {
+import { DetailController } from 'utils'
+
+export default class SpecialtyItemDetailController extends DetailController {
   /*@ngInject*/
   constructor($scope, $routeParams, SpecialtyItem) {
+    super()
     SpecialtyItem.endpoint.get({ specialtyItemId: $routeParams.specialtyItemId },
       function (response) {
         $scope.loading = true

@@ -18,7 +18,7 @@
           <td md-cell>{{shipment.number}}</td>
           <!-- more cells go here -->
           <td md-cell>
-            <md-button class="md-default md-icon-button" ng-href="#/jobs/{{selected.job.id}}/shipments/{{shipment.id}}" ng-click="selectShipment(shipment)" md-whiteframe="1">
+            <md-button class="md-default md-icon-button" ng-href="/jobs/{{$app.selected.job.id}}/shipments/{{shipment.id}}" ng-click="$app.selected.shipment = shipment" md-whiteframe="1">
               <md-icon class="material icons">edit</md-icon>
             </md-button>
           </td>

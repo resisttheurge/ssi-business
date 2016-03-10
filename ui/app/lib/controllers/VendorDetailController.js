@@ -1,6 +1,9 @@
-export default class VendorDetailController {
+import { DetailController } from 'utils'
+
+export default class VendorDetailController extends DetailController {
   /*@ngInject*/
   constructor($scope, $routeParams, Vendor) {
+    super()
     Vendor.endpoint.get({ vendorId: $routeParams.vendorId }, function (response) {
       $scope.loading = true
       if (response.success) {

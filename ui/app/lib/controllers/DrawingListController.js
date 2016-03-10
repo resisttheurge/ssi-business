@@ -1,8 +1,9 @@
-export default class DrawingListController {
+import { ListController } from 'utils'
+
+export default class DrawingListController extends ListController {
   /*@ngInject*/
-  constructor($scope, DrawingByJob, $filter, $q, $routeParams, selectionService) {
-    $scope.selected = selectionService.selected
-    $scope.selectDrawing = selectionService.selectDrawing
+  constructor($scope, DrawingByJob, $filter, $q, $routeParams) {
+    super()
     var orderBy = $filter('orderBy')
     $scope.query = {
       page: 1,

@@ -1,6 +1,9 @@
-export default class JobListController {
+import { ListController } from 'utils'
+
+export default class JobListController extends ListController {
   /*@ngInject*/
   constructor($q, $filter, $scope, Job, enums) {
+    super()
     this.search = {}
     this.total = 0
     this.query = {

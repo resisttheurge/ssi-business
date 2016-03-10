@@ -1,7 +1,10 @@
-export default class LoginController {
+import { AbstractController } from 'utils'
+
+export default class LoginController extends AbstractController {
 
   /*@ngInject*/
   constructor($location, $mdToast, $ssiUser, $ssiAuth) {
+    super()
     this.user = {
       username: '',
       password: ''

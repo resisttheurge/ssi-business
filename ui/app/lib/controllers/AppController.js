@@ -1,9 +1,13 @@
-export default class AppController {
+import { AbstractController } from 'utils'
+
+export default class AppController extends AbstractController {
   /*@ngInject*/
   constructor(
     $route, $routeParams, $location, $rootScope, $mdSidenav, $mdMedia,
     $ssiUser, $ssiSelected, routes
   ) {
+    super()
+
     // grab the user and selected states, and expose them to the scope
     this.user = $ssiUser
     this.selected = $ssiSelected
@@ -21,7 +25,7 @@ export default class AppController {
     // handle login-based access restriction
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
       console.log('[root scope] route change start')
-      if (next.$$route.access != undefined) {
+      if (next.$$route && next.$$route.access != undefined) {
         if (!next.$$route.access.allowAnonymous) {
           if (!$ssiUser.hasSomeRoles(next.$$route.access.allowedRoles)) {
             event.preventDefault()

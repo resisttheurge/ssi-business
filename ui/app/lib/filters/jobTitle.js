@@ -9,7 +9,7 @@ export default ($filter) => {
         , label = job.identifier.label
       return unwords([prefix, limitTo(year, -2), label], '-')
     } else {
-      throw new TypeError('input to filter `jobTitle` must be a `job` object with a valid `identifier` object')
+      return undefined
     }
   }
 }

@@ -1,6 +1,9 @@
-export default class SpecialtyItemListController {
+import { ListController } from 'utils'
+
+export default class SpecialtyItemListController extends ListController {
   /*@ngInject*/
   constructor($scope, SpecialtyItem, $filter, $q) {
+    super()
     var orderBy = $filter('orderBy')
     $scope.query = {
       page: 1,

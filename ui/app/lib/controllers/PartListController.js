@@ -1,6 +1,9 @@
-export default class PartListController {
+import { ListController } from 'utils'
+
+export default class PartListController extends ListController {
   /*@ngInject*/
   constructor($scope, Part, $filter, $q) {
+    super()
     var orderBy = $filter('orderBy')
     $scope.query = {
       page: 1,

@@ -1,6 +1,9 @@
-export default class UserDetailController {
+import { DetailController } from 'utils'
+
+export default class UserDetailController extends DetailController {
   /*@ngInject*/
   constructor($scope, $routeParams, User) {
+    super()
     User.endpoint.get({ userId: $routeParams.userId }, function (response) {
       $scope.loading = true
       if (response.success) {

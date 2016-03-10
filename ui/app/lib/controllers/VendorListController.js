@@ -1,6 +1,9 @@
-export default class VendorListController {
+import { ListController } from 'utils'
+
+export default class VendorListController extends ListController {
   /*@ngInject*/
   constructor($scope, Vendor, $filter, $q) {
+    super()
     var orderBy = $filter('orderBy')
     $scope.query = {
       page: 1,

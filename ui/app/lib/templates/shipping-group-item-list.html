@@ -18,7 +18,7 @@
           <td md-cell>{{shippingGroupItem.label}}</td>
           <!-- more cells go here -->
           <td md-cell>
-            <md-button class="md-default md-icon-button" ng-href="#/jobs/{{selected.job.id}}/shipping-groups/{{selected.shippingGroup.id}}/items/{{shippingGroupItem.id}}" md-whiteframe="1">
+            <md-button class="md-default md-icon-button" ng-href="/jobs/{{$app.selected.job.id}}/shipping-groups/{{$app.selected.shippingGroup.id}}/items/{{shippingGroupItem.id}}" md-whiteframe="1">
               <md-icon class="material icons">edit</md-icon>
             </md-button>
           </td>

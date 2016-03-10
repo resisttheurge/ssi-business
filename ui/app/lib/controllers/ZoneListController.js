@@ -1,8 +1,9 @@
-export default class ZoneListController {
+import { ListController } from 'utils'
+
+export default class ZoneListController extends ListController {
   /*@ngInject*/
-  constructor($scope, ZoneByJob, $filter, $q, $routeParams, selectionService) {
-    $scope.selected = selectionService.selected
-    $scope.selectZone = selectionService.selectZone
+  constructor($scope, ZoneByJob, $filter, $q, $routeParams) {
+    super()
     var orderBy = $filter('orderBy')
     $scope.query = {
       page: 1,

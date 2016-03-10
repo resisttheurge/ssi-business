@@ -1,8 +1,9 @@
-export default class MarkListController {
+import { ListController } from 'utils'
+
+export default class MarkListController extends ListController {
   /*@ngInject*/
-  constructor($scope, MarkByDrawing, $filter, $q, $routeParams, selectionService) {
-    $scope.selected = selectionService.selected
-    $scope.selectMark = selectionService.selectMark
+  constructor($scope, MarkByDrawing, $filter, $q, $routeParams) {
+    super()
     var orderBy = $filter('orderBy')
     $scope.query = {
       page: 1,

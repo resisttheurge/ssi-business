@@ -1,6 +1,9 @@
-export default class CarrierListController {
+import { ListController } from 'utils'
+
+export default class CarrierListController extends ListController {
   /*@ngInject*/
   constructor($scope, Carrier, $filter, $q) {
+    super()
     var orderBy = $filter('orderBy')
     $scope.query = {
       page: 1,
