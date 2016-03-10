@@ -1,6 +1,8 @@
-export default class Job {
+import { ApiService } from 'utils'
+export default class Job extends ApiService {
   /*@ngInject*/
   constructor ($q, $resource, $unpack, endpoint, JobAddresses, JobSchedules) {
+    super()
 
     var self = this
 

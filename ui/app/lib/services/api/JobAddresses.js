@@ -1,12 +1,14 @@
-export default class JobAddresses {
+import { ApiService } from 'utils'
+export default class JobAddresses extends ApiService {
   /*@ngInject*/
   constructor ($q, $unpack, $resource, endpoint) {
-      this.endpoint = $resource(endpoint + '/jobs/:jobId/addresses', {}, {
+    super()
+    this.endpoint = $resource(endpoint + '/jobs/:jobId/addresses', {}, {
         create: { method: 'POST' },
         query: { method: 'GET' }
       })
 
-      this.get = function (job) {
+    this.get = function (job) {
         return $q(function (resolve, reject) {
           if (!job || !job.id) {
             return reject('cannot call `JobAddresses.get` without an initialized job object as a parameter')
@@ -16,7 +18,7 @@ export default class JobAddresses {
         })
       }
 
-      this.create = function (job, addresses) {
+    this.create = function (job, addresses) {
         return $q(function (resolve, reject) {
           if (!job || !job.id) {
             return reject('cannot call `JobAddresses.create` without an initialized job object as a parameter')
@@ -25,5 +27,5 @@ export default class JobAddresses {
           }
         })
       }
-    }
+  }
 }

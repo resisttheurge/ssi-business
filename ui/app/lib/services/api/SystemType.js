@@ -1,10 +1,12 @@
-export default class SystemType {
+import { ApiService } from 'utils'
+export default class SystemType extends ApiService {
   /*@ngInject*/
   constructor ($resource, endpoint) {
-      this.endpoint = $resource(endpoint + '/system-types/:systemTypeId', {}, {
+    super()
+    this.endpoint = $resource(endpoint + '/system-types/:systemTypeId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ systemTypeId: '' } }
       })
-    }
+  }
 }

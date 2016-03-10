@@ -1,10 +1,12 @@
-export default class SystemTypeByJob {
+import { ApiService } from 'utils'
+export default class SystemTypeByJob extends ApiService {
   /*@ngInject*/
   constructor ($resource, endpoint) {
-      this.endpoint = $resource(endpoint + '/jobs/:jobId/system-types', {}, {
+    super()
+    this.endpoint = $resource(endpoint + '/jobs/:jobId/system-types', {}, {
         add: { method: 'POST' },
         remove: { method: 'DELETE' },
         query: { method: 'GET' }
       })
-    }
+  }
 }

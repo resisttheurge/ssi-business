@@ -1,6 +1,8 @@
-export default class DrawingByJob {
+import { ApiService } from 'utils'
+export default class DrawingByJob extends ApiService {
   /*@ngInject*/
   constructor ($resource, endpoint) {
+    super()
 
     var service = this;
 

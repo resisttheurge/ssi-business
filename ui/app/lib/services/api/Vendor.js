@@ -1,10 +1,12 @@
-export default class Vendor {
+import { ApiService } from 'utils'
+export default class Vendor extends ApiService {
   /*@ngInject*/
   constructor ($resource, endpoint) {
-      this.endpoint = $resource(endpoint + '/vendors/:vendorId', {}, {
+    super()
+    this.endpoint = $resource(endpoint + '/vendors/:vendorId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ vendorId: '' } }
       })
-    }
+  }
 }

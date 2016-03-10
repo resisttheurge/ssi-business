@@ -7,7 +7,7 @@ export default class ZoneDetailController extends DetailController {
     $scope.loading = true
     Zone.endpoint.get($routeParams, function (response) {
       if (response.success) {
-        $scope.zoneId = response.data
+        $scope.zone = response.data
       } else {
         $scope.error = true
         $scope.message = response.message

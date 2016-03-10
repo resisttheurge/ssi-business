@@ -1,8 +1,10 @@
-export default class ShippingGroupItemByShippingGroup {
+import { ApiService } from 'utils'
+export default class ShippingGroupItemByShippingGroup extends ApiService {
   /*@ngInject*/
   constructor ($resource, endpoint) {
-      this.endpoint = $resource(endpoint + '/shipping-groups/:shippingGroupId/items', {}, {
+    super()
+    this.endpoint = $resource(endpoint + '/shipping-groups/:shippingGroupId/items', {}, {
         query: { method: 'GET' }
       })
-    }
   }
+}

@@ -5,7 +5,7 @@ export default class ShippingGroupItemDetailController extends DetailController 
   constructor($scope, $routeParams, ShippingGroupItem) {
     super()
     $scope.loading = true
-    ShippingGroupItem.endpoint.get({ shippingGroupItemId: $routeParams.shippingGroupItemId },
+    ShippingGroupItem.endpoint.get($routeParams,
       function (response) {
         if (response.success) {
           $scope.shippingGroupItem = response.data

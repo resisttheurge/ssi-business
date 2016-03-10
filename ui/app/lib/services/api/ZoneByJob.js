@@ -1,8 +1,10 @@
-export default class ZoneByJob {
+import { ApiService } from 'utils'
+export default class ZoneByJob extends ApiService {
   /*@ngInject*/
   constructor($resource, endpoint) {
-      this.endpoint = $resource(endpoint + '/jobs/:jobId/zones', {}, {
+    super()
+    this.endpoint = $resource(endpoint + '/jobs/:jobId/zones', {}, {
         query: { method: 'GET' }
       })
-    }
   }
+}

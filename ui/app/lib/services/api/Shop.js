@@ -1,6 +1,8 @@
-export default class Shop {
+import { ApiService } from 'utils'
+export default class Shop extends ApiService {
   /*@ngInject*/
   constructor ($resource, endpoint) {
+    super()
 
     var service = this;
 

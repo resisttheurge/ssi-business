@@ -1,6 +1,8 @@
-export default class Salesperson {
+import { ApiService } from 'utils'
+export default class Salesperson extends ApiService {
   /*@ngInject*/
   constructor ($resource, endpoint) {
+    super()
 
     var service = this;
 

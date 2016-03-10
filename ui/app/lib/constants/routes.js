@@ -132,7 +132,7 @@ export const routes = {
       allowedRoles: ['ADMIN', 'EMPLOYEE']
     }
   },
-  '/jobs/:jobId/shipping-groups/:shippingGroupId/items/:itemId': {
+  '/jobs/:jobId/shipping-groups/:shippingGroupId/items/:shippingGroupItemId': {
     templateUrl: urls.shippingGroupItemDetail,
     controller: controllers.ShippingGroupItemDetailController.name,
     access: {

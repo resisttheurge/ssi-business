@@ -7,6 +7,9 @@ export AbstractController from './AbstractController'
 export DetailController from './DetailController'
 export ListController from './ListController'
 
+export AbstractService from './AbstractService'
+export ApiService from './ApiService'
+
 export default
   angular
     .module('ssi.utils', [])

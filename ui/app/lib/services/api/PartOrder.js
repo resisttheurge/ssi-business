@@ -1,10 +1,12 @@
-export default class PartOrder {
+import { ApiService } from 'utils'
+export default class PartOrder extends ApiService {
   /*@ngInject*/
   constructor ($resource, endpoint) {
-      this.endpoint = $resource(endpoint + '/part-orders/:partOrderId', {}, {
+    super()
+    this.endpoint = $resource(endpoint + '/part-orders/:partOrderId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ partOrderId: '' } }
       })
-    }
+  }
 }

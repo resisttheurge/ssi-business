@@ -1,6 +1,8 @@
-export default class SpecialtyItem {
+import { ApiService } from 'utils'
+export default class SpecialtyItem extends ApiService {
   /*@ngInject*/
   constructor ($resource, endpoint) {
+    super()
 
     var service = this;
 

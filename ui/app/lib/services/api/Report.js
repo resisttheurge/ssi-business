@@ -1,8 +1,10 @@
-export default class Report {
+import { ApiService } from 'utils'
+export default class Report extends ApiService {
   /*@ngInject*/
   constructor ($resource, endpoint) {
-      this.endpoint = $resource(endpoint + '/reports/:reportTitle', {}, {
+    super()
+    this.endpoint = $resource(endpoint + '/reports/:reportTitle', {}, {
         generate: { method: 'POST' }
       })
-    }
+  }
 }

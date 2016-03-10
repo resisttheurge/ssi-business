@@ -1,8 +1,10 @@
-export default class ShippingItemZoneByShippingItem {
+import { ApiService } from 'utils'
+export default class ShippingItemZoneByShippingItem extends ApiService {
   /*@ngInject*/
   constructor ($resource, endpoint) {
-      this.endpoint = $resource(endpoint + '/shipping-items/:shippingItemId/zones', {}, {
+    super()
+    this.endpoint = $resource(endpoint + '/shipping-items/:shippingItemId/zones', {}, {
         query: { method: 'GET' }
       })
-    }
   }
+}

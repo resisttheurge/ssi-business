@@ -1,6 +1,9 @@
-export default class $ssiUser {
+import { AbstractService } from 'utils'
+
+export default class $ssiUser extends AbstractService {
   /*@ngInject*/
   constructor($q, $ssiAuth) {
+    super()
 
     this.init()
 
