@@ -1,3 +1,3 @@
-export const endpoint = 'http://10.1.1.136/api'
+export const endpoint = 'http://localhost/api'
 
 export default endpoint

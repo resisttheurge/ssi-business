@@ -4,7 +4,6 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const NgAnnotatePlugin = require('ng-annotate-webpack-plugin')
 
 // flag indicating production environment (npm build lifecycle event)
 const production = process.env.npm_lifecycle_event === 'build'
@@ -19,8 +18,8 @@ const entry = {
 
 // output options and file(s)
 const output = {
-  path: path.resolve(__dirname, 'dist/'),
-  publicPath: production ? path.resolve(__dirname, 'dist/') : 'http://localhost:8080/',
+  path: path.resolve(__dirname, 'dist', 'app'),
+  publicPath: production ? 'http://10.1.1.136/' : 'http://localhost:8080/',
   filename: '[name].[hash].js',
   chunkFilename: '[name].[hash].js'
 }
@@ -86,17 +85,17 @@ const _module = {
 
   loaders: [{
     test: /\.js$/,
-    include: [/app/, /lib/, /assets/],
+    include: [/app/, /assets/],
     exclude: /node_modules/,
-    loaders: ['babel']
+    loaders: ['ng-annotate', 'babel']
   }, {
     test: /\.html$/,
-    include: [/app/, /lib/, /assets/],
+    include: [/app/, /assets/],
     exclude: [/node_modules/, path.resolve(__dirname, 'app/index.html')],
     loaders: ['ngtemplate', 'html']
   }, {
     test: /\.css$/,
-    include: [/app/, /lib/, /assets/, /node_modules/],
+    include: [/app/, /assets/, /node_modules/],
     loaders: [
       'classnames',
       ExtractTextPlugin.extract(
@@ -106,11 +105,11 @@ const _module = {
     ]
   }, {
     test: /\.s[ca]ss$/,
-    include: [/app/, /lib/, /assets/, /node_modules/],
+    include: [/app/, /assets/, /node_modules/],
     loaders: ['classnames', ExtractTextPlugin.extract('style', 'css?sourceMap!sass')]
   }, {
     test: /\.less$/,
-    include: [/app/, /lib/, /assets/, /node_modules/],
+    include: [/app/, /assets/, /node_modules/],
     loaders: ['classnames', ExtractTextPlugin.extract('style', 'css?sourceMap!less')]
   }, {
     test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|ico|json)$/,
@@ -124,26 +123,21 @@ const prodPlugins =
   production ? [
     new webpack.NoErrorsPlugin(),
     new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin()
+    new webpack.optimize.UglifyJsPlugin({
+      mangle: false
+    })
   ] : []
 
 const plugins = [
-  ...prodPlugins,
 
   // safe reliance on filename hashing
   new webpack.optimize.OccurenceOrderPlugin(),
-
-  new NgAnnotatePlugin({
-    add: true,
-    remove: true,
-    single_quotes: true
-  }),
   new HtmlWebpackPlugin({
     template: `html?interpolate!${path.resolve(__dirname, 'app/index.html')}`,
     inject: 'head'
   }),
   new ExtractTextPlugin('[name].[hash].css'),
-
+  ...prodPlugins,
 ]
 
 const devServer = {

@@ -6,7 +6,5 @@ import akka.http.scaladsl.server.Route
 
 object AppRoute extends BaseRoute {
   override def internal: Route =
-    pathEndOrSingleSlash {
-      getFromResource("app/index.html")
-    } ~ getFromResourceDirectory("app")
+    getFromResourceDirectory("app") ~ getFromResource("app/index.html")
 }

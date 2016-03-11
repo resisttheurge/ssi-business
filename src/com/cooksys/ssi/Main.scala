@@ -21,7 +21,7 @@ object Main extends App {
   implicit val dispatcher = system.dispatcher
   implicit val materializer = ActorMaterializer()
 
-  val bindingFuture = Http().bindAndHandle(AppRoute ~ ApiRoute("api"), properties.bind.interface(), properties.bind.port())
+  val bindingFuture = Http().bindAndHandle(ApiRoute("api") ~ AppRoute, properties.bind.interface(), properties.bind.port())
 
   log.info(s"Server online.")
 
