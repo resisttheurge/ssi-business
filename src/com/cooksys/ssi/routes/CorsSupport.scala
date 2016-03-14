@@ -27,7 +27,7 @@ trait CorsSupport {
     .newBuilder().handle {
     case MethodRejection(supported) =>
       complete(HttpResponse().withHeaders(
-        `Access-Control-Allow-Methods`(OPTIONS, supported) ::
+        `Access-Control-Allow-Methods`(OPTIONS, GET, POST, PATCH, PUT, DELETE) ::
           allowOrigin ::
           optionsCorsHeaders
       ))

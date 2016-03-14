@@ -98,11 +98,7 @@ trait RowConversions {
     JobsRow(
       id = job.id.getOrElse(-1),
       prefix = job.identifier.prefix,
-      year = {
-        val cal = Calendar.getInstance()
-        cal.set(Calendar.YEAR, job.identifier.year)
-        new Date(cal.getTime.getTime)
-      },
+      year = job.identifier.year,
       label = job.identifier.label,
       status = job.status,
       description = job.description,
@@ -121,11 +117,7 @@ trait RowConversions {
       id = Some(row.id),
       identifier = JobIdentifier(
         prefix = row.prefix,
-        year = {
-          val cal = Calendar.getInstance()
-          cal.setTime(row.year)
-          cal.get(Calendar.YEAR)
-        },
+        year = row.year,
         label = row.label
       ),
       status = row.status,
@@ -141,11 +133,7 @@ trait RowConversions {
       id = Some(row._1.id),
       identifier = JobIdentifier(
         prefix = row._1.prefix,
-        year = {
-          val cal = Calendar.getInstance()
-          cal.setTime(row._1.year)
-          cal.get(Calendar.YEAR)
-        },
+        year = row._1.year,
         label = row._1.label
       ),
       status = row._1.status,
@@ -495,5 +483,5 @@ trait RowConversions {
       drawingId = siz._1.drawingId,
       label = siz._1.label
     )
-  
+
 }
