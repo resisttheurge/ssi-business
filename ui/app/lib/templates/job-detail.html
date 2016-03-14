@@ -1,10 +1,12 @@
-    <md-toolbar>
-      <div class="md-toolbar-tools">
-        <h2>{{job | jobTitle}}</h2>
-      </div>
-    </md-toolbar>
-    <md-progress-linear md-mode="{{mode}}"></md-progress-linear>
-    <form name="jobForm" layout="column" layout-padding ng-hide="{{mode}}">
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h2>{{job | jobTitle}}</h2>
+    <span flex></span>
+    <md-button class="md-raised" ng-disabled="jobForm.$pristine" ng-click="update(job)">Save Changes!</md-button>
+  </div>
+</md-toolbar>
+<md-progress-linear md-mode="{{mode}}"></md-progress-linear>
+<form name="jobForm" layout="column" layout-padding ng-hide="{{mode}}">
 
       <!-- <div layout-gt-sm="row">
         <md-autocomplete required
