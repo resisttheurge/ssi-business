@@ -45,26 +45,7 @@ const resolve = {
     'assets',
 
     // javascript library
-    'lib',
-
-    // angular templates
-    'templates',
-
-    // angular injectables
-    'animations',
-    'components',
-    'configs', // scripts executed by angular.module(...).config()
-    'constants',
-    'controllers',
-    'decorators',
-    'directives',
-    'factories',
-    'filters',
-    'modules',
-    'providers',
-    'scripts', // scripts executed by angular.module(...).run()
-    'services',
-    'values'
+    'lib'
   ]
 }
 

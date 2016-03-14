@@ -1,0 +1,31 @@
+<div>
+  <md-toolbar class="md-default md-table-toolbar">
+    <div class="md-toolbar-tools">
+      <h2>Drawings</h2>
+      <!-- search etc goes here -->
+    </div>
+  </md-toolbar>
+  <md-table-container>
+    <table md-table md-progress="promise">
+      <thead md-head md-order="query.order" md-on-reorder="onReorder">
+        <tr md-row>
+          <th md-column>Drawing</th>
+          <!-- more columns go here -->
+        </tr>
+      </thead>
+      <tbody layout-padding md-body>
+        <tr md-row ng-repeat="drawing in drawings">
+          <td md-cell>{{drawing.label}}</td>
+          <!-- more cells go here -->
+          <td md-cell>
+            <md-button class="md-default md-icon-button" ng-href="/jobs/{{$app.selected.job.id}}/drawings/{{drawing.id}}" ng-click="$app.selected.drawing = drawing" md-whiteframe="1">
+              <md-icon class="material icons">edit</md-icon>
+            </md-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+</div>
+
+<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>

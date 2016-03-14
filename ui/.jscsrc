@@ -8,5 +8,8 @@
   "requireCommaBeforeLineBreak": false,
   "disallowTrailingWhitespace": false,
   "requireCamelCaseOrUpperCaseIdentifiers": false,
-  "safeContextKeyword": false
+  "safeContextKeyword": false,
+  "disallowSpacesInsideParentheses": false,
+  "disallowSpacesInsideBrackets": false,
+  "disallowSpacesInsideArrayBrackets": false
 }

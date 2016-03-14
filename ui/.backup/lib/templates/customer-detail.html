@@ -1,0 +1,17 @@
+<!-- <div>{{customer.id}}</h1>
+<div>{{customer.label}}</div> -->
+<h1>Customer Detail</h1>
+  <md-content  layout-gt-sm="row" layout-padding>
+    <form name="customerDetailForm" flex style="overflow-x : hidden">
+    <div>
+      <md-input-container>
+        <label>Customer Id</label>
+        <input ng-model="customer.id" type="text">
+      </md-input-container>
+      <md-input-container>
+        <label>Customer Label</label>
+        <input ng-model="customer.label" type="text">
+      </md-input-container>
+    </div>
+    <form>
+  </md-content>

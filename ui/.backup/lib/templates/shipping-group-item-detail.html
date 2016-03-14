@@ -1,0 +1,65 @@
+<!-- <div>{{shippingGroupItem.id}}</div>
+<div>{{shippingGroupItem.shippingGroupId}}</div>
+<div>{{shippingGroupItem.shippingItem}}</div>
+<div>{{shippingGroupItem.label}}</div> -->
+
+<h1>Shipping Group Item Detail</h1>
+<md-content  layout-gt-sm="row" layout-padding>
+  <form name="shippingGroupDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
+  <div>
+    <md-input-container>
+      <label>Id</label>
+      <input ng-model="shippingGroupItem.id" type="text">
+    </md-input-container>
+    <md-input-container>
+      <label>Shipping Group Id</label>
+      <input ng-model="shippingGroupItem.shippingGroupId" type="text">
+    </md-input-container>
+
+
+    <div layout="row" layout-align="start center" flex>
+      <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
+        <md-select ng-model="shippingGroupItem.shippingItem.shippingItemStatus">
+          <md-option ng-repeat="shippingItemStatus in shippingItemStatuses" ng-value="shippingItemStatus">
+                 {{shippingItemStatus}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+      <md-input-container>
+        <label>Label</label>
+        <input ng-model="shippingGroupItem.label" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Label</label>
+        <input ng-model="shippingGroupItem.requested" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Label</label>
+        <input ng-model="shippingGroupItem.completed" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Label</label>
+        <input ng-model="shippingGroupItem.remarks" type="text">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Label</label>
+        <input ng-model="shippingGroupItem.shop.label" type="text">
+      </md-input-container>
+
+    </div>
+  <form>
+</md-content>
+
+
+    <!-- case class ShippingItem(id: Option[Int],
+                            status: ShippingItemStatus = ShippingItemStatus.NS,
+                            label: Option[String] = None,
+                            requested: Int = 0,
+                            completed: Int = 0,
+                            remarks: Option[String] = None,
+                            shop: Option[Shop] = None) -->

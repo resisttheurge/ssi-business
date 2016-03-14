@@ -1,0 +1,23 @@
+
+<div layout-fill layout="row" md-theme="{{$app.$settings.theme}}" md-theme-watch>
+  <ssi-navigation></ssi-navigation>
+  <div layout-fill layout="column" >
+    <md-toolbar md-whiteframe="4">
+      <div layout="row" class="md-toolbar-tools">
+        <md-button ng-click="$app.toggleNavigation()" class="md-icon-button" aria-label="Open Navigation Menu">
+            <md-icon class="material-icons">menu</md-icon>
+        </md-button>
+        <h1 class="md-title" flex>SSI Business</h1>
+        <md-button ng-click="$app.toggleSettings()" class="md-icon-button" aria-label="Open Application Settings Menu">
+          <div layout="row">
+            <md-icon md-menu-origin class="material-icons">settings</md-icon>
+          </div>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-content layout="column" layout-padding flex>
+
+    </md-content>
+  </div>
+  <ssi-settings></ssi-settings>
+</div>

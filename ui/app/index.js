@@ -15,44 +15,29 @@ import ngMaterialStyles from 'angular-material/angular-material.scss'
 import ngMaterialDataTableStyles from 'angular-material-data-table/dist/md-data-table.css'
 
 // routing dependencies
-// TODO: import ngComponentRouter from '@angular/router/angular1/angular_1_router.js'
-
-import ngRoute from 'angular-route'
+import ngComponentRouter from '@angular/router/angular1/angular_1_router.js'
 
 // Restangular for api services
-// TODO: import Restangular from 'restangular'
-import ngResource from 'angular-resource'
+import Restangular from 'restangular'
 
-// import sub-modules
-import ssiConfigs from 'configs'
-import ssiConstants from 'constants'
-import ssiControllers from 'controllers'
-import ssiFilters from 'filters'
-import ssiServices from 'services'
-import ssiTemplates from 'templates'
-import ssiUtils from 'utils'
+// import submodules
+import ssiApp from 'ssi.app'
+import ssiConfig from 'ssi.config'
+import ssiNavigation from 'ssi.navigation'
+import ssiSettings from 'ssi.settings'
 
-export const ssi =
-  angular.module('ssi', [
+export default
+  angular.module( 'ssi', [
     ngAnimate,
     ngAria,
     ngMessages,
-
     ngMaterial,
     ngMaterialDataTable,
-
-    // TODO: ngComponentRouter,
-    ngRoute,
-
-    // TODO: Restangular,
-    ngResource,
-
-    // sub module dependencies
-    ssiConfigs.name,
-    ssiConstants.name,
-    ssiControllers.name,
-    ssiFilters.name,
-    ssiServices.name,
-    ssiTemplates.name,
-    ssiUtils.name
+    ngComponentRouter,
+    Restangular,
+    ssiApp,
+    ssiConfig,
+    ssiNavigation,
+    ssiSettings
   ])
+  .name
