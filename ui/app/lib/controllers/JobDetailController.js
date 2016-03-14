@@ -4,7 +4,7 @@ export default class JobDetailController extends DetailController {
   /*@ngInject*/
   constructor(
     $scope, $routeParams, $q, Address, Customer, Job, Schedule,
-    Shop, Salesperson, enums, $filter, $unpack
+    Shop, Salesperson, enums, $filter, $mdDialog, $unpack
   ) {
     super()
     function filter(expression, comparator) {
@@ -68,6 +68,20 @@ export default class JobDetailController extends DetailController {
         console.log('storing job')
         return resolve($scope.job = job)
       })
+    }
+
+    $scope.update = function update(item)
+    {
+      Job.update(item).then(function (data) { $mdDialog
+        .show($mdDialog.alert()
+        .title('Changes Saved!')
+        .textContent('Changes to this record have been saved')
+        .ok('Close'));
+      }, function (error) { $mdDialog
+        .show($mdDialog.alert()
+        .title('Failed to Save')
+        .textContent('There has been an error, changes have not been saved')
+      .ok('Close'))});
     }
 
     loadJob()

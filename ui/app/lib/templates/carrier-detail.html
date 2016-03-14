@@ -1,8 +1,14 @@
 <!--
 <div>{{carrier.id}}</div>
 <div>{{carrier.label}}</div> -->
-<h1>Carrier Detail</h1>
-<form>
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h1>Carrier Detail</h1>
+    <span flex></span>
+    <md-button class="md-raised" ng-disabled="carrierForm.$pristine" ng-click="update(carrier)">Save Changes!</md-button>
+  </div>
+</md-toolbar>
+<form name="carrierForm">
   <md-content  layout-gt-sm="row" layout-padding>
     <div>
       <md-input-container>

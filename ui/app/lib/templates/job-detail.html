@@ -1,6 +1,8 @@
 <md-toolbar>
   <div class="md-toolbar-tools">
     <h2>{{job | jobTitle}}</h2>
+    <span flex></span>
+    <md-button class="md-raised" ng-disabled="jobForm.$pristine" ng-click="update(job)">Save Changes!</md-button>
   </div>
 </md-toolbar>
 <md-progress-linear md-mode="{{mode}}"></md-progress-linear>
