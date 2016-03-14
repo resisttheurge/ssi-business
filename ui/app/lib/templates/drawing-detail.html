@@ -7,7 +7,7 @@
 <h1>Drawing Detail</h1>
 
   <md-content  layout-gt-sm="row" layout-padding>
-    <form name="drawingDetailForm" flex style="overflow-x : hidden">
+    <form name="drawingDetailForm" layout="column" flex style="overflow-x : hidden">
     <div>
 
       <md-input-container>
@@ -30,134 +30,160 @@
         <input ng-model="drawing.drawingType" type="text">
       </md-input-container>
 
-      <div layout="row" layout-align="start center" flex>
         <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
           <md-select ng-model="drawing.drawingType">
-            <md-option ng-repeat="drawingType in drawingTypes" ng-value="prefix">
+            <md-option ng-repeat="drawingType in drawingTypes" ng-value="drawingType">
                    {{drawingType}}
             </md-option>
           </md-select>
         </md-input-container>
 
+
       <md-input-container>
         <label>Specialty Item</label>
-        <input ng-model="drawing.specialtyItem" type="text">
+        <input ng-model="drawing.specialtyItem.label" type="text">
       </md-input-container>
 
 <!-- ShippingRequest stuff  -->
-      <md-input-container>
-        <label>Info</label>
-        <input ng-model="drawing.info.id" type="text">
-      </md-input-container>
 
-      <md-input-container>
-        <label>Info</label>
-        <input ng-model="drawing.info.tagType" type="text">
-      </md-input-container>
+      <div>
+          <md-input-container>
+            <label>Info</label>
+            <input ng-model="drawing.info.id" type="text">
+          </md-input-container>
 
-      <md-input-container>
-        <label>Info</label>
-        <input ng-model="drawing.info.title" type="text">
-      </md-input-container>
+          <md-input-container>
+            <label>Tag Type</label>
+            <input ng-model="drawing.info.tagType" type="text">
+          </md-input-container>
 
-      <md-input-container>
-        <label>Info</label>
-        <input ng-model="drawing.info.revision" type="text">
-      </md-input-container>
+          <md-input-container>
+            <label>Title</label>
+            <input ng-model="drawing.info.title" type="text">
+          </md-input-container>
 
-      <md-datepicker flex ng-model="revisionDateDisplay" md-placeholder="Revision Date"></md-datepicker>
-      <md-datepicker flex ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
-      <md-datepicker flex ng-model="shopDateDisplay" md-placeholder="Shop Date"></md-datepicker>
-      <md-datepicker flex-offset-gt-sm="10" flex ng-model="fieldDateDisplay" md-placeholder="Field Date"></md-datepicker>
-      <md-datepicker flex-offset-gt-sm="10" flex ng-model="requestDateDisplay" md-placeholder="Request Date"></md-datepicker>
+          <md-input-container>
+            <label>Info</label>
+            <input ng-model="drawing.info.revision" type="text">
+          </md-input-container>
+<p>
+  <label>Shipping Request Dates</label>
+      <div>
+          <md-datepicker flex ng-model="revisionDateDisplay" md-placeholder="Revision Date"></md-datepicker>
+          <md-datepicker flex ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
+          <md-datepicker flex ng-model="shopDateDisplay" md-placeholder="Shop Date"></md-datepicker>
+          <!-- OLD FLEX VALUES: flex-offset-gt-sm="10" -->
+          <md-datepicker flex ng-model="fieldDateDisplay" md-placeholder="Field Date"></md-datepicker>
+          <md-datepicker flex ng-model="requestDateDisplay" md-placeholder="Request Date"></md-datepicker>
+      </div>
+</p>
 
-<!-- Date -->
-      <md-input-container>
-        <label>Info</label>
-        <input ng-model="drawing.info.revisionDate" type="text">
-      </md-input-container>
-<!-- Date -->
-      <md-input-container>
-        <label>Info</label>
-        <input ng-model="drawing.info.startDate" type="text">
-      </md-input-container>
-<!-- Date -->
-      <md-input-container>
-        <label>Info</label>
-        <input ng-model="drawing.info.shopDate" type="text">
-      </md-input-container>
-<!-- Date -->
-      <md-input-container>
-        <label>Info</label>
-        <input ng-model="drawing.info.fieldDate" type="text">
-      </md-input-container>
-<!-- Date -->
-      <md-input-container>
-        <label>Info</label>
-        <input ng-model="drawing.info.requestDate" type="text">
-      </md-input-container>
+<!--  THESE ARE THE ACTUAL DATE VALUES
+          <md-input-container>
+            <label>Info</label>
+            <input ng-model="drawing.info.revisionDate" type="text">
+          </md-input-container>
 
-      <md-input-container>
-        <label>Info</label>
-        <input ng-model="drawing.info.requestedBy" type="text">
-      </md-input-container>
+          <md-input-container>
+            <label>Info</label>
+            <input ng-model="drawing.info.startDate" type="text">
+          </md-input-container>
 
-      <md-input-container>
-        <label>Info</label>
-        <input ng-model="drawing.info.preparedBy" type="text">
-      </md-input-container>
+          <md-input-container>
+            <label>Info</label>
+            <input ng-model="drawing.info.shopDate" type="text">
+          </md-input-container>
 
-      <md-input-container>
-        <label>Info</label>
-        <input ng-model="drawing.info.filePath" type="text">
-      </md-input-container>
-      <md-input-container>
+          <md-input-container>
+            <label>Info</label>
+            <input ng-model="drawing.info.fieldDate" type="text">
+          </md-input-container>
 
-        <label>Info</label>
-        <input ng-model="drawing.info.shop.label" type="text">
-      </md-input-container>
-      <md-input-container>
+          <md-input-container>
+            <label>Info</label>
+            <input ng-model="drawing.info.requestDate" type="text">
+          </md-input-container> -->
 
-        <label>Carrier</label>
-        <input ng-model="drawing.info.carrier.label" type="text">
-      </md-input-container>
 
-      <md-input-container>
-        <label>Contact</label>
-        <input ng-model="drawing.info.contact" type="text">
-      </md-input-container>
+          <md-input-container>
+            <label>Requested By</label>
+            <input ng-model="drawing.info.requestedBy" type="text">
+          </md-input-container>
 
-      <md-input-container>
+          <md-input-container>
+            <label>Prepared By</label>
+            <input ng-model="drawing.info.preparedBy" type="text">
+          </md-input-container>
+
+          <md-input-container>
+            <label>File Path</label>
+            <input ng-model="drawing.info.filePath" type="text">
+          </md-input-container>
+          <md-input-container>
+
+            <label>Info</label>
+            <input ng-model="drawing.info.shop.label" type="text">
+          </md-input-container>
+          <md-input-container>
+
+            <label>Carrier</label>
+            <input ng-model="drawing.info.carrier.label" type="text">
+          </md-input-container>
+
+        <div>
+          <label>Shipping Request Contact</label>
+          <div layout-gt-sm="row">
+            <md-input-container >
+              <label>Contact</label>
+              <input ng-model="drawing.info.contact.label" type="text">
+            </md-input-container>
+            <md-input-container >
+              <label>Phone Number</label>
+              <input ng-model="drawing.info.contact.phone" type="text">
+            </md-input-container>
+            <md-input-container >
+              <label>Fax</label>
+              <input ng-model="drawing.info.contact.fax" type="text">
+            </md-input-container>
+            <md-input-container >
+              <label>Email</label>
+              <input ng-model="drawing.info.contact.email" type="text">
+            </md-input-container>
+          </div>
+        </div>
+
         <label>Address</label>
-        <input ng-model="drawing.info.address" type="text">
-      </md-input-container>
+        <div>
+          <md-input-container>
+            <input ng-model="drawing.info.address.lines" type="text">
+          </md-input-container>
+          <md-input-container>
+            <label>City</label>
+            <input ng-model="drawing.info.address.city" type="text">
+          </md-input-container>
+          <md-input-container>
+            <label>State Or Province</label>
+            <input ng-model="drawing.info.address.stateOrProvince" type="text">
+          </md-input-container>
+          <md-input-container>
+            <label>Postal Code</label>
+            <input ng-model="drawing.info.address.postalCode" type="text">
+          </md-input-container>
+          <md-input-container>
+            <label>Country</label>
+            <input ng-model="drawing.info.address.country" type="text">
+          </md-input-container>
+        </div>
 
     </div>
+
     </form>
   </md-content>
 
 
-<!-- id: Option[Int],
-                   jobId: Int,
-                   label: String,
-                   drawingType: DrawingType,
-                   specialtyItem: Option[SpecialtyItem] = None,
-                   info: Option[ShippingRequest] = None)
-
-
-                   innerRoute : drawings/id/marks
-                   returns Seq{marks (by DrawingId)}
-
-                   object DrawingType {
-
-                     val all = Set(
-                       DETAIL, LAYOUT, VOID
-                     )
-
-                     case object DETAIL extends DrawingType
-
-                     case object LAYOUT extends DrawingType
-
-                     case object VOID extends DrawingType
-
-                   } -->
+  <!-- case class Address(id: Option[Int],
+                     lines: Option[Seq[String]],
+                     city: Option[String],
+                     stateOrProvince: Option[String],
+                     postalCode: Option[String],
+                     country: Option[String]) -->

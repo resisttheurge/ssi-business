@@ -7,22 +7,36 @@
   <md-content  layout-gt-sm="row" layout-padding>
 <form name="userDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
     <div>
+
       <md-input-container>
         <label>Id</label>
         <input ng-model="user.id" type="text">
       </md-input-container>
+
       <md-input-container>
         <label>Username</label>
         <input ng-model="user.username" type="text">
       </md-input-container>
+
       <md-input-container>
         <label>Active</label>
         <input ng-model="user.active" type="text">
       </md-input-container>
-      <md-input-container>
+
+      <label>User Role Type</label>
+      <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
+        <md-select ng-model="user.roles"  style="width: 80px;">
+          <md-option ng-repeat="userRoleType in userRoleTypes" ng-value="userRoleType">
+                 {{userRoleType}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+      <!-- <md-input-container>
         <label>Roles</label>
         <input ng-model="user.roles" type="text">
-      </md-input-container>
+      </md-input-container> -->
+
     </div>
     <form>
   </md-content>

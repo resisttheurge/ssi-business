@@ -2,9 +2,12 @@ import { DetailController } from 'utils'
 
 export default class ShippingGroupDetailController extends DetailController {
   /*@ngInject*/
-  constructor($scope, $routeParams, ShippingGroup) {
+  constructor($scope, $routeParams, ShippingGroup, enums) {
     super()
-    $scope.loading = true
+
+    $scope.tagTypes = enums.tagTypes
+    $scope.loading  = true
+
     ShippingGroup.endpoint.get($routeParams, function (response) {
       if (response.success) {
         $scope.shippingGroup = response.data

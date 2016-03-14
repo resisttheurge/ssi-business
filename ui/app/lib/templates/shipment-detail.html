@@ -31,15 +31,12 @@
         <input ng-model="shipment.number" type="text">
       </md-input-container>
 
-      <md-input-container>
-        <label>Description</label>
-        <textarea ng-model="shipment.status" rows="5" md-select-on-focus></textarea>
-      </md-input-container>
 
+      <label>Shipment Status</label>
       <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
-        <md-select ng-model="shipment.status.shipmentStatuses">
-          <md-option ng-repeat="shipmentStatus in shipmentStatuses" ng-value="shipmentStatus">
-                 {{shipmentStatus}}
+        <md-select ng-model="shipment.status">
+          <md-option ng-repeat="status in shipmentStatuses" ng-value="status">
+                 {{status}}
           </md-option>
         </md-select>
       </md-input-container>
@@ -90,10 +87,30 @@
 
       </div>
 
+  <p>
+    <label>Address</label>
+      <div>
       <md-input-container>
-        <label>Address</label>
-        <input ng-model="shipment.address" type="text">
+        <input ng-model="shipment.address.lines" type="text">
       </md-input-container>
+      <md-input-container>
+        <label>City</label>
+        <input ng-model="shipment.address.city" type="text">
+      </md-input-container>
+      <md-input-container>
+        <label>State Or Province</label>
+        <input ng-model="shipment.address.stateOrProvince" type="text">
+      </md-input-container>
+      <md-input-container>
+        <label>Postal Code</label>
+        <input ng-model="shipment.address.postalCode" type="text">
+      </md-input-container>
+      <md-input-container>
+        <label>Country</label>
+        <input ng-model="shipment.address.country" type="text">
+      </md-input-container>
+    </div>
+  </p>
 
     </div>
   </form>

@@ -7,6 +7,13 @@ export default class JobDetailController extends DetailController {
     Shop, Salesperson, enums, $filter, $unpack
   ) {
     super()
+
+    $scope.prefixes     = enums.prefixes
+    $scope.jobStatuses  = enums.jobStatuses
+    
+    // this.prefixes     = enums.prefixes
+    // this.jobStatuses  = enums.jobStatuses
+
     function filter(expression, comparator) {
       return function (array) {
         return $q(function (resolve, reject) {

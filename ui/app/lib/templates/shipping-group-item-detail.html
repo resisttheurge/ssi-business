@@ -5,53 +5,91 @@
 
 <h1>Shipping Group Item Detail</h1>
 <md-content  layout-gt-sm="row" layout-padding>
-  <form name="shippingGroupDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
+  <form name="shippingGroupDetailForm" layout="column" flex style="overflow-x : hidden" ng-hide="loading">
   <div>
-    <md-input-container>
-      <label>Id</label>
-      <input ng-model="shippingGroupItem.id" type="text">
-    </md-input-container>
-    <md-input-container>
-      <label>Shipping Group Id</label>
-      <input ng-model="shippingGroupItem.shippingGroupId" type="text">
-    </md-input-container>
+      <p>
+        <md-input-container>
+          <label>Id</label>
+          <input ng-model="shippingGroupItem.id" type="text">
+        </md-input-container>
+
+        <md-input-container>
+          <label>Shipping Group Id</label>
+          <input ng-model="shippingGroupItem.shippingGroupId" type="text">
+        </md-input-container>
+
+          <md-input-container>
+            <label>Label</label>
+            <input ng-model="shippingGroupItem.label" type="text">
+          </md-input-container>
+
+          <md-input-container>
+            <label>Requested</label>
+            <input ng-model="shippingGroupItem.requested" type="text">
+          </md-input-container>
+
+          <md-input-container>
+            <label>Completed</label>
+            <input ng-model="shippingGroupItem.completed" type="text">
+          </md-input-container>
+
+          <md-input-container>
+            <label>Remarks</label>
+            <input ng-model="shippingGroupItem.remarks" type="text">
+          </md-input-container>
 
 
-    <div layout="row" layout-align="start center" flex>
-      <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
-        <md-select ng-model="shippingGroupItem.shippingItem.shippingItemStatus">
-          <md-option ng-repeat="shippingItemStatus in shippingItemStatuses" ng-value="shippingItemStatus">
-                 {{shippingItemStatus}}
-          </md-option>
-        </md-select>
-      </md-input-container>
+          <md-input-container>
+            <label>Shop</label>
+            <input ng-model="shippingGroupItem.shop.label" type="text">
+          </md-input-container>
+    </p>
 
-      <md-input-container>
-        <label>Label</label>
-        <input ng-model="shippingGroupItem.label" type="text">
-      </md-input-container>
+    </p>
+      <label>Shipping Item</label>
+        <div layout="column" flex>
 
-      <md-input-container>
-        <label>Label</label>
-        <input ng-model="shippingGroupItem.requested" type="text">
-      </md-input-container>
+          <md-input-container>
+            <input ng-model="shippingGroupItem.shippingItem.id" type="text">
+          </md-input-container>
 
-      <md-input-container>
-        <label>Label</label>
-        <input ng-model="shippingGroupItem.completed" type="text">
-      </md-input-container>
 
-      <md-input-container>
-        <label>Label</label>
-        <input ng-model="shippingGroupItem.remarks" type="text">
-      </md-input-container>
+          <label>Status</label>
+          <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
+            <md-select ng-model="shippingGroupItem.shippingItem.status">
+              <md-option ng-repeat="status in shippingItemStatuses" ng-value="status">
+                     {{status}}
+              </md-option>
+            </md-select>
+          </md-input-container>
 
-      <md-input-container>
-        <label>Label</label>
-        <input ng-model="shippingGroupItem.shop.label" type="text">
-      </md-input-container>
+          <md-input-container>
+            <label>Label</label>
+            <input ng-model="shippingGroupItem.shippingItem.label" type="text">
+          </md-input-container>
 
-    </div>
+          <md-input-container>
+            <label>Requested</label>
+            <input ng-model="shippingGroupItem.shippingItem.requested" type="text">
+          </md-input-container>
+
+          <md-input-container>
+            <label>Completed</label>
+            <input ng-model="shippingGroupItem.shippingItem.completed" type="text">
+          </md-input-container>
+
+          <md-input-container>
+            <label>Remarks</label>
+            <input ng-model="shippingGroupItem.shippingItem.remarks" type="text">
+          </md-input-container>
+
+          <md-input-container>
+            <label>Shop</label>
+            <input ng-model="shippingGroupItem.shippingItem.shop" type="text">
+          </md-input-container>
+        </div>
+      </p>
+
   <form>
 </md-content>
 

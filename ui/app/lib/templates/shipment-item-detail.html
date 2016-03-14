@@ -29,14 +29,14 @@
 
       <md-input-container>
         <label>Number</label>
-        <input ng-model="shipmentItem.shippingItem" type="text">
+        <input ng-model="shipmentItem.number" type="text">
       </md-input-container>
 
       <div>
       <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
-        <md-select ng-model="shipmentItem.shippingItem.shippingItemStatus">
-          <md-option ng-repeat="shippingItemStatus in shippingItemStatuses" ng-value="shippingItemStatus">
-                 {{shippingItemStatus}}
+        <md-select ng-model="shipmentItem.shippingItem.status">
+          <md-option ng-repeat="status in shippingItemStatuses" ng-value="status">
+                 {{status}}
           </md-option>
         </md-select>
       </md-input-container>

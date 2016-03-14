@@ -30,37 +30,51 @@
         <input ng-model="partOrder.jobId" type="text">
       </md-input-container>
 
+      <md-input-container>
+        <label>Drawing Id</label>
+        <input ng-model="partOrder.drawingId" type="text">
+      </md-input-container>
+
       <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
         <label>Status</label>
         <md-select ng-model="partOrder.status">
-          <md-option ng-repeat="status in partOrderStatuses" ng-value="status">
-                 {{status}}
+          <md-option ng-repeat="partOrderStatus in partOrderStatuses" ng-value="partOrderStatus">
+                 {{partOrderStatus}}
           </md-option>
         </md-select>
       </md-input-container>
 
+<!-- make this a tab -->
+<p>
+  <label>Part</label>
     <div>
-      <label>Part</label>
       <md-input-container>
         <label>Id</label>
         <input ng-model="partOrder.part.id" type="text">
       </md-input-container>
-      <md-input-container>
-        <label>PartType</label>
-        <input ng-model="partOrder.part.partType" type="text">
+
+      <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
+        <label>Part Type</label>
+        <md-select ng-model="partOrder.part.partType">
+          <md-option ng-repeat="partType in partTypes" ng-value="partType">
+                 {{partType}}
+          </md-option>
+        </md-select>
       </md-input-container>
+
       <md-input-container>
         <label>Number</label>
         <input ng-model="partOrder.part.number" type="text">
       </md-input-container>
+
       <div layout-gt-sm="row">
             <md-input-container class="md-block" flex-gt-sm>
               <label>Description</label>
               <textarea ng-model="partOrder.part.description" rows="5" md-select-on-focus></textarea>
             </md-input-container>
       </div>
-
     </div>
+  </p>
 
       <md-input-container>
         <label>Manufacturer</label>
@@ -104,22 +118,3 @@
     </div>
     <form>
   </md-content>
-
-
-
-
-<!-- id: Option[Int],
-                     jobId: Int,
-                     drawingId: Option[Int] = None,
-                     status: PartOrderStatus,
-                     part: Option[Part] = None,
-                     manufacturer: Option[Manufacturer] = None,
-                     vendor: Option[Vendor] = None,
-                     po: Option[String] = None,
-                     requestedQuantity: Int = 0,
-                     stockQuantity: Int = 0,
-                     purchaseQuantity: Int = 0,
-                     requestDate: Option[Date] = None,
-                     purchaseDate: Option[Date] = None,
-                     releaseDate: Option[Date] = None,
-                     releasedBy: Option[String] = None) -->

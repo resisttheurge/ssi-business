@@ -4,6 +4,10 @@ export default class PartOrderDetailController extends DetailController {
   /*@ngInject*/
   constructor($scope, $routeParams, PartOrder) {
     super()
+
+    $scope.partOrderStatuses = enums.partOrderStatuses
+    $scope.partTypes = enums.partTypes
+
     PartOrder.endpoint.get($routeParams, function (response) {
       $scope.loading = true
       if (response.success) {

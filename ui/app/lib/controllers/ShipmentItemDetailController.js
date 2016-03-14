@@ -2,8 +2,10 @@ import { DetailController } from 'utils'
 
 export default class ShipmentItemDetailController extends DetailController {
   /*@ngInject*/
-  constructor($scope, $routeParams, ShipmentItem) {
+  constructor($scope, $routeParams, ShipmentItem, enums) {
     super()
+
+    $scope.shippingItemStatuses = enums.shippingItemStatuses
     $scope.loading = true
     ShipmentItem.endpoint.get($routeParams, function (response) {
 

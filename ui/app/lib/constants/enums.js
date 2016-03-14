@@ -73,13 +73,33 @@ export const partOrderStatuses = [
   'DELETED'
 ]
 
+export const userRoleTypes = [
+  'ADMIN',
+  'EMPLOYEE'
+]
+
+export const partTypes = [
+  'MECH',
+  'ELEC'
+]
+
+export const tagTypes = [
+  'S',
+  'W'
+]
+
+
+
 export const enums = {
   jobStatuses,
   prefixes,
   drawingTypes,
   shippingItemStatuses,
   shipmentStatuses,
-  partOrderStatuses
+  partOrderStatuses,
+  userRoleTypes,
+  partTypes,
+  tagTypes
 }
 
 export default enums

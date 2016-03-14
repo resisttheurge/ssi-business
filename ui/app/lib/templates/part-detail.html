@@ -11,18 +11,39 @@
         <label>Id</label>
         <input ng-model="part.id" type="text">
       </md-input-container>
+
+      <label>Part Type</label>
+      <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
+        <md-select ng-model="part.partType" style="width: 50px;">
+          <md-option ng-repeat="partType in partTypes" ng-value="partType">
+                 {{partType}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+<!--
       <md-input-container>
         <label>Part Type</label>
         <input ng-model="part.partType" type="text">
-      </md-input-container>
+      </md-input-container> -->
+
+
       <md-input-container>
         <label>Number</label>
         <input ng-model="part.number" type="text">
       </md-input-container>
-      <md-input-container>
+
+      <div layout-gt-sm="row">
+            <md-input-container class="md-block" flex-gt-sm>
+              <label>Description</label>
+              <textarea ng-model="part.description" rows="5" md-select-on-focus></textarea>
+            </md-input-container>
+      </div>
+
+      <!-- <md-input-container>
         <label>Description</label>
         <textarea ng-model="part.description" rows="5" md-select-on-focus></textarea>
-      </md-input-container>
+      </md-input-container> -->
     </div>
     <form>
   </md-content>
