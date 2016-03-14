@@ -1,0 +1,18 @@
+<md-sidenav layout="column" md-component-id="settings-sidenav" class="md-sidenav-right" md-whiteframe="4">
+  <md-toolbar>
+    <div layout="row" class="md-toolbar-tools">
+      <h2 flex>Settings</h2>
+      <md-button ng-click="$settings.toggle()" class="md-icon-button" aria-label="Close Settings Menu">
+        <md-icon class="material-icons">close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-content layout="column" flex>
+    <md-list>
+      <md-list-item ng-click="$settings.toggleTheme(); $settings.toggle()">
+        <span flex>{{$settings.toggleThemeLabel}}</span>
+        <md-icon class="material-icons">{{$settings.toggleThemeIcon}}</md-icon>
+      </md-list-item>
+    </md-list>
+  </md-content>
+</md-sidenav>

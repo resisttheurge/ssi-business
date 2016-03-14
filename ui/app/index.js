@@ -24,6 +24,8 @@ import ngRoute from 'angular-route'
 import ngResource from 'angular-resource'
 
 // import sub-modules
+import ssiApp from 'ssi.app'
+
 import ssiConfigs from 'configs'
 import ssiConstants from 'constants'
 import ssiControllers from 'controllers'
@@ -48,6 +50,7 @@ export const ssi =
     ngResource,
 
     // sub module dependencies
+    ssiApp,
     ssiConfigs.name,
     ssiConstants.name,
     ssiControllers.name,

@@ -396,11 +396,11 @@ trait Tables {
    *  @param customerId Database column customer_id SqlType(INT UNSIGNED), Default(None)
    *  @param contactId Database column contact_id SqlType(INT UNSIGNED), Default(None)
    *  @param completeDate Database column complete_date SqlType(DATE), Default(None) */
-  case class JobsRow(id: Int, prefix: String, year: java.sql.Date, label: String, status: String = "INACTIVE", description: Option[String] = None, contractPrice: Option[scala.math.BigDecimal] = None, startDate: Option[java.sql.Date] = None, dueDate: Option[java.sql.Date] = None, shopId: Option[Int] = None, salespersonId: Option[Int] = None, customerId: Option[Int] = None, contactId: Option[Int] = None, completeDate: Option[java.sql.Date] = None)
+  case class JobsRow(id: Int, prefix: String, year: Short, label: String, status: String = "INACTIVE", description: Option[String] = None, contractPrice: Option[scala.math.BigDecimal] = None, startDate: Option[java.sql.Date] = None, dueDate: Option[java.sql.Date] = None, shopId: Option[Int] = None, salespersonId: Option[Int] = None, customerId: Option[Int] = None, contactId: Option[Int] = None, completeDate: Option[java.sql.Date] = None)
   /** GetResult implicit for fetching JobsRow objects using plain SQL queries */
-  implicit def GetResultJobsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[java.sql.Date], e3: GR[Option[String]], e4: GR[Option[scala.math.BigDecimal]], e5: GR[Option[java.sql.Date]], e6: GR[Option[Int]]): GR[JobsRow] = GR{
+  implicit def GetResultJobsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Short], e3: GR[Option[String]], e4: GR[Option[scala.math.BigDecimal]], e5: GR[Option[java.sql.Date]], e6: GR[Option[Int]]): GR[JobsRow] = GR{
     prs => import prs._
-    JobsRow.tupled((<<[Int], <<[String], <<[java.sql.Date], <<[String], <<[String], <<?[String], <<?[scala.math.BigDecimal], <<?[java.sql.Date], <<?[java.sql.Date], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[java.sql.Date]))
+    JobsRow.tupled((<<[Int], <<[String], <<[Short], <<[String], <<[String], <<?[String], <<?[scala.math.BigDecimal], <<?[java.sql.Date], <<?[java.sql.Date], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[java.sql.Date]))
   }
   /** Table description of table jobs. Objects of this class serve as prototypes for rows in queries. */
   class Jobs(_tableTag: Tag) extends Table[JobsRow](_tableTag, "jobs") {
@@ -413,7 +413,7 @@ trait Tables {
     /** Database column prefix SqlType(ENUM), Length(2,false) */
     val prefix: Rep[String] = column[String]("prefix", O.Length(2,varying=false))
     /** Database column year SqlType(YEAR) */
-    val year: Rep[java.sql.Date] = column[java.sql.Date]("year")
+    val year: Rep[Short] = column[Short]("year")
     /** Database column label SqlType(VARCHAR), Length(20,true) */
     val label: Rep[String] = column[String]("label", O.Length(20,varying=true))
     /** Database column status SqlType(ENUM), Length(9,false), Default(INACTIVE) */

@@ -56,6 +56,6 @@ export default class $ssiUser extends AbstractService {
   }
 
   get isLoggedOut() {
-    return this.authenticated
+    return !this.authenticated
   }
 }

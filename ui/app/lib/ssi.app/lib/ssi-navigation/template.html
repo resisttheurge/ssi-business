@@ -1,0 +1,95 @@
+<md-sidenav layout="column" md-component-id="navigation-sidenav" class="md-sidenav-left" md-whiteframe="4">
+  <md-toolbar>
+    <div layout="row" class="md-toolbar-tools">
+      <md-button ng-click="$navigation.toggle()" class="md-icon-button" aria-label="Close Navigation Menu">
+        <md-icon class="material-icons">close</md-icon>
+      </md-button>
+      <h2 flex>Navigation</h2>
+    </div>
+  </md-toolbar>
+  <md-content layout="column" flex>
+    <md-list>
+      <md-list-item ng-href="/" ng-click="$navigation.user.logout(); $navigation.toggle()">
+        Logout
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/jobs">
+        Jobs
+      </md-list-item>
+      <md-list-item
+          ng-click="$navigation.toggle()"
+          ng-show="$navigation.selected.job"
+          ng-href="/jobs/{{$navigation.selected.job.id}}/drawings">
+        Drawings
+      </md-list-item>
+      <md-list-item
+          ng-click="$navigation.toggle()"
+          ng-show="$navigation.selected.drawing"
+          ng-href="/jobs/{{$navigation.selected.job.id}}/drawings/{{$navigation.selected.drawing.id}}/marks">
+        Marks
+      </md-list-item>
+      <md-list-item
+          ng-click="$navigation.toggle()"
+          ng-show="$navigation.selected.job"
+          ng-href="/jobs/{{$navigation.selected.job.id}}/part-orders">
+        Part Orders
+      </md-list-item>
+      <md-list-item
+          ng-click="$navigation.toggle()"
+          ng-show="$navigation.selected.job"
+          ng-href="/jobs/{{$navigation.selected.job.id}}/shipping-groups">
+        Shipping Groups
+      </md-list-item>
+      <md-list-item
+          ng-click="$navigation.toggle()"
+          ng-show="$navigation.selected.shippingGroup"
+          ng-href="/jobs/{{$navigation.selected.job.id}}/shipping-groups/{{$navigation.selected.shippingGroup.id}}/items">
+        Shipping Group Items
+      </md-list-item>
+      <md-list-item
+          ng-click="$navigation.toggle()"
+          ng-show="$navigation.selected.job"
+          ng-href="/jobs/{{$navigation.selected.job.id}}/shipments">
+        Shipments
+      </md-list-item>
+      <md-list-item
+          ng-click="$navigation.toggle()"
+          ng-show="$navigation.selected.shipment"
+          ng-href="/jobs/{{$navigation.selected.job.id}}/shipments/{{$navigation.selected.shipment.id}}/items">
+        Shipment Items
+      </md-list-item>
+      <md-list-item
+          ng-click="$navigation.toggle()"
+          ng-show="$navigation.selected.job"
+          ng-href="/jobs/{{$navigation.selected.job.id}}/zones">
+        Zones
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/carriers">
+        Carriers
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/customers">
+        Customers
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/manufacturers">
+        Manufacturers
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/parts">
+        Parts
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/salespeople">
+        Salespeople
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/specialty-items">
+        Specialty Items
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/system-types">
+        System Types
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/users">
+        Users
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/vendors">
+        Vendors
+      </md-list-item>
+    </md-list>
+  </md-content>
+</md-sidenav>
