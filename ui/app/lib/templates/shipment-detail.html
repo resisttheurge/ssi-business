@@ -9,11 +9,16 @@
 <div>{{shipment.shipDate}}</div>
 <div>{{shipment.contact}}</div>
 <div>{{shipment.address}}}}</div> -->
-
-<h1>Shipment Detail</h1>
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h2>{{job | jobTitle}}</h2>
+    <span flex></span>
+    <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(shipment)">Save Changes!</md-button>
+  </div>
+</md-toolbar>
 
 <md-content  layout-gt-sm="row" layout-padding>
-  <form name="shipmentDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
+  <form name="editForm" flex style="overflow-x : hidden" ng-hide="loading">
     <div>
 
       <md-input-container>

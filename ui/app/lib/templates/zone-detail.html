@@ -3,17 +3,20 @@
 <div>{{zone.number}}</div>
 <div>{{zone.fieldDate}}</div> -->
 
-<h1>Zone Detail</h1>
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h2>{{job | jobTitle}}</h2>
+    <span flex></span>
+    <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(zone)">Save Changes!</md-button>
+  </div>
+</md-toolbar>
+
   <md-content  layout-gt-sm="row" layout-padding>
-    <form name="zoneDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
+    <form name="editForm" flex style="overflow-x : hidden" ng-hide="loading">
     <div>
       <md-input-container>
         <label>Id</label>
         <input ng-model="zone.id" type="text">
-      </md-input-container>
-      <md-input-container>
-        <label>Label</label>
-        <input ng-model="zone.label" type="text">
       </md-input-container>
       <md-input-container>
         <label>Number</label>

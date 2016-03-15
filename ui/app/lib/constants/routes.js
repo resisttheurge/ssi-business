@@ -59,7 +59,9 @@ export const routes = {
       allowAnonymous: false,
       allowedRoles: ['ADMIN', 'EMPLOYEE']
     }
-  },
+  }
+
+  ,
   '/jobs/:jobId/drawings': {
     templateUrl: urls.drawingList,
     controller: controllers.DrawingListController.name,
@@ -67,7 +69,9 @@ export const routes = {
       allowAnonymous: false,
       allowedRoles: ['ADMIN', 'EMPLOYEE']
     }
-  },
+  }
+
+  ,
   '/jobs/:jobId/drawings/:drawingId': {
     templateUrl: urls.drawingDetail,
     controller: controllers.DrawingDetailController.name,

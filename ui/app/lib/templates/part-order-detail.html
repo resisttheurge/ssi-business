@@ -15,9 +15,16 @@
 <div>{{partOrder.releasedBy}}</div> -->
 
 
-<h1>Job Detail</h1>
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h2>{{job | jobTitle}}</h2>
+    <span flex></span>
+    <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(partOrder)">Save Changes!</md-button>
+  </div>
+</md-toolbar>
+
   <md-content  layout-gt-sm="row" layout-padding>
-    <form name="partOrderDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
+    <form name="editForm" flex style="overflow-x : hidden" ng-hide="loading">
     <div>
 
       <md-input-container>

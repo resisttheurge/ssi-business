@@ -4,10 +4,16 @@
 <div>drawing.drawingType</div>
 <div>drawing.specialtyItem</div>
 <div>drawing.info</div> -->
-<h1>Drawing Detail</h1>
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h2>{{job | jobTitle}}</h2>
+    <span flex></span>
+    <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(drawing)">Save Changes!</md-button>
+  </div>
+</md-toolbar>
 
   <md-content  layout-gt-sm="row" layout-padding>
-    <form name="drawingDetailForm" layout="column" flex style="overflow-x : hidden">
+    <form name="editForm" layout="column" flex style="overflow-x : hidden">
     <div>
 
       <md-input-container>
