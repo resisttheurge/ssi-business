@@ -111,7 +111,7 @@
             </form>
         </md-tab>
 
-        //Drawings
+        <!-- Drawings -->
         <md-tab label="Drawings">
           <md-content class="md-padding">
             <div ng-controller="DrawingListController">
@@ -137,11 +137,16 @@
                 </table>
               </md-table-container>
               <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+              <div layout="row" layout-align="end center">
+                <md-button class="md-fab" ng-href="/jobs/{{$app.selected.job.id}}/drawings/new">
+                  <md-icon class="material-icons">add</md-icon>
+                </md-button>
+              </div>
             </div>
           </md-content>
         </md-tab>
 
-        //Shipping Groups
+        <!-- Shipping Groups -->
         <md-tab label="Shipping Groups">
           <md-content class="md-padding">
             <div ng-controller="ShippingGroupListController">
@@ -168,6 +173,11 @@
               </md-table-container>
               <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
             </md-content>
+            <div layout="row" layout-align="end center">
+              <md-button class="md-fab" ng-href="/jobs/{{$app.selected.job.id}}/shipping-groups/new">
+                <md-icon class="material-icons">add</md-icon>
+              </md-button>
+            </div>
           </div>
         </md-tab>
 
@@ -197,6 +207,11 @@
                 </table>
               </md-table-container>
               <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+              <div layout="row" layout-align="end center">
+                <md-button class="md-fab" ng-href="/jobs/{{$app.selected.job.id}}/shipments/new">
+                  <md-icon class="material-icons">add</md-icon>
+                </md-button>
+              </div>
             </div>
           </md-content>
         </md-tab>
@@ -226,6 +241,11 @@
                 </table>
               </md-table-container>
               <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+              <div layout="row" layout-align="end center">
+                <md-button class="md-fab" ng-href="/jobs/{{$app.selected.job.id}}/part-orders/new">
+                  <md-icon class="material-icons">add</md-icon>
+                </md-button>
+              </div>
             </div>
           </md-content>
         </md-tab>
@@ -255,6 +275,11 @@
                 </table>
               </md-table-container>
               <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+              <div layout="row" layout-align="end center">
+                <md-button class="md-fab" ng-href="/jobs/{{$app.selected.job.id}}/zones/new">
+                  <md-icon class="material-icons">add</md-icon>
+                </md-button>
+              </div>
             </div>
           </md-content>
         </md-tab>

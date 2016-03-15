@@ -55,3 +55,9 @@
 </div>
 
 <md-table-pagination md-limit="$jobs.query.limit" md-page="$jobs.query.page" md-total="{{$jobs.total}}" md-on-paginate="$jobs.onPaginate" md-page-select></md-table-pagination>
+
+<div layout="row" layout-align="end center">
+  <md-button class="md-fab" ng-href="/jobs/new">
+    <md-icon class="material-icons">add</md-icon>
+  </md-button>
+</div>
