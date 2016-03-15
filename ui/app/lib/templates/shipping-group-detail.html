@@ -6,169 +6,203 @@
   </div>
 </md-toolbar>
 
-  <md-content  layout-gt-sm="row" layout-padding>
-    <form name="editForm" flex style="overflow-x : hidden">
-    <div>
 
-      <md-input-container>
-        <label>Id</label>
-        <input ng-model="shippingGroup.id" type="text">
-      </md-input-container>
-
-      <md-input-container>
-        <label>Job Id</label>
-        <input ng-model="shippingGroup.jobId" type="text">
-      </md-input-container>
-
-      <md-input-container>
-        <label>Label</label>
-        <input ng-model="shippingGroup.label" type="text">
-      </md-input-container>
-
-      <md-input-container>
-        <label>Type</label>
-        <input ng-model="shippingGroup.rush" type="text">
-      </md-input-container>
-
-<!-- start shipping request stuff -->
-  <p>
-    <label>Shipping Request</label>
-      <md-input-container>
-        <label>Id</label>
-        <input ng-model="shippingGroup.info.id" type="text">
-      </md-input-container>
-
-      <label>Tag Type</label>
-      <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
-        <md-select ng-model="shippingGroup.info.tagType">
-          <md-option ng-repeat="tagType in tagTypes" ng-value="tagType">
-                 {{tagType}}
-          </md-option>
-        </md-select>
-      </md-input-container>
-
-      <md-input-container>
-        <label>Title</label>
-        <input ng-model="shippingGroup.info.title" type="text">
-      </md-input-container>
-
-      <md-input-container>
-        <label>Revision</label>
-        <input ng-model="shippingGroup.info.revision" type="text">
-      </md-input-container>
-
-  <p>
-    <label>Dates</label>
-    <div>
-
-      <div layout-gt-sm="row">
-        <md-datepicker ng-model="revisionDateDisplay" md-placeholder="Revision Date"></md-datepicker>
-        <md-datepicker ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
-        <md-datepicker ng-model="shopDateDisplay" md-placeholder="Shop Date"></md-datepicker>
-        <md-datepicker ng-model="fieldDateDisplay" md-placeholder="Field Date"></md-datepicker>
-        <md-datepicker ng-model="requestDateDisplay" md-placeholder="Request Date"></md-datepicker>
-      </div>
-
-      <!-- <md-input-container>
-        <label>Revision Date</label>
-        <input ng-model="shippingGroup.info.revisionDate" type="text">
-      </md-input-container>
-      <md-input-container>
-        <label>Start Date</label>
-        <input ng-model="shippingGroup.info.startDate" type="text">
-      </md-input-container>
-      <md-input-container>
-        <label>Shop Date</label>
-        <input ng-model="shippingGroup.info.shopDate" type="text">
-      </md-input-container>
-      <md-input-container>
-        <label>Field Date</label>
-        <input ng-model="shippingGroup.info.fieldDate" type="text">
-      </md-input-container>
-      <md-input-container>
-        <label>Request Date</label>
-        <input ng-model="shippingGroup.info.requestDate" type="text">
-      </md-input-container> -->
-    </div>
-  </p>
-
-
-      <md-input-container>
-        <label>Requested By</label>
-        <input ng-model="shippingGroup.info.requestedBy" type="text">
-      </md-input-container>
-
-      <md-input-container>
-        <label>Prepared By</label>
-        <input ng-model="shippingGroup.info.preparedBy" type="text">
-      </md-input-container>
-
-      <md-input-container>
-        <label>File Path</label>
-        <input ng-model="shippingGroup.info.filePath" type="text">
-      </md-input-container>
-
-      <md-input-container>
-        <label>Shop</label>
-        <input ng-model="shippingGroup.info.shop.label" type="text">
-      </md-input-container>
-
-      <md-input-container>
-        <label>Carrier</label>
-        <input ng-model="shippingGroup.info.carrier.label" type="text">
-      </md-input-container>
-
-<p>
-  <label>Contact</label>
-      <div layout-gt-sm="row">
-        <md-input-container >
-          <input ng-model="shippingGroup.info.contact.label" type="text">
-        </md-input-container>
-        <md-input-container >
-          <label>Phone Number</label>
-          <input ng-model="shippingGroup.info.contact.phone" type="text">
-        </md-input-container>
-        <md-input-container >
-          <label>Fax</label>
-          <input ng-model="shippingGroup.info.contact.fax" type="text">
-        </md-input-container>
-        <md-input-container >
-          <label>Email</label>
-          <input ng-model="shippingGroup.info.contact.email" type="text">
-        </md-input-container>
-      </div>
-</p>
-    <p>
+<md-content  layout-gt-sm="row" layout-padding>
+  <md-tabs md-dynamic-height md-border-bottom>
+    <md-tab label="Shipping Group Details">
+      <form name="editForm" flex style="overflow-x : hidden">
       <div>
-        <label>Address</label>
-        <div>
+
         <md-input-container>
-          <label>Lines</label>
-          <input ng-model="shippingGroup.info.address.lines" type="text">
+          <label>Id</label>
+          <input ng-model="shippingGroup.id" type="text">
         </md-input-container>
+
         <md-input-container>
-          <label>City</label>
-          <input ng-model="shippingGroup.info.address.city" type="text">
+          <label>Job Id</label>
+          <input ng-model="shippingGroup.jobId" type="text">
         </md-input-container>
+
         <md-input-container>
-          <label>State Or Province</label>
-          <input ng-model="shippingGroup.info.address.stateOrProvince" type="text">
+          <label>Label</label>
+          <input ng-model="shippingGroup.label" type="text">
         </md-input-container>
+
         <md-input-container>
-          <label>Postal Code</label>
-          <input ng-model="shippingGroup.info.address.postalCode" type="text">
+          <label>Type</label>
+          <input ng-model="shippingGroup.rush" type="text">
         </md-input-container>
+
+  <!-- start shipping request stuff -->
+    <p>
+      <label>Shipping Request</label>
         <md-input-container>
-          <label>Country</label>
-          <input ng-model="shippingGroup.info.address.country" type="text">
+          <label>Id</label>
+          <input ng-model="shippingGroup.info.id" type="text">
         </md-input-container>
+
+        <label>Tag Type</label>
+        <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
+          <md-select ng-model="shippingGroup.info.tagType">
+            <md-option ng-repeat="tagType in tagTypes" ng-value="tagType">
+                   {{tagType}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+
+        <md-input-container>
+          <label>Title</label>
+          <input ng-model="shippingGroup.info.title" type="text">
+        </md-input-container>
+
+        <md-input-container>
+          <label>Revision</label>
+          <input ng-model="shippingGroup.info.revision" type="text">
+        </md-input-container>
+
+    <p>
+      <label>Dates</label>
+      <div>
+
+        <div layout-gt-sm="row">
+          <md-datepicker ng-model="revisionDateDisplay" md-placeholder="Revision Date"></md-datepicker>
+          <md-datepicker ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
+          <md-datepicker ng-model="shopDateDisplay" md-placeholder="Shop Date"></md-datepicker>
+          <md-datepicker ng-model="fieldDateDisplay" md-placeholder="Field Date"></md-datepicker>
+          <md-datepicker ng-model="requestDateDisplay" md-placeholder="Request Date"></md-datepicker>
         </div>
+
+        <!-- <md-input-container>
+          <label>Revision Date</label>
+          <input ng-model="shippingGroup.info.revisionDate" type="text">
+        </md-input-container>
+        <md-input-container>
+          <label>Start Date</label>
+          <input ng-model="shippingGroup.info.startDate" type="text">
+        </md-input-container>
+        <md-input-container>
+          <label>Shop Date</label>
+          <input ng-model="shippingGroup.info.shopDate" type="text">
+        </md-input-container>
+        <md-input-container>
+          <label>Field Date</label>
+          <input ng-model="shippingGroup.info.fieldDate" type="text">
+        </md-input-container>
+        <md-input-container>
+          <label>Request Date</label>
+          <input ng-model="shippingGroup.info.requestDate" type="text">
+        </md-input-container> -->
       </div>
-
-      </p>
     </p>
-<!-- end shipping request stuff -->
 
-    </div>
-    </form>
-  </md-content>
+
+        <md-input-container>
+          <label>Requested By</label>
+          <input ng-model="shippingGroup.info.requestedBy" type="text">
+        </md-input-container>
+
+        <md-input-container>
+          <label>Prepared By</label>
+          <input ng-model="shippingGroup.info.preparedBy" type="text">
+        </md-input-container>
+
+        <md-input-container>
+          <label>File Path</label>
+          <input ng-model="shippingGroup.info.filePath" type="text">
+        </md-input-container>
+
+        <md-input-container>
+          <label>Shop</label>
+          <input ng-model="shippingGroup.info.shop.label" type="text">
+        </md-input-container>
+
+        <md-input-container>
+          <label>Carrier</label>
+          <input ng-model="shippingGroup.info.carrier.label" type="text">
+        </md-input-container>
+
+  <p>
+    <label>Contact</label>
+        <div layout-gt-sm="row">
+          <md-input-container >
+            <input ng-model="shippingGroup.info.contact.label" type="text">
+          </md-input-container>
+          <md-input-container >
+            <label>Phone Number</label>
+            <input ng-model="shippingGroup.info.contact.phone" type="text">
+          </md-input-container>
+          <md-input-container >
+            <label>Fax</label>
+            <input ng-model="shippingGroup.info.contact.fax" type="text">
+          </md-input-container>
+          <md-input-container >
+            <label>Email</label>
+            <input ng-model="shippingGroup.info.contact.email" type="text">
+          </md-input-container>
+        </div>
+  </p>
+      <p>
+        <div>
+          <label>Address</label>
+          <div>
+          <md-input-container>
+            <label>Lines</label>
+            <input ng-model="shippingGroup.info.address.lines" type="text">
+          </md-input-container>
+          <md-input-container>
+            <label>City</label>
+            <input ng-model="shippingGroup.info.address.city" type="text">
+          </md-input-container>
+          <md-input-container>
+            <label>State Or Province</label>
+            <input ng-model="shippingGroup.info.address.stateOrProvince" type="text">
+          </md-input-container>
+          <md-input-container>
+            <label>Postal Code</label>
+            <input ng-model="shippingGroup.info.address.postalCode" type="text">
+          </md-input-container>
+          <md-input-container>
+            <label>Country</label>
+            <input ng-model="shippingGroup.info.address.country" type="text">
+          </md-input-container>
+          </div>
+        </div>
+
+        </p>
+      </p>
+  <!-- end shipping request stuff -->
+
+      </div>
+      </form>
+
+    </md-tab>
+
+    <md-tab label="Shipping Group Items">
+      <div ng-controller="ShippingGroupItemListController">
+        <md-table-container>
+          <table md-table md-progress="promise">
+            <thead md-head md-order="query.order" md-on-reorder="onReorder">
+              <tr md-row>
+                <th md-column>Shipping Group Item</th>
+                <!-- more columns go here -->
+              </tr>
+            </thead>
+            <tbody layout-padding md-body>
+              <tr md-row ng-repeat="shippingGroupItem in shippingGroupItems">
+                <td md-cell>{{shippingGroupItem.label}}</td>
+                <!-- more cells go here -->
+                <td md-cell>
+                  <md-button class="md-default md-icon-button" ng-href="/jobs/{{$app.selected.job.id}}/shipping-groups/{{$app.selected.shippingGroup.id}}/items/{{shippingGroupItem.id}}" md-whiteframe="1">
+                    <md-icon class="material icons">edit</md-icon>
+                  </md-button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </md-table-container>
+        <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+
+      </div>
+    </md-tab>
+  </md-tabs>
+</md-content>
