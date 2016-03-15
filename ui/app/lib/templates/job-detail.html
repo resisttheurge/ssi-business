@@ -5,114 +5,259 @@
     <md-button class="md-raised" ng-disabled="jobForm.$pristine" ng-click="update(job)">Save Changes!</md-button>
   </div>
 </md-toolbar>
+
 <md-progress-linear md-mode="{{mode}}"></md-progress-linear>
-<form name="jobForm" layout="column" layout-padding ng-hide="{{mode}}">
+<md-content>
+  <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab label="Job Details">
+          <form name="jobForm" layout="column" layout-padding ng-hide="{{mode}}">
+              <div layout-gt-sm="row">
+                <label>Job Prefix</label>
+                <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
+                  <md-select ng-model="job.identifier.prefix" style="width: 50px;">
+                    <md-option ng-repeat="prefix in prefixes" ng-value="prefix">
+                           {{prefix}}
+                    </md-option>
+                  </md-select>
+                </md-input-container>
 
-      <!-- <div layout-gt-sm="row">
-        <md-autocomplete required
-            md-selected-item="job.identifier.prefix"
-            md-search-text="prefixSearchText"
-            md-items="prefix in queryPrefixes(prefixSearchText)"
-            md-item-text="prefix"
-            md-floating-label="Job Prefix">
-          <span>{{prefix}}</span>
-        </md-autocomplete> -->
+                <md-input-container>
+                  <label>Year</label>
+                  <input ng-model="job.identifier.year" type="number" >
+                </md-input-container>
 
-    <label>Job Prefix</label>
-      <div layout-gt-sm="row">
-        <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
-          <md-select ng-model="job.identifier.prefix" style="width: 50px;">
-            <md-option ng-repeat="prefix in prefixes" ng-value="prefix">
-                   {{prefix}}
-            </md-option>
-          </md-select>
-        </md-input-container>
+                <md-input-container>
+                  <label>Label</label>
+                  <input ng-model="job.identifier.label" type="text">
+                </md-input-container>
 
-        <md-input-container>
-          <label>Year</label>
-          <input ng-model="job.identifier.year" type="number" >
-        </md-input-container>
+                <label>Job Status</label>
+                <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
+                  <md-select ng-model="job.status" style="width: 50px;">
+                    <md-option ng-repeat="status in jobStatuses" ng-value="status">
+                           {{status}}
+                    </md-option>
+                  </md-select>
+                </md-input-container>
 
-        <md-input-container>
-          <label>Label</label>
-          <input ng-model="job.identifier.label" type="text">
-        </md-input-container>
+              </div>
 
-        <label>Job Status</label>
-        <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
-          <md-select ng-model="job.status" style="width: 50px;">
-            <md-option ng-repeat="status in jobStatuses" ng-value="status">
-                   {{status}}
-            </md-option>
-          </md-select>
-        </md-input-container>
+              <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>Description</label>
+                  <textarea ng-model="job.description" rows="5" md-select-on-focus></textarea>
+                </md-input-container>
+              </div>
 
-      </div>
+              <div layout-gt-sm="row">
+                <md-datepicker ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
+                <md-datepicker ng-model="dueDateDisplay" md-placeholder="Due Date"></md-datepicker>
+                <md-datepicker ng-model="completeDateDisplay" md-placeholder="Complete Date"></md-datepicker>
+              </div>
 
-      <div layout-gt-sm="row">
-        <md-input-container class="md-block" flex-gt-sm>
-          <label>Description</label>
-          <textarea ng-model="job.description" rows="5" md-select-on-focus></textarea>
-        </md-input-container>
-      </div>
+              <div layout-gt-sm="row">
+                <md-autocomplete
+                    md-selected-item="job.shop"
+                    md-search-text="shopSearchText"
+                    md-items="shop in queryShops(shopSearchText)"
+                    md-item-text="shop.label"
+                    md-floating-label="Shop">
+                  <span>{{shop.label}}</span>
+                </md-autocomplete>
 
-      <div layout-gt-sm="row">
-        <md-datepicker ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
-        <md-datepicker ng-model="dueDateDisplay" md-placeholder="Due Date"></md-datepicker>
-        <md-datepicker ng-model="completeDateDisplay" md-placeholder="Complete Date"></md-datepicker>
-      </div>
+                <md-input-container>
+                  <label>Contract Price</label>
+                  <input ng-model="job.contractPrice" type="text">
+                </md-input-container>
+              </div>
 
-      <div layout-gt-sm="row">
-        <md-autocomplete
-            md-selected-item="job.shop"
-            md-search-text="shopSearchText"
-            md-items="shop in queryShops(shopSearchText)"
-            md-item-text="shop.label"
-            md-floating-label="Shop">
-          <span>{{shop.label}}</span>
-        </md-autocomplete>
+              <div layout-gt-sm="row">
+                <md-autocomplete
+                    md-selected-item="job.salesperson"
+                    md-search-text="salespersonSearchText"
+                    md-items="salesperson in querySalespeople(salespersonSearchText)"
+                    md-item-text="salesperson.label"
+                    md-floating-label="Salesperson">
+                  <span>{{salesperson.label}}</span>
+                </md-autocomplete>
+                <md-autocomplete
+                    md-selected-item="job.customer"
+                    md-search-text="customerSearchText"
+                    md-items="customer in queryCustomers(customerSearchText)"
+                    md-item-text="customer.label"
+                    md-floating-label="Customer">
+                  <span>{{customer.label}}</span>
+                </md-autocomplete>
+              </div>
 
-        <md-input-container>
-          <label>Contract Price</label>
-          <input ng-model="job.contractPrice" type="text">
-        </md-input-container>
-      </div>
+              <div layout-gt-sm="row">
+                <md-input-container >
+                  <label>Contact</label>
+                  <input ng-model="job.contact.label" type="text">
+                </md-input-container>
+                <md-input-container >
+                  <label>Phone Number</label>
+                  <input ng-model="job.contact.phone" type="text">
+                </md-input-container>
+                <md-input-container >
+                  <label>Fax</label>
+                  <input ng-model="job.contact.fax" type="text">
+                </md-input-container>
+                <md-input-container >
+                  <label>Email</label>
+                  <input ng-model="job.contact.email" type="text">
+                </md-input-container>
+              </div>
+            </form>
+        </md-tab>
 
-      <div layout-gt-sm="row">
-        <md-autocomplete
-            md-selected-item="job.salesperson"
-            md-search-text="salespersonSearchText"
-            md-items="salesperson in querySalespeople(salespersonSearchText)"
-            md-item-text="salesperson.label"
-            md-floating-label="Salesperson">
-          <span>{{salesperson.label}}</span>
-        </md-autocomplete>
-        <md-autocomplete
-            md-selected-item="job.customer"
-            md-search-text="customerSearchText"
-            md-items="customer in queryCustomers(customerSearchText)"
-            md-item-text="customer.label"
-            md-floating-label="Customer">
-          <span>{{customer.label}}</span>
-        </md-autocomplete>
-      </div>
+        //Drawings
+        <md-tab label="Drawings">
+          <md-content class="md-padding">
+            <div ng-controller="DrawingListController">
+              <md-table-container>
+                <table md-table md-progress="promise">
+                  <thead md-head md-order="query.order" md-on-reorder="onReorder">
+                    <tr md-row>
+                      <th md-column>Drawing</th>
+                      <!-- more columns go here -->
+                    </tr>
+                  </thead>
+                  <tbody layout-padding md-body>
+                    <tr md-row ng-repeat="drawing in drawings">
+                      <td md-cell>{{drawing.label}}</td>
+                      <!-- more cells go here -->
+                      <td md-cell>
+                        <md-button class="md-default md-icon-button" ng-href="/jobs/{{$app.selected.job.id}}/drawings/{{drawing.id}}" ng-click="$app.selected.drawing = drawing" md-whiteframe="1">
+                          <md-icon class="material icons">edit</md-icon>
+                        </md-button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </md-table-container>
+              <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+            </div>
+          </md-content>
+        </md-tab>
 
-      <div layout-gt-sm="row">
-        <md-input-container >
-          <label>Contact</label>
-          <input ng-model="job.contact.label" type="text">
-        </md-input-container>
-        <md-input-container >
-          <label>Phone Number</label>
-          <input ng-model="job.contact.phone" type="text">
-        </md-input-container>
-        <md-input-container >
-          <label>Fax</label>
-          <input ng-model="job.contact.fax" type="text">
-        </md-input-container>
-        <md-input-container >
-          <label>Email</label>
-          <input ng-model="job.contact.email" type="text">
-        </md-input-container>
-      </div>
-    </form>
+        //Shipping Groups
+        <md-tab label="Shipping Groups">
+          <md-content class="md-padding">
+            <div ng-controller="ShippingGroupListController">
+              <md-table-container>
+                <table md-table md-progress="promise">
+                  <thead md-head md-order="query.order" md-on-reorder="onReorder">
+                    <tr md-row>
+                      <th md-column>Shipping Group</th>
+                      <!-- more columns go here -->
+                    </tr>
+                  </thead>
+                  <tbody layout-padding md-body>
+                    <tr md-row ng-repeat="shippingGroup in shippingGroups">
+                      <td md-cell>{{shippingGroup.label}}</td>
+                      <!-- more cells go here -->
+                      <td md-cell>
+                        <md-button class="md-default md-icon-button" ng-href="/jobs/{{$app.selected.job.id}}/shipping-groups/{{shippingGroup.id}}" ng-click="$app.selected.shippingGroup = shippingGroup" md-whiteframe="1">
+                          <md-icon class="material icons">edit</md-icon>
+                        </md-button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </md-table-container>
+              <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+            </md-content>
+          </div>
+        </md-tab>
+
+
+        <md-tab label="Shipments">
+          <md-content class="md-padding">
+            <div ng-controller="ShipmentListController">
+              <md-table-container>
+                <table md-table md-progress="promise">
+                  <thead md-head md-order="query.order" md-on-reorder="onReorder">
+                    <tr md-row>
+                      <th md-column>Shipment</th>
+                      <!-- more columns go here -->
+                    </tr>
+                  </thead>
+                  <tbody layout-padding md-body>
+                    <tr md-row ng-repeat="shipment in shipments">
+                      <td md-cell>{{shipment.number}}</td>
+                      <!-- more cells go here -->
+                      <td md-cell>
+                        <md-button class="md-default md-icon-button" ng-href="/jobs/{{$app.selected.job.id}}/shipments/{{shipment.id}}" ng-click="$app.selected.shipment = shipment" md-whiteframe="1">
+                          <md-icon class="material icons">edit</md-icon>
+                        </md-button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </md-table-container>
+              <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+            </div>
+          </md-content>
+        </md-tab>
+
+        <md-tab label="Part Orders">
+          <md-content class="md-padding">
+            <div ng-controller="PartOrderListController">
+              <md-table-container>
+                <table md-table md-progress="promise">
+                  <thead md-head md-order="query.order" md-on-reorder="onReorder">
+                    <tr md-row>
+                      <th md-column>Part Order</th>
+                      <!-- more columns go here -->
+                    </tr>
+                  </thead>
+                  <tbody layout-padding md-body>
+                    <tr md-row ng-repeat="partOrder in partOrders">
+                      <td md-cell>{{partOrder.label}}</td>
+                      <!-- more cells go here -->
+                      <td md-cell>
+                        <md-button class="md-default md-icon-button" ng-href="/jobs/{{$app.selected.job.id}}/part-orders/{{partOrder.id}}" ng-click="$app.selected.partOrder = partOrder" md-whiteframe="1">
+                          <md-icon class="material icons">edit</md-icon>
+                        </md-button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </md-table-container>
+              <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+            </div>
+          </md-content>
+        </md-tab>
+
+        <md-tab label="Zones">
+          <md-content class="md-padding">
+            <div ng-controller="ZoneListController">
+              <md-table-container>
+                <table md-table md-progress="promise">
+                  <thead md-head md-order="query.order" md-on-reorder="onReorder">
+                    <tr md-row>
+                      <th md-column>Zone</th>
+                      <!-- more columns go here -->
+                    </tr>
+                  </thead>
+                  <tbody layout-padding md-body>
+                    <tr md-row ng-repeat="zone in zones">
+                      <td md-cell>{{zone.number}}</td>
+                      <!-- more cells go here -->
+                      <td md-cell>
+                        <md-button class="md-default md-icon-button" ng-href="/jobs/{{$app.selected.job.id}}/zones/{{zone.id}}" md-whiteframe="1">
+                          <md-icon class="material icons">edit</md-icon>
+                        </md-button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </md-table-container>
+              <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+            </div>
+          </md-content>
+        </md-tab>
+
+      </md-tabs>
+</md-content>

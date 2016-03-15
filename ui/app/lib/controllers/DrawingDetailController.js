@@ -2,10 +2,12 @@ import { DetailController } from 'utils'
 
 export default class DrawingDetailController extends DetailController {
   /*@ngInject*/
-   constructor($scope, $routeParams, $q, Drawing, SpecialtyItem, enums) {
+   constructor($scope, $routeParams, $q, Drawing, SpecialtyItem, enums, $ssiSelected, $mdDialog) {
      super()
      var self = this
      var promises = []
+
+     $scope.job = $ssiSelected.job;
 
      //
      function resolve() {

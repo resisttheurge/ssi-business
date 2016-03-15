@@ -1,10 +1,11 @@
 import { ApiService } from 'utils'
 export default class ShippingGroup extends ApiService {
   /*@ngInject*/
-  constructor ($resource, endpoint) {
+  constructor ($resource, endpoint, $q, $unpack) {
     super()
 
     var service = this;
+    var self = this;
 
     var resultExtension = function (response) {
         service.$scope.loading = true
@@ -30,5 +31,19 @@ export default class ShippingGroup extends ApiService {
       service.resultObj = resultObj;
       return this.endpoint.query({ shippingGroupId: shippingGroupId }, resultExtension).$promise;
     }
+
+
+    self.update = function (item) {
+        return $q(function (resolve, reject) {
+          if (!item) {
+            return reject('cannot update without a parameter')
+          } else if (!item.id) {
+            return reject('cannot update object with missing id')
+          } else {
+            return resolve(self.endpoint.update({ shippingGroupId: item.id }, item).$promise.then($unpack))
+          }
+        })
+      }
+
   }
 }

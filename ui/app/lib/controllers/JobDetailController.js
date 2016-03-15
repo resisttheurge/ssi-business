@@ -10,7 +10,7 @@ export default class JobDetailController extends DetailController {
 
     $scope.prefixes     = enums.prefixes
     $scope.jobStatuses  = enums.jobStatuses
-    
+
     // this.prefixes     = enums.prefixes
     // this.jobStatuses  = enums.jobStatuses
 
@@ -89,6 +89,18 @@ export default class JobDetailController extends DetailController {
         .title('Failed to Save')
         .textContent('There has been an error, changes have not been saved')
       .ok('Close'))});
+    }
+
+    $scope.openDrawings = function openDrawings(event)
+    {
+      $mdDialog.show({
+         controller: 'DrawingListController',
+         templateUrl: 'drawing-list.html',
+         parent: angular.element(document.body),
+         targetEvent: event,
+         clickOutsideToClose: false,
+         fullscreen: false
+       });
     }
 
     loadJob()

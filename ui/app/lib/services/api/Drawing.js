@@ -1,10 +1,11 @@
 import { ApiService } from 'utils'
 export default class Drawing extends ApiService {
   /*@ngInject*/
-  constructor ($resource, endpoint) {
+  constructor ($resource, endpoint, $q, $unpack) {
     super()
 
     var service = this;
+    var self = this;
 
     var resultExtension = function (response) {
         service.$scope.loading = true
@@ -30,5 +31,18 @@ export default class Drawing extends ApiService {
       service.resultObj = resultObj;
       return this.endpoint.get({ drawingId: drawingId }, resultExtension).$promise;
     }
+
+    self.update = function (item) {
+        return $q(function (resolve, reject) {
+          if (!item) {
+            return reject('cannot update without a parameter')
+          } else if (!item.id) {
+            return reject('cannot update object with missing id')
+          } else {
+            return resolve(self.endpoint.update({ drawingId: item.id }, item).$promise.then($unpack))
+          }
+        })
+      }
+
   }
 }
