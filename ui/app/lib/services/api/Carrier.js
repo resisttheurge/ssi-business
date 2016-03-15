@@ -12,6 +12,14 @@ export default class Carrier extends ApiService {
       query: { method: 'GET', params:{ carrierId: '' } }
     })
 
+    this.create = item =>
+      $q(
+        (resolve, reject) =>
+          item ?
+            resolve(this.endpoint.create(item).$promise.then($unpack))
+          : reject('cannot call create without a parameter')
+      )
+
     self.update = function (item) {
         return $q(function (resolve, reject) {
           if (!item) {
