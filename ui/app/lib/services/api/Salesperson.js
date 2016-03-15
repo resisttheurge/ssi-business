@@ -1,7 +1,7 @@
 import { ApiService } from 'utils'
 export default class Salesperson extends ApiService {
   /*@ngInject*/
-  constructor ($resource, endpoint) {
+  constructor ($q, $unpack, $resource, endpoint) {
     super()
 
     var service = this;
@@ -37,5 +37,13 @@ export default class Salesperson extends ApiService {
       service.resultObj = resultObj;
       this.endpoint.get(resultExtension)
     }
+
+    this.create = item =>
+      $q(
+        (resolve, reject) =>
+          item ?
+            resolve(this.endpoint.create(item).$promise.then($unpack))
+          : reject('cannot call create without a parameter')
+      )
   }
 }
