@@ -20,6 +20,29 @@ export default class ShippingGroupDetailController extends DetailController {
       $scope.loading = false
     })
 
+    if ($scope.shippingGroup != null) {
+      $scope.revisionDateDisplay = $scope.shippingGroup.info.revisionDate != null ?
+     $convertDate.stringToDate($scope.shippingGroup.info.revisionDate) : undefined
+
+      $scope.startDateDisplay = $scope.shippingGroup.info.startDate != null ?
+     $convertDate.stringToDate($scope.shippingGroup.info.startDate) : undefined
+
+      $scope.shopDateDisplay = $scope.shippingGroup.info.shopDate != null ?
+       $convertDate.stringToDate($scope.shippingGroup.info.shopDate) : undefined
+
+      $scope.fieldDateDisplay = $scope.shippingGroup.info.fieldDate != null ?
+     $convertDate.stringToDate($scope.shippingGroup.info.fieldDate) : undefined
+
+      $scope.requestDateDisplay = $scope.shippingGroup.info.requestDate != null ?
+     $convertDate.stringToDate($scope.shippingGroup.info.requestDate) : undefined
+    } else {
+      $scope.revisionDateDisplay = undefined
+      $scope.startDateDisplay = undefined
+      $scope.shopDateDisplay = undefined
+      $scope.fieldDateDisplay = undefined
+      $scope.requestDateDisplay = undefined
+    }
+
     $scope.update = function update(item)
     {
       ShippingGroup.update(item).then(function (data) { $mdDialog
@@ -35,4 +58,25 @@ export default class ShippingGroupDetailController extends DetailController {
     }
 
   }
+
+  // function convertDate(item) {
+  //   return $q(function (resolve, reject) {
+  //     console.log('converting Dates')
+  //       $scope.revisionDateDisplay = data.drawing.info.revisionDate != null ?
+  //        $convertDate.stringToDate(data.drawing.info.revisionDate) : undefined
+  //
+  //       $scope.startDateDisplay = data.drawing.info.startDate != null ?
+  //        $convertDate.stringToDate(data.drawing.info.startDate) : undefined
+  //
+  //       $scope.shopDateDisplay = data.drawing.info.shopDate != null ?
+  //          $convertDate.stringToDate(data.drawing.info.shopDate) : undefined
+  //
+  //       $scope.dueDateDisplay = data.drawing.info.dueDate != null ?
+  //        $convertDate.stringToDate(data.drawing.info.dueDate) : undefined
+  //
+  //       $scope.completeDateDisplay = data.drawing.info.completeDate != null ?
+  //        $convertDate.stringToDate(data.drawing.info.completeDate) : undefined
+  //
+  //        return resolve(data)
+  //      })
 }

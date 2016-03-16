@@ -2,7 +2,8 @@ import { DetailController } from 'utils'
 
 export default class DrawingDetailController extends DetailController {
   /*@ngInject*/
-   constructor($scope, $routeParams, $q, Drawing, SpecialtyItem, enums, $ssiSelected, $mdDialog) {
+   constructor($scope, $routeParams, $q, Drawing, SpecialtyItem, enums,
+      $ssiSelected, $mdDialog, $convertDate) {
      super()
      var self = this
      var promises = []
@@ -50,18 +51,39 @@ export default class DrawingDetailController extends DetailController {
        $scope.promise = $q.all({
          drawing: Drawing.endpoint.get($routeParams).$promise.then(unpack),
 
-        //  specialtyItem: SpecialtyItem.endpoint.query().$promise.then(unpack),
+         //  specialtyItem: SpecialtyItem.endpoint.query().$promise.then(unpack),
        }).then(function (data) {
          console.log('extending')
 
          angular.extend($scope, data, {
-           revisionDateDisplay: data.drawing.revisionDate && new Date(data.drawing.revisionDate),
-           startDateDisplay: data.drawing.startDate && new Date(data.drawing.startDate),
-           dueDateDisplay: data.drawing.dueDate && new Date(data.drawing.dueDate),
-           completeDateDisplay: data.drawing.completeDate && new Date(data.drawing.completeDate),
            loading: false
          })
+
+         return data
          console.log('extending done')
+       }).then(convertDate)
+     }
+
+     function convertDate(data) {
+       return $q(function (resolve, reject) {
+         console.log('converting Dates')
+
+         $scope.revisionDateDisplay = data.drawing.info.revisionDate != null ?
+          $convertDate.stringToDate(data.drawing.info.revisionDate) : undefined
+
+         $scope.startDateDisplay = data.drawing.info.startDate != null ?
+          $convertDate.stringToDate(data.drawing.info.startDate) : undefined
+
+         $scope.shopDateDisplay = data.drawing.info.shopDate != null ?
+            $convertDate.stringToDate(data.drawing.info.shopDate) : undefined
+
+         $scope.dueDateDisplay = data.drawing.info.dueDate != null ?
+          $convertDate.stringToDate(data.drawing.info.dueDate) : undefined
+
+         $scope.completeDateDisplay = data.drawing.info.completeDate != null ?
+          $convertDate.stringToDate(data.drawing.info.completeDate) : undefined
+
+         return resolve(data)
        })
      }
 

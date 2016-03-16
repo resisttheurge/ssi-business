@@ -1,18 +1,17 @@
 import { DetailController } from 'utils'
 
+// import { $convertDate } from ''
+
 export default class JobDetailController extends DetailController {
   /*@ngInject*/
   constructor(
     $scope, $routeParams, $q, Address, Customer, Job, Schedule,
-    Shop, Salesperson, enums, $filter, $mdDialog, $unpack
+    Shop, Salesperson, enums, $filter, $mdDialog, $unpack, $convertDate
   ) {
     super()
 
     $scope.prefixes     = enums.prefixes
     $scope.jobStatuses  = enums.jobStatuses
-
-    // this.prefixes     = enums.prefixes
-    // this.jobStatuses  = enums.jobStatuses
 
     function filter(expression, comparator) {
       return function (array) {
@@ -27,7 +26,7 @@ export default class JobDetailController extends DetailController {
       return loading().then(function () {
         console.log(JSON.stringify($routeParams))
         return Job.get($routeParams)
-      }).then(store).then(loaded).catch(function (reason) {throw reason})
+      }).then(convertDate).then(store).then(loaded).catch(function (reason) {throw reason})
     }
 
     function loaded(data) {
@@ -74,6 +73,26 @@ export default class JobDetailController extends DetailController {
       return $q(function (resolve, reject) {
         console.log('storing job')
         return resolve($scope.job = job)
+      })
+    }
+
+    function convertDate(job) {
+      return $q(function (resolve, reject) {
+        console.log('converting Dates')
+
+        $scope.startDateDisplay =
+            job.startDate != null ?
+                $convertDate.stringToDate(job.startDate) : undefined
+        $scope.dueDateDisplay  =
+            job.dueDate != null ?
+                $convertDate.stringToDate(job.dueDate) : undefined
+
+        $scope.completeDateDisplay =
+            job.completeDate != null ?
+                $convertDate.stringToDate(job.completeDate) : undefined
+
+        console.log('converted')
+        return resolve(job)
       })
     }
 
