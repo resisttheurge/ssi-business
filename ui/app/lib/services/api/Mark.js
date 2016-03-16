@@ -1,10 +1,12 @@
 import { ApiService } from 'utils'
 export default class Mark extends ApiService {
   /*@ngInject*/
-  constructor ($q, $unpack, $resource, endpoint) {
+
+constructor ($q, $unpack, $resource, endpoint) {
     super()
 
     var service = this;
+    var self = this;
 
     var resultExtension = function (response) {
         service.$scope.loading = true
@@ -37,6 +39,18 @@ export default class Mark extends ApiService {
           item ?
             resolve(this.endpoint.create(item).$promise.then($unpack))
           : reject('cannot call create without a parameter')
-      )
+        )
+
+    self.update = function (item) {
+        return $q(function (resolve, reject) {
+          if (!item) {
+            return reject('cannot update without a parameter')
+          } else if (!item.id) {
+            return reject('cannot update object with missing id')
+          } else {
+            return resolve(self.endpoint.update({ markId: item.id }, item).$promise.then($unpack))
+          }
+        })
+      }
   }
 }

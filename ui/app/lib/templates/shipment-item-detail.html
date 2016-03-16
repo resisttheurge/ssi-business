@@ -10,7 +10,13 @@
 <div>{{shipmentItem.contact}}</div>
 <div>{{shipmentItem.address}}</div> -->
 
-<h1>Shipment Item Detail</h1>
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h2>{{shipment.number}}</h2>
+    <span flex></span>
+    <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(shipmentItem)">Save Changes!</md-button>
+  </div>
+</md-toolbar>
 
   <md-content  layout-gt-sm="row" layout-padding>
     <form name="shipmentItemDetailForm" flex style="overflow-x : hidden" ng-hide="loading">

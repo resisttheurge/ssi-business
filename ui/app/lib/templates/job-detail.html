@@ -1,6 +1,11 @@
 <md-toolbar>
   <div class="md-toolbar-tools">
-    <h2>{{job | jobTitle}}</h2>
+
+    <md-input-container>
+      <label>Job</label>
+      <input disabled value="{{job | jobTitle}}"></input>
+    </md-input-container>
+
     <span flex></span>
     <md-button class="md-raised" ng-disabled="jobForm.$pristine" ng-click="update(job)">Save Changes!</md-button>
   </div>

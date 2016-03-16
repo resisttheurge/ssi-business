@@ -16,5 +16,18 @@ export default class ShippingGroupItem extends ApiService {
             resolve(this.endpoint.create(item).$promise.then($unpack))
           : reject('cannot call create without a parameter')
       )
+    var self = this;
+
+    self.update = function (item) {
+          return $q(function (resolve, reject) {
+            if (!item) {
+              return reject('cannot update without a parameter')
+            } else if (!item.id) {
+              return reject('cannot update object with missing id')
+            } else {
+              return resolve(self.endpoint.update({ shippingGroupItemId: item.id }, item).$promise.then($unpack))
+            }
+          })
+        }
   }
 }
