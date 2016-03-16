@@ -88,8 +88,6 @@ export const tagTypes = [
   'W'
 ]
 
-
-
 export const enums = {
   jobStatuses,
   prefixes,

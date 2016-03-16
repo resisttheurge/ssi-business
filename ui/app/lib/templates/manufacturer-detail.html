@@ -1,18 +1,22 @@
-<!-- <div>{{manufacturer.id}}</div>
-<div>{{manufacturer.label}}</div> -->
-
-<h1>Manufacturer Detail</h1>
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h1>{{update ? 'Edit Manufacturer Details' : 'Create New Manufacturer'}}</h1>
+    <span flex></span>
+    <md-button
+        class="md-raised"
+        ng-disabled="detailForm.$pristine"
+        ng-click="update ? update(manufacturer) : create(manufacturer)">
+      Save
+    </md-button>
+  </div>
+</md-toolbar>
+<form name="detailForm">
   <md-content  layout-gt-sm="row" layout-padding>
-    <form name="manufacturerDetailForm" flex style="overflow-x : hidden">
     <div>
-      <md-input-container>
-        <label>Id</label>
-        <input ng-model="manufacturer.id" type="text">
-      </md-input-container>
       <md-input-container>
         <label>Label</label>
         <input ng-model="manufacturer.label" type="text">
       </md-input-container>
     </div>
-    <form>
   </md-content>
+<form>

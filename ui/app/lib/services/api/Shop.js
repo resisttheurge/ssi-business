@@ -38,6 +38,14 @@ export default class Shop extends ApiService {
       this.endpoint.get(resultExtension)
     }
 
+    this.update = item =>
+      $q(
+        (resolve, reject) =>
+          item && item.id ?
+            resolve(this.endpoint.update({ shopId: item.id }, item).$promise.then($unpack))
+          : reject('cannot call create without a parameter')
+      )
+
     this.create = item =>
       $q(
         (resolve, reject) =>

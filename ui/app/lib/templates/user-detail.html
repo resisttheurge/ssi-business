@@ -1,17 +1,18 @@
-<!-- <div>{{user.id}}</div>
-<div>{{user.username}}</div>
-<div>{{user.active}}</div>
-<div>{{user.roles}}</div> -->
-
-<h1>User Detail</h1>
-  <md-content  layout-gt-sm="row" layout-padding>
-<form name="userDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h1>{{update ? 'Edit User Details' : 'Create New User'}}</h1>
+    <span flex></span>
+    <md-button
+        class="md-raised"
+        ng-disabled="detailForm.$pristine"
+        ng-click="update ? update(user) : create(user)">
+      Save
+    </md-button>
+  </div>
+</md-toolbar>
+<md-content  layout-gt-sm="row" layout-padding>
+  <form name="detailForm" flex style="overflow-x : hidden" ng-hide="loading">
     <div>
-
-      <md-input-container>
-        <label>Id</label>
-        <input ng-model="user.id" type="text">
-      </md-input-container>
 
       <md-input-container>
         <label>Username</label>
@@ -32,11 +33,6 @@
         </md-select>
       </md-input-container>
 
-      <!-- <md-input-container>
-        <label>Roles</label>
-        <input ng-model="user.roles" type="text">
-      </md-input-container> -->
-
     </div>
-    <form>
-  </md-content>
+  </form>
+</md-content>

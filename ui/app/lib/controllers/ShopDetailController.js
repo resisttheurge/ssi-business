@@ -1,24 +1,26 @@
 import { DetailController } from 'utils'
 
-export default class CustomerDetailController extends DetailController {
+export default class ShopDetailController extends DetailController {
   /*@ngInject*/
-  constructor($mdDialog, $scope, $routeParams, Customer) {
+  constructor($mdDialog, $scope, $routeParams, Shop) {
     super()
-    if ($routeParams.customerId) {
-      Customer.endpoint.get({ customerId: $routeParams.customerId }, function (response) {
-        $scope.loading = true;
-        if (response.success) {
-          $scope.customer = response.data
-        } else {
-          $scope.error = true
-          $scope.message = response.message
+    if ($routeParams.shopId) {
+
+      Shop.endpoint.get({ shopId: $routeParams.shopId },
+        function (response) {
+          $scope.loading = true
+          if (response.success) {
+            $scope.shop = response.data
+          } else {
+            $scope.error = true
+            $scope.message = response.message
+          }
+
+          $scope.loading = false
         }
-
-        $scope.loading = false
-      })
-
+      )
       $scope.update = function update(item) {
-        Customer.update(item).then(
+        Shop.update(item).then(
           function (data) {
             $mdDialog.show(
               $mdDialog
@@ -39,7 +41,7 @@ export default class CustomerDetailController extends DetailController {
       }
     } else {
       $scope.create = item =>
-        Customer.create(item).then(
+        Shop.create(item).then(
           data =>
             $mdDialog.show(
               $mdDialog.alert()

@@ -9,6 +9,14 @@ export default class Part extends ApiService {
         query: { method: 'GET', params:{ partId: '' } }
       })
 
+    this.update = item =>
+      $q(
+        (resolve, reject) =>
+          item && item.id ?
+            resolve(this.endpoint.update({ partId: item.id }, item).$promise.then($unpack))
+          : reject('cannot call create without a parameter')
+      )
+
     this.create = item =>
       $q(
         (resolve, reject) =>

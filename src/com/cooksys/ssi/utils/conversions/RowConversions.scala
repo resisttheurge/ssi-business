@@ -155,7 +155,7 @@ trait RowConversions {
     Manufacturer(Option(manufacturersRow.id), manufacturersRow.label)
 
   implicit def toPartsRow(part: Part): PartsRow =
-    PartsRow(if (part.id.isDefined) part.id.get else -1, part.partType)
+    PartsRow(if (part.id.isDefined) part.id.get else -1, part.partType, part.number, part.description)
 
   implicit def fromPartsRow(partsRow: PartsRow): Part =
     Part(Option(partsRow.id), partsRow.`type`, partsRow.number, partsRow.description)

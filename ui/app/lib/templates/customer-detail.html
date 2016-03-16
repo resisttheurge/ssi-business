@@ -1,17 +1,22 @@
-<!-- <div>{{customer.id}}</h1>
-<div>{{customer.label}}</div> -->
-<h1>Customer Detail</h1>
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h1>{{update ? 'Edit Customer Details' : 'Create New Customer'}}</h1>
+    <span flex></span>
+    <md-button
+        class="md-raised"
+        ng-disabled="detailForm.$pristine"
+        ng-click="update ? update(customer) : create(customer)">
+      Save
+    </md-button>
+  </div>
+</md-toolbar>
+<form name="detailForm" flex style="overflow-x : hidden">
   <md-content  layout-gt-sm="row" layout-padding>
-    <form name="customerDetailForm" flex style="overflow-x : hidden">
     <div>
-      <md-input-container>
-        <label>Customer Id</label>
-        <input ng-model="customer.id" type="text">
-      </md-input-container>
       <md-input-container>
         <label>Customer Label</label>
         <input ng-model="customer.label" type="text">
       </md-input-container>
     </div>
-    <form>
   </md-content>
+</form>

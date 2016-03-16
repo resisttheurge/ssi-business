@@ -1,11 +1,11 @@
 <md-toolbar>
   <div class="md-toolbar-tools">
-    <h1>{{update ? 'Edit Carrier Details' : 'Create New Carrier'}}</h1>
+    <h1>{{update ? 'Edit Shop Details' : 'Create New Shop'}}</h1>
     <span flex></span>
     <md-button
         class="md-raised"
         ng-disabled="detailForm.$pristine"
-        ng-click="update ? update(carrier) : create(carrier)">
+        ng-click="update ? update(shop) : create(shop)">
       Save
     </md-button>
   </div>
@@ -15,7 +15,7 @@
     <div>
       <md-input-container>
         <label>Label</label>
-        <input ng-model="carrier.label" type="text">
+        <input ng-model="shop.label" type="text">
       </md-input-container>
     </div>
   </md-content>

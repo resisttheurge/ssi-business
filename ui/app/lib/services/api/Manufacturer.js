@@ -9,6 +9,14 @@ export default class Manufacturer extends ApiService {
         query: { method: 'GET', params:{ manufacturerId: '' } }
       })
 
+    this.update = item =>
+      $q(
+        (resolve, reject) =>
+          item && item.id ?
+            resolve(this.endpoint.update({ manufacturerId: item.id }, item).$promise.then($unpack))
+          : reject('cannot call create without a parameter')
+      )
+
     this.create = item =>
       $q(
         (resolve, reject) =>
