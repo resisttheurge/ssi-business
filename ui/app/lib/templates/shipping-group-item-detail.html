@@ -3,7 +3,14 @@
 <div>{{shippingGroupItem.shippingItem}}</div>
 <div>{{shippingGroupItem.label}}</div> -->
 
-<h1>Shipping Group Item Detail</h1>
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h2>{{shippingGroup.label}}</h2>
+    <span flex></span>
+    <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(shippingGroupItem)">Save Changes!</md-button>
+  </div>
+</md-toolbar>
+
 <md-content  layout-gt-sm="row" layout-padding>
   <form name="shippingGroupDetailForm" layout="column" flex style="overflow-x : hidden" ng-hide="loading">
   <div>

@@ -29,6 +29,8 @@ import ShippingGroupDetailController from './ShippingGroupDetailController'
 import ShippingGroupListController from './ShippingGroupListController'
 import ShippingGroupItemDetailController from './ShippingGroupItemDetailController'
 import ShippingGroupItemListController from './ShippingGroupItemListController'
+import ShopDetailController from './ShopDetailController'
+import ShopListController from './ShopListController'
 import SpecialtyItemDetailController from './SpecialtyItemDetailController'
 import SpecialtyItemListController from './SpecialtyItemListController'
 import SystemTypeDetailController from './SystemTypeDetailController'
@@ -69,6 +71,8 @@ export const controllers = {
   ShippingGroupListController,
   ShippingGroupItemDetailController,
   ShippingGroupItemListController,
+  ShopDetailController,
+  ShopListController,
   SpecialtyItemDetailController,
   SpecialtyItemListController,
   SystemTypeDetailController,
@@ -112,6 +116,8 @@ export default
       .controller('ShippingGroupListController', ShippingGroupListController)
       .controller('ShippingGroupItemDetailController', ShippingGroupItemDetailController)
       .controller('ShippingGroupItemListController', ShippingGroupItemListController)
+      .controller('ShopDetailController', ShopDetailController)
+      .controller('ShopListController', ShopListController)
       .controller('SpecialtyItemDetailController', SpecialtyItemDetailController)
       .controller('SpecialtyItemListController', SpecialtyItemListController)
       .controller('SystemTypeDetailController', SystemTypeDetailController)

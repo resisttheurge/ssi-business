@@ -87,6 +87,20 @@ export default class DrawingDetailController extends DetailController {
        })
      }
 
+     $scope.update = function update(item)
+     {
+       Drawing.update(item).then(function (data) { $mdDialog
+         .show($mdDialog.alert()
+         .title('Changes Saved!')
+         .textContent('Changes to this record have been saved')
+         .ok('Close'));
+       }, function (error) { $mdDialog
+         .show($mdDialog.alert()
+         .title('Failed to Save')
+         .textContent('There has been an error, changes have not been saved')
+       .ok('Close'))});
+     }
+
      $scope.drawingTypes = enums.drawingTypes;
      $scope.$watch('promise', queue)
      refresh()

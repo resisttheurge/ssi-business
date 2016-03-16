@@ -44,5 +44,13 @@ export default class Drawing extends ApiService {
         })
       }
 
+    this.create = item =>
+      $q(
+        (resolve, reject) =>
+          item ?
+            resolve(this.endpoint.create(item).$promise.then($unpack))
+          : reject('cannot call create without a parameter')
+      )
+
   }
 }

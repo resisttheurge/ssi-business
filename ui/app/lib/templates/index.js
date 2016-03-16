@@ -23,6 +23,8 @@ import shipmentDetail from './shipment-detail'
 import shipmentItemDetail from './shipment-item-detail'
 import shippingGroupDetail from './shipping-group-detail'
 import shippingGroupItemDetail from './shipping-group-item-detail'
+import shopDetail from './shop-detail'
+import shopList from './shop-list'
 import specialtyItemDetail from './specialty-item-detail'
 import specialtyItemList from './specialty-item-list'
 import systemTypeDetail from './system-type-detail'
@@ -55,6 +57,8 @@ export const urls = {
   shipmentItemDetail,
   shippingGroupDetail,
   shippingGroupItemDetail,
+  shopDetail,
+  shopList,
   specialtyItemDetail,
   specialtyItemList,
   systemTypeDetail,

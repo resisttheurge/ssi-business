@@ -32,7 +32,6 @@ export default class ShippingGroup extends ApiService {
       return this.endpoint.query({ shippingGroupId: shippingGroupId }, resultExtension).$promise;
     }
 
-
     self.update = function (item) {
         return $q(function (resolve, reject) {
           if (!item) {
@@ -44,6 +43,14 @@ export default class ShippingGroup extends ApiService {
           }
         })
       }
+
+    this.create = item =>
+      $q(
+        (resolve, reject) =>
+          item ?
+            resolve(this.endpoint.create(item).$promise.then($unpack))
+          : reject('cannot call create without a parameter')
+      )
 
   }
 }

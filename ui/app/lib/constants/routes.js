@@ -348,6 +348,30 @@ export const routes = {
       allowedRoles: ['ADMIN', 'EMPLOYEE']
     }
   },
+  '/shops': {
+    templateUrl: urls.shopList,
+    controller: controllers.ShopListController.name,
+    access: {
+      allowAnonymous: false,
+      allowedRoles: ['ADMIN', 'EMPLOYEE']
+    }
+  },
+  '/shops/new': {
+    templateUrl: urls.shopDetail,
+    controller: controllers.ShopDetailController.name,
+    access: {
+      allowAnonymous: false,
+      allowedRoles: ['ADMIN', 'EMPLOYEE']
+    }
+  },
+  '/shops/:shopId': {
+    templateUrl: urls.shopDetail,
+    controller: controllers.ShopDetailController.name,
+    access: {
+      allowAnonymous: false,
+      allowedRoles: ['ADMIN', 'EMPLOYEE']
+    }
+  },
   '/specialty-items': {
     templateUrl: urls.specialtyItemList,
     controller: controllers.SpecialtyItemListController.name,

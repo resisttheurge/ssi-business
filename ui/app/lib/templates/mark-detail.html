@@ -2,8 +2,14 @@
  <div>{{mark.drawingId}}</div>
  <div>{{mark.shippingItem}}</div>
  <div>{{mark.label}}</div> -->
+ <md-toolbar>
+   <div class="md-toolbar-tools">
+     <h2>{{drawing.label}}</h2>
+     <span flex></span>
+     <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(mark)">Save Changes!</md-button>
+   </div>
+ </md-toolbar>
 
- <h1>Mark Detail</h1>
    <md-content  layout-gt-sm="row" layout-padding>
          <form name="markDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
      <div>

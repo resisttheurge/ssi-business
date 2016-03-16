@@ -12,7 +12,6 @@ export default class Zone extends ApiService {
         query: { method: 'GET', params:{ zoneId: '' } }
       })
 
-
     self.update = function (item) {
         return $q(function (resolve, reject) {
           if (!item) {
@@ -24,6 +23,14 @@ export default class Zone extends ApiService {
           }
         })
       }
+
+    this.create = item =>
+      $q(
+        (resolve, reject) =>
+          item ?
+            resolve(this.endpoint.create(item).$promise.then($unpack))
+          : reject('cannot call create without a parameter')
+      )
 
   }
 }

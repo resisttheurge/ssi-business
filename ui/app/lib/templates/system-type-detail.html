@@ -1,19 +1,22 @@
-<!-- <div>{{systemType.id}}</div>
-<div>{{systemType.label}}</div> -->
-
-<h1>System Type Detail</h1>
-
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h1>{{update ? 'Edit System Type Details' : 'Create New System Type'}}</h1>
+    <span flex></span>
+    <md-button
+        class="md-raised"
+        ng-disabled="detailForm.$pristine"
+        ng-click="update ? update(systemType) : create(systemType)">
+      Save
+    </md-button>
+  </div>
+</md-toolbar>
+<form name="detailForm">
   <md-content  layout-gt-sm="row" layout-padding>
-<form name="systemTypeDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
     <div>
-      <md-input-container>
-        <label>Id</label>
-        <input ng-model="systemType.id" type="text">
-      </md-input-container>
       <md-input-container>
         <label>Label</label>
         <input ng-model="systemType.label" type="text">
       </md-input-container>
     </div>
-<form>
   </md-content>
+<form>

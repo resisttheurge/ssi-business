@@ -1,8 +1,8 @@
 import { ListController } from 'utils'
 
-export default class PartListController extends ListController {
+export default class ShopListController extends ListController {
   /*@ngInject*/
-  constructor($scope, Part, $filter, $q) {
+  constructor($scope, Shop, $filter, $q) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -12,44 +12,21 @@ export default class PartListController extends ListController {
     }
 
     $scope.onPaginate = function (page, limit) {
-      return getParts(angular.extend({}, $scope.query, { page: page, limit: limit }))
+      return getShops(angular.extend({}, $scope.query, { page: page, limit: limit }))
     }
 
     $scope.onReorder = function (order) {
-      return getParts(angular.extend({}, $scope.query, { order: order }))
+      return getShops(angular.extend({}, $scope.query, { order: order }))
     }
 
-    function getParts(query) {
+    function getShops(query) {
       return $scope.promise =
-        Part.endpoint.query().$promise
+        Shop.endpoint.query().$promise
           .then(unpackResponse)
-          .then(searchFilter)
           .then(total)
           .then(sort(query))
           .then(page(query))
           .then(store)
-    }
-
-    function searchFilter(items) {
-
-      var resultArray = [];
-      if ($scope.search)
-      {
-        if (items)
-          items.forEach(function (item) {
-
-            if ($scope.search && !item.description.toUpperCase().match(new RegExp($scope.search.toUpperCase()))) {}
-
-            //don't add to results array
-            else
-
-              //doesn't violate constraints, add to results array
-              resultArray.push(item);
-          })
-
-        return resultArray;
-      } else
-        return items;
     }
 
     function unpackResponse(response) {
@@ -85,10 +62,10 @@ export default class PartListController extends ListController {
       }
     }
 
-    function store(parts) {
-      return $scope.parts = parts
+    function store(shops) {
+      return $scope.shops = shops
     }
 
-    getParts($scope.query)
+    getShops($scope.query)
   }
 }
