@@ -14,7 +14,12 @@ export default class ShipmentDetailController extends DetailController {
 
     Shipment.endpoint.get({ shipmentId: $routeParams.shipmentId }, function (response) {
       if (response.success) {
+
         $scope.shipment = response.data
+
+        $scope.shipDateDisplay = $scope.shipment.shipDate != null ?
+          $convertDate.stringToDate($scope.shipment.shipDate) : undefined
+
       } else {
         $scope.error = true
         $scope.message = response.message
@@ -22,9 +27,6 @@ export default class ShipmentDetailController extends DetailController {
 
       $scope.loading = false
     })
-
-    $scope.shipDateDisplay = $scope.shipment.shipDate != null ?
-     $convertDate.stringToDate($scope.shipment.shipDate) : undefined
 
     $scope.update = function update(item)
     {
