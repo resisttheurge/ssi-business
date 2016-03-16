@@ -2,7 +2,17 @@
   <md-toolbar class="md-default md-table-toolbar">
     <div class="md-toolbar-tools">
       <h2>Parts</h2>
-      <!-- search etc goes here -->
+
+      <div flex-offset-gt-sm="40">
+        <md-subheader>
+          Search:
+        </md-subheader>
+      </div>
+
+      <md-input-container>
+        <input ng-model="search" type=text style="margin-bottom=0px;">
+      </md-input-container>
+
     </div>
   </md-toolbar>
   <md-table-container>

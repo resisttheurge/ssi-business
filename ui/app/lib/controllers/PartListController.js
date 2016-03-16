@@ -23,10 +23,33 @@ export default class PartListController extends ListController {
       return $scope.promise =
         Part.endpoint.query().$promise
           .then(unpackResponse)
+          .then(searchFilter)
           .then(total)
           .then(sort(query))
           .then(page(query))
           .then(store)
+    }
+
+    function searchFilter(items) {
+
+      var resultArray = [];
+      if ($scope.search)
+      {
+        if (items)
+          items.forEach(function (item) {
+
+            if ($scope.search && !item.description.toUpperCase().match(new RegExp($scope.search.toUpperCase()))) {}
+
+            //don't add to results array
+            else
+
+              //doesn't violate constraints, add to results array
+              resultArray.push(item);
+          })
+
+        return resultArray;
+      } else
+        return items;
     }
 
     function unpackResponse(response) {
