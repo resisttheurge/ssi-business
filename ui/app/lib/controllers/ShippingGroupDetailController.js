@@ -2,7 +2,7 @@ import { DetailController } from 'utils'
 
 export default class ShippingGroupDetailController extends DetailController {
   /*@ngInject*/
-  constructor($scope, $routeParams, ShippingGroup, enums, $ssiSelected, $mdDialog) {
+  constructor($scope, $routeParams, ShippingGroup, enums, $ssiSelected, $mdDialog, $convertDate) {
     super()
 
     $scope.tagTypes = enums.tagTypes

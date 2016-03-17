@@ -5,7 +5,7 @@
 
 <md-toolbar>
   <div class="md-toolbar-tools">
-    <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2><a ng-href="/jobs/{{job.id}}/shipping-groups/{{shippingGroup.id}}">Shipping Group {{shippingGroup.label}}</a></h2><i class="material-icons">keyboard_arrow_right</i> <h2>Shipping Group Item {{shipmentGroupItem.label}}</h2>
+    <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2><a ng-href="/jobs/{{job.id}}/shipping-groups/{{shippingGroup.id}}">Shipping Group {{shippingGroup.label}}</a></h2><i class="material-icons">keyboard_arrow_right</i> <h2>Shipping Group Item {{shippingGroupItem.label}}</h2>
     <span flex></span>
     <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(shippingGroupItem)">Save Changes!</md-button>
   </div>
