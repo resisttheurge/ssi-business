@@ -1,6 +1,7 @@
 import { AbstractController } from 'utils'
 
 import templateUrl from './template'
+import './styles'
 
 class AppController extends AbstractController {
 
