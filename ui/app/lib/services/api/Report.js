@@ -3,7 +3,8 @@ import { pdfConverter } from 'utils'
 
 export default class Report extends ApiService {
   /*@ngInject*/
-  constructor ($resource, endpoint, q$, $unpack, pdfConverter) {
+  constructor ($resource, endpoint, q$, $unpack) {
+    super()
 
     this.endpoint = $resource(endpoint + '/reports/:reportTitle', {}, {
         generate: { method: 'POST' }
@@ -16,7 +17,7 @@ export default class Report extends ApiService {
 
         } else {
 
-          return resolve(this.endpoint.generate(pdf).$promise.then($unpack).pdfConverter(pdf))
+          return resolve(this.endpoint.generate(pdf).$promise.then($unpack))
         }
       })
     }
