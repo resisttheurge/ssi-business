@@ -10,7 +10,7 @@ export ListController from './ListController'
 export AbstractService from './AbstractService'
 export ApiService from './ApiService'
 
-export pdfConverter from '.pdfConverter'
+export pdfConverter from './pdfConverter'
 
 export default
   angular
