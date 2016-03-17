@@ -12,7 +12,7 @@
 
 <md-toolbar>
   <div class="md-toolbar-tools">
-    <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2><a ng-href="/jobs/{{job.id}}/shipments/{{shipment.id}}">Shipment {{shipment.label}}</a></h2><i class="material-icons">keyboard_arrow_right</i> <h2>Shipment Item {{shipmentItem.number}}</h2>
+    <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2><a ng-href="/jobs/{{job.id}}/shipments/{{shipment.id}}">Shipment {{shipment.number}}</a></h2><i class="material-icons">keyboard_arrow_right</i> <h2>Shipment Item {{shipmentItem.number}}</h2>
     <span flex></span>
     <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(shipmentItem)">Save Changes!</md-button>
   </div>

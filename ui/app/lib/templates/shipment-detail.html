@@ -11,7 +11,7 @@
 <div>{{shipment.address}}}}</div> -->
 <md-toolbar>
   <div class="md-toolbar-tools">
-    <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2>Shipment {{shipment.label}}</h2>
+    <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2>Shipment {{shipment.number}}</h2>
     <span flex></span>
     <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(shipment)">Save Changes!</md-button>
   </div>
