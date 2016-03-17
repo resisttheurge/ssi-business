@@ -19,6 +19,8 @@ export default class PartListController extends ListController {
       return getParts(angular.extend({}, $scope.query, { order: order }))
     }
 
+    $scope.$watch('search', function (x, y) { getParts($scope.query) }, true)
+
     function getParts(query) {
       return $scope.promise =
         Part.endpoint.query().$promise
@@ -37,13 +39,7 @@ export default class PartListController extends ListController {
       {
         if (items)
           items.forEach(function (item) {
-
-            if ($scope.search && !item.description.toUpperCase().match(new RegExp($scope.search.toUpperCase()))) {}
-
-            //don't add to results array
-            else
-
-              //doesn't violate constraints, add to results array
+            if (((item.description && item.description.toUpperCase().match(new RegExp($scope.search.toUpperCase()))) || (item.number && item.number.toUpperCase().match(new RegExp('^' + $scope.search.toUpperCase()  + '.*')))))
               resultArray.push(item);
           })
 

@@ -8,6 +8,7 @@ export default class ShippingGroupDetailController extends DetailController {
     $scope.tagTypes = enums.tagTypes
     $scope.loading  = true
     $scope.job = $ssiSelected.job;
+    $scope.shippingGroup = $ssiSelected.shippingGroup;
 
     ShippingGroup.endpoint.get($routeParams, function (response) {
       if (response.success) {

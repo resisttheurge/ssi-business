@@ -19,6 +19,8 @@ export default class SalespersonListController extends ListController {
       return getSalespersons(angular.extend({}, $scope.query, { order: order }))
     }
 
+    $scope.$watch('search', function (x, y) { getSalespersons($scope.query) }, true)
+
     function getSalespersons(query) {
       return $scope.promise =
         Salesperson.endpoint.query().$promise
@@ -36,15 +38,11 @@ export default class SalespersonListController extends ListController {
       if ($scope.search)
       {
         if (items)
-          items.forEach(function (item) {
-
-            if ($scope.search && !item.label.toUpperCase().match(new RegExp('^' + $scope.search.toUpperCase() + '.*'))) {}
-
-            //don't add to results array
-            else
-
-              //doesn't violate constraints, add to results array
-              resultArray.push(item);
+          resultArray = items.filter(function (item) {
+            var names = item.label.split(' ');
+            for (var itemIndex = 0; itemIndex < names.length; itemIndex++)
+              if (names[itemIndex].toUpperCase().match(new RegExp('^' + $scope.search.toUpperCase() + '.*')))
+                return true;
           })
 
         return resultArray;

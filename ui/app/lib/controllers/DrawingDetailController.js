@@ -8,6 +8,7 @@ export default class DrawingDetailController extends DetailController {
      var promises = []
 
      $scope.job = $ssiSelected.job;
+     $scope.drawing = $ssiSelected.drawing;
 
      //
      function resolve() {

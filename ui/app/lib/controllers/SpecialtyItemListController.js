@@ -19,6 +19,8 @@ export default class SpecialtyItemListController extends ListController {
       return getSpecialtyItems(angular.extend({}, $scope.query, { order: order }))
     }
 
+    $scope.$watch('search', function (x, y) { getSpecialtyItems($scope.query) }, true)
+
     function getSpecialtyItems(query) {
       return $scope.promise =
         SpecialtyItem.endpoint.query().$promise

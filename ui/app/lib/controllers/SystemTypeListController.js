@@ -19,6 +19,8 @@ export default class SystemTypeListController extends ListController {
       return getSystemTypes(angular.extend({}, $scope.query, { order: order }))
     }
 
+    $scope.$watch('search', function (x, y) { getSystemTypes($scope.query) }, true)
+
     function getSystemTypes(query) {
       return $scope.promise =
         SystemType.endpoint.query().$promise

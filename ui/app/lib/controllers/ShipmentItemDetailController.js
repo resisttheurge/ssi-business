@@ -9,6 +9,7 @@ export default class ShipmentItemDetailController extends DetailController {
     $scope.loading = true
 
     $scope.shipment = $ssiSelected.shipment
+    $scope.job = $ssiSelected.job
 
     ShipmentItem.endpoint.get($routeParams, function (response) {
 

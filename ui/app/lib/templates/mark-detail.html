@@ -4,7 +4,7 @@
  <div>{{mark.label}}</div> -->
  <md-toolbar>
    <div class="md-toolbar-tools">
-     <h2>{{drawing.label}}</h2>
+     <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right></i> <h2><a ng-href="/jobs/{{job.id}}/drawings/{{drawing.id}}">Drawing {{drawing.label}}</a></h2><i class="material-icons">keyboard_arrow_right></i> <h2>Mark {{mark.label}}</h2>
      <span flex></span>
      <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(mark)">Save Changes!</md-button>
    </div>

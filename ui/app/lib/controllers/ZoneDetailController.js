@@ -6,7 +6,8 @@ export default class ZoneDetailController extends DetailController {
     super()
     $scope.loading = true
     $scope.job = $ssiSelected.job;
-    
+    $scope.zone = $ssiSelected.zone;
+
     Zone.endpoint.get($routeParams, function (response) {
       if (response.success) {
         $scope.zone = response.data

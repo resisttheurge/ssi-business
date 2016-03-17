@@ -10,7 +10,8 @@ export default class ShipmentDetailController extends DetailController {
     $scope.loading = true
 
     $scope.job = $ssiSelected.job;
-    
+    $scope.shipment = $ssiSelected.shipment;
+
     Shipment.endpoint.get({ shipmentId: $routeParams.shipmentId }, function (response) {
       if (response.success) {
         $scope.shipment = response.data

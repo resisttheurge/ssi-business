@@ -7,6 +7,7 @@ export default class MarkDetailController extends DetailController {
 
     $scope.shippingItemStatuses = enums.shippingItemStatuses
     $scope.drawing = $ssiSelected.drawing;
+    $scope.job = $ssiSelected.job;
 
     Mark.endpoint.get($routeParams, function (response) {
       $scope.loading = true

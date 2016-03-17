@@ -19,6 +19,8 @@ export default class ManufacturerListController extends ListController {
       return getManufacturers(angular.extend({}, $scope.query, { order: order }))
     }
 
+    $scope.$watch('search', function (x, y) { getManufacturers($scope.query) }, true)
+
     function getManufacturers(query) {
       return $scope.promise =
         Manufacturer.endpoint.query().$promise

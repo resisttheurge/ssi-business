@@ -1,7 +1,7 @@
 <div>
   <md-toolbar class="md-default md-table-toolbar">
     <div class="md-toolbar-tools">
-      <h2>Parts</h2>
+      <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2>Part Order {{partOrder.label}}</h2>
 
       <div flex-offset-gt-sm="40">
         <md-subheader>
@@ -20,12 +20,13 @@
       <thead md-head md-order="query.order" md-on-reorder="onReorder">
         <tr md-row>
           <th md-column>Part</th>
-          <!-- more columns go here -->
+          <th md-column>Description</th>
         </tr>
       </thead>
       <tbody layout-padding md-body>
         <tr md-row ng-repeat="part in parts">
           <td md-cell>{{part.number}}</td>
+          <td md-cell>{{part.description | limitTo: 60}}</td>
           <!-- more cells go here -->
           <td md-cell>
             <md-button class="md-default md-icon-button" ng-href="/parts/{{part.id}}" md-whiteframe="1">

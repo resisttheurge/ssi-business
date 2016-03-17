@@ -7,7 +7,8 @@ export default class ShippingGroupItemDetailController extends DetailController 
 
     $scope.shippingItemStatuses = enums.shippingItemStatuses
     $scope.loading = true
-    $scope.shippingGroup = $ssiSelected.shippingGroup
+    $scope.shippingGroup = $ssiSelected.shippingGroup;
+    $scope.job = $ssiSelected.job;
 
     ShippingGroupItem.endpoint.get($routeParams,
       function (response) {

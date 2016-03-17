@@ -19,6 +19,8 @@ export default class VendorListController extends ListController {
       return getVendors(angular.extend({}, $scope.query, { order: order }))
     }
 
+    $scope.$watch('search', function (x, y) { getVendors($scope.query) }, true)
+
     function getVendors(query) {
       return $scope.promise =
         Vendor.endpoint.query().$promise
