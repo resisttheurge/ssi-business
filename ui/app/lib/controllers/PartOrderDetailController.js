@@ -2,11 +2,7 @@ import { DetailController } from 'utils'
 
 export default class PartOrderDetailController extends DetailController {
   /*@ngInject*/
-<<<<<<< HEAD
-  constructor($scope, $routeParams, PartOrder, enums, $ssiSelected) {
-=======
-  constructor($scope, $routeParams, PartOrder, enums, $convertDate) {
->>>>>>> master
+  constructor($scope, $routeParams, PartOrder, enums, $ssiSelected, $convertDate) {
     super()
 
     $scope.partOrderStatuses = enums.partOrderStatuses
