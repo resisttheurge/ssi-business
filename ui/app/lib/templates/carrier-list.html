@@ -1,47 +1,67 @@
-<div>
-  <md-toolbar class="md-default md-table-toolbar">
-    <div class="md-toolbar-tools">
-      <h2>Carriers</h2>
-
-      <div flex-offset-gt-sm="40">
-        <md-subheader>
-          Search:
-        </md-subheader>
+<div layout-fill layout="column" layout-align="center stretch">
+  <!-- outer frame -->
+  <div flex layout-margin layout="row" layout-align="center stretch">
+    <!-- card frame  -->
+    <md-card flex="85" layout="column">
+      <!-- toolbar/content frame -->
+      <div layout="column">
+        <md-toolbar class="md-table-toolbar">
+          <div class="md-toolbar-tools">
+            <h2 flex>Carriers</h2>
+          </div>
+        </md-toolbar>
+        <md-content layout="column">
+          <md-table-container>
+            <table md-table md-progress="promise">
+              <thead md-head md-order="query.order" md-on-reorder="onReorder">
+                <tr md-row>
+                  <th md-column></th>
+                  <th md-column md-order-by="label">Carrier</th>
+                  <!-- more columns go here -->
+                </tr>
+              </thead>
+              <tbody md-body>
+                <tr md-row ng-repeat="carrier in carriers">
+                  <td md-cell class="md-checkbox-cell">
+                    <md-menu md-offset="0 0">
+                        <md-button ng-click="$mdOpenMenu()" class="md-icon-button">
+                            <md-icon md-menu-origin class="material-icons">more_vert</md-icon>
+                        </md-button>
+                        <md-menu-content>
+                          <md-menu-item>
+                            <md-button>
+                              <md-icon class="material-icons" md-menu-align-target>edit</md-icon>
+                              Edit
+                            </md-button>
+                          </md-menu-item>
+                          <md-menu-item>
+                            <md-button>
+                              <md-icon class="material-icons md-warn md-hue-2" md-menu-align-target>delete</md-icon>
+                              Delete
+                            </md-button>
+                          </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                  </td>
+                  <td md-cell flex>
+                    <span>{{carrier.label}}</span>
+                  </td>
+                  <!-- more cells go here -->
+                </tr>
+              </tbody>
+            </table>
+          </md-table-container>
+        </md-content>
       </div>
-
-      <md-input-container>
-        <input ng-model="search" type=text style="margin-bottom=0px;">
-      </md-input-container>
-
-    </div>
-  </md-toolbar>
-  <md-table-container>
-    <table md-table md-progress="promise">
-      <thead md-head md-order="query.order" md-on-reorder="onReorder">
-        <tr md-row>
-          <th md-column>Carrier</th>
-          <!-- more columns go here -->
-        </tr>
-      </thead>
-      <tbody layout-padding md-body>
-        <tr md-row ng-repeat="carrier in carriers">
-          <td md-cell>{{carrier.label}}</td>
-          <!-- more cells go here -->
-          <td md-cell>
-            <md-button class="md-default md-icon-button" ng-href="/carriers/{{carrier.id}}" md-whiteframe="1">
-              <md-icon class="material icons">edit</md-icon>
-            </md-button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </md-table-container>
+      <footer layout="column">
+        <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+      </footer>
+    </md-card>
+  </div>
 </div>
-
-<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
-
-<div layout="row" layout-align="end center">
-  <md-button class="md-fab" ng-href="/carriers/new">
-    <md-icon class="material-icons">add</md-icon>
-  </md-button>
-</div>
+<md-button class="md-fab md-fab-bottom-right" ng-href="/carriers/new">
+  <md-tooltip md-direction="top" md-autohide="true">
+    New Carrier
+  </md-tooltip>
+  <md-icon class="material-icons">add</md-icon>
+</md-button>

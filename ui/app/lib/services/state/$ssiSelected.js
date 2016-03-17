@@ -24,6 +24,7 @@ export default class $ssiSelected extends AbstractService {
     this.partOrder = undefined
     this.shippingGroup = undefined
     this.shipment = undefined
+    this.zone = undefined
     return this._job = job
   }
 
@@ -49,7 +50,7 @@ export default class $ssiSelected extends AbstractService {
   }
 
   set partOrder(partOrder) {
-    this._partOrder = partOrder
+    return this._partOrder = partOrder
   }
 
   get shippingGroup() {
@@ -83,7 +84,15 @@ export default class $ssiSelected extends AbstractService {
   }
 
   set shipmentItem(shipmentItem) {
-    this._shipmentItem = shipmentItem
+    return this._shipmentItem = shipmentItem
+  }
+
+  get zone() {
+    return this._zone
+  }
+
+  set zone(zone) {
+    return this._zone = zone
   }
 
 }
