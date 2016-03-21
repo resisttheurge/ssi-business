@@ -16,8 +16,8 @@
         <md-tab label="Job Details">
           <form name="jobForm" layout="column" layout-padding ng-hide="{{mode}}">
               <div layout-gt-sm="row">
-                <label>Job Prefix</label>
-                <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
+                <md-input-container style="margin-top: 20px; margin-right: 20px; width: 50px;">
+                  <label>Prefix</label>
                   <md-select ng-model="job.identifier.prefix" style="width: 50px;">
                     <md-option ng-repeat="prefix in prefixes" ng-value="prefix">
                            {{prefix}}
@@ -35,8 +35,9 @@
                   <input ng-model="job.identifier.label" type="text">
                 </md-input-container>
 
-                <label>Job Status</label>
-                <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
+
+                <md-input-container style="margin-top: 20px; margin-right: 20px; width: 50px;">
+                  <label>Status</label>
                   <md-select ng-model="job.status" style="width: 50px;">
                     <md-option ng-repeat="status in jobStatuses" ng-value="status">
                            {{status}}
@@ -54,7 +55,9 @@
               </div>
 
               <div layout-gt-sm="row">
+                <h4>Start Date</h4>
                 <md-datepicker ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
+
                 <md-datepicker ng-model="dueDateDisplay" md-placeholder="Due Date"></md-datepicker>
                 <md-datepicker ng-model="completeDateDisplay" md-placeholder="Complete Date"></md-datepicker>
               </div>
@@ -95,6 +98,9 @@
               </div>
 
               <div layout-gt-sm="row">
+               <div>
+                <h4>Contact</h4>
+               </div>  
                 <md-input-container >
                   <label>Contact</label>
                   <input ng-model="job.contact.label" type="text">
