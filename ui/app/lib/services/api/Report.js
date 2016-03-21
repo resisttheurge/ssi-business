@@ -3,152 +3,92 @@ import { pdfConverter } from 'utils'
 
 export default class Report extends ApiService {
   /*@ngInject*/
-  constructor ($resource, endpoint, q$, $unpack) {
+  constructor ($resource, endpoint, $q, $unpack) {
     super()
 
-    this.endpoint = $resource(endpoint + '/reports/:reportTitle', {}, {
+    var self = this;
+
+    self.endpoint = $resource(endpoint + '/reports/:reportTitle', {}, {
         generate: { method: 'POST' }
       })
 
-    this.generate = function (pdf) {
-      return q$(function (resolve, reject) {
-        if (!pdf) {
-          return reject('cannot create')
-
-        } else {
-
-          return resolve(this.endpoint.generate(pdf).$promise.then($unpack))
-        }
-      })
-    }
-
-    this.productionSchedule = weekEnding =>
-      $q(
-        (resolve, reject) =>
-          this.endpoint
+    self.productionSchedule = weekEnding =>
+          self.endpoint
             .generate({ reportTitle: 'production-schedule' }, { weekEnding })
             .$promise
-            .then($unpack)
             .then(report => report.data)
-      )
 
-    this.managementReview = (start, end) =>
-      $q(
-        (resolve, reject) =>
-          this.endpoint
+    self.managementReview = (start, end) =>
+          self.endpoint
             .generate({ reportTitle: 'management-review' }, { start, end })
             .$promise
-            .then(unpack)
             .then(report => report.data)
-      )
 
-    this.rms = (jobId, shippingGroupId) =>
-      $q(
-        (resolve, reject) =>
-          this.endpoint
+    self.rms = (jobId, shippingGroupId) =>
+          self.endpoint
             .generate({ reportTitle: 'rms' }, { jobId, shippingGroupId })
             .$promise
-            .then($unpack)
             .then(report => report.data)
-      )
 
-    this.shipment = (shipmentId) =>
-      $q(
-        (resolve, reject) =>
-          this.endpoint
+    self.shipment = (shipmentId) =>
+          self.endpoint
             .generate({ reportTitle: 'shipmentId' }, { shipmentId })
             .$promise
-            .then($unpack)
             .then(report => report.data)
-      )
 
-    this.jobShipments = (jobId) =>
-      $q(
-        (resolve, reject) =>
-          this.endpoint
+    self.jobShipments = (jobId) =>
+          self.endpoint
             .generate({ reportTitle: 'job-shipments' }, { jobId })
             .$promise
-            .then($unpack)
             .then(report => report.data)
-      )
 
-    this.shipVia = (jobId) =>
-      $q(
-        (resolve, reject) =>
-          this.endpoint
+    self.shipVia = (jobId) =>
+          self.endpoint
             .generate({ reportTitle: 'ship-via' }, { jobId })
             .$promise
-            .then($unpack)
             .then(report => report.data)
-      )
 
-    this.materialShipper = (jobId) =>
-      $q(
-        (resolve, reject) =>
-          this.endpoint
-            .generate({ reportTitle: 'jobId' }, { jobId })
+    self.materialShipper = (jobId) =>
+          self.endpoint
+            .generate({ reportTitle: 'material-shipper' }, { jobId })
             .$promise
-            .then($unpack)
             .then(report => report.data)
-      )
 
-    this.specialtyItemsByJob = (jobId) =>
-      $q(
-        (resolve, reject) =>
-          this.endpoint
+    self.specialtyItemsByJob = (jobId) =>
+          self.endpoint
             .generate({ reportTitle: 'specialty-items-by-job' }, { jobId })
             .$promise
-            .then($unpack)
             .then(report => report.data)
-      )
-    this.specialtyItemsByPartType = (partType) =>
-      $q(
-        (resolve, reject) =>
-          this.endpoint
+
+    self.specialtyItemsByPartType = (partType) =>
+          self.endpoint
             .generate({ reportTitle: 'specialty-items-by-part-type' }, { partType })
             .$promise
-            .then($unpack)
             .then(report => report.data)
-      )
 
-    this.layoutDrawing = (jobId) =>
-      $q(
-        (resolve, reject) =>
-          this.endpoint
+    self.layoutDrawing = (jobId) =>
+      self.endpoint
             .generate({ reportTitle: 'layout-drawing' }, { jobId })
             .$promise
-            .then($unpack)
             .then(report => report.data)
-      )
 
-    this.detailDrawing = (jobId) =>
-      $q(
-        (resolve, reject) =>
-          this.endpoint
+    self.detailDrawing = (jobId) =>
+          self.endpoint
             .generate({ reportTitle: 'detail-drawing' }, { jobId })
             .$promise
-            .then($unpack)
             .then(report => report.data)
-      )
-    this.computerDrawing = (jobId) =>
-      $q(
-        (resolve, reject) =>
-          this.endpoint
+
+    self.computerDrawing = (jobId) =>
+          self.endpoint
             .generate({ reportTitle: 'computer-drawing' }, { jobId })
             .$promise
-            .then($unpack)
             .then(report => report.data)
-      )
 
-    this.zone = (jobId) =>
-      $q(
-        (resolve, reject) =>
-          this.endpoint
+    self.zone = (jobId) =>
+          self.endpoint
             .generate({ reportTitle: 'zone' }, { jobId })
             .$promise
-            .then($unpack)
             .then(report => report.data)
-      )
 
   }
 
