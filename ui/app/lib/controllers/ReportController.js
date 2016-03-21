@@ -31,22 +31,23 @@ export default class ReportController {
 
      self.layoutDrawing = function layoutDrawing()
      {
-     var parentEl = angular.element(document.body);
+       var parentEl = angular.element(document.body);
 
-     Report.layoutDrawing($ssiSelected.job.id).then(function (report)
-     {
-       self.report = report;
-       $mdDialog.show({
-         parent: parentEl,
-         template: self.template,
-         locals: {
-                 content: self.report
-               },
-         controller: ModalJobReportController,
-         controllerAs: 'modal'
+       Report.layoutDrawing($ssiSelected.job.id).then(function (report)
+       {
+         self.report = report;
+         $mdDialog.show({
+           parent: parentEl,
+           template: self.template,
+           locals: {
+                   content: self.report
+                 },
+           controller: ModalJobReportController,
+           controllerAs: 'modal'
 
-       })
-     });
+         })
+       });
+     }
 
      self.detailDrawing = function detailDrawing()
      {
@@ -175,5 +176,4 @@ export default class ReportController {
      }
 
    }
-   }
-  }
+ }
