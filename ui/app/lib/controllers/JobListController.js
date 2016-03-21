@@ -34,7 +34,7 @@ export default class JobListController extends ListController {
       $mdDialog.show(
         $mdDialog.confirm()
           .title(`Are you sure?`)
-          .textContent(`Are you sure you want to delete job ${item.label}?`)
+          .textContent(`Are you sure you want to delete job ${this.jobTitle(item)}?`)
           .ok('ok')
           .cancel('cancel')
       )
@@ -43,13 +43,13 @@ export default class JobListController extends ListController {
         () =>
           $mdToast.show(
             $mdToast.simple()
-              .textContent(`Deleted job ${item.label}`)
+              .textContent(`Deleted job ${this.jobTitle(item)}`)
               .position('bottom right')
           )
           .then(() => $route.reload()),
         reason => $mdToast.show(
           $mdToast.simple()
-            .textContent(`Could not delete job ${item.label} because ${reason}`)
+            .textContent(`Could not delete job ${this.jobTitle(item)} because ${reason}`)
             .position('bottom right')
           )
       )
