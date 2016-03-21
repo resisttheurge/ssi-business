@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class ManufacturerListController extends ListController {
   /*@ngInject*/
-  constructor($scope, Manufacturer, $filter, $q) {
+  constructor($scope, Manufacturer, $filter, $q, $mdDialog, $mdToast) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -20,6 +20,30 @@ export default class ManufacturerListController extends ListController {
     }
 
     $scope.$watch('search', function (x, y) { getManufacturers($scope.query) }, true)
+
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete manufacturer ${item.label}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => Manufacturer.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted manufacturer ${item.label}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete manufacturer ${item.label} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     function getManufacturers(query) {
       return $scope.promise =

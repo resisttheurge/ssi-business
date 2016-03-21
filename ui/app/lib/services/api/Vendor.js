@@ -24,5 +24,13 @@ export default class Vendor extends ApiService {
             resolve(this.endpoint.create(item).$promise.then($unpack))
           : reject('cannot call create without a parameter')
       )
+
+    this.delete = item =>
+      $q(
+        (resolve, reject) =>
+          item && item.id ?
+            resolve(this.endpoint.delete({ vendorId: item.id }).$promise.then($unpack))
+          : reject('cannot call delete without a parameter')
+      )
   }
 }

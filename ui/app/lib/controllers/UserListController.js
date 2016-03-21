@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class UserListController extends ListController {
   /*@ngInject*/
-  constructor($scope, User, $filter, $q) {
+  constructor($scope, User, $filter, $q, $mdDialog, $mdToast) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -18,6 +18,30 @@ export default class UserListController extends ListController {
     $scope.onReorder = function (order) {
       return getUsers(angular.extend({}, $scope.query, { order: order }))
     }
+
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete user ${item.username}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => User.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted user ${item.username}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete user ${item.username} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     function getUsers(query) {
       return $scope.promise =

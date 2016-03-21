@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class ShopListController extends ListController {
   /*@ngInject*/
-  constructor($scope, Shop, $filter, $q) {
+  constructor($scope, Shop, $filter, $q, $mdDialog, $mdToast) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -18,6 +18,30 @@ export default class ShopListController extends ListController {
     $scope.onReorder = function (order) {
       return getShops(angular.extend({}, $scope.query, { order: order }))
     }
+
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete shop ${item.label}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => Shop.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted shop ${item.label}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete shop ${item.label} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     function getShops(query) {
       return $scope.promise =

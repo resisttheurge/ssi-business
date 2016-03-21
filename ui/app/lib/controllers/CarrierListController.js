@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class CarrierListController extends ListController {
   /*@ngInject*/
-  constructor($scope, Carrier, $filter, $q) {
+  constructor($scope, Carrier, $filter, $q, $mdDialog, $mdToast, $route) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -20,6 +20,30 @@ export default class CarrierListController extends ListController {
     $scope.onReorder = function (order) {
       return getCarriers(angular.extend({}, $scope.query, { order: order }))
     }
+
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete carrier ${item.label}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => Carrier.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted carrier ${item.label}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete carrier ${item.label} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     function getCarriers(query) {
       return $scope.promise =

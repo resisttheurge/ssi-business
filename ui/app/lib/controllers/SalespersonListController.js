@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class SalespersonListController extends ListController {
   /*@ngInject*/
-  constructor($scope, Salesperson, $filter, $q) {
+  constructor($scope, Salesperson, $filter, $q, $mdDialog, $mdToast) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -20,6 +20,30 @@ export default class SalespersonListController extends ListController {
     }
 
     $scope.$watch('search', function (x, y) { getSalespersons($scope.query) }, true)
+
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete salesperson ${item.label}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => Salesperson.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted salesperson ${item.label}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete salesperson ${item.label} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     function getSalespersons(query) {
       return $scope.promise =

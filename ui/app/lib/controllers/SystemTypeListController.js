@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class SystemTypeListController extends ListController {
   /*@ngInject*/
-  constructor($scope, SystemType, $filter, $q) {
+  constructor($scope, SystemType, $filter, $q, $mdDialog, $mdToast) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -20,6 +20,30 @@ export default class SystemTypeListController extends ListController {
     }
 
     $scope.$watch('search', function (x, y) { getSystemTypes($scope.query) }, true)
+
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete system type ${item.label}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => SystemType.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted system type ${item.label}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete system type ${item.label} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     function getSystemTypes(query) {
       return $scope.promise =

@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class PartListController extends ListController {
   /*@ngInject*/
-  constructor($scope, Part, $filter, $q) {
+  constructor($scope, Part, $filter, $q, $mdDialog, $mdToast) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -20,6 +20,30 @@ export default class PartListController extends ListController {
     }
 
     $scope.$watch('search', function (x, y) { getParts($scope.query) }, true)
+
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete part ${item.number}-${item.description}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => Part.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted part ${item.number}-${item.description}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete part ${item.number}-${item.description} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     function getParts(query) {
       return $scope.promise =

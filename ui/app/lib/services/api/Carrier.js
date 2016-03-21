@@ -20,6 +20,14 @@ export default class Carrier extends ApiService {
           : reject('cannot call create without a parameter')
       )
 
+    this.delete = item =>
+      $q(
+        (resolve, reject) =>
+          item && item.id ?
+            resolve(this.endpoint.delete({ carrierId: item.id }).$promise.then($unpack))
+          : reject('cannot call delete without a parameter')
+      )
+
     self.update = function (item) {
         return $q(function (resolve, reject) {
           if (!item) {

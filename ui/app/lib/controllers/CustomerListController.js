@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class CustomerListController extends ListController {
   /*@ngInject*/
-  constructor($scope, Customer, $filter, $q) {
+  constructor($scope, Customer, $filter, $q, $mdDialog, $mdToast) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -20,6 +20,30 @@ export default class CustomerListController extends ListController {
     $scope.onReorder = function (order) {
       return getCustomers(angular.extend({}, $scope.query, { order: order }))
     }
+
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete customer ${item.label}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => Customer.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted customer ${item.label}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete customer ${item.label} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     function getCustomers(query) {
       return $scope.promise =

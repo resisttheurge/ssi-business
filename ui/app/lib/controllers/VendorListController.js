@@ -21,6 +21,30 @@ export default class VendorListController extends ListController {
 
     $scope.$watch('search', function (x, y) { getVendors($scope.query) }, true)
 
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete vendor ${item.label}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => Vendor.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted vendor ${item.label}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete vendor ${item.label} because ${reason}`)
+            .position('bottom right')
+          )
+      )
+
     function getVendors(query) {
       return $scope.promise =
         Vendor.endpoint.query().$promise
