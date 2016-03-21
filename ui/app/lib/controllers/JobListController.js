@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class JobListController extends ListController {
   /*@ngInject*/
-  constructor($q, $filter, $scope, Job, enums) {
+  constructor($q, $filter, $scope, Job, enums, $mdDialog, $mdToast) {
     super()
     this.search = {}
     this.total = 0
@@ -15,6 +15,8 @@ export default class JobListController extends ListController {
       }
     }
 
+    this.jobTitle = $filter('jobTitle')
+    this.jobStatus = $filter('jobStatus')
     this.orderBy = $filter('orderBy')
     this.prefixes = enums.prefixes
 
@@ -27,6 +29,30 @@ export default class JobListController extends ListController {
       this.query = { ...this.query, order }
       return this.getJobs()
     }
+
+    this.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete job ${this.jobTitle(item)}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => Job.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted job ${this.jobTitle(item)}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete job ${this.jobTitle(item)} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     this.getJobs = () =>
       this.promise =

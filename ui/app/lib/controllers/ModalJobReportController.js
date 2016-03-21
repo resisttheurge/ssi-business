@@ -1,8 +1,9 @@
 export default class ModalJobReportController {
   /*@ngInject*/
-  constructor ($mdDialog, content) {
+  constructor ($scope, $mdDialog, content) {
     var modal = this;
     modal.content = content;
+    modal.firstPage = 1;
 
     PDFJS.getDocument(modal.convertContent(content)).then(function getPdfHelloWorld(pdf) {
 
@@ -19,12 +20,12 @@ export default class ModalJobReportController {
     modal.nextPage = function ()
     {
       if (modal.currentPage < modal.maxPage)
-       modal.renderPage(++modal.currentPage);
+        modal.renderPage(++modal.currentPage);
     }
 
     modal.previousPage = function ()
     {
-      if (modal.currentPage > 1)
+      if (modal.currentPage > modal.firstPage)
        modal.renderPage(--modal.currentPage);
     }
 
@@ -46,6 +47,8 @@ export default class ModalJobReportController {
        // Render PDF page into canvas context
        //
        page.render({ canvasContext: context, viewport: viewport });
+       document.getElementsByTagName('md-dialog-content')[0].scrollTop = 0;
+       $scope.$apply();
      });
     }
 
