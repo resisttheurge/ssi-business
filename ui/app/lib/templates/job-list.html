@@ -56,7 +56,7 @@
                       </md-button>
                       <md-menu-content>
                         <md-menu-item>
-                          <md-button ng-href="/jobs/{{job.id}}">
+                          <md-button ng-click="$app.selected.job = job" ng-href="/jobs/{{job.id}}">
                             <md-icon class="material-icons" md-menu-align-target>edit</md-icon>
                             Edit
                           </md-button>
