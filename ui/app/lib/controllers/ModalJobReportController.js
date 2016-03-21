@@ -1,6 +1,6 @@
 export default class ModalJobReportController {
   /*@ngInject*/
-  constructor ($mdDialog, content) {
+  constructor ($scope, $mdDialog, content) {
     var modal = this;
     modal.content = content;
     modal.firstPage = 1;
@@ -47,7 +47,8 @@ export default class ModalJobReportController {
        // Render PDF page into canvas context
        //
        page.render({ canvasContext: context, viewport: viewport });
-       var content = document.getElementsByTagName('md-dialog-content')[0].scrollTop = 0;
+       document.getElementsByTagName('md-dialog-content')[0].scrollTop = 0;
+       $scope.$apply();
      });
     }
 
