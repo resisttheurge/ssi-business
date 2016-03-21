@@ -17,7 +17,7 @@ export default class ReportController {
         <md-button ng-disabled="modal.currentPage === modal.maxPage" ng-click="modal.nextPage()" class="md-primary">
           Next Page
         </md-button>
-        <md-button ng-disabled="modal.currentPage === 1" ng-click="modal.previousPage()" class="md-primary">
+        <md-button ng-disabled="modal.currentPage === modal.firstPage" ng-click="modal.previousPage()" class="md-primary">
           Previous Page
         </md-button>
         </span>
