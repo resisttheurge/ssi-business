@@ -6,7 +6,6 @@ export default class ReportController {
    constructor($scope, $routeParams, $q, $ssiSelected, $mdDialog, $convertDate, $unpack, Report) {
 
      var self = this;
-     console.log('ReportController constructed')
 
      self.template = `<md-dialog>
        <md-dialog-content>
