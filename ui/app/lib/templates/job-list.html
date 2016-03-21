@@ -1,63 +1,96 @@
-<div>
-  <md-toolbar class="md-default md-table-toolbar">
-    <div class="md-toolbar-tools">
-      <h2>Jobs</h2>
-
-      <div flex-offset-gt-sm="40">
-        <md-subheader>
-          Search:
-        </md-subheader>
-      </div>
-
-      <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
-        <md-select ng-model="$jobs.search.prefix" style="width: 50px;">
-          <md-option ng-repeat="prefix in $jobs.prefixes" ng-value="prefix">
-                 {{prefix}}
-          </md-option>
-        </md-select>
-      </md-input-container>
--
-        <md-input-container style="margin-top: 24px; width: 50px;">
-          <input ng-model="$jobs.search.year" type="number">
-        </md-input-container>
--
-        <md-input-container style="margin-top: 24px; width: 125px;">
-          <input ng-model="$jobs.search.label" type="text">
-        </md-input-container>
-
-    </div>
-  </md-toolbar>
-
-
-  <md-table-container>
-    <table md-table md-progress="$jobs.promise">
-      <thead md-head md-order="$jobs.query.order" md-on-reorder="$jobs.onReorder">
-        <tr md-row>
-          <th md-column>Job</th>
-          <th md-column>Status</th>
-          <!-- more columns go here -->
-        </tr>
-      </thead>
-      <tbody layout-padding md-body>
-        <tr md-row ng-repeat="job in $jobs.jobs">
-          <td md-cell>{{job | jobTitle}}</td>
-          <td md-cell>{{job | jobStatus}}</td>
-          <!-- more cells go here -->
-          <td md-cell>
-            <md-button class="md-default md-icon-button" ng-href="/jobs/{{job.id}}" ng-click="$app.selected.job = job" md-whiteframe="1">
-              <md-icon class="material icons">edit</md-icon>
+<div flex layout="column" layout-align="start stretch">
+  <!-- outer frame -->
+  <div layout-margin layout="row" layout-align="center stretch">
+    <!-- card frame  -->
+    <md-card flex="85" layout="column">
+      <!-- toolbar/content frame -->
+      <div layout="column">
+        <md-toolbar class="md-primary">
+          <div class="md-toolbar-tools">
+            <h2 flex>Jobs</h2>
+            <md-button ng-click="$jobs.showSearch = !$jobs.showSearch" class="md-icon-button">
+              <md-tooltip md-direction="left" md-autohide="true">
+                Search
+              </md-tooltip>
+              <md-icon md-menu-origin class="material-icons">search</md-icon>
             </md-button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </md-table-container>
+            <div ng-show="$jobs.showSearch" ng-model="$jobs.search" type=text style="margin-bottom=0px;">
+              <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
+                <md-select ng-model="$jobs.search.prefix" style="width: 50px;">
+                  <md-option ng-repeat="prefix in $jobs.prefixes" ng-value="prefix">
+                         {{prefix}}
+                  </md-option>
+                </md-select>
+              </md-input-container>
+                -
+              <md-input-container style="margin-top: 24px; width: 50px;">
+                <input ng-model="$jobs.search.year" type="number">
+              </md-input-container>
+                -
+              <md-input-container style="margin-top: 24px; width: 125px;">
+                <input ng-model="$jobs.search.label" type="text">
+              </md-input-container>
+            </div>
+          </div>
+        </md-toolbar>
+        <md-content layout-padding layout="column">
+          <md-table-container>
+            <table md-table md-progress="$jobs.promise">
+              <thead md-head md-order="$jobs.query.order" md-on-reorder="$jobs.onReorder">
+                <tr md-row>
+                  <th md-column></th>
+                  <th md-column md-order-by="label">Job</th>
+                  <!-- more columns go here -->
+                </tr>
+              </thead>
+              <tbody md-body>
+                <tr md-row ng-repeat="job in $jobs.jobs">
+                  <td md-cell class="md-checkbox-cell">
+                    <md-menu md-offset="0 0">
+                      <md-button ng-click="$mdOpenMenu()" class="md-icon-button">
+                          <md-tooltip md-direction="left" md-autohide="true">
+                            Actions
+                          </md-tooltip>
+                          <md-icon md-menu-origin class="material-icons">more_vert</md-icon>
+                      </md-button>
+                      <md-menu-content>
+                        <md-menu-item>
+                          <md-button ng-href="/jobs/{{job.id}}">
+                            <md-icon class="material-icons" md-menu-align-target>edit</md-icon>
+                            Edit
+                          </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                          <md-button ng-click="$jobs.delete(job)" class="md-warn md-hue-2">
+                            <md-icon class="material-icons" md-menu-align-target>delete</md-icon>
+                            Delete
+                          </md-button>
+                        </md-menu-item>
+                      </md-menu-content>
+                    </md-menu>
+                  </td>
+                  <td md-cell flex>
+                    <span>{{job | jobTitle}}</span>
+                  </td>
+                  <td md-cell flex>
+                    <span>{{job | jobStatus}}</span>
+                  </td>
+                  <!-- more cells go here -->
+                </tr>
+              </tbody>
+            </table>
+          </md-table-container>
+        </md-content>
+      </div>
+      <footer layout="column">
+        <md-table-pagination md-limit="$jobs.query.limit" md-page="$jobs.query.page" md-total="{{$jobs.total}}" md-on-paginate="$jobs.onPaginate" md-page-select></md-table-pagination>
+      </footer>
+    </md-card>
+  </div>
 </div>
-
-<md-table-pagination md-limit="$jobs.query.limit" md-page="$jobs.query.page" md-total="{{$jobs.total}}" md-on-paginate="$jobs.onPaginate" md-page-select></md-table-pagination>
-
-<div layout="row" layout-align="end center">
-  <md-button class="md-fab" ng-href="/jobs/new">
-    <md-icon class="material-icons">add</md-icon>
-  </md-button>
-</div>
+<md-button class="md-fab md-fab-bottom-right" ng-href="/jobs/new">
+  <md-tooltip md-direction="top" md-autohide="true">
+    New Job
+  </md-tooltip>
+  <md-icon class="material-icons">add</md-icon>
+</md-button>
