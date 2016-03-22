@@ -10,10 +10,10 @@
     </md-button>
   </div>
 </md-toolbar>
-<md-content  layout-gt-sm="row" layout-padding>
-  <form name="detailForm" flex style="overflow-x : hidden" ng-hide="loading">
-    <div>
 
+<md-content>
+  <form name="detailForm" ng-hide="loading">
+    <div layout-gt-sm="row">
       <md-input-container>
         <label>Username</label>
         <input ng-model="user.username" type="text">
@@ -24,9 +24,9 @@
         <input ng-model="user.active" type="text">
       </md-input-container>
 
-      <label>User Role Type</label>
-      <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
-        <md-select ng-model="user.roles"  style="width: 80px;">
+      <md-input-container>
+          <label>User Role Type</label>
+        <md-select ng-model="user.roles">
           <md-option ng-repeat="userRoleType in userRoleTypes" ng-value="userRoleType">
                  {{userRoleType}}
           </md-option>

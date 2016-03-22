@@ -10,17 +10,16 @@
     </md-button>
   </div>
 </md-toolbar>
-<md-content  layout-gt-sm="row" layout-padding>
-  <form name="detailForm" flex style="overflow-x : hidden" ng-hide="loading">
-
-      <div>
-        <label>Part Type</label>
-        <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
-          <md-select ng-model="part.partType" style="width: 50px;">
-            <md-option ng-repeat="partType in partTypes" ng-value="partType">
-                   {{partType}}
-            </md-option>
-          </md-select>
+<md-content>
+  <form name="detailForm">
+      <div layout-gt-sm="row">
+        <md-input-container>
+          <label>Part Type</label>
+            <md-select ng-model="part.partType">
+              <md-option ng-repeat="partType in partTypes" ng-value="partType">
+                     {{partType}}
+              </md-option>
+            </md-select>
         </md-input-container>
 
         <md-input-container>
@@ -29,11 +28,11 @@
         </md-input-container>
 
         <div layout-gt-sm="row">
-          <md-input-container class="md-block" flex-gt-sm>
+          <md-input-container flex-gt-sm>
             <label>Description</label>
             <textarea ng-model="part.description" rows="5" md-select-on-focus></textarea>
           </md-input-container>
         </div>
       </div>
     </form>
-  </md-content>
+</md-content>

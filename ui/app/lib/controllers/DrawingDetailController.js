@@ -102,7 +102,9 @@ export default class DrawingDetailController extends DetailController {
        .ok('Close'))});
      }
 
-     $scope.drawingTypes = enums.drawingTypes;
+     $scope.tagTypes      = enums.tagTypes;
+     $scope.drawingTypes  = enums.drawingTypes;
+
      $scope.$watch('promise', queue)
      refresh()
    }
