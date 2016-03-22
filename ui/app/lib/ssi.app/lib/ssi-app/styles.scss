@@ -18,3 +18,17 @@ table.md-table:not(.md-row-select) td.md-cell:first-child,
 table.md-table:not(.md-row-select) th.md-column:first-child {
   width: 24px;
 }
+
+@media print
+{
+    
+    canvas
+    {
+        display: inline !important;
+    }
+
+    md-dialog-content
+    {
+      display: inline;
+    }
+}

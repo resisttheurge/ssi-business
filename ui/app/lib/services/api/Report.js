@@ -32,7 +32,7 @@ export default class Report extends ApiService {
 
     self.shipment = (shipmentId) =>
           self.endpoint
-            .generate({ reportTitle: 'shipmentId' }, { shipmentId })
+            .generate({ reportTitle: 'shipment' }, { shipmentId })
             .$promise
             .then(report => report.data).catch('some exception')
 

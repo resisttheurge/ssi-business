@@ -55,11 +55,10 @@
                 <input ng-model="shipment.weight" type="text">
               </md-input-container>
 
-              <md-input-container>
-                <label>Bill Of Landing</label>
-                <input ng-model="shipment.billOfLanding" type="text">
-              </md-input-container>
-          </div>
+          <md-input-container>
+            <label>Bill Of Lading</label>
+            <input ng-model="shipment.billOfLading" type="text">
+          </md-input-container>
 
           <label>Ship Date</label>
           <md-datepicker ng-model="shipDateDisplay" md-placeholder="Ship Date"></md-datepicker>
@@ -161,5 +160,19 @@
       </md-button>
     </div>
   </md-tab>
+
+  <md-tab label="Reports">
+    <md-content class="md-padding">
+      <div ng-controller="ReportController as $reports">
+
+        <md-button ng-click="$reports.shipment()" style="background-color: #71EEB8; color: black;">
+          <md-icon class="material-icons">insert_drive_file</md-icon>
+          Shipment
+        </md-button>
+
+      </div>
+    </md-content>
+  </md-tab>
+
   </md-tabs>
 </md-content>

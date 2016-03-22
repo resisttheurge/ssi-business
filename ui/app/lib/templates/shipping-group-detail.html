@@ -203,5 +203,19 @@
         </div>
       </div>
     </md-tab>
+
+    <md-tab label="Reports">
+      <md-content class="md-padding">
+        <div ng-controller="ReportController as $reports">
+
+          <md-button ng-click="$reports.rms()" style="background-color: #71EEB8; color: black;">
+            <md-icon class="material-icons">insert_drive_file</md-icon>
+            RMS
+          </md-button>
+
+        </div>
+      </md-content>
+    </md-tab>
+
   </md-tabs>
 </md-content>

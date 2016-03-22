@@ -95,4 +95,11 @@ export default class $ssiSelected extends AbstractService {
     return this._zone = zone
   }
 
+  get specialtyItem() {
+    return this._specialtyItem
+  }
+
+  set specialtyItem(specialtyItem) {
+    return this._specialtyItem = specialtyItem
+  }
 }
