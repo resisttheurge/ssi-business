@@ -12,79 +12,75 @@
   </div>
 </md-toolbar>
 
-<md-content  layout-gt-sm="row" layout-padding>
-  <md-tabs md-dynamic-height md-border-bottom>
-    <md-tab label="Drawing Details">
-        <form name="editForm" layout="column" flex style="overflow-x : hidden">
-        <div>
+<md-content>
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="Drawing Details">
+          <form name="editForm" layout="column" flex style="overflow-x : hidden">
+          <div >
 
-          <md-input-container>
-            <label>Id</label>
-            <input ng-model="drawing.id" type="text">
-          </md-input-container>
+            <div layout-gt-sm="row">
+            <md-input-container>
+              <label>Id</label>
+              <input ng-model="drawing.id" type="text">
+            </md-input-container>
+            <md-input-container>
+              <label>Job Id</label>
+              <input ng-model="drawing.jobId" type="text">
+            </md-input-container>
+            <md-input-container>
+              <label>Label</label>
+              <input ng-model="drawing.label" type="text">
+            </md-input-container>
 
-          <md-input-container>
-            <label>Job Id</label>
-            <input ng-model="drawing.jobId" type="text">
-          </md-input-container>
-
-          <md-input-container>
-            <label>Label</label>
-            <input ng-model="drawing.label" type="text">
-          </md-input-container>
-
-          <md-input-container>
-            <label>Type</label>
-            <input ng-model="drawing.drawingType" type="text">
-          </md-input-container>
-
-            <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
+            <md-input-container>
+              <label>Drawing Type</label>
               <md-select ng-model="drawing.drawingType">
                 <md-option ng-repeat="drawingType in drawingTypes" ng-value="drawingType">
                        {{drawingType}}
                 </md-option>
               </md-select>
             </md-input-container>
+        </div>
 
+            <md-input-container>
+              <label>Specialty Item</label>
+              <input ng-model="drawing.specialtyItem.label" type="text">
+            </md-input-container>
 
-          <md-input-container>
-            <label>Specialty Item</label>
-            <input ng-model="drawing.specialtyItem.label" type="text">
-          </md-input-container>
-
-    <!-- ShippingRequest stuff  -->
-
-          <div>
+      <!-- ShippingRequest stuff  -->
+        <div>
+            <div layout-gt-sm="row">
               <md-input-container>
                 <label>Info</label>
                 <input ng-model="drawing.info.id" type="text">
               </md-input-container>
-
               <md-input-container>
                 <label>Tag Type</label>
-                <input ng-model="drawing.info.tagType" type="text">
+                <md-select ng-model="drawing.info.tagType">
+                  <md-option ng-repeat="tagType in tagTypes" ng-value="tagType">
+                         {{tagType}}
+                  </md-option>
+                </md-select>
               </md-input-container>
-
-              <md-input-container>
+              <md-input-container layout-gt-sm>
                 <label>Title</label>
                 <input ng-model="drawing.info.title" type="text">
               </md-input-container>
-
               <md-input-container>
-                <label>Info</label>
+                <label>Revision</label>
                 <input ng-model="drawing.info.revision" type="text">
               </md-input-container>
-    <p>
-      <label>Shipping Request Dates</label>
-          <div>
-              <md-datepicker flex ng-model="revisionDateDisplay" md-placeholder="Revision Date"></md-datepicker>
-              <md-datepicker flex ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
-              <md-datepicker flex ng-model="shopDateDisplay" md-placeholder="Shop Date"></md-datepicker>
-              <!-- OLD FLEX VALUES: flex-offset-gt-sm="10" -->
-              <md-datepicker flex ng-model="fieldDateDisplay" md-placeholder="Field Date"></md-datepicker>
-              <md-datepicker flex ng-model="requestDateDisplay" md-placeholder="Request Date"></md-datepicker>
-          </div>
-    </p>
+            </div>
+
+              <label>Shipping Request Dates</label>
+              <div>
+                  <md-datepicker flex ng-model="revisionDateDisplay" md-placeholder="Revision Date"></md-datepicker>
+                  <md-datepicker flex ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
+                  <md-datepicker flex ng-model="shopDateDisplay" md-placeholder="Shop Date"></md-datepicker>
+                  <!-- OLD FLEX VALUES: flex-offset-gt-sm="10" -->
+                  <md-datepicker flex ng-model="fieldDateDisplay" md-placeholder="Field Date"></md-datepicker>
+                  <md-datepicker flex ng-model="requestDateDisplay" md-placeholder="Request Date"></md-datepicker>
+              </div>
 
     <!--  THESE ARE THE ACTUAL DATE VALUES
               <md-input-container>
@@ -185,9 +181,9 @@
 
         </div>
 
-        </form>
+      </form>
 
-    </md-tab>
+      </md-tab>
 
     <md-tab label="Marks">
       <div ng-controller="MarkListController"

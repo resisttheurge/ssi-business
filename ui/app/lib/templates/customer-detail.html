@@ -10,13 +10,14 @@
     </md-button>
   </div>
 </md-toolbar>
-<form name="detailForm" flex style="overflow-x : hidden">
-  <md-content  layout-gt-sm="row" layout-padding>
-    <div>
-      <md-input-container>
-        <label>Customer Label</label>
-        <input ng-model="customer.label" type="text">
-      </md-input-container>
-    </div>
+
+  <md-content>
+    <form name="detailForm">
+        <div layout-gt-sm="row">
+          <md-input-container>
+            <label>Customer Name</label>
+            <input ng-model="customer.label" type="text">
+          </md-input-container>
+        </div>
+    </form>
   </md-content>
-</form>

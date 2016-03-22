@@ -17,84 +17,91 @@
   </div>
 </md-toolbar>
 
-<md-content  layout-gt-sm="row" layout-padding>
+<md-content>
   <md-tabs md-dynamic-height md-border-bottom>
     <md-tab label="Shipment Details">
-      <form name="editForm" flex style="overflow-x : hidden" ng-hide="loading">
-        <div>
-
-          <md-input-container>
-            <label>Id</label>
-            <input ng-model="shipment.id" type="text">
-          </md-input-container>
-
-          <md-input-container>
-            <label>shipmentId</label>
-            <input ng-model="shipment.jobId" type="text">
-          </md-input-container>
-
-          <md-input-container>
-            <label>Number</label>
-            <input ng-model="shipment.number" type="text">
-          </md-input-container>
+      <form name="editForm" layout="column" layout-padding ng-hide="loading">
 
 
-          <label>Shipment Status</label>
-          <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
-            <md-select ng-model="shipment.status">
-              <md-option ng-repeat="status in shipmentStatuses" ng-value="status">
-                     {{status}}
-              </md-option>
-            </md-select>
-          </md-input-container>
+          <div layout-gt-sm="row">
+            <md-input-container>
+              <label>Id</label>
+              <input ng-model="shipment.id" type="text">
+            </md-input-container>
 
-          <md-input-container>
-            <label>Shop</label>
-            <input ng-model="shipment.shop.label" type="text">
-          </md-input-container>
+            <md-input-container>
+              <label>shipmentId</label>
+              <input ng-model="shipment.jobId" type="text">
+            </md-input-container>
 
-          <md-input-container>
-            <label>Carrier</label>
-            <input ng-model="shipment.carrier.label" type="text">
-          </md-input-container>
+            <md-input-container>
+              <label>Number</label>
+              <input ng-model="shipment.number" type="text">
+            </md-input-container>
+          </div>
 
-          <md-input-container>
-            <label>Weight</label>
-            <input ng-model="shipment.weight" type="text">
-          </md-input-container>
+          <div layout-gt-sm="row">
+              <md-input-container>
+                <label>Shipment Status</label>
+                <md-select ng-model="shipment.status">
+                  <md-option ng-repeat="status in shipmentStatuses" ng-value="status">
+                         {{status}}
+                  </md-option>
+                </md-select>
+              </md-input-container>
 
-          <md-input-container>
-            <label>Bill Of Landing</label>
-            <input ng-model="shipment.billOfLanding" type="text">
-          </md-input-container>
+              <md-input-container>
+                <label>Weight</label>
+                <input ng-model="shipment.weight" type="text">
+              </md-input-container>
 
+              <md-input-container>
+                <label>Bill Of Landing</label>
+                <input ng-model="shipment.billOfLanding" type="text">
+              </md-input-container>
+          </div>
+
+          <label>Ship Date</label>
           <md-datepicker ng-model="shipDateDisplay" md-placeholder="Ship Date"></md-datepicker>
 
           <div layout-gt-sm="row">
+              <md-input-container>
+                <label>Shop</label>
+                <input ng-model="shipment.shop.label" type="text">
+              </md-input-container>
 
-            <md-input-container flex-offset-gt-sm="10" flex>
-              <label>label</label>
+              <md-input-container>
+                <label>Carrier</label>
+                <input ng-model="shipment.carrier.label" type="text">
+              </md-input-container>
+          </div>
+
+          <label>Contact</label>
+          <div layout="row">
+
+            <md-input-container>
+              <label>name</label>
               <input ng-model="shipment.contact.label" type="text">
             </md-input-container>
 
-            <md-input-container flex-offset-gt-sm="10" flex>
+            <md-input-container>
               <label>phone</label>
               <input ng-model="shipment.contact.phone" type="text">
             </md-input-container>
 
-            <md-input-container flex-offset-gt-sm="10" flex>
+            <md-input-container>
               <label>fax</label>
               <input ng-model="shipment.contact.fax" type="text">
             </md-input-container>
 
-            <md-input-container flex-offset-gt-sm="10" flex>
+            <md-input-container>
               <label>email</label>
               <input ng-model="shipment.contact.email" type="text">
             </md-input-container>
 
           </div>
 
-      <p>
+
         <label>Address</label>
           <div>
           <md-input-container>
@@ -117,7 +124,7 @@
             <input ng-model="shipment.address.country" type="text">
           </md-input-container>
         </div>
-      </p>
+
 
         </div>
       </form>

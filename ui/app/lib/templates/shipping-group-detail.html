@@ -6,175 +6,170 @@
   </div>
 </md-toolbar>
 
-
-<md-content  layout-gt-sm="row" layout-padding>
+<md-content>
   <md-tabs md-dynamic-height md-border-bottom>
     <md-tab label="Shipping Group Details">
       <form name="editForm" flex style="overflow-x : hidden">
-      <div>
+        <div>
+          <md-input-container>
+            <label>Id</label>
+            <input ng-model="shippingGroup.id" type="text">
+          </md-input-container>
 
-        <md-input-container>
-          <label>Id</label>
-          <input ng-model="shippingGroup.id" type="text">
-        </md-input-container>
+          <md-input-container>
+            <label>Job Id</label>
+            <input ng-model="shippingGroup.jobId" type="text">
+          </md-input-container>
 
-        <md-input-container>
-          <label>Job Id</label>
-          <input ng-model="shippingGroup.jobId" type="text">
-        </md-input-container>
+          <md-input-container>
+            <label>Label</label>
+            <input ng-model="shippingGroup.label" type="text">
+          </md-input-container>
 
-        <md-input-container>
-          <label>Label</label>
-          <input ng-model="shippingGroup.label" type="text">
-        </md-input-container>
-
-        <md-input-container>
-          <label>Type</label>
-          <input ng-model="shippingGroup.rush" type="text">
-        </md-input-container>
+          <md-input-container>
+            <label>Rush</label>
+            <input ng-model="shippingGroup.rush" type="text">
+          </md-input-container>
+        </div>
 
   <!-- start shipping request stuff -->
-    <p>
-      <label>Shipping Request</label>
-        <md-input-container>
-          <label>Id</label>
-          <input ng-model="shippingGroup.info.id" type="text">
-        </md-input-container>
 
-        <label>Tag Type</label>
-        <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
-          <md-select ng-model="shippingGroup.info.tagType">
-            <md-option ng-repeat="tagType in tagTypes" ng-value="tagType">
-                   {{tagType}}
-            </md-option>
-          </md-select>
-        </md-input-container>
-
-        <md-input-container>
-          <label>Title</label>
-          <input ng-model="shippingGroup.info.title" type="text">
-        </md-input-container>
-
-        <md-input-container>
-          <label>Revision</label>
-          <input ng-model="shippingGroup.info.revision" type="text">
-        </md-input-container>
-
-    <p>
-      <label>Dates</label>
-      <div>
-
+  <label>Shipping Request</label>
         <div layout-gt-sm="row">
-          <md-datepicker ng-model="revisionDateDisplay" md-placeholder="Revision Date"></md-datepicker>
-          <md-datepicker ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
-          <md-datepicker ng-model="shopDateDisplay" md-placeholder="Shop Date"></md-datepicker>
-          <md-datepicker ng-model="fieldDateDisplay" md-placeholder="Field Date"></md-datepicker>
-          <md-datepicker ng-model="requestDateDisplay" md-placeholder="Request Date"></md-datepicker>
+            <md-input-container>
+              <label>Id</label>
+              <input ng-model="shippingGroup.info.id" type="text">
+            </md-input-container>
+
+            <md-input-container>
+              <label>Tag Type</label>
+                <md-select ng-model="shippingGroup.info.tagType">
+                  <md-option ng-repeat="tagType in tagTypes" ng-value="tagType">
+                         {{tagType}}
+                  </md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-input-container>
+              <label>Title</label>
+              <input ng-model="shippingGroup.info.title" type="text">
+            </md-input-container>
+
+            <md-input-container>
+              <label>Revision</label>
+              <input ng-model="shippingGroup.info.revision" type="text">
+            </md-input-container>
+
         </div>
 
-        <!-- <md-input-container>
-          <label>Revision Date</label>
-          <input ng-model="shippingGroup.info.revisionDate" type="text">
-        </md-input-container>
-        <md-input-container>
-          <label>Start Date</label>
-          <input ng-model="shippingGroup.info.startDate" type="text">
-        </md-input-container>
-        <md-input-container>
-          <label>Shop Date</label>
-          <input ng-model="shippingGroup.info.shopDate" type="text">
-        </md-input-container>
-        <md-input-container>
-          <label>Field Date</label>
-          <input ng-model="shippingGroup.info.fieldDate" type="text">
-        </md-input-container>
-        <md-input-container>
-          <label>Request Date</label>
-          <input ng-model="shippingGroup.info.requestDate" type="text">
-        </md-input-container> -->
-      </div>
-    </p>
+          <label>Dates</label>
+            <div layout-gt-sm="row">
+              <!-- <label>Revision Date</label> -->
+                <md-datepicker ng-model="revisionDateDisplay" md-placeholder="Revision Date"></md-datepicker>
+              <!-- <label>Start Date</label> -->
+                <md-datepicker ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
+                <!-- <label>Shop Date</label> -->
+                <md-datepicker ng-model="shopDateDisplay" md-placeholder="Shop Date"></md-datepicker>
+              <!-- <label>Field Date</label> -->
+                <md-datepicker ng-model="fieldDateDisplay" md-placeholder="Field Date"></md-datepicker>
+              <!-- <label>Request Date</label> -->
+                <md-datepicker ng-model="requestDateDisplay" md-placeholder="Request Date"></md-datepicker>
+            </div>
 
+          <br></br>
+            <!-- <md-input-container>
+              <label>Revision Date</label>
+              <input ng-model="shippingGroup.info.revisionDate" type="text">
+            </md-input-container>
+            <md-input-container>
+              <label>Start Date</label>
+              <input ng-model="shippingGroup.info.startDate" type="text">
+            </md-input-container>
+            <md-input-container>
+              <label>Shop Date</label>
+              <input ng-model="shippingGroup.info.shopDate" type="text">
+            </md-input-container>
+            <md-input-container>
+              <label>Field Date</label>
+              <input ng-model="shippingGroup.info.fieldDate" type="text">
+            </md-input-container>
+            <md-input-container>
+              <label>Request Date</label>
+              <input ng-model="shippingGroup.info.requestDate" type="text">
+            </md-input-container> -->
+          <div layout-gt-sm="row">
+            <md-input-container>
+              <label>Requested By</label>
+              <input ng-model="shippingGroup.info.requestedBy" type="text">
+            </md-input-container>
 
-        <md-input-container>
-          <label>Requested By</label>
-          <input ng-model="shippingGroup.info.requestedBy" type="text">
-        </md-input-container>
+            <md-input-container>
+              <label>Prepared By</label>
+              <input ng-model="shippingGroup.info.preparedBy" type="text">
+            </md-input-container>
 
-        <md-input-container>
-          <label>Prepared By</label>
-          <input ng-model="shippingGroup.info.preparedBy" type="text">
-        </md-input-container>
+            <md-input-container>
+              <label>File Path</label>
+              <input ng-model="shippingGroup.info.filePath" type="text">
+            </md-input-container>
 
-        <md-input-container>
-          <label>File Path</label>
-          <input ng-model="shippingGroup.info.filePath" type="text">
-        </md-input-container>
+            <md-input-container>
+              <label>Shop</label>
+              <input ng-model="shippingGroup.info.shop.label" type="text">
+            </md-input-container>
 
-        <md-input-container>
-          <label>Shop</label>
-          <input ng-model="shippingGroup.info.shop.label" type="text">
-        </md-input-container>
-
-        <md-input-container>
-          <label>Carrier</label>
-          <input ng-model="shippingGroup.info.carrier.label" type="text">
-        </md-input-container>
-
-  <p>
-    <label>Contact</label>
-        <div layout-gt-sm="row">
-          <md-input-container >
-            <input ng-model="shippingGroup.info.contact.label" type="text">
-          </md-input-container>
-          <md-input-container >
-            <label>Phone Number</label>
-            <input ng-model="shippingGroup.info.contact.phone" type="text">
-          </md-input-container>
-          <md-input-container >
-            <label>Fax</label>
-            <input ng-model="shippingGroup.info.contact.fax" type="text">
-          </md-input-container>
-          <md-input-container >
-            <label>Email</label>
-            <input ng-model="shippingGroup.info.contact.email" type="text">
-          </md-input-container>
-        </div>
-  </p>
-      <p>
-        <div>
-          <label>Address</label>
-          <div>
-          <md-input-container>
-            <label>Lines</label>
-            <input ng-model="shippingGroup.info.address.lines" type="text">
-          </md-input-container>
-          <md-input-container>
-            <label>City</label>
-            <input ng-model="shippingGroup.info.address.city" type="text">
-          </md-input-container>
-          <md-input-container>
-            <label>State Or Province</label>
-            <input ng-model="shippingGroup.info.address.stateOrProvince" type="text">
-          </md-input-container>
-          <md-input-container>
-            <label>Postal Code</label>
-            <input ng-model="shippingGroup.info.address.postalCode" type="text">
-          </md-input-container>
-          <md-input-container>
-            <label>Country</label>
-            <input ng-model="shippingGroup.info.address.country" type="text">
-          </md-input-container>
+            <md-input-container>
+              <label>Carrier</label>
+              <input ng-model="shippingGroup.info.carrier.label" type="text">
+            </md-input-container>
           </div>
-        </div>
 
-        </p>
-      </p>
+          <label>Contact</label>
+            <div layout-gt-sm="row">
+              <md-input-container >
+                <input ng-model="shippingGroup.info.contact.label" type="text">
+              </md-input-container>
+              <md-input-container >
+                <label>Phone Number</label>
+                <input ng-model="shippingGroup.info.contact.phone" type="text">
+              </md-input-container>
+              <md-input-container >
+                <label>Fax</label>
+                <input ng-model="shippingGroup.info.contact.fax" type="text">
+              </md-input-container>
+              <md-input-container >
+                <label>Email</label>
+                <input ng-model="shippingGroup.info.contact.email" type="text">
+              </md-input-container>
+            </div>
+
+              <div>
+                <label>Address</label>
+                <div>
+                <md-input-container>
+                  <label>Lines</label>
+                  <input ng-model="shippingGroup.info.address.lines" type="text">
+                </md-input-container>
+                <md-input-container>
+                  <label>City</label>
+                  <input ng-model="shippingGroup.info.address.city" type="text">
+                </md-input-container>
+                <md-input-container>
+                  <label>State Or Province</label>
+                  <input ng-model="shippingGroup.info.address.stateOrProvince" type="text">
+                </md-input-container>
+                <md-input-container>
+                  <label>Postal Code</label>
+                  <input ng-model="shippingGroup.info.address.postalCode" type="text">
+                </md-input-container>
+                <md-input-container>
+                  <label>Country</label>
+                  <input ng-model="shippingGroup.info.address.country" type="text">
+                </md-input-container>
+                </div>
+              </div>
   <!-- end shipping request stuff -->
-
-      </div>
       </form>
-
     </md-tab>
 
     <md-tab label="Shipping Group Items">

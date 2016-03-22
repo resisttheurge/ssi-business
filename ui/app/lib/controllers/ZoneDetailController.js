@@ -2,7 +2,7 @@ import { DetailController } from 'utils'
 
 export default class ZoneDetailController extends DetailController {
   /*@ngInject*/
-  constructor($scope, $routeParams, Zone, $mdDialog, $ssiSelected) {
+  constructor($scope, $routeParams, Zone, $mdDialog, $ssiSelected, $convertDate) {
     super()
     $scope.loading = true
     $scope.job = $ssiSelected.job;
@@ -18,6 +18,13 @@ export default class ZoneDetailController extends DetailController {
 
       $scope.loading = false
     })
+
+    if ($scope.zone != null) {
+      $scope.fieldDateDisplay = $scope.zone.fieldDate != null ?
+        $convertDate.stringToDate($scope.zone.fieldDate) : undefined
+    } else {
+      $scope.fieldDateDisplay = undefined
+    }
 
     $scope.update = function update(item)
     {
