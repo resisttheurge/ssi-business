@@ -15,10 +15,12 @@
   <md-tabs md-dynamic-height md-border-bottom>
         <md-tab label="Job Details">
           <form name="jobForm" layout="column" layout-padding ng-hide="{{mode}}">
-              <div layout-gt-sm="row">
-                <label>Job Prefix</label>
-                <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
-                  <md-select ng-model="job.identifier.prefix" style="width: 50px;">
+              <div layout-gt-sm="row" >
+                <md-input-container>
+                  <!-- style="margin-top: 20px; margin-right: 20px; width: 50px;" -->
+                  <label>Prefix</label>
+                  <md-select ng-model="job.identifier.prefix" >
+                    <!-- style="width: 50px;" -->
                     <md-option ng-repeat="prefix in prefixes" ng-value="prefix">
                            {{prefix}}
                     </md-option>
@@ -35,9 +37,12 @@
                   <input ng-model="job.identifier.label" type="text">
                 </md-input-container>
 
-                <label>Job Status</label>
-                <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
-                  <md-select ng-model="job.status" style="width: 50px;">
+
+                <md-input-container >
+                  <!-- style="margin-top: 20px; margin-right: 20px; width: 50px;" -->
+                  <label>Status</label>
+                  <md-select ng-model="job.status" >
+                    <!-- style="width: 50px;" -->
                     <md-option ng-repeat="status in jobStatuses" ng-value="status">
                            {{status}}
                     </md-option>
@@ -53,9 +58,13 @@
                 </md-input-container>
               </div>
 
-              <div layout-gt-sm="row">
-                <md-datepicker ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
+
+              <div>
+                <label rows = "1">Start Date</label>
+                <md-datepicker rows = "1" ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
+                <label rows = "1">Due Date</label>
                 <md-datepicker ng-model="dueDateDisplay" md-placeholder="Due Date"></md-datepicker>
+                <label rows = "1">Complete Date</label>
                 <md-datepicker ng-model="completeDateDisplay" md-placeholder="Complete Date"></md-datepicker>
               </div>
 
@@ -95,6 +104,9 @@
               </div>
 
               <div layout-gt-sm="row">
+               <div>
+                <h4>Contact</h4>
+               </div>
                 <md-input-container >
                   <label>Contact</label>
                   <input ng-model="job.contact.label" type="text">
