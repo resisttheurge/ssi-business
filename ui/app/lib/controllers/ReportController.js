@@ -128,14 +128,23 @@ export default class ReportController {
        });
      }
 
-     self.specialtyItemsByPartType = function specialtyItemsByPartType()
+     self.specialtyItemsByPartType = function specialtyItemsByPartType(entry)
      {
-       Report.specialtyItemsByPartType($ssiSelected.specialtyItem.label).then(function (report)
-       {
-         if (report.length > 0)
-          window.open('data:application/pdf;base64,' + report);
-         else
-          self.failAlert();
+       var confirm = $mdDialog.prompt()
+          .title('Specialty Items By Part Type')
+          .textContent('Enter Part Type')
+          .placeholder('Part Type')
+          .ok('Submit')
+          .cancel('Cancel');
+
+       $mdDialog.show(confirm).then(function (search) {
+         Report.specialtyItemsByPartType(entry).then(function (report)
+         {
+           if (report.length > 0)
+            window.open('data:application/pdf;base64,' + report);
+           else
+            self.failAlert();
+         });
        });
      }
 
