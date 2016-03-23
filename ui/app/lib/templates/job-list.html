@@ -8,6 +8,10 @@
         <md-toolbar class="md-primary">
           <div class="md-toolbar-tools">
             <h2 flex>Jobs</h2>
+
+            <md-switch ng-model="showInactive">
+              {{showInactive ? 'Showing All Jobs' : 'Showing Active Jobs' }}
+            </md-switch>
             <md-button ng-click="$jobs.showSearch = !$jobs.showSearch" class="md-icon-button">
               <md-tooltip md-direction="left" md-autohide="true">
                 Search

@@ -3,176 +3,140 @@ import ModalJobReportController from './ModalJobReportController'
 
 export default class ReportController {
   /*@ngInject*/
-   constructor($scope, $routeParams, $q, $ssiSelected, $mdDialog, $convertDate, $unpack, Report) {
+   constructor($scope, $routeParams, $q, $ssiSelected, $mdDialog, $convertDate, $unpack, Report, endpoint) {
 
      var self = this;
-     console.log('ReportController constructed')
 
-     self.template = `<md-dialog>
-       <md-dialog-content>
-        <canvas id="the-canvas" style="border:1px solid black;"/>
-       </md-dialog-content>
-        <md-dialog-actions layout-align="space-between center">
-        <span>
-        <md-button ng-disabled="modal.currentPage === modal.maxPage" ng-click="modal.nextPage()" class="md-primary">
-          Next Page
-        </md-button>
-        <md-button ng-disabled="modal.currentPage === modal.firstPage" ng-click="modal.previousPage()" class="md-primary">
-          Previous Page
-        </md-button>
-        </span>
-        <span>
-          <md-button ng-click="modal.closeDialog()" class="md-primary">
-            Close
-          </md-button>
-          </span>
-        </md-dialog-actions>
-      </md-dialog>`;
+     self.failAlert = function ()
+     {
+       $mdDialog.show(
+      $mdDialog.alert()
+        .clickOutsideToClose(true)
+        .title('No Data')
+        .textContent('No records found for this report')
+        .ok('Close')
+      );
+     }
 
      self.layoutDrawing = function layoutDrawing()
      {
-       var parentEl = angular.element(document.body);
-
        Report.layoutDrawing($ssiSelected.job.id).then(function (report)
        {
-         self.report = report;
-         $mdDialog.show({
-           parent: parentEl,
-           template: self.template,
-           locals: {
-                   content: self.report
-                 },
-           controller: ModalJobReportController,
-           controllerAs: 'modal'
-
-         })
+         if (report.length > 0)
+          window.open('data:application/pdf;base64,' + report);
+         else
+          self.failAlert();
        });
      }
 
      self.detailDrawing = function detailDrawing()
      {
-       var parentEl = angular.element(document.body);
        Report.detailDrawing($ssiSelected.job.id).then(function (report)
        {
-         self.report = report;
-         $mdDialog.show({
-           parent: parentEl,
-           template: self.template,
-           locals: {
-                 content: self.report
-               },
-           controller: ModalJobReportController,
-           controllerAs: 'modal'
-         });
-       })
+         if (report.length > 0)
+          window.open('data:application/pdf;base64,' + report);
+         else
+          self.failAlert();
+       });
      }
 
      self.zone = function zone()
      {
-       var parentEl = angular.element(document.body);
        Report.zone($ssiSelected.job.id).then(function (report)
        {
-         self.report = report;
-         $mdDialog.show({
-           parent: parentEl,
-           template: self.template,
-           locals: {
-                 content: self.report
-               },
-           controller: ModalJobReportController,
-           controllerAs: 'modal'
-         });
-       })
+         if (report.length > 0)
+          window.open('data:application/pdf;base64,' + report);
+         else
+          self.failAlert();
+       });
      }
 
      self.computerDrawing = function computerDrawing()
      {
-       var parentEl = angular.element(document.body);
        Report.computerDrawing($ssiSelected.job.id).then(function (report)
        {
-         self.report = report;
-         $mdDialog.show({
-           parent: parentEl,
-           template: self.template,
-           locals: {
-                 content: self.report
-               },
-           controller: ModalJobReportController,
-           controllerAs: 'modal'
-         });
-       })
+         if (report.length > 0)
+          window.open('data:application/pdf;base64,' + report);
+         else
+          self.failAlert();
+       });
      }
 
      self.specialtyItemsByJob = function zone()
      {
-       var parentEl = angular.element(document.body);
        Report.specialtyItemsByJob($ssiSelected.job.id).then(function (report)
        {
-         self.report = report;
-         $mdDialog.show({
-           parent: parentEl,
-           template: self.template,
-           locals: {
-                 content: self.report
-               },
-           controller: ModalJobReportController,
-           controllerAs: 'modal'
-         });
+         if (report.length > 0)
+          window.open('data:application/pdf;base64,' + report);
+         else
+          self.failAlert();
        })
      }
 
      self.materialShipper = function zone()
      {
-       var parentEl = angular.element(document.body);
        Report.materialShipper($ssiSelected.job.id).then(function (report)
        {
-         self.report = report;
-         $mdDialog.show({
-           parent: parentEl,
-           template: self.template,
-           locals: {
-                 content: self.report
-               },
-           controller: ModalJobReportController,
-           controllerAs: 'modal'
-         });
-       })
+         if (report.length > 0)
+          window.open('data:application/pdf;base64,' + report);
+         else
+          self.failAlert();
+       });
      }
 
      self.shipVia = function zone()
      {
-       var parentEl = angular.element(document.body);
        Report.shipVia($ssiSelected.job.id).then(function (report)
        {
-         self.report = report;
-         $mdDialog.show({
-           parent: parentEl,
-           template: self.template,
-           locals: {
-                 content: self.report
-               },
-           controller: ModalJobReportController,
-           controllerAs: 'modal'
-         });
-       })
+         if (report.length > 0)
+          window.open('data:application/pdf;base64,' + report);
+         else
+          self.failAlert();
+       });
      }
 
      self.jobShipments = function zone()
      {
-       var parentEl = angular.element(document.body);
        Report.jobShipments($ssiSelected.job.id).then(function (report)
        {
-         self.report = report;
-         $mdDialog.show({
-           parent: parentEl,
-           template: self.template,
-           locals: {
-                 content: self.report
-               },
-           controller: ModalJobReportController,
-           controllerAs: 'modal'
-         });
-       })
+         if (report.length > 0)
+          window.open('data:application/pdf;base64,' + report);
+         else
+          self.failAlert();
+       });
+     }
+
+     self.rms = function rms()
+     {
+       Report.rms($ssiSelected.job.id, $ssiSelected.shippingGroup.id).then(function (report)
+       {
+         if (report.length > 0)
+          window.open('data:application/pdf;base64,' + report);
+         else
+          self.failAlert();
+       });
+     }
+
+     self.shipment = function shipment()
+     {
+       Report.shipment($ssiSelected.shipment.id).then(function (report)
+       {
+         if (report.length > 0)
+          window.open('data:application/pdf;base64,' + report);
+         else
+          self.failAlert();
+       });
+     }
+
+     self.specialtyItemsByPartType = function specialtyItemsByPartType()
+     {
+       Report.specialtyItemsByPartType($ssiSelected.specialtyItem.label).then(function (report)
+       {
+         if (report.length > 0)
+          window.open('data:application/pdf;base64,' + report);
+         else
+          self.failAlert();
+       });
      }
 
    }

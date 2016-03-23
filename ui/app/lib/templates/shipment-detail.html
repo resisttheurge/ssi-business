@@ -9,6 +9,7 @@
 <div>{{shipment.shipDate}}</div>
 <div>{{shipment.contact}}</div>
 <div>{{shipment.address}}}}</div> -->
+<<<<<<< HEAD
 <div flex layout="column" layout-align="start stretch">
   <!-- outer frame -->
   <div layout-margin layout="row" layout-align="center stretch">
@@ -146,55 +147,18 @@
                           </div>
                         </md-tab>
 
-                        <!-- <label>Contact</label>
-                        <div layout="row">
+                        <md-tab label="Reports">
+                          <md-content class="md-padding">
+                            <div ng-controller="ReportController as $reports">
 
-                          <md-input-container>
-                            <label>name</label>
-                            <input ng-model="shipment.contact.label" type="text">
-                          </md-input-container>
+                              <md-button ng-click="$reports.shipment()" style="background-color: #71EEB8; color: black;">
+                                <md-icon class="material-icons">insert_drive_file</md-icon>
+                                Shipment
+                              </md-button>
 
-                          <md-input-container>
-                            <label>phone</label>
-                            <input ng-model="shipment.contact.phone" type="text">
-                          </md-input-container>
-
-                          <md-input-container>
-                            <label>fax</label>
-                            <input ng-model="shipment.contact.fax" type="text">
-                          </md-input-container>
-
-                          <md-input-container>
-                            <label>email</label>
-                            <input ng-model="shipment.contact.email" type="text">
-                          </md-input-container>
-
-                        </div>
-
-
-                      <label>Address</label>
-                        <div>
-                        <md-input-container>
-                          <input ng-model="shipment.address.lines" type="text">
-                        </md-input-container>
-                        <md-input-container>
-                          <label>City</label>
-                          <input ng-model="shipment.address.city" type="text">
-                        </md-input-container>
-                        <md-input-container>
-                          <label>State Or Province</label>
-                          <input ng-model="shipment.address.stateOrProvince" type="text">
-                        </md-input-container>
-                        <md-input-container>
-                          <label>Postal Code</label>
-                          <input ng-model="shipment.address.postalCode" type="text">
-                        </md-input-container>
-                        <md-input-container>
-                          <label>Country</label>
-                          <input ng-model="shipment.address.country" type="text">
-                        </md-input-container>
-                      </div> -->
-
+                            </div>
+                          </md-content>
+                        </md-tab>
 
                       </div>
 
@@ -239,7 +203,6 @@
               </md-tabs>
             </md-content>
 
-          </div>
               <!-- outer frame -->
         </md-card >
       </div>

@@ -1,9 +1,17 @@
 export default class ModalJobReportController {
   /*@ngInject*/
-  constructor ($scope, $mdDialog, content) {
+  constructor ($scope, $mdDialog, content, reportTitle, endpoint) {
     var modal = this;
+
+    modal.endpoint = endpoint;
     modal.content = content;
+    modal.reportTitle = reportTitle;
     modal.firstPage = 1;
+
+    modal.openReport = function ()
+    {
+      window.open('data:application/pdf;base64,' + modal.content, '_blank');
+    }
 
     PDFJS.getDocument(modal.convertContent(content)).then(function getPdfHelloWorld(pdf) {
 
@@ -27,6 +35,11 @@ export default class ModalJobReportController {
     {
       if (modal.currentPage > modal.firstPage)
        modal.renderPage(--modal.currentPage);
+    }
+
+    modal.print = function ()
+    {
+      window.print();
     }
 
     modal.renderPage = function (pageNum)

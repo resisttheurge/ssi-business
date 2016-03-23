@@ -4,8 +4,12 @@ export default class JobListController extends ListController {
   /*@ngInject*/
   constructor($q, $filter, $scope, Job, enums, $mdDialog, $mdToast) {
     super()
+
+    var self = this;
+
     this.search = {}
     this.total = 0
+    $scope.showInactive = false;
     this.query = {
       page: 1,
       limit: 10,
@@ -14,6 +18,22 @@ export default class JobListController extends ListController {
         active: true
       }
     }
+
+    $scope.$watch('showInactive',
+                    function toggle(newValue, oldValue) {
+                      if (newValue === true)
+                      {
+                        self.query.filters = {};
+                      } else
+                      {
+                        self.query.filters = {
+                          active: true
+                        }
+                      }
+
+                      self.getJobs();
+                    }
+                );
 
     this.jobTitle = $filter('jobTitle')
     this.jobStatus = $filter('jobStatus')
