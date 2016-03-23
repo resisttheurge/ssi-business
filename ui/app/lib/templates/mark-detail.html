@@ -13,27 +13,27 @@
    <md-content  layout-gt-sm="row" layout-padding>
          <form name="markDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
      <div>
-       <md-input-container>
+       <!-- <md-input-container>
          <label>Id</label>
          <input ng-model="mark.id" type="text">
-       </md-input-container>
-       <md-input-container>
+       </md-input-container> -->
+       <!-- <md-input-container>
          <label>Drawing Id</label>
          <input ng-model="mark.drawingId" type="text">
-       </md-input-container>
+       </md-input-container> -->
 
        <md-input-container>
          <label>Mark Label</label>
-         <input ng-model="mark.label" type="text">
+         <input md-maxlength ="100" required ng-model="mark.label" type="text">
        </md-input-container>
 
   <p>
     <label>Shipping Item</label>
     <div>
-       <md-input-container>
+       <!-- <md-input-container>
          <label>Shipping Item Id</label>
          <input ng-model="mark.shippingItem.id" type="text">
-       </md-input-container>
+       </md-input-container> -->
 
        <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
          <md-select ng-model="mark.shippingItem.status">

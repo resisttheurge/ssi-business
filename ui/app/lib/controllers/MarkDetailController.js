@@ -23,6 +23,7 @@ export default class MarkDetailController extends DetailController {
 
     $scope.update = function update(item)
     {
+    if (item.label) {
       Mark.update(item).then(function (data) { $mdDialog
         .show($mdDialog.alert()
         .title('Changes Saved!')
@@ -33,7 +34,15 @@ export default class MarkDetailController extends DetailController {
         .title('Failed to Save')
         .textContent('There has been an error, changes have not been saved')
       .ok('Close'))});
+    } else {
+      $mdDialog
+       .show($mdDialog.alert()
+       .title('Failed to Save')
+       .textContent('There has been an error, changes have not been saved')
+     .ok('Close'))
     }
 
   }
-}
+
+  }
+  }

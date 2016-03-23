@@ -26,21 +26,21 @@
                       <md-tabs md-dynamic-height md-align-tabs="bottom">
                         <md-tab label="Drawing">
                           <div layout-gt-sm="row">
-                            <md-input-container>
+                            <!-- <md-input-container>
                               <label>Id</label>
                               <input ng-model="drawing.id" type="text">
-                            </md-input-container>
-                            <md-input-container>
+                            </md-input-container> -->
+                          <!--  <md-input-container>
                               <label>Job Id</label>
-                              <input ng-model="drawing.jobId" type="text">
-                            </md-input-container>
+                              <input md-maxlength ="10" disabled required ng-model="drawing.jobId" type="text">
+                            </md-input-container> -->
                             <md-input-container>
                               <label>Label</label>
-                              <input ng-model="drawing.label" type="text">
+                              <input md-maxlength ="100" required ng-model="drawing.label" type="text">
                             </md-input-container>
                             <md-input-container>
                               <label>Drawing Type</label>
-                              <md-select ng-model="drawing.drawingType">
+                              <md-select required ng-model="drawing.drawingType">
                                 <md-option ng-repeat="drawingType in drawingTypes" ng-value="drawingType">
                                        {{drawingType}}
                                 </md-option>
