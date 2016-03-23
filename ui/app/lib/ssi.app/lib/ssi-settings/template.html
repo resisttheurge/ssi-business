@@ -1,7 +1,7 @@
 <md-sidenav layout="column" md-component-id="settings-sidenav" class="md-sidenav-right" md-whiteframe="4">
   <md-toolbar>
     <div layout="row" class="md-toolbar-tools">
-      <h2 flex>Settings</h2>
+      <h2 flex>Reports</h2>
       <md-button ng-click="$settings.toggle()" class="md-icon-button" aria-label="Close Settings Menu">
         <md-icon class="material-icons">close</md-icon>
       </md-button>
@@ -9,10 +9,29 @@
   </md-toolbar>
   <md-content layout="column" flex>
     <md-list>
-      <md-list-item ng-click="$settings.toggleTheme(); $settings.toggle()">
-        <span flex>{{$settings.toggleThemeLabel}}</span>
-        <md-icon class="material-icons">{{$settings.toggleThemeIcon}}</md-icon>
-      </md-list-item>
+      <div ng-controller="ReportController as $reports">
+
+        <md-list-item ng-click="$reports.specialtyItemsByPartType()">
+          <md-icon flex class="material-icons">insert_drive_file</md-icon>
+          Specialty Items
+        </md-list-item>
+
+        <md-divider md-inset></md-divider>
+
+        <md-list-item ng-click="$reports.productionSchedule()">
+          <md-icon flex class="material-icons">insert_drive_file</md-icon>
+          Production Schedule
+        </md-list-item>
+
+        <md-divider md-inset></md-divider>
+
+        <md-list-item ng-click="$reports.managementReview()">
+          <md-icon flex class="material-icons">insert_drive_file</md-icon>
+          Management Review
+        </md-list-item>
+
+      </div>
+
     </md-list>
   </md-content>
 </md-sidenav>
