@@ -2,7 +2,7 @@ package com.cooksys.ssi.dao
 
 import com.cooksys.ssi.models._
 import slick.schema.Tables._
-import org.mindrot.BCrypt
+import com.cooksys.ssi.utils.crypto.BCrypt
 
 object UserDao extends CrudDao[User] {
 
