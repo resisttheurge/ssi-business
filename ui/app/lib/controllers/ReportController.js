@@ -197,7 +197,7 @@ export default class ReportController {
 
              $scope.displayReport = function () {
                $mdDialog.hide();
-               Report.managementReview($scope.reportFrom, $scope.reportTo).then(function (report)
+               Report.managementReview($scope.reportFrom.toISOString().substring(0, 10), $scope.reportTo.toISOString().substring(0, 10)).then(function (report)
                {
                  if (report.length > 0)
                   window.open('data:application/pdf;base64,' + report);
@@ -236,7 +236,7 @@ export default class ReportController {
 
              $scope.displayReport = function () {
                $mdDialog.hide();
-               Report.productionSchedule($scope.reportWeek).then(function (report)
+               Report.productionSchedule($scope.reportWeek.toISOString().substring(0, 10)).then(function (report)
                {
                  if (report.length > 0)
                   window.open('data:application/pdf;base64,' + report);
