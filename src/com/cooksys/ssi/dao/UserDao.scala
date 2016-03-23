@@ -2,6 +2,7 @@ package com.cooksys.ssi.dao
 
 import com.cooksys.ssi.models._
 import slick.schema.Tables._
+import org.mindrot.BCrypt
 
 object UserDao extends CrudDao[User] {
 
@@ -13,9 +14,10 @@ object UserDao extends CrudDao[User] {
       results <- Users.active.byCredentials(credentials).withRoles.result
     } yield {
       val option = aggregate(results).headOption
+      val success = option.isDefined && BCrypt.checkpw(credentials.password, option.get.password)
       Response[Authorization](
-        success = option.isDefined,
-        message = if (option.isEmpty) Some("Username or password is incorrect") else None,
+        success = success,
+        message = if (!success) Some("Username or password is incorrect") else None,
         data = option.map(
           opt =>
             Authorization(
@@ -52,7 +54,7 @@ object UserDao extends CrudDao[User] {
 
   override def createAction(user: User)(implicit ec: EC) =
     for {
-      id <- (Users returning Users.map(_.id)) += user
+      id <- (Users returning Users.map(_.id)) += user.copy(password = Option(BCrypt.hashpw(user.password.get, BCrypt.gensalt())))
       roleCreates <- createRoles(id, user.roles.getOrElse(Seq.empty))
       seq <- Users.byId(id).withRoles.result
     } yield {

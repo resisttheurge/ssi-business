@@ -121,7 +121,7 @@ trait QueryExtensions {
     def byId(id: Int) = self filter (_.id === id)
 
     def byCredentials(credentials: Credentials) =
-      self filter (u => u.username === credentials.username && u.password === credentials.password)
+      self filter (u => u.username === credentials.username)
 
     def active = self filter (_.active)
 
@@ -221,4 +221,3 @@ trait QueryExtensions {
   }
 
 }
-
