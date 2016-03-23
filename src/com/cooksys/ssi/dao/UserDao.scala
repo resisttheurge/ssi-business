@@ -14,7 +14,7 @@ object UserDao extends CrudDao[User] {
       results <- Users.active.byCredentials(credentials).withRoles.result
     } yield {
       val option = aggregate(results).headOption
-      val success = option.isDefined && BCrypt.checkpw(credentials.password, option.get.password)
+      val success = option.isDefined && BCrypt.checkpw(credentials.password, option.get.password.get)
       Response[Authorization](
         success = success,
         message = if (!success) Some("Username or password is incorrect") else None,
