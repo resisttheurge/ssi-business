@@ -130,23 +130,123 @@ export default class ReportController {
 
      self.specialtyItemsByPartType = function specialtyItemsByPartType(entry)
      {
-       var confirm = $mdDialog.prompt()
-          .title('Specialty Items By Part Type')
-          .textContent('Enter Part Type')
-          .placeholder('Part Type')
-          .ok('Submit')
-          .cancel('Cancel');
+       $mdDialog.show({
+           clickOutsideToClose: true,
+           scope: $scope,
+           preserveScope: true,
+           template: `<md-dialog>
+                      <md-dialog-content style="padding: 30px 30px 0px 30px;"">
+                      <div layout="column" layout-align="center" layout-margin>
+                        <md-input-container>
+                          <label>Part Type</label>
+                          <input ng-model="reportEntry" type="text">
+                        </md-input-container>
+                      </div>
+                      </md-dialog-content>
+                      <md-dialog-actions>
+                        <md-button ng-click="closeDialog()" class="md-primary">Cancel</md-button>
+                        <span flex></span>
+                        <md-button ng-click="displayReport()" class="md-primary">Submit</md-button>
+                      </md-dialog-actions>
+                    </md-dialog>`,
+           controller: function DialogController($scope, $mdDialog) {
 
-       $mdDialog.show(confirm).then(function (search) {
-         Report.specialtyItemsByPartType(entry).then(function (report)
-         {
-           if (report.length > 0)
-            window.open('data:application/pdf;base64,' + report);
-           else
-            self.failAlert();
+             $scope.closeDialog = function () {
+               $mdDialog.hide();
+             }
+
+             $scope.displayReport = function () {
+               $mdDialog.hide();
+               Report.specialtyItemsByPartType($scope.reportEntry).then(function (report)
+               {
+                 if (report.length > 0)
+                  window.open('data:application/pdf;base64,' + report);
+                 else
+                  self.failAlert();
+               });
+             }
+
+           }
          });
-       });
-     }
+     };
 
+     self.managementReview = function specialtyItemsByPartType(entry)
+     {
+       $mdDialog.show({
+           clickOutsideToClose: true,
+           scope: $scope,
+           preserveScope: true,
+           template: `<md-dialog>
+                      <md-dialog-content style="padding: 30px 30px 0px 30px;"">
+                      <div layout-align="center" layout-margin>
+                        <md-datepicker ng-model="reportFrom" md-placeholder="From"></md-datepicker>
+                        <md-datepicker ng-model="reportTo" md-placeholder="To"></md-datepicker>
+                      </div>
+                      </md-dialog-content>
+                      <md-dialog-actions>
+                        <md-button ng-click="closeDialog()" class="md-primary">Cancel</md-button>
+                        <span flex></span>
+                        <md-button ng-click="displayReport()" class="md-primary">Submit</md-button>
+                      </md-dialog-actions>
+                    </md-dialog>`,
+           controller: function DialogController($scope, $mdDialog) {
+
+             $scope.closeDialog = function () {
+               $mdDialog.hide();
+             }
+
+             $scope.displayReport = function () {
+               $mdDialog.hide();
+               Report.managementReview($scope.reportFrom.toISOString().substring(0, 10), $scope.reportTo.toISOString().substring(0, 10)).then(function (report)
+               {
+                 if (report.length > 0)
+                  window.open('data:application/pdf;base64,' + report);
+                 else
+                  self.failAlert();
+               });
+             }
+
+           }
+         });
+     };
+
+     self.productionSchedule = function productionSchedule(entry)
+     {
+       $mdDialog.show({
+           clickOutsideToClose: true,
+           scope: $scope,
+           preserveScope: true,
+           template: `<md-dialog>
+                      <md-dialog-content style="padding: 30px 30px 0px 30px;"">
+                      <div layout-align="center" layout-margin>
+                          <md-datepicker ng-model="reportWeek" md-placeholder="Week Ending"></md-datepicker>
+                      </div>
+                      </md-dialog-content>
+                      <md-dialog-actions>
+                        <md-button ng-click="closeDialog()" class="md-primary">Cancel</md-button>
+                        <span flex></span>
+                        <md-button ng-click="displayReport()" class="md-primary">Submit</md-button>
+                      </md-dialog-actions>
+                    </md-dialog>`,
+           controller: function DialogController($scope, $mdDialog) {
+
+             $scope.closeDialog = function () {
+               $mdDialog.hide();
+             }
+
+             $scope.displayReport = function () {
+               $mdDialog.hide();
+               Report.productionSchedule($scope.reportWeek.toISOString().substring(0, 10)).then(function (report)
+               {
+                 if (report.length > 0)
+                  window.open('data:application/pdf;base64,' + report);
+                 else
+                  self.failAlert();
+               });
+             }
+           }
+         });
+     };
    }
+
  }
