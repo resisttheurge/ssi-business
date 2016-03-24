@@ -100,17 +100,17 @@
 
       <md-input-container>
         <label>Requested Quantity</label>
-        <input ng-model="partOrder.requestedQuantity" type="text">
+        <input md-maxlength ="10" required  ng-model="partOrder.requestedQuantity" type="text">
       </md-input-container>
 
       <md-input-container>
         <label>Stock Quantity</label>
-        <input ng-model="partOrder.stockQuantity" type="text">
+        <input md-maxlength ="10" required ng-model="partOrder.stockQuantity" type="text">
       </md-input-container>
 
       <md-input-container>
         <label>Purchase Quantity</label>
-        <input ng-model="partOrder.purchaseQuantity" type="text">
+        <input md-maxlength ="10" required  ng-model="partOrder.purchaseQuantity" type="text">
       </md-input-container>
 
       <md-datepicker ng-model="requestDateDisplay" md-placeholder="Request Date"></md-datepicker>

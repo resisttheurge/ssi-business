@@ -23,19 +23,19 @@
                       <div layout-margin layout="row">
                         <div layout="row" flex="70" layout-align="space-between stretch">
 
-                          <md-input-container>
+                          <!-- <md-input-container>
                             <label>Job Id</label>
                             <input ng-model="shippingGroup.jobId" type="text">
-                          </md-input-container>
+                          </md-input-container> -->
 
                           <md-input-container>
                             <label>Label</label>
-                            <input ng-model="shippingGroup.label" type="text">
+                            <input md-maxlength ="100" required  ng-model="shippingGroup.label" type="text">
                           </md-input-container>
 
                           <md-input-container>
                             <label>Rush</label>
-                            <input ng-model="shippingGroup.rush" type="text">
+                            <input md-maxlength ="10" required  ng-model="shippingGroup.rush" type="text">
                           </md-input-container>
                         </div>
                       </div>
