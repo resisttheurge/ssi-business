@@ -2,16 +2,20 @@ import { DetailController } from 'utils'
 
 export default class UserDetailController extends DetailController {
   /*@ngInject*/
-  constructor($scope, $routeParams, User, enums) {
+  constructor($scope, $routeParams, User, enums, $mdDialog) {
     super()
 
     $scope.userRoleTypes = enums.userRoleTypes
+    $scope.user = {  };
+    $scope.user.adminSelected = false;
+    $scope.user.active = true;
 
     if ($routeParams.userId) {
       User.endpoint.get({ userId: $routeParams.userId }, function (response) {
         $scope.loading = true
         if (response.success) {
           $scope.user = response.data
+          $scope.user.adminSelected = $scope.user.roles.indexOf('ADMIN') >= 0 ? true : false;
         } else {
           $scope.error = true
           $scope.message = response.message
@@ -42,8 +46,12 @@ export default class UserDetailController extends DetailController {
       }
 
     } else {
-      $scope.create = item =>
-        user.create(item).then(
+      $scope.create = function (item) {
+        item.roles = ['EMPLOYEE'];
+        if (item.adminSelected)
+          item.roles.push('ADMIN');
+        delete item.adminSelected;
+        User.create(item).then(
           data =>
             $mdDialog.show(
               $mdDialog.alert()
@@ -59,6 +67,7 @@ export default class UserDetailController extends DetailController {
                 .ok('Close')
             )
         )
+      }
     }
   }
 }

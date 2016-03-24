@@ -12,27 +12,36 @@
 </md-toolbar>
 
 <md-content>
-  <form name="detailForm" ng-hide="loading">
-    <div layout-gt-sm="row">
+  <form name="detailForm" ng-hide="loading" autocomplete="off">
+    <div layout-gt-sm="row" layout-margin layout-align="start center">
       <md-input-container>
         <label>Username</label>
-        <input ng-model="user.username" type="text">
+        <input ng-model="user.username" type="text" autocomplete="off">
       </md-input-container>
 
-      <md-input-container>
-        <label>Active</label>
-        <input ng-model="user.active" type="text">
+      <md-input-container ng-if="!user.id">
+        <label>Password</label>
+        <input ng-model="user.password" type="password" autocomplete="off">
       </md-input-container>
 
-      <md-input-container>
-          <label>User Role Type</label>
-        <md-select ng-model="user.roles">
-          <md-option ng-repeat="userRoleType in userRoleTypes" ng-value="userRoleType">
-                 {{userRoleType}}
-          </md-option>
-        </md-select>
-      </md-input-container>
+      <div layout="row" flex="10" layout-align="start center">
+        <label for="activeCheckBox" style="margin-left: 25px;">Active</label>
+        <md-checkbox ng-model="user.active" id="activeCheckBox">
+        </md-checkbox>
+      </div>
 
     </div>
+
+    <div layout="row" layout-align="center center">
+      <h3 flex="10" style="margin-left: 25px;">User Role: </h3>
+      <label ng-if="user.adminSelected === false" style="color: #007700; text-shadow: 0 0 4px #1aff8c; font-weight: bold; margin-right: 10px;">EMPLOYEE</label>
+      <label ng-if="user.adminSelected === true" style="color: GREY; margin-right: 10px;">EMPLOYEE</label>
+      <md-switch class="md-primary" ng-model="user.adminSelected"></md-switch>
+      <label ng-if="user.adminSelected === true" style="color: #007700; text-shadow: 0 0 4px #1aff8c; font-weight: bold; margin-right: 10px;">ADMIN</label>
+      <label ng-if="user.adminSelected === false" style="color: GREY; margin-right: 10px;">ADMIN</label>
+      <span flex></span>
+    </div>
+
+
   </form>
 </md-content>
