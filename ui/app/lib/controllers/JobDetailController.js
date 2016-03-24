@@ -6,7 +6,8 @@ export default class JobDetailController extends DetailController {
   /*@ngInject*/
   constructor(
     $scope, $routeParams, $q, Address, Customer, Job, Schedule,
-    Shop, Salesperson, enums, $filter, $mdDialog, $unpack, $convertDate
+    Shop, Salesperson, enums, $filter, $mdDialog, $unpack, $convertDate,
+    JobAddresses, JobSchedules, $log
   ) {
     super()
 
@@ -22,24 +23,33 @@ export default class JobDetailController extends DetailController {
     }
 
     function loadJob() {
-      console.log('begin loadJob')
-      return loading().then(function () {
-        console.log(JSON.stringify($routeParams))
-        return Job.get($routeParams)
-      }).then(convertDate).then(store).then(loaded).catch(function (reason) {throw reason})
+      $log.debug('begin loadJob')
+      return loading()
+        .then(() => do {
+          $log.debug(JSON.stringify($routeParams))
+          $q.all({
+            job: Job.get($routeParams),
+            jobAddresses: JobAddresses.get($routeParams),
+            jobSchedules: JobSchedules.get($routeParams)
+          })
+        })
+
+        .then(store)
+        .then(loaded)
+        .catch(reason => $log.error(JSON.stringify(reason)))
     }
 
     function loaded(data) {
-      return $q(function (resolve, reject) {
-        console.log('done loading')
+      return $q((resolve, reject) => do {
+        $log.debug('done loading')
         $scope.mode = ''
-        return resolve(data)
+        resolve(data)
       })
     }
 
     function loading(data) {
       return $q(function (resolve, reject) {
-        console.log('loading')
+        $log.debug('loading')
         $scope.mode = 'indeterminate'
         return resolve(data)
       })
@@ -69,30 +79,15 @@ export default class JobDetailController extends DetailController {
       }).then(filter(expression))
     }
 
-    function store(job) {
+    function store({ job, jobAddresses, jobSchedules }) {
       return $q(function (resolve, reject) {
-        console.log('storing job')
-        return resolve($scope.job = job)
-      })
-    }
-
-    function convertDate(job) {
-      return $q(function (resolve, reject) {
-        console.log('converting Dates')
-
-        $scope.startDateDisplay =
-            job.startDate != null ?
-                $convertDate.stringToDate(job.startDate) : undefined
-        $scope.dueDateDisplay  =
-            job.dueDate != null ?
-                $convertDate.stringToDate(job.dueDate) : undefined
-
-        $scope.completeDateDisplay =
-            job.completeDate != null ?
-                $convertDate.stringToDate(job.completeDate) : undefined
-
-        console.log('converted')
-        return resolve(job)
+        $log.debug('storing job')
+        return resolve(do {
+          $scope.job = job
+          $scope.jobAddresses = jobAddresses
+          $scope.jobSchedules = jobSchedules
+          { job, jobAddresses, jobSchedules }
+        })
       })
     }
 

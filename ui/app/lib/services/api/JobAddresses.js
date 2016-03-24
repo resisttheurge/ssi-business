@@ -8,24 +8,31 @@ export default class JobAddresses extends ApiService {
         query: { method: 'GET' }
       })
 
-    this.get = function (job) {
-        return $q(function (resolve, reject) {
-          if (!job || !job.id) {
-            return reject('cannot call `JobAddresses.get` without an initialized job object as a parameter')
-          } else {
-            return resolve(this.endpoint.get({ jobId: job.id }).$promise.then($unpack))
-          }
-        })
-      }
+    this.padLines = address =>
+      !address ?
+        { lines: [''], city: '', stateOrProvince: '', postalCode: '', country: '' }
+      : !address.lines || address.lines.length < 1 ?
+        { ...address, lines: [''] }
+      : address
 
-    this.create = function (job, addresses) {
-        return $q(function (resolve, reject) {
-          if (!job || !job.id) {
-            return reject('cannot call `JobAddresses.create` without an initialized job object as a parameter')
-          } else {
-            return resolve(this.endpoint.create({ jobId: job.id }, addresses).$promise.then($unpack))
-          }
-        })
-      }
+    this.padAllLines = ({ shipping, invoicing }) =>
+      ({ shipping: this.padLines(shipping), invoicing: this.padLines(invoicing) })
+
+    this.get = ({ jobId }) =>
+        $q(
+          (resolve, reject) =>
+            jobId ?
+              resolve(this.endpoint.get({ jobId }).$promise.then($unpack).then(::this.padAllLines))
+            : reject('cannot call `JobAddresses.get` without a jobId parameter')
+        )
+
+    this.create = ({ jobId }, { jobAddresses }) =>
+      $q(
+        (resolve, reject) =>
+          jobId && jobAddresses ?
+            resolve(this.endpoint.create({ jobId }, jobAddresses).$promise.then($unpack))
+          : reject('cannot call `JobAddresses.create` without jobId or jobAddresses parameters')
+      )
+
   }
 }
