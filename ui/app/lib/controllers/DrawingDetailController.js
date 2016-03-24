@@ -107,7 +107,7 @@ export default class DrawingDetailController extends DetailController {
          $mdDialog
           .show($mdDialog.alert()
           .title('Failed to Save')
-          .textContent('There has been a Teflon Dylan')
+          .textContent('Invalid data')
         .ok('Close'))
        }
 
