@@ -1,22 +1,35 @@
-<md-toolbar>
-  <div class="md-toolbar-tools">
-    <h1>{{update ? 'Edit Specialty Item Details' : 'Create New Specialty Item'}}</h1>
-    <span flex></span>
-    <md-button
-        class="md-raised"
-        ng-disabled="detailForm.$pristine"
-        ng-click="update ? update(specialtyItem) : create(specialtyItem)">
-      Save
-    </md-button>
+
+<div flex layout="column" layout-align="start stretch">
+  <!-- outer frame -->
+  <div layout-margin layout="row" layout-align="center stretch">
+    <!-- card frame  -->
+    <md-card flex="85" layout="column">
+      <!-- toolbar/content frame -->
+      <div layout="column">
+
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <h1>{{update ? 'Edit Specialty Item Details' : 'Create New Specialty Item'}}</h1>
+            <span flex></span>
+            <md-button
+                class="md-raised"
+                ng-disabled="detailForm.$pristine"
+                ng-click="update ? update(specialtyItem) : create(specialtyItem)">
+              Save
+            </md-button>
+          </div>
+        </md-toolbar>
+          <md-content>
+            <form name="detailForm">
+              <div layout-gt-sm="row">
+                <md-input-container>
+                  <label>Name</label>
+                  <input md-maxlength ="100" required ng-model="specialtyItem.label" type="text">
+                </md-input-container>
+              </div>
+            </form>
+          </md-content>
+        </div>
+      </md-card>
+    </div>
   </div>
-</md-toolbar>
-  <md-content>
-    <form name="detailForm">
-      <div layout-gt-sm="row">
-        <md-input-container>
-          <label>Name</label>
-          <input md-maxlength ="100" required ng-model="specialtyItem.label" type="text">
-        </md-input-container>
-      </div>
-    </form>
-  </md-content>
