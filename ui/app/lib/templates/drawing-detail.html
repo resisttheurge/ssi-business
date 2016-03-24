@@ -22,7 +22,7 @@
             <md-content>
                 <md-tabs md-dynamic-height md-border-bottom>
                   <md-tab label="Drawing Details">
-                    <form name="editForm" layout="column" flex style="overflow-x : hidden">
+                    <form name="editForm" layout="column">
                       <md-tabs md-dynamic-height md-align-tabs="bottom">
                         <md-tab label="Drawing">
                           <div layout-gt-sm="row">
@@ -48,172 +48,170 @@
                             </md-input-container>
                           </div>
 
-                        <div>
-                          <md-input-container>
-                            <label>Specialty Item</label>
-                            <input ng-model="drawing.specialtyItem.label" type="text">
-                          </md-input-container>
+                          <label>Specialty Item</label>
+                          <div layout-gt-sm="row">
+                            <md-input-container>
+                              <label>Specialty Item </label>
+                              <input ng-model="drawing.specialtyItem.label" type="text">
+                            </md-input-container>
 
-                          <md-input-container>
-                            <label>Tag Type</label>
-                            <md-select ng-model="drawing.info.tagType">
-                              <md-option ng-repeat="tagType in tagTypes" ng-value="tagType">
-                                     {{tagType}}
-                              </md-option>
-                            </md-select>
-                          </md-input-container>
+                            <md-input-container>
+                              <label>Tag Type</label>
+                              <md-select ng-model="drawing.info.tagType">
+                                <md-option ng-repeat="tagType in tagTypes" ng-value="tagType">
+                                       {{tagType}}
+                                </md-option>
+                              </md-select>
+                            </md-input-container>
+                          </div>
 
-                        </div>
-                          <!-- ShippingRequest stuff  -->
-                            <div>
-                                <div layout-gt-sm="row">
+                          <div>
+                              <div layout-gt-sm="column" >
+                                <md-input-container layout-gt-sm>
+                                  <label>Title</label>
+                                  <input ng-model="drawing.info.title" type="text">
+                                </md-input-container>
+                                <md-input-container>
+                                  <label>Revision</label>
+                                  <input ng-model="drawing.info.revision" type="text">
+                                </md-input-container>
 
+                              <div layout-gt-sm="row">
+                                <div layout-margin layout="row" layout-align="end">
+                                  <label flex layout="row" layout-align="start center">
+                                    <span>Revision Date</span>
+                                  </label>
+                                  <md-datepicker ng-model="revisionDateDisplay" md-placeholder="Revision Date"></md-datepicker>
+                                </div>
+                              </div>
 
-                                  <md-input-container layout-gt-sm>
-                                    <label>Title</label>
-                                    <input ng-model="drawing.info.title" type="text">
-                                  </md-input-container>
-                                  <md-input-container>
-                                    <label>Revision</label>
-                                    <input ng-model="drawing.info.revision" type="text">
-                                  </md-input-container>
+                            </div>
+                          </div>
+                        </md-tab>
 
-                                <div>
-                                  <div layout-margin layout="row" layout-align="end">
-                                    <label flex layout="row" layout-align="start center">
-                                      <span>Revision Date</span>
-                                    </label>
-                                    <md-datepicker ng-model="revisionDateDisplay" md-placeholder="Revision Date"></md-datepicker>
+                        <md-tab label="More Details">
+                          <md-divider></md-divider>
+                          <label>Shipping Request Dates</label>
+                            <div layout="column" flex="30" layout-align="space-between stretch">
+                              <div>
+                                <div layout-margin layout="row" layout-align="end">
+                                  <label flex layout="row" layout-align="start center">
+                                    <span>Start Date</span>
+                                  </label>
+                                  <md-datepicker ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
+                                </div>
+                                <div layout-margin layout="row" layout-align="end">
+                                  <label flex layout="row" layout-align="start center">
+                                    <span>Shop Date</span>
+                                  </label>
+                                  <md-datepicker ng-model="shopDateDisplay" md-placeholder="Shop Date"></md-datepicker>
+                                </div>
+                                <div layout-margin layout="row" layout-align="end">
+                                  <label flex layout="row" layout-align="start center">
+                                    <span>Shop Date</span>
+                                  </label>
+                                  <md-datepicker ng-model="fieldDateDisplay" md-placeholder="Field Date"></md-datepicker>
+                                </div>
+                                <div layout-margin layout="row" layout-align="end">
+                                  <label flex layout="row" layout-align="start center">
+                                    <span>Shop Date</span>
+                                  </label>
+                                  <md-datepicker ng-model="requestDateDisplay" md-placeholder="Request Date"></md-datepicker>
+                                </div>
+                              </div>
+                            </div>
+                            <md-divider></md-divider>
+
+                              <md-input-container>
+                                <label>Requested By</label>
+                                <input ng-model="drawing.info.requestedBy" type="text">
+                              </md-input-container>
+
+                              <md-input-container>
+                                <label>Prepared By</label>
+                                <input ng-model="drawing.info.preparedBy" type="text">
+                              </md-input-container>
+
+                              <md-input-container>
+                                <label>File Path</label>
+                                <input ng-model="drawing.info.filePath" type="text">
+                              </md-input-container>
+                              <md-input-container>
+
+                                <label>Info</label>
+                                <input ng-model="drawing.info.shop.label" type="text">
+                              </md-input-container>
+                              <md-input-container>
+
+                                <label>Carrier</label>
+                                <input ng-model="drawing.info.carrier.label" type="text">
+                              </md-input-container>
+                          </md-tab>
+
+                          <md-tab label ="Address">
+                            <div layout="column" flex>
+                              <div layout-margin layout="row">
+                                <div layout="column" flex="70" layout-align="space-between stretch">
+                                  <label>Address</label>
+                                  <div layout-gt-sm="column">
+                                    <md-input-container>
+                                      <input ng-model="drawing.info.address.lines" type="text">
+                                    </md-input-container>
+                                    <md-input-container>
+                                      <label>City</label>
+                                      <input ng-model="drawing.info.address.city" type="text">
+                                    </md-input-container>
+                                    <md-input-container>
+                                      <label>State Or Province</label>
+                                      <input ng-model="drawing.info.address.stateOrProvince" type="text">
+                                    </md-input-container>
+                                    <md-input-container>
+                                      <label>Postal Code</label>
+                                      <input ng-model="drawing.info.address.postalCode" type="text">
+                                    </md-input-container>
+                                    <md-input-container>
+                                      <label>Country</label>
+                                      <input ng-model="drawing.info.address.country" type="text">
+                                    </md-input-container>
                                   </div>
                                 </div>
-
                               </div>
                             </div>
                           </md-tab>
 
-                          <md-tab label="More Details">
-                            <md-divider></md-divider>
-                            <label>Shipping Request Dates</label>
-                              <div layout="column" flex="30" layout-align="space-between stretch">
-                                <div>
-                                  <div layout-margin layout="row" layout-align="end">
-                                    <label flex layout="row" layout-align="start center">
-                                      <span>Start Date</span>
-                                    </label>
-                                    <md-datepicker ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
-                                  </div>
-                                  <div layout-margin layout="row" layout-align="end">
-                                    <label flex layout="row" layout-align="start center">
-                                      <span>Shop Date</span>
-                                    </label>
-                                    <md-datepicker ng-model="shopDateDisplay" md-placeholder="Shop Date"></md-datepicker>
-                                  </div>
-                                  <div layout-margin layout="row" layout-align="end">
-                                    <label flex layout="row" layout-align="start center">
-                                      <span>Shop Date</span>
-                                    </label>
-                                    <md-datepicker ng-model="fieldDateDisplay" md-placeholder="Field Date"></md-datepicker>
-                                  </div>
-                                  <div layout-margin layout="row" layout-align="end">
-                                    <label flex layout="row" layout-align="start center">
-                                      <span>Shop Date</span>
-                                    </label>
-                                    <md-datepicker ng-model="requestDateDisplay" md-placeholder="Request Date"></md-datepicker>
-                                  </div>
-                                </div>
-                              </div>
-                              <md-divider></md-divider>
-
-                                <md-input-container>
-                                  <label>Requested By</label>
-                                  <input ng-model="drawing.info.requestedBy" type="text">
-                                </md-input-container>
-
-                                <md-input-container>
-                                  <label>Prepared By</label>
-                                  <input ng-model="drawing.info.preparedBy" type="text">
-                                </md-input-container>
-
-                                <md-input-container>
-                                  <label>File Path</label>
-                                  <input ng-model="drawing.info.filePath" type="text">
-                                </md-input-container>
-                                <md-input-container>
-
-                                  <label>Info</label>
-                                  <input ng-model="drawing.info.shop.label" type="text">
-                                </md-input-container>
-                                <md-input-container>
-
-                                  <label>Carrier</label>
-                                  <input ng-model="drawing.info.carrier.label" type="text">
-                                </md-input-container>
-                            </md-tab>
-
-                            <md-tab label ="Address">
-                              <div layout="column" flex>
-                                <div layout-margin layout="row">
-                                  <div layout="column" flex="70" layout-align="space-between stretch">
-                                    <label>Address</label>
+                          <md-tab label ="Contact">
+                            <div layout="column" flex>
+                              <div layout-margin layout="column">
+                                <div layout="column" flex="70" layout-align="space-between stretch">
+                                  <div>
+                                    <label>Shipping Request Contact</label>
                                     <div layout-gt-sm="column">
-                                      <md-input-container>
-                                        <input ng-model="drawing.info.address.lines" type="text">
+                                      <md-input-container >
+                                        <label>Contact</label>
+                                        <input ng-model="drawing.info.contact.label" type="text">
                                       </md-input-container>
-                                      <md-input-container>
-                                        <label>City</label>
-                                        <input ng-model="drawing.info.address.city" type="text">
+                                      <md-input-container >
+                                        <label>Phone Number</label>
+                                        <input ng-model="drawing.info.contact.phone" type="text">
                                       </md-input-container>
-                                      <md-input-container>
-                                        <label>State Or Province</label>
-                                        <input ng-model="drawing.info.address.stateOrProvince" type="text">
+                                      <md-input-container >
+                                        <label>Fax</label>
+                                        <input ng-model="drawing.info.contact.fax" type="text">
                                       </md-input-container>
-                                      <md-input-container>
-                                        <label>Postal Code</label>
-                                        <input ng-model="drawing.info.address.postalCode" type="text">
-                                      </md-input-container>
-                                      <md-input-container>
-                                        <label>Country</label>
-                                        <input ng-model="drawing.info.address.country" type="text">
+                                      <md-input-container >
+                                        <label>Email</label>
+                                        <input ng-model="drawing.info.contact.email" type="text">
                                       </md-input-container>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </md-tab>
+                            </div>
+                          </md-tab>
 
-                            <md-tab label ="Contact">
-                              <div layout="column" flex>
-                                <div layout-margin layout="column">
-                                  <div layout="column" flex="70" layout-align="space-between stretch">
-                                    <div>
-                                      <label>Shipping Request Contact</label>
-                                      <div layout-gt-sm="column">
-                                        <md-input-container >
-                                          <label>Contact</label>
-                                          <input ng-model="drawing.info.contact.label" type="text">
-                                        </md-input-container>
-                                        <md-input-container >
-                                          <label>Phone Number</label>
-                                          <input ng-model="drawing.info.contact.phone" type="text">
-                                        </md-input-container>
-                                        <md-input-container >
-                                          <label>Fax</label>
-                                          <input ng-model="drawing.info.contact.fax" type="text">
-                                        </md-input-container>
-                                        <md-input-container >
-                                          <label>Email</label>
-                                          <input ng-model="drawing.info.contact.email" type="text">
-                                        </md-input-container>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </md-tab>
-
-                        </md-tabs>
-                      </form>
-                    </md-tab>
+                      </md-tabs>
+                    </form>
+                  </md-tab>
 
 
 

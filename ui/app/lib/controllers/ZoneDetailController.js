@@ -28,17 +28,24 @@ export default class ZoneDetailController extends DetailController {
 
     $scope.update = function update(item)
     {
-      Zone.update(item).then(function (data) { $mdDialog
-        .show($mdDialog.alert()
-        .title('Changes Saved!')
-        .textContent('Changes to this record have been saved')
-        .ok('Close'));
-      }, function (error) { $mdDialog
-        .show($mdDialog.alert()
-        .title('Failed to Save')
-        .textContent('There has been an error, changes have not been saved')
-      .ok('Close'))});
+      if (item.number) {
+        Zone.update(item).then(function (data) { $mdDialog
+          .show($mdDialog.alert()
+          .title('Changes Saved!')
+          .textContent('Changes to this record have been saved')
+          .ok('Close'));
+        }, function (error) { $mdDialog
+          .show($mdDialog.alert()
+          .title('Failed to Save')
+          .textContent('There has been an error, changes have not been saved')
+        .ok('Close'))});
+      } else {
+        $mdDialog
+         .show($mdDialog.alert()
+         .title('Failed to Save')
+         .textContent('Invalid data')
+       .ok('Close'))
+      }
     }
-
   }
 }
