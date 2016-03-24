@@ -4,7 +4,7 @@ export default class SystemTypeDetailController extends DetailController {
   /*@ngInject*/
   constructor($mdDialog, $scope, $routeParams, SystemType) {
     super()
-    if ($routeParams.systemType) {
+    if ($routeParams.systemTypeId) {
       SystemType.endpoint.get({ systemTypeId: $routeParams.systemTypeId }, function (response) {
         $scope.loading = true
         if (response.success) {
