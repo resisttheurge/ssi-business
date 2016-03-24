@@ -26,12 +26,24 @@ export default class JobAddresses extends ApiService {
             : reject('cannot call `JobAddresses.get` without a jobId parameter')
         )
 
-    this.create = ({ jobId }, { jobAddresses }) =>
+    this.update = (job, jobAddresses) =>
       $q(
         (resolve, reject) =>
-          jobId && jobAddresses ?
-            resolve(this.endpoint.create({ jobId }, jobAddresses).$promise.then($unpack))
-          : reject('cannot call `JobAddresses.create` without jobId or jobAddresses parameters')
+          job && job.id && jobAddresses ?
+            resolve(
+
+            )
+          : reject('cannot call `JobAddresses.update` without job or jobAddresses parameters')
+      )
+
+    this.create = (job, jobAddresses) =>
+      $q(
+        (resolve, reject) =>
+          job && job.id && jobAddresses ?
+            resolve(
+
+            )
+          : reject('cannot call `JobAddresses.create` without job or jobAddresses parameters')
       )
 
   }

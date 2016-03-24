@@ -86,5 +86,19 @@ export default class Job extends ApiService {
           }
         })
       }
+
+    self.updateFull = (job, jobAddresses, jobSchedules) =>
+      $q.all([
+        self.update(job),
+        self.addresses.update(job, jobAddresses),
+        self.schedules.update(job, jobSchedules)
+      ])
+
+    self.createFull = (job, jobAddresses, jobSchedules) =>
+      $q.all([
+        self.create(job),
+        self.addresses.create(job, jobAddresses),
+        self.schedules.create(job, jobSchedules)
+      ])
   }
 }

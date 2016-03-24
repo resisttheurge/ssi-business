@@ -91,18 +91,23 @@ export default class JobDetailController extends DetailController {
       })
     }
 
-    $scope.update = function update(item)
+    $scope.update = function update(job, jobAddresses, jobSchedules)
     {
-      Job.update(item).then(function (data) { $mdDialog
-        .show($mdDialog.alert()
-        .title('Changes Saved!')
-        .textContent('Changes to this record have been saved')
-        .ok('Close'));
-      }, function (error) { $mdDialog
-        .show($mdDialog.alert()
-        .title('Failed to Save')
-        .textContent('There has been an error, changes have not been saved')
-      .ok('Close'))});
+      Job.updateFull(job, jobAddresses, jobSchedules)
+        .then(function (data) {
+          $mdDialog
+            .show($mdDialog.alert()
+            .title('Changes Saved!')
+            .textContent('Changes to this record have been saved')
+            .ok('Close'));
+        }, function (error) {
+
+          $mdDialog
+            .show($mdDialog.alert()
+            .title('Failed to Save')
+            .textContent('There has been an error, changes have not been saved')
+            .ok('Close'))
+        });
     }
 
     $scope.openDrawings = function openDrawings(event)
