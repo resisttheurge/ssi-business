@@ -5,14 +5,14 @@ export default class ShippingGroupItemDetailController extends DetailController 
   constructor($scope, $routeParams, ShippingGroupItem, enums, $mdDialog, $ssiSelected) {
     super()
     if ($routeParams.shippingGroupItemId) {
-      
+
       $scope.shippingItemStatuses = enums.shippingItemStatuses
-      $scope.loading = true
       $scope.shippingGroup = $ssiSelected.shippingGroup;
       $scope.job = $ssiSelected.job;
 
       ShippingGroupItem.endpoint.get({ shippingGroupItemId: $routeParams.shippingGroupItemId },
       function (response) {
+        $scope.loading = true
         if (response.success) {
           $scope.shippingGroupItem = response.data
         } else {
