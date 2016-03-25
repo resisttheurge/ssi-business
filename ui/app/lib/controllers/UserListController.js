@@ -2,8 +2,11 @@ import { ListController } from 'utils'
 
 export default class UserListController extends ListController {
   /*@ngInject*/
-  constructor($scope, User, $filter, $q, $mdDialog, $mdToast) {
+  constructor($scope, User, $filter, $q, $mdDialog, $mdToast, $ssiUser) {
     super()
+
+    $scope.$ssiUser = $ssiUser;
+
     var orderBy = $filter('orderBy')
     $scope.query = {
       page: 1,
@@ -42,6 +45,31 @@ export default class UserListController extends ListController {
             .position('bottom right')
           )
       )
+
+    $scope.resetPassword = function (item)
+    {
+      item.password = 'RESET';
+
+      User.update(item).then(
+        function (data) {
+          $mdDialog.show(
+            $mdDialog
+              .alert()
+              .title('Password Reset!')
+              .textContent('The password for User: ' + item.username + ' has been temporarily set to \n"RESET"\n Upon using this new password to login, they will be prompted to provide a new password.')
+              .ok('Close')
+          )
+        }, function (error) {
+
+          $mdDialog.show(
+            $mdDialog.alert()
+              .title('Failed to Reset Password')
+              .textContent('There has been an error, changes have not been saved')
+              .ok('Close')
+          )
+        })
+
+    }
 
     function getUsers(query) {
       return $scope.promise =
