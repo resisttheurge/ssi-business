@@ -12,7 +12,7 @@
               <span flex></span>
               <md-button
                   class="md-raised"
-                  ng-disabled="detailForm.$pristine"
+                  ng-disabled="detailForm.$pristine || !detailForm.$valid"
                   ng-click="update ? update(user) : create(user)">
                 Save
               </md-button>
@@ -24,13 +24,16 @@
     <div layout-gt-sm="row" layout-margin layout-align="start center">
       <md-input-container>
         <label>Username</label>
-        <input ng-model="user.username" type="text" autocomplete="off">
+        <input ng-model="user.username" type="text" autocomplete="off" ng-required="true">
       </md-input-container>
 
       <md-input-container ng-if="!user.id">
         <label>Password</label>
-        <input ng-model="user.password" type="password" autocomplete="off">
+        <input ng-model="user.password" type="password" autocomplete="off" ng-minlength="8" ng-required="true">
       </md-input-container>
+
+      <label ng-hide="user.id || user.password.length >= 8" style="color: red;">* Passwords must be at least 8 characters in length</label>
+
     </div>
 
       <div layout="row" flex="10" layout-align="start center" layout-margin>
@@ -42,11 +45,15 @@
 
       <div layout="row" layout-align="center center">
         <h3 flex="10" style="margin-left: 25px;">User Role: </h3>
+
         <label ng-if="user.adminSelected === false" style="color: #007700; text-shadow: 0 0 4px #1aff8c; font-weight: bold; margin-right: 10px;">EMPLOYEE</label>
         <label ng-if="user.adminSelected === true" style="color: GREY; margin-right: 10px;">EMPLOYEE</label>
+
         <md-switch class="md-primary" ng-model="user.adminSelected"></md-switch>
+
         <label ng-if="user.adminSelected === true" style="color: #007700; text-shadow: 0 0 4px #1aff8c; font-weight: bold; margin-right: 10px;">ADMIN</label>
         <label ng-if="user.adminSelected === false" style="color: GREY; margin-right: 10px;">ADMIN</label>
+
         <span flex></span>
       </div>
 

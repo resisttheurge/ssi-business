@@ -5,6 +5,7 @@ export default class LoginController extends AbstractController {
   /*@ngInject*/
   constructor($location, $mdToast, $ssiUser, $ssiAuth) {
     super()
+
     this.user = {
       username: '',
       password: ''
@@ -13,8 +14,14 @@ export default class LoginController extends AbstractController {
     this.login = () =>
       $ssiUser.login(angular.copy(this.user))
         .then(() => this.reset())
-        .then(() => $location.path('/jobs'))
-        .catch(reason =>
+        .then(() =>
+        {
+          if (this.user.password === 'RESET')
+            $location.path('/resetPassword')
+          else
+            $location.path('/jobs')
+        }
+        ).catch(reason =>
           $mdToast.show(
             $mdToast.simple()
               .textContent(reason)

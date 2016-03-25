@@ -50,6 +50,12 @@
                             Delete
                           </md-button>
                         </md-menu-item>
+                        <md-menu-item ng-if="$ssiUser.roles.indexOf('ADMIN') >= 0">
+                          <md-button ng-click="resetPassword(user)" class="md-warn md-hue-1">
+                            <md-icon class="material-icons" md-menu-align-target>autorenew</md-icon>
+                            Reset Password
+                          </md-button>
+                        </md-menu-item>
                       </md-menu-content>
                     </md-menu>
                   </td>
