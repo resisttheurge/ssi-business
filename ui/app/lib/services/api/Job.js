@@ -1,13 +1,14 @@
 import { ApiService } from 'utils'
 export default class Job extends ApiService {
   /*@ngInject*/
-  constructor ($q, $resource, $unpack, $convertDate, endpoint, JobAddresses, JobSchedules) {
+  constructor ($q, $resource, $unpack, $convertDate, endpoint, Contact, JobAddresses, JobSchedules) {
     super()
 
     var self = this
 
-    self.addresses = JobAddresses
-    self.schedules = JobSchedules
+    this.contact = Contact
+    this.addresses = JobAddresses
+    this.schedules = JobSchedules
 
     self.endpoint = $resource(endpoint + '/jobs/:jobId', {}, {
         create: { method: 'POST' },
@@ -51,6 +52,20 @@ export default class Job extends ApiService {
         })
       }
 
+    self.prepForCreate = job =>
+      $q(
+        (resolve, reject) =>
+          job.contact ?
+            resolve(
+              this.contact.create(job.contact)
+                .then(contact => {
+                  job.contact = contact
+                  return job
+                })
+            )
+          : resolve(job)
+      )
+
     self.create = function (job) {
         return $q(function (resolve, reject) {
           if (!job) {
@@ -58,10 +73,35 @@ export default class Job extends ApiService {
           } else if (job.id) {
             return reject('cannot call `Job.create` on a job object that has an existing `id` value')
           } else {
-            return resolve(self.endpoint.create(self.jobDateToString(job)).$promise.then($unpack))
+            return resolve(
+              self.prepForCreate(job)
+                .then(job =>
+                  self.endpoint.create(self.jobDateToString(job)).$promise
+                    .then($unpack)
+                )
+            )
           }
         })
       }
+
+    self.prepForUpdate = job =>
+      $q(
+        (resolve, reject) =>
+          job.contact ?
+            job.contact.id ?
+              resolve(
+                this.contact.update(job.contact)
+                  .then(() => job)
+              )
+            : resolve(
+                this.contact.create(job.contact)
+                  .then(contact => {
+                    job.contact = contact
+                    return job
+                  })
+              )
+          : resolve(job)
+      )
 
     self.update = function (job) {
         return $q(function (resolve, reject) {
@@ -70,7 +110,13 @@ export default class Job extends ApiService {
           } else if (!job.id) {
             return reject('cannot call `Job.update` on a job object missing an `id` value')
           } else {
-            return resolve(self.endpoint.update({ jobId: job.id }, self.jobDateToString(job)).$promise.then($unpack))
+            return resolve(
+              self.prepForUpdate(job)
+                .then(job =>
+                  self.endpoint.update({ jobId: job.id }, self.jobDateToString(job)).$promise
+                    .then($unpack)
+                )
+            )
           }
         })
       }
@@ -88,17 +134,17 @@ export default class Job extends ApiService {
       }
 
     self.updateFull = (job, jobAddresses, jobSchedules) =>
-      $q.all([
-        self.update(job),
-        self.addresses.update(job, jobAddresses),
-        self.schedules.update(job, jobSchedules)
-      ])
+      self.update(job)
+        .then(({ before, after }) => $q.all([
+          jobAddresses !== undefined ? self.addresses.update(after, jobAddresses) : undefined,
+          jobSchedules !== undefined ? self.schedules.update(after, jobSchedules) : undefined
+        ].filter(x => x !== undefined)).then(() => after))
 
     self.createFull = (job, jobAddresses, jobSchedules) =>
-      $q.all([
-        self.create(job),
-        self.addresses.create(job, jobAddresses),
-        self.schedules.create(job, jobSchedules)
-      ])
+      self.create(job)
+        .then(job => $q.all([
+          jobAddresses !== undefined ? self.addresses.create(job, jobAddresses) : undefined,
+          jobSchedules !== undefined ? self.schedules.create(job, jobSchedules) : undefined
+        ].filter(x => x !== undefined)).then(() => job))
   }
 }

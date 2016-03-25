@@ -62,6 +62,7 @@ object ShippingGroupDao extends CrudDao[ShippingGroup] {
   override def updateAction(id: Int, model: ShippingGroup)(implicit ec: ShippingGroupDao.EC): ShippingGroupDao.DBIOAction[Response[Updated[ShippingGroup]], ShippingGroupDao.NoStream, _] =
     for {
       before <- readQuery(id).result.headOption
+      updatedInfo <- ShippingRequests.byId(model.info.get.id.get).update(model.info.get)
       updated <- ShippingGroups.byId(id).update(model)
       after <- readQuery(id).result.headOption
     } yield {
@@ -82,7 +83,7 @@ object ShippingGroupDao extends CrudDao[ShippingGroup] {
   override def createAction(model: ShippingGroup)(implicit ec: ShippingGroupDao.EC): ShippingGroupDao.DBIOAction[Response[ShippingGroup], ShippingGroupDao.NoStream, _] =
     for {
       requestId <- (ShippingRequests returning ShippingRequests.map(_.id)) += toShippingRequestsRow(model.info.getOrElse(ShippingRequest()))
-      drawingId <- (ShippingGroups returning ShippingGroups.map(_.id)) += model
+      drawingId <- (ShippingGroups returning ShippingGroups.map(_.id)) += model.copy(info = ShippingRequest(id = requestId))
       drawing <- readQuery(drawingId).result.headOption
     } yield {
       Response[ShippingGroup](
