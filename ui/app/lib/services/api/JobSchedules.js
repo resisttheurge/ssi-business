@@ -16,9 +16,9 @@ export default class JobSchedules extends ApiService {
       })
     }
 
-    this.jobSchedulesStringToDate = jobSchedules => do {
-      const { engineering, mechanical, electrical, shipping, installation } = jobSchedules;
-      ({
+    this.jobSchedulesStringToDate = jobSchedules => {
+      const { engineering, mechanical, electrical, shipping, installation } = jobSchedules
+      return ({
         engineering: engineering ? this.scheduleStringToDate(engineering) : undefined,
         mechanical: mechanical ? this.scheduleStringToDate(mechanical) : undefined,
         electrical: electrical ? this.scheduleStringToDate(electrical) : undefined,
@@ -38,5 +38,25 @@ export default class JobSchedules extends ApiService {
               )
             : reject('cannot call `JobSchedules.get` without a jobId parameter')
         )
+
+    this.update = (job, jobSchedules) =>
+      $q(
+        (resolve, reject) =>
+          job && job.id && jobSchedules ?
+            resolve(
+
+            )
+          : reject('cannot call `JobSchedules.update` without job or jobSchedules parameters')
+      )
+
+    this.create = (job, jobSchedules) =>
+      $q(
+        (resolve, reject) =>
+          job && job.id && jobSchedules ?
+            resolve(
+
+            )
+          : reject('cannot call `JobSchedules.create` without job or jobSchedules parameters')
+      )
   }
 }
