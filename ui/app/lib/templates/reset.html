@@ -1,0 +1,67 @@
+<div flex layout="column" layout-align="start stretch">
+  <!-- outer frame -->
+  <div layout-margin layout="row" layout-align="center stretch">
+    <!-- card frame  -->
+    <md-card flex="85" layout="column">
+      <!-- toolbar/content frame -->
+      <div layout="column">
+
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <h1>Reset Password</h1>
+            <span flex></span>
+          </div>
+        </md-toolbar>
+
+          <md-content>
+            <form name="detailForm">
+                <div layout="column" layout-margin>
+                  <ul>
+                    <li>
+                      <label>Please type your new password in the text fields below.</label>
+                    </li>
+                    <li>
+                      <label> Passwords must be over 8 characters.</label>
+                    </li>
+                    <li>
+                      <label>Passwords must match.</label>
+                    </li>
+                  </ul>
+
+                  <div layout="row" layout-margin>
+                    <span flex></span>
+                    <md-input-container>
+                      <label>New Password</label>
+                      <input ng-minlength="8" required ng-model="newPassword" type="text">
+                    </md-input-container>
+                    <md-icon ng-show="newPassword.length >= 8" style="border-radius: 5px; background-color: #00cc00" class="material-icons">check_box</md-icon>
+                    <md-icon ng-hide="newPassword.length >= 8" style="border-radius: 15px; background-color: #ff0000" class="material-icons">cancel</md-icon>
+                    <span flex></span>
+                  </div>
+
+                  <div layout="row" layout-margin>
+                    <span flex></span>
+                    <md-input-container>
+                      <label>Verify New Password</label>
+                      <input ng-minlength="8" required ng-model="newPasswordVerify" type="text">
+                    </md-input-container>
+                    <md-icon ng-show="newPasswordVerify.length >= 8 && newPassword === newPasswordVerify" style="border-radius: 5px; background-color: #00cc00" class="material-icons">check_box</md-icon>
+                    <md-icon ng-hide="newPasswordVerify.length >= 8 && newPassword === newPasswordVerify" style="border-radius: 15px; background-color: #ff0000" class="material-icons">cancel</md-icon>
+                    <span flex></span>
+                  </div>
+
+                  <div layout="row">
+                    <span flex></span>
+                    <md-button style="background-color: #00e64d;" ng-disabled="!newPassword || !newPasswordVerify || newPassword != newPasswordVerify" ng-click="$reset.resetPassword()">
+                      Update Password
+                    </md-button>
+                    <span flex></span>
+                  </div>
+
+                </div>
+            </form>
+          </md-content>
+        </div>
+      </md-card>
+    </div>
+  </div>

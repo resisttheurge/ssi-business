@@ -43,6 +43,7 @@ import ZoneDetailController from './ZoneDetailController'
 import ZoneListController from './ZoneListController'
 import ReportController from './ReportController'
 import ModalJobReportController from './ModalJobReportController'
+import ResetController from './ResetController'
 
 export const controllers = {
   AppController,
@@ -86,7 +87,8 @@ export const controllers = {
   ZoneDetailController,
   ZoneListController,
   ReportController,
-  ModalJobReportController
+  ModalJobReportController,
+  ResetController
 }
 
 export default
@@ -134,3 +136,4 @@ export default
       .controller('ZoneListController', ZoneListController)
       .controller('ReportController', ReportController)
       .controller('ModalJobReportController', ModalJobReportController)
+      .controller('ResetController', ResetController)
