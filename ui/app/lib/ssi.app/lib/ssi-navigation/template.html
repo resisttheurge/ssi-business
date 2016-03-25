@@ -14,7 +14,7 @@
         <span flex></span>
         <label>Logout</label>
       </md-list-item>
-      <md-divider md-inset></md-divider>
+      <md-divider ng-show="$navigation.user.roles.indexOf('ADMIN') >= 0" md-inset></md-divider>
       <md-list-item ng-show="$navigation.user.roles.indexOf('ADMIN') >= 0" ng-click="$navigation.toggle()" ng-href="/users">
         <md-icon class="material-icons">face</md-icon>
         <span flex></span>
