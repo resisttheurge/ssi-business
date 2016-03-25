@@ -63,6 +63,7 @@ object DrawingDao extends CrudDao[Drawing] {
   override def updateAction(id: Int, model: Drawing)(implicit ec: DrawingDao.EC): DrawingDao.DBIOAction[Response[Updated[Drawing]], DrawingDao.NoStream, _] =
     for {
       before <- readQuery(id).result.headOption
+      updatedInfo <- ShippingRequests.byId(model.info.get.id.get).update(model.info.get)
       updated <- Drawings.byId(id).update(model)
       after <- readQuery(id).result.headOption
     } yield {
@@ -83,7 +84,7 @@ object DrawingDao extends CrudDao[Drawing] {
   override def createAction(model: Drawing)(implicit ec: DrawingDao.EC): DrawingDao.DBIOAction[Response[Drawing], DrawingDao.NoStream, _] =
     for {
       requestId <- (ShippingRequests returning ShippingRequests.map(_.id)) += toShippingRequestsRow(model.info.getOrElse(ShippingRequest()))
-      drawingId <- (Drawings returning Drawings.map(_.id)) += model
+      drawingId <- (Drawings returning Drawings.map(_.id)) += model.copy(info = ShippingRequest(id = requestId))
       drawing <- readQuery(drawingId).result.headOption
     } yield {
       Response[Drawing](

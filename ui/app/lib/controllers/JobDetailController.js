@@ -1,17 +1,13 @@
-import { DetailController } from 'utils'
-
-// import { $convertDate } from ''
+import { DetailController, strip } from 'utils'
 
 export default class JobDetailController extends DetailController {
   /*@ngInject*/
   constructor(
-    $scope, $routeParams, $q, Address, Customer, Job, Schedule,
+    $scope, $route, $location, $routeParams, $q, Address, Customer, Job, Schedule,
     Shop, Salesperson, enums, $filter, $mdDialog, $unpack, $convertDate,
     JobAddresses, JobSchedules, $log
   ) {
     super()
-
-    $scope.$watchCollection('job', (prev, next) => $log.debug(JSON.stringify({ prev, next })))
 
     function filter(expression, comparator) {
       return function (array) {
@@ -59,6 +55,20 @@ export default class JobDetailController extends DetailController {
          fullscreen: false
        });
     }
+
+    $scope.addAddressLine = type =>
+      $scope.jobAddresses ?
+        $scope.jobAddresses[type] ?
+          $scope.jobAddresses[type].lines ?
+            $scope.jobAddresses[type].lines = [
+              ...$scope.jobAddresses[type].lines,
+              {
+                id: $scope.jobAddresses[type].lines.length,
+                value: ''
+              }]
+          : $scope.jobAddresses[type].lines = [{ id: 0, value: '' }]
+        : $scope.jobAddresses[type] = { lines: [{ id: 0, value: '' }] }
+      : $scope.jobAddresses = { [type]: { lines: [{ id: 0, value: '' }] } }
 
     function loadJob() {
       $log.debug('begin loadJob')
@@ -109,38 +119,68 @@ export default class JobDetailController extends DetailController {
 
       $scope.update = function update(job, jobAddresses, jobSchedules)
       {
-        if (job.identifier.year &&
-            job.identifier.label) {
+        if (job.identifier.prefix &&
+            job.identifier.year &&
+            job.identifier.label &&
+            job.status) {
           Job.updateFull(job, jobAddresses, jobSchedules)
           .then(function (data) {
             $mdDialog
-              .show($mdDialog.alert()
-              .title('Changes Saved!')
-              .textContent('Changes to this record have been saved')
-              .ok('Close'));
+              .show(
+                $mdDialog.alert()
+                  .title('Changes Saved!')
+                  .textContent('Changes to this record have been saved')
+                  .ok('Close')
+              ).then(() => $route.reload())
           }, function (error) {
 
+            $log.error(JSON.stringify(error))
             $mdDialog
-              .show($mdDialog.alert()
-              .title('Failed to Save')
-              .textContent('There has been an error, changes have not been saved')
-              .ok('Close'))
+              .show(
+                $mdDialog.alert()
+                  .title('Failed to Save')
+                  .textContent('There has been an error, changes have not been saved')
+                  .ok('Close')
+            )
           });
         } else {
           $mdDialog
-           .show($mdDialog.alert()
-           .title('Failed to Save')
-           .textContent('Invalid data')
-         .ok('Close'))
+          .show(
+            $mdDialog.alert()
+              .title('Failed to Save')
+              .textContent('Invalid data')
+              .ok('Close')
+          )
         }
       }
 
       loadJob()
     } else {
+      $scope.job = {
+        identifier: {
+          prefix: 'F',
+          year: new Date().getFullYear()
+        },
+        status: 'ACTIVE'
+      }
+
+      $scope.jobAddresses = {
+        shipping: {
+          lines: [{ id: 0, value: '' }]
+        },
+        invoicing: {
+          lines: [{ id: 0, value: '' }]
+        }
+      }
+
       $scope.create = function create(job, jobAddresses, jobSchedules)
       {
-        if (job.identifier.year &&
-            job.identifier.label) {
+        if (
+          job.identifier.prefix &&
+          job.identifier.year &&
+          job.identifier.label &&
+          job.status
+        ) {
           Job.createFull(job, jobAddresses, jobSchedules)
           .then(
             data =>
@@ -149,14 +189,17 @@ export default class JobDetailController extends DetailController {
                   .title('Record created!')
                   .textContent('This record has been saved to the database')
                   .ok('Close')
-              ),
-            error =>
+              ).then(() => $location.url(`/jobs/${data.id}`)),
+            error => {
+              $log.error(JSON.stringify(error))
               $mdDialog.show(
                 $mdDialog.alert()
                   .title('Failed to create record')
                   .textContent('There has been an error, record could not be created')
                   .ok('Close')
-              ));
+              )
+            }
+          )
         } else {
           $mdDialog
            .show($mdDialog.alert()

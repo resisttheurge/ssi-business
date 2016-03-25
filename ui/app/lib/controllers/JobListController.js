@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class JobListController extends ListController {
   /*@ngInject*/
-  constructor($q, $filter, $scope, Job, enums, $mdDialog, $mdToast) {
+  constructor($q, $route, $filter, $scope, Job, enums, $mdDialog, $mdToast) {
     super()
 
     var self = this;

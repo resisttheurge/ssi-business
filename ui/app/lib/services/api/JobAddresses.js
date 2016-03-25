@@ -10,10 +10,19 @@ export default class JobAddresses extends ApiService {
 
     this.padLines = address =>
       !address ?
-        { lines: [''], city: '', stateOrProvince: '', postalCode: '', country: '' }
-      : !address.lines || address.lines.length < 1 ?
-        { ...address, lines: [''] }
-      : address
+        {
+          lines: [{ id: 0, value: '' }],
+          city: '',
+          stateOrProvince: '',
+          postalCode: '',
+          country: ''
+        }
+      : {
+          ...address,
+          lines: address.lines ?
+            address.lines.map((line, index) => ({ id: index, value: line }))
+          : undefined
+        }
 
     this.padAllLines = ({ shipping, invoicing }) =>
       ({ shipping: this.padLines(shipping), invoicing: this.padLines(invoicing) })
@@ -28,14 +37,28 @@ export default class JobAddresses extends ApiService {
 
     this.prepForUpdate = (job, jobAddresses) => {
       const { shipping, invoicing } = jobAddresses
-      return [shipping, invoicing].filter(x => x !== undefined)
+      return $q.all([
+        shipping ?
+          shipping.id ?
+            shipping
+          : Address.create(shipping).then(shipping => this.create(job, { shipping })).then(() => {})
+        : undefined,
+        invoicing ?
+          invoicing.id ?
+            invoicing
+          : Address.create(invoicing).then(invoicing => this.create(job, { invoicing })).then(() => {})
+        : undefined
+      ].filter(x => x !== undefined))
     }
 
     this.update = (job, jobAddresses) =>
       $q(
         (resolve, reject) =>
           job && job.id && jobAddresses ?
-            resolve($q.all(this.prepForUpdate(job, jobAddresses).map(::Address.update)))
+            resolve(
+              this.prepForUpdate(job, jobAddresses)
+                .then(all => $q.all(all.filter(x => x !== undefined).map(::Address.update)))
+            )
           : reject('cannot call `JobAddresses.update` without job or jobAddresses parameters')
       )
 
