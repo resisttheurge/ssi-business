@@ -16,5 +16,13 @@ export default class Schedule extends ApiService {
             resolve(this.endpoint.create(item).$promise.then($unpack))
           : reject('cannot call create without a parameter')
       )
+
+    this.update = item =>
+      $q(
+        (resolve, reject) =>
+          item && item.id ?
+            resolve(this.endpoint.update({ scheduleId: item.id }, item).$promise.then($unpack))
+          : reject('cannot call update without a parameter')
+      )
   }
 }
