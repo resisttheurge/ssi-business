@@ -27,13 +27,13 @@ export default class JobSchedules extends ApiService {
       })
     }
 
-    this.scheduleDateToString = schedule => do {
+    this.scheduleDateToString = schedule => {
       const { startDate, completeDate } = schedule;
-      ({
+      return {
         ...schedule,
         startDate: startDate ? startDate.toISOString().substring(0, 10) : undefined,
         completeDate: completeDate ? completeDate.toISOString().substring(0, 10) : undefined
-      })
+      }
     }
 
     this.jobSchedulesDateToString = jobSchedules => {
@@ -61,14 +61,48 @@ export default class JobSchedules extends ApiService {
 
     this.prepForUpdate = (job, jobSchedules) => {
       const { engineering, mechanical, electrical, shipping, installation } = jobSchedules
-      return [engineering, mechanical, electrical, shipping, installation].filter(x => x !== undefined)
+      return $q.all([
+        engineering ?
+          engineering.id ?
+            engineering
+          : this.create(job, { engineering }).then(() => {})
+        : undefined,
+        mechanical ?
+          mechanical.id ?
+            mechanical
+          : this.create(job, { mechanical }).then(() => {})
+        : undefined,
+        electrical ?
+          electrical.id ?
+            electrical
+          : this.create(job, { electrical }).then(() => {})
+        : undefined,
+        shipping ?
+          shipping.id ?
+            shipping
+          : this.create(job, { shipping }).then(() => {})
+        : undefined,
+        installation ?
+          installation.id ?
+            installation
+          : this.create(job, { installation }).then(() => {})
+        : undefined
+      ].filter(x => x !== undefined))
     }
 
     this.update = (job, jobSchedules) =>
       $q(
         (resolve, reject) =>
           job && job.id && jobSchedules ?
-            resolve($q.all(this.prepForUpdate(job, jobSchedules).map(::Schedule.update)))
+            resolve(
+              this.prepForUpdate(job, jobSchedules)
+                .then(all => $q.all(
+                  all
+                    .filter(x => x !== undefined)
+                    .map(::this.scheduleDateToString)
+                    .map(::Schedule.update)
+                ))
+            )
           : reject('cannot call `JobSchedules.update` without job or jobSchedules parameters')
       )
 
@@ -97,7 +131,7 @@ export default class JobSchedules extends ApiService {
       $q(
         (resolve, reject) =>
           job && job.id && jobSchedules ?
-            resolve($q.all(this.prepForCreate(job, jobSchedules).map(::Schedule.create)))
+            resolve($q.all(this.prepForCreate(job, jobSchedules).map(::this.scheduleDateToString).map(::Schedule.create)))
           : reject('cannot call `JobSchedules.create` without job or jobSchedules parameters')
       )
   }
