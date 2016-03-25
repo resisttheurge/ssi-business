@@ -71,7 +71,7 @@ object UserDao extends CrudDao[User] {
   override def updateAction(id: Int, user: User)(implicit ec: EC) =
     for {
       before <- Users.byId(id).withRoles.result
-      rows <- Users.byId(id).update(user)
+      rows <- Users.byId(id).update(user.copy(password = Option(BCrypt.hashpw(user.password.get, BCrypt.gensalt()))))
       roleUpdate <- updateRoles(id, user.roles.getOrElse(Seq.empty))
       after <- Users.byId(id).withRoles.result
     } yield {
@@ -107,7 +107,7 @@ object UserDao extends CrudDao[User] {
   def updateRoles(id: Int, roles: Seq[UserRoleType])(implicit ec: EC) =
     for {
       existing <- UserRoles.byUserId(id).map(_.role).result
-      created <- UserRoles ++= roles.diff(existing).map(role => UserRolesRow(id, role, active = true))
+      created <- UserRoles ++= roles.map(role => role: String).diff(existing).map(role => UserRolesRow(id, role, active = true))
       activated <- UserRoles.inactive.byUserId(id).byRoles(roles).map(_.active).update(true)
       deactivated <- UserRoles.active.byUserId(id).filterNot(_.role inSet roles.map(r => r: String)).map(_.active).update(false)
     } yield {
