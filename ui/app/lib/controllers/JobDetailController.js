@@ -93,7 +93,9 @@ export default class JobDetailController extends DetailController {
 
     $scope.update = function update(job, jobAddresses, jobSchedules)
     {
-      Job.updateFull(job, jobAddresses, jobSchedules)
+      if (job.identifier.year &&
+          job.identifier.label) {
+        Job.updateFull(job, jobAddresses, jobSchedules)
         .then(function (data) {
           $mdDialog
             .show($mdDialog.alert()
@@ -108,6 +110,13 @@ export default class JobDetailController extends DetailController {
             .textContent('There has been an error, changes have not been saved')
             .ok('Close'))
         });
+      } else {
+        $mdDialog
+         .show($mdDialog.alert()
+         .title('Failed to Save')
+         .textContent('Invalid data')
+       .ok('Close'))
+      }
     }
 
     $scope.openDrawings = function openDrawings(event)
