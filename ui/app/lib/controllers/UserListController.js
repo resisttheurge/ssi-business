@@ -56,7 +56,7 @@ export default class UserListController extends ListController {
             $mdDialog
               .alert()
               .title('Password Reset!')
-              .textContent('The password for User: ' + item.username + ' has been temporarily set to \n"RESET"\n Upon using this new password to login, they will be prompted to provide a new password.')
+              .textContent('The password for User: "' + item.username + '" has been temporarily set to "RESET". Upon using this new password to login, they will be prompted to provide a new password.')
               .ok('Close')
           )
         }, function (error) {

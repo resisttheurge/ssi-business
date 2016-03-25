@@ -14,7 +14,13 @@ export default class User extends ApiService {
         (resolve, reject) =>
           item && item.id ?
             resolve(this.endpoint.update({ userId: item.id }, item).$promise.then($unpack))
-          : reject('cannot call create without a parameter')
+          : reject('cannot call update without a parameter')
+      )
+
+    this.getAll = () =>
+      $q(
+        (resolve, reject) =>
+            resolve(this.endpoint.query({ }).$promise.then($unpack))
       )
 
     this.create = item =>

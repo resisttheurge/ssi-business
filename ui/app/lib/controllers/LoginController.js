@@ -3,7 +3,7 @@ import { AbstractController } from 'utils'
 export default class LoginController extends AbstractController {
 
   /*@ngInject*/
-  constructor($location, $mdToast, $ssiUser, $ssiAuth) {
+  constructor($location, $mdToast, $ssiUser, $ssiAuth, $scope) {
     super()
 
     this.user = {
@@ -13,13 +13,24 @@ export default class LoginController extends AbstractController {
 
     this.login = () =>
       $ssiUser.login(angular.copy(this.user))
-        .then(() => this.reset())
+        .then(() => {
+          if (this.user.password === 'RESET')
+          {
+            this.resetPassword = true;
+            $ssiUser.navDisabled = true;
+          }
+
+          this.reset()
+        })
         .then(() =>
         {
-          if (this.user.password === 'RESET')
+          if (this.resetPassword)
+          {
             $location.path('/resetPassword')
-          else
+          } else
+          {
             $location.path('/jobs')
+          }
         }
         ).catch(reason =>
           $mdToast.show(

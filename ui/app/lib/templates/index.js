@@ -3,6 +3,7 @@ import angular from 'angular'
 
 import home from './home'
 import login from './login'
+import reset from './reset'
 
 import carrierDetail from './carrier-detail'
 import carrierList from './carrier-list'
@@ -38,6 +39,7 @@ import zoneDetail from './zone-detail'
 export const urls = {
   home,
   login,
+  reset,
   carrierDetail,
   carrierList,
   customerDetail,

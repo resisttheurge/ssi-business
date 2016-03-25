@@ -11,6 +11,15 @@ export const routes = {
       allowedRoles: ['ADMIN', 'EMPLOYEE']
     }
   },
+  '/resetPassword': {
+    templateUrl: urls.reset,
+    controller: controllers.ResetController.name,
+    controllerAs: '$reset',
+    access: {
+      allowAnonymous: true,
+      allowedRoles: ['ADMIN', 'EMPLOYEE']
+    }
+  },
   '/carriers': {
     templateUrl: urls.carrierList,
     controller: controllers.CarrierListController.name,
