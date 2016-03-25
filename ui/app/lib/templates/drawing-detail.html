@@ -52,7 +52,7 @@
                           <div layout-gt-sm="row">
                             <md-input-container>
                               <label>Specialty Item </label>
-                              <input ng-model="drawing.specialtyItem.label" type="text">
+                              <input md-maxlength ="100" ng-model="drawing.specialtyItem.label" type="text">
                             </md-input-container>
 
                             <md-input-container>
@@ -73,7 +73,7 @@
                                 </md-input-container>
                                 <md-input-container>
                                   <label>Revision</label>
-                                  <input ng-model="drawing.info.revision" type="text">
+                                  <input md-maxlength="100" ng-model="drawing.info.revision" type="text">
                                 </md-input-container>
 
                               <div layout-gt-sm="row">
@@ -124,27 +124,27 @@
 
                               <md-input-container>
                                 <label>Requested By</label>
-                                <input ng-model="drawing.info.requestedBy" type="text">
+                                <input md-maxlength ="100" ng-model="drawing.info.requestedBy" type="text">
                               </md-input-container>
 
                               <md-input-container>
                                 <label>Prepared By</label>
-                                <input ng-model="drawing.info.preparedBy" type="text">
+                                <input md-maxlength ="100" ng-model="drawing.info.preparedBy" type="text">
                               </md-input-container>
 
                               <md-input-container>
                                 <label>File Path</label>
-                                <input ng-model="drawing.info.filePath" type="text">
+                                <input md-maxlength ="200" ng-model="drawing.info.filePath" type="text">
                               </md-input-container>
                               <md-input-container>
 
-                                <label>Info</label>
-                                <input ng-model="drawing.info.shop.label" type="text">
+                                <label>Shop Label</label>
+                                <input md-maxlength="100" ng-model="drawing.info.shop.label" type="text">
                               </md-input-container>
                               <md-input-container>
 
-                                <label>Carrier</label>
-                                <input ng-model="drawing.info.carrier.label" type="text">
+                                <label>Carrier Label</label>
+                                <input md-maxlength="100" ng-model="drawing.info.carrier.label" type="text">
                               </md-input-container>
                           </md-tab>
 
@@ -159,19 +159,19 @@
                                     </md-input-container>
                                     <md-input-container>
                                       <label>City</label>
-                                      <input ng-model="drawing.info.address.city" type="text">
+                                      <input md-maxlength ="100" ng-model="drawing.info.address.city" type="text">
                                     </md-input-container>
                                     <md-input-container>
                                       <label>State Or Province</label>
-                                      <input ng-model="drawing.info.address.stateOrProvince" type="text">
+                                      <input md-maxlength ="100" ng-model="drawing.info.address.stateOrProvince" type="text">
                                     </md-input-container>
                                     <md-input-container>
                                       <label>Postal Code</label>
-                                      <input ng-model="drawing.info.address.postalCode" type="text">
+                                      <input md-maxlength ="30" ng-model="drawing.info.address.postalCode" type="text">
                                     </md-input-container>
                                     <md-input-container>
                                       <label>Country</label>
-                                      <input ng-model="drawing.info.address.country" type="text">
+                                      <input md-maxlength ="100" ng-model="drawing.info.address.country" type="text">
                                     </md-input-container>
                                   </div>
                                 </div>
@@ -188,19 +188,19 @@
                                     <div layout-gt-sm="column">
                                       <md-input-container >
                                         <label>Contact</label>
-                                        <input ng-model="drawing.info.contact.label" type="text">
+                                        <input md-maxlength ="100" ng-model="drawing.info.contact.label" type="text">
                                       </md-input-container>
                                       <md-input-container >
                                         <label>Phone Number</label>
-                                        <input ng-model="drawing.info.contact.phone" type="text">
+                                        <input md-maxlength ="35" ng-model="drawing.info.contact.phone" type="text">
                                       </md-input-container>
                                       <md-input-container >
                                         <label>Fax</label>
-                                        <input ng-model="drawing.info.contact.fax" type="text">
+                                        <input md-maxlength ="35" ng-model="drawing.info.contact.fax" type="text">
                                       </md-input-container>
                                       <md-input-container >
                                         <label>Email</label>
-                                        <input ng-model="drawing.info.contact.email" type="text">
+                                        <input md-maxlength ="100" ng-model="drawing.info.contact.email" type="text">
                                       </md-input-container>
                                     </div>
                                   </div>
