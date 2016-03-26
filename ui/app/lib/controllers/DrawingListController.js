@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class DrawingListController extends ListController {
   /*@ngInject*/
-  constructor($scope, Drawing, DrawingByJob, $filter, $q, $routeParams) {
+  constructor($scope, Drawing, DrawingByJob, $filter, $q, $routeParams, $mdDialog, $mdToast, $route) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {

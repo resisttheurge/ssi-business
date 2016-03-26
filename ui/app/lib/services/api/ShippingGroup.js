@@ -1,19 +1,13 @@
 import { ApiService } from 'utils'
 export default class ShippingGroup extends ApiService {
   /*@ngInject*/
-  constructor ($resource, endpoint, $q, $unpack, $convertDate) {
+  constructor ($resource, endpoint, $q, $unpack, $convertDate, Address, Contact) {
     super()
 
     this.endpoint = $resource(endpoint + '/shipping-groups/:shippingGroupId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ shippingGroupId: '' } }
-      });
-
-    this.endpoint = $resource(endpoint + '/drawings/:drawingId', {}, {
-        create: { method: 'POST' },
-        update: { method: 'PATCH' },
-        query: { method: 'GET', params:{ drawingId: '' } }
       });
 
     this.padLines = address =>
@@ -32,21 +26,31 @@ export default class ShippingGroup extends ApiService {
           : [{ id: 0, value: '' }]
         }
 
-    this.sgPadLines = sg => ({
-      ...sg,
-      address: this.padLines(sg.address)
-    })
+    this.sgPadLines = sg => {
+      const { info } = sg
+      const { address } = info ? info : {}
+      return {
+        ...sg,
+        info: {
+          ...info,
+          address: address ? this.padLines(address) : undefined
+        }
+      }
+    }
 
     this.sgStringToDate = sg => {
       const { info } = sg
       const { revisionDate, startDate, shopDate, fieldDate, requestDate } = info ? info : {}
       return {
         ...sg,
-        revisionDate: revisionDate ? $convertDate.stringToDate(revisionDate) : undefined,
-        startDate: startDate ? $convertDate.stringToDate(startDate) : undefined,
-        shopDate: shopDate ? $convertDate.stringToDate(shopDate) : undefined,
-        fieldDate: fieldDate ? $convertDate.stringToDate(fieldDate) : undefined,
-        requestDate: requestDate ? $convertDate.stringToDate(requestDate) : undefined
+        info: {
+          ...info,
+          revisionDate: revisionDate ? $convertDate.stringToDate(revisionDate) : undefined,
+          startDate: startDate ? $convertDate.stringToDate(startDate) : undefined,
+          shopDate: shopDate ? $convertDate.stringToDate(shopDate) : undefined,
+          fieldDate: fieldDate ? $convertDate.stringToDate(fieldDate) : undefined,
+          requestDate: requestDate ? $convertDate.stringToDate(requestDate) : undefined
+        }
       }
     }
 
@@ -55,11 +59,14 @@ export default class ShippingGroup extends ApiService {
       const { revisionDate, startDate, shopDate, fieldDate, requestDate } = info ? info : {}
       return {
         ...sg,
-        revisionDate: revisionDate ? revisionDate.toISOString().substring(0, 10) : undefined,
-        startDate: startDate ? startDate.toISOString().substring(0, 10) : undefined,
-        shopDate: shopDate ? shopDate.toISOString().substring(0, 10) : undefined,
-        fieldDate: fieldDate ? fieldDate.toISOString().substring(0, 10) : undefined,
-        requestDate: requestDate ? requestDate.toISOString().substring(0, 10) : undefined
+        info: {
+          ...info,
+          revisionDate: revisionDate ? revisionDate.toISOString().substring(0, 10) : undefined,
+          startDate: startDate ? startDate.toISOString().substring(0, 10) : undefined,
+          shopDate: shopDate ? shopDate.toISOString().substring(0, 10) : undefined,
+          fieldDate: fieldDate ? fieldDate.toISOString().substring(0, 10) : undefined,
+          requestDate: requestDate ? requestDate.toISOString().substring(0, 10) : undefined
+        }
       }
     }
 
@@ -105,7 +112,7 @@ export default class ShippingGroup extends ApiService {
             resolve(
               this.prepForUpdate(item)
                 .then(item =>
-                  this.endpoint.update({ drawingId: item.id }, item).$promise
+                  this.endpoint.update({ shippingGroupId: item.id }, item).$promise
                     .then($unpack)
                 )
             )
@@ -151,7 +158,7 @@ export default class ShippingGroup extends ApiService {
       $q(
         (resolve, reject) =>
           item && item.id ?
-            resolve(this.endpoint.delete({ drawingId: item.id }, item).$promise.then($unpack))
+            resolve(this.endpoint.delete({ shippingGroupId: item.id }, item).$promise.then($unpack))
           : reject('cannot call ShippingGroup.delete without a parameter')
       )
 

@@ -14,34 +14,27 @@ export default class DrawingDetailController extends DetailController {
 
      $scope.addAddressLine = () =>
        $scope.drawing ?
-         $scope.drawing.address ?
-           $scope.drawing.address.lines ?
-             $scope.drawing.address.lines = [
-               ...$scope.drawing.address.lines,
+        $scope.drawing.info ?
+         $scope.drawing.info.address ?
+           $scope.drawing.info.address.lines ?
+             $scope.drawing.info.address.lines = [
+               ...$scope.drawing.info.address.lines,
                {
-                 id: $scope.drawing.address.lines.length,
+                 id: $scope.drawing.info.address.lines.length,
                  value: ''
                }]
-           : $scope.drawing.address.lines = [{ id: 0, value: '' }]
-         : $scope.drawing.address = { lines: [{ id: 0, value: '' }] }
-       : $scope.drawing = { address: { lines: [{ id: 0, value: '' }] } }
+           : $scope.drawing.info.address.lines = [{ id: 0, value: '' }]
+         : $scope.drawing.info.address = { lines: [{ id: 0, value: '' }] }
+       : $scope.drawing.info = { address: { lines: [{ id: 0, value: '' }] } }
+     : $scope.drawing = { info: { address: { lines: [{ id: 0, value: '' }] } } }
 
      function refresh() {
        console.log('refreshing')
-       $scope.promise = $q.all({
-         drawing: Drawing.get($routeParams.drawingId),
-
-         //  specialtyItem: SpecialtyItem.endpoint.query().$promise.then(unpack),
-       }).then(function (data) {
-         console.log('extending')
-
-         angular.extend($scope, data, {
-           loading: false
+       $scope.promise = Drawing.get($routeParams.drawingId)
+          .then(function (data) {
+           $scope.drawing = data
+           return data
          })
-
-         return data
-         console.log('extending done')
-       })
      }
 
      if ($routeParams.drawingId) {

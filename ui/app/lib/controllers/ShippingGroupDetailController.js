@@ -3,7 +3,7 @@ import { DetailController } from 'utils'
 export default class ShippingGroupDetailController extends DetailController {
   /*@ngInject*/
   constructor($scope, $routeParams, ShippingGroup, enums, $ssiSelected,
-    $mdDialog, $convertDate, $route, $location
+    $mdDialog, $convertDate, $route, $location, $log
   ) {
     super()
 
@@ -15,34 +15,27 @@ export default class ShippingGroupDetailController extends DetailController {
 
     $scope.addAddressLine = () =>
       $scope.shippingGroup ?
-        $scope.shippingGroup.address ?
-          $scope.shippingGroup.address.lines ?
-            $scope.shippingGroup.address.lines = [
-              ...$scope.shippingGroup.address.lines,
+       $scope.shippingGroup.info ?
+        $scope.shippingGroup.info.address ?
+          $scope.shippingGroup.info.address.lines ?
+            $scope.shippingGroup.info.address.lines = [
+              ...$scope.shippingGroup.info.address.lines,
               {
-                id: $scope.shippingGroup.address.lines.length,
+                id: $scope.shippingGroup.info.address.lines.length,
                 value: ''
               }]
-          : $scope.shippingGroup.address.lines = [{ id: 0, value: '' }]
-        : $scope.shippingGroup.address = { lines: [{ id: 0, value: '' }] }
-      : $scope.shippingGroup = { address: { lines: [{ id: 0, value: '' }] } }
+          : $scope.shippingGroup.info.address.lines = [{ id: 0, value: '' }]
+        : $scope.shippingGroup.info.address = { lines: [{ id: 0, value: '' }] }
+      : $scope.shippingGroup.info = { address: { lines: [{ id: 0, value: '' }] } }
+    : $scope.shippingGroup = { info: { address: { lines: [{ id: 0, value: '' }] } } }
 
     function refresh() {
       console.log('refreshing')
-      $scope.promise = $q.all({
-        shippingGroup: ShippingGroup.get($routeParams.shippingGroupId),
-
-        //  specialtyItem: SpecialtyItem.endpoint.query().$promise.then(unpack),
-      }).then(function (data) {
-        console.log('extending')
-
-        angular.extend($scope, data, {
-          loading: false
+      $scope.promise = $q.all(ShippingGroup.get($routeParams.shippingGroupId))
+        .then(function (data) {
+          $scope.shippingGroup = data
+          return data
         })
-
-        return data
-        console.log('extending done')
-      })
     }
 
     if ($routeParams.shippingGroupId) {
@@ -74,7 +67,7 @@ export default class ShippingGroupDetailController extends DetailController {
 
       refresh()
     } else {
-      $scope.shippingGroup = { jobId: $scope.job.id, info: { address: { lines: [{ id: 0, value: '' }] } } }
+      $scope.shippingGroup = { jobId: $scope.job.id, rush: false, info: { address: { lines: [{ id: 0, value: '' }] } } }
 
       $scope.create = sg =>
       {
