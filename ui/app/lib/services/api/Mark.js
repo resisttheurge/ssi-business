@@ -26,6 +26,7 @@ constructor ($q, $unpack, $resource, endpoint) {
         query: { method: 'GET', params:{ markId: '' } }
       });
 
+    //   old  get method
     this.get = function ($scope, resultObj, markId)
     {
       service.$scope = $scope;
@@ -33,22 +34,36 @@ constructor ($q, $unpack, $resource, endpoint) {
       return this.endpoint.query({ markId: markId }, resultExtension).$promise;
     }
 
-    this.create = item =>
-      $q(
-        (resolve, reject) =>
-          item ?
-            resolve(this.endpoint.create(item).$promise.then($unpack))
-          : reject('cannot call create without a parameter')
-        )
+    //  //old create method
+    // this.create = mark =>
+    //   $q(
+    //     (resolve, reject) =>
+    //       mark ?
+    //         resolve(this.endpoint.create(mark).$promise.then($unpack))
+    //       : reject('cannot call create without a parameter')
+    //     )
 
-    self.update = function (item) {
+    self.create = function (mark) {
         return $q(function (resolve, reject) {
-          if (!item) {
+          if (!mark) {
+            return reject('cannot call `mark.create` without a mark parameter')
+          } else {
+            return resolve(mark =>
+              self.endpoint.create(self).$promise
+                .then($unpack)
+            )
+          }
+        })
+      }
+
+    self.update = function (mark) {
+        return $q(function (resolve, reject) {
+          if (!mark) {
             return reject('cannot update without a parameter')
-          } else if (!item.id) {
+          } else if (!mark.id) {
             return reject('cannot update object with missing id')
           } else {
-            return resolve(self.endpoint.update({ markId: item.id }, item).$promise.then($unpack))
+            return resolve(self.endpoint.update({ markId: mark.id }, mark).$promise.then($unpack))
           }
         })
       }

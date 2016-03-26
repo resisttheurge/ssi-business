@@ -1,42 +1,52 @@
 import { ApiService } from 'utils'
-export default class ShippingGroupItem extends ApiService {
+export default class ShippingGroupshippingGroupItem extends ApiService {
   /*@ngInject*/
   constructor ($q, $unpack, $resource, endpoint) {
     super()
-    this.endpoint = $resource(endpoint + '/shipping-group-items/:shippingGroupItemId', {}, {
+    this.endpoint = $resource(
+      endpoint + '/shipping-group-shippingGroupItems/:shippingGroupshippingGroupItemId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
-        query: { method: 'GET', params:{ shippingGroupItemId: '' } }
+        query: { method: 'GET', params:{ shippingGroupshippingGroupItemId: '' } }
       })
 
-    this.create = item =>
+    this.create = shippingGroupItem =>
       $q(
         (resolve, reject) =>
-          item ?
-            resolve(this.endpoint.create(item).$promise.then($unpack))
+          shippingGroupItem ?
+            resolve(this.endpoint.create(shippingGroupItem).$promise.then($unpack))
           : reject('cannot call create without a parameter')
       )
     var self = this;
 
-    self.update = function (item) {
+    self.update = function (shippingGroupItem) {
           return $q(function (resolve, reject) {
-            if (!item) {
+            if (!shippingGroupItem) {
               return reject('cannot update without a parameter')
-            } else if (!item.id) {
+            } else if (!shippingGroupItem.id) {
               return reject('cannot update object with missing id')
             } else {
-              return resolve(self.endpoint.update({ shippingGroupItemId: item.id }, item).$promise.then($unpack))
+              return resolve(
+                self.endpoint.update(
+                  { shippingGroupshippingGroupItemId: shippingGroupItem.id },
+                   shippingGroupItem).$promise.then($unpack))
             }
           })
         }
 
-    this.delete = item =>
-      $q(
-        (resolve, reject) =>
-          item && item.id ?
-            resolve(this.endpoint.delete({ shippingGroupItemId: item.id }, item).$promise.then($unpack))
-          : reject('cannot call ShippingGroupItem.delete without a parameter')
-      )
-
+    self.delete = function (shippingGroupItem) {
+        return $q(function (resolve, reject) {
+          if (!shippingGroupItem) {
+            return reject(
+              'cannot call `shippingGroupItem.delete` without a shippingGroupItem parameter')
+          } else if (!shippingGroupItem.id) {
+            return reject(
+              'cannot call `shippingGroupItem.delete` on a shippingGroupItem object missing an `id` value')
+          } else {
+            return resolve(self.endpoint.delete({ shippingGroupItemId: shippingGroupItem.id },
+              self.shippingGroupItemDateToString(shippingGroupItem)).$promise.then($unpack))
+          }
+        })
+      }
   }
 }
