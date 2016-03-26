@@ -67,5 +67,14 @@ constructor ($q, $unpack, $resource, endpoint) {
           }
         })
       }
+
+    this.delete = item =>
+      $q(
+        (resolve, reject) =>
+          item && item.id ?
+            resolve(this.endpoint.delete({ markId: item.id }, item).$promise.then($unpack))
+          : reject('cannot call Mark.delete without a parameter')
+      )
+
   }
 }

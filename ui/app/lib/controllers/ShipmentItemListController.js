@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class ShipmentItemListController extends ListController {
   /*@ngInject*/
-  constructor($scope, ShipmentItemByShipment, $filter, $q, $routeParams) {
+  constructor($scope, ShipmentItem, ShipmentItemByShipment, $filter, $q, $routeParams, $mdDialog, $mdToast, $route) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -10,6 +10,30 @@ export default class ShipmentItemListController extends ListController {
       limit: 10,
       order: 'id'
     }
+
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete shipment item ${item.label}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => ShipmentItem.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted shipment item ${item.label}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete shipment item ${item.label} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     $scope.onPaginate = function (page, limit) {
       return getShipmentItems(angular.extend({}, $scope.query, { page: page, limit: limit }))

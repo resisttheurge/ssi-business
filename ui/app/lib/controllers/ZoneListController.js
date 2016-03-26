@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class ZoneListController extends ListController {
   /*@ngInject*/
-  constructor($scope, ZoneByJob, $filter, $q, $routeParams) {
+  constructor($scope, ZoneByJob, $filter, $q, $routeParams, $mdDialog, $mdToast, Zone, $route) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -10,6 +10,30 @@ export default class ZoneListController extends ListController {
       limit: 10,
       order: 'id'
     }
+
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete zone ${item.label}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => Zone.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted zone ${item.label}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete zone ${item.label} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     $scope.onPaginate = function (page, limit) {
       return getZones(angular.extend({}, $scope.query, { page: page, limit: limit }))

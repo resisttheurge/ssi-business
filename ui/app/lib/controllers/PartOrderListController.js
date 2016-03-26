@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class PartOrderListController extends ListController {
   /*@ngInject*/
-  constructor($scope, PartOrderByJob, $filter, $q, $routeParams) {
+  constructor($scope, PartOrderByJob, $filter, $q, $routeParams, $mdDialog, $mdToast, PartOrder, $route) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -10,6 +10,30 @@ export default class PartOrderListController extends ListController {
       limit: 10,
       order: 'id'
     }
+
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete part order [${item.id}] ${item.part.number}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => PartOrder.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted part order [${item.id}] ${item.part.number}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete part order [${item.id}] ${item.part.number} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     $scope.onPaginate = function (page, limit) {
       return getPartOrders(angular.extend({}, $scope.query, { page: page, limit: limit }))
