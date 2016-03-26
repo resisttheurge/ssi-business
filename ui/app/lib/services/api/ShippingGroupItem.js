@@ -4,10 +4,10 @@ export default class ShippingGroupshippingGroupItem extends ApiService {
   constructor ($q, $unpack, $resource, endpoint) {
     super()
     this.endpoint = $resource(
-      endpoint + '/shipping-group-shippingGroupItems/:shippingGroupshippingGroupItemId', {}, {
+      endpoint + '/shipping-group-items/:shippingGroupItemId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
-        query: { method: 'GET', params:{ shippingGroupshippingGroupItemId: '' } }
+        query: { method: 'GET', params:{ shippingGroupItemId: '' } }
       })
 
     this.create = shippingGroupItem =>
@@ -28,7 +28,7 @@ export default class ShippingGroupshippingGroupItem extends ApiService {
             } else {
               return resolve(
                 self.endpoint.update(
-                  { shippingGroupshippingGroupItemId: shippingGroupItem.id },
+                  { shippingGroupItemId: shippingGroupItem.id },
                    shippingGroupItem).$promise.then($unpack))
             }
           })
@@ -44,7 +44,7 @@ export default class ShippingGroupshippingGroupItem extends ApiService {
               'cannot call `shippingGroupItem.delete` on a shippingGroupItem object missing an `id` value')
           } else {
             return resolve(self.endpoint.delete({ shippingGroupItemId: shippingGroupItem.id },
-              self.shippingGroupItemDateToString(shippingGroupItem)).$promise.then($unpack))
+              shippingGroupItem).$promise.then($unpack))
           }
         })
       }
