@@ -15,7 +15,7 @@ export default class ZoneListController extends ListController {
       $mdDialog.show(
         $mdDialog.confirm()
           .title(`Are you sure?`)
-          .textContent(`Are you sure you want to delete zone ${item.label}?`)
+          .textContent(`Are you sure you want to delete zone ${item.number}?`)
           .ok('ok')
           .cancel('cancel')
       )
@@ -24,13 +24,13 @@ export default class ZoneListController extends ListController {
         () =>
           $mdToast.show(
             $mdToast.simple()
-              .textContent(`Deleted zone ${item.label}`)
+              .textContent(`Deleted zone ${item.number}`)
               .position('bottom right')
           )
           .then(() => $route.reload()),
         reason => $mdToast.show(
           $mdToast.simple()
-            .textContent(`Could not delete zone ${item.label} because ${reason}`)
+            .textContent(`Could not delete zone ${item.number} because ${reason}`)
             .position('bottom right')
           )
       )
