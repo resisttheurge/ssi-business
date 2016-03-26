@@ -2,11 +2,13 @@ import { ApiService } from 'utils'
 export default class Mark extends ApiService {
   /*@ngInject*/
 
-constructor ($q, $unpack, $resource, endpoint) {
+constructor ($q, $unpack, $resource, endpoint, ShippingItem) {
     super()
 
     var service = this;
     var self = this;
+
+    this.shippingItem = ShippingItem
 
     var resultExtension = function (response) {
         service.$scope.loading = true
@@ -43,14 +45,31 @@ constructor ($q, $unpack, $resource, endpoint) {
     //       : reject('cannot call create without a parameter')
     //     )
 
+    self.prepForCreate = mark =>
+      $q(
+        (resolve, reject) =>
+          mark.shippingItem ?
+            resolve(
+              this.shippingItem.create(mark.shippingItem)
+                .then(shippingItem => {
+                  mark.shippingItem = shippingItem
+                  return mark
+                })
+            )
+          : resolve(mark)
+      )
+
     self.create = function (mark) {
         return $q(function (resolve, reject) {
           if (!mark) {
             return reject('cannot call `mark.create` without a mark parameter')
           } else {
-            return resolve(mark =>
-              self.endpoint.create(self).$promise
-                .then($unpack)
+            return resolve(
+              self.prepForCreate(mark)
+                .then(mark =>
+                  self.endpoint.create(self).$promise
+                    .then($unpack)
+              )
             )
           }
         })
@@ -63,10 +82,30 @@ constructor ($q, $unpack, $resource, endpoint) {
           } else if (!mark.id) {
             return reject('cannot update object with missing id')
           } else {
+            self.prepForUpdate(mark)
             return resolve(self.endpoint.update({ markId: mark.id }, mark).$promise.then($unpack))
           }
         })
       }
+
+    self.prepForUpdate = mark =>
+      $q(
+        (resolve, reject) =>
+          mark.shippingItem ?
+            mark.shippingItem.id ?
+              resolve(
+                this.shippingItem.update(mark.shippingItem)
+                  .then(() => mark)
+              )
+            : resolve(
+                this.shippingItem.create(mark.shippingItem)
+                    .then(shippingItem => {
+                      mark.shippingItem = shippingItem
+                      return mark
+                    })
+                )
+            : resolve(mark)
+        )
 
     this.delete = item =>
       $q(

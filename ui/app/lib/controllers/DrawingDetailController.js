@@ -2,7 +2,7 @@ import { DetailController } from 'utils'
 
 export default class DrawingDetailController extends DetailController {
   /*@ngInject*/
-   constructor($scope, $routeParams, $q, Drawing, SpecialtyItem, enums,
+   constructor($log, $scope, $routeParams, $q, Drawing, SpecialtyItem, enums,
       $ssiSelected, $mdDialog, $convertDate, $route, $location) {
      super()
      var self = this
