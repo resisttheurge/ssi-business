@@ -3,12 +3,13 @@ import { DetailController } from 'utils'
 export default class ShipmentDetailController extends DetailController {
   /*@ngInject*/
   constructor($q, $scope, $routeParams, Shipment, enums,
-    $ssiSelected, $mdDialog, $convertDate, $log, Shop, Carrier) {
+    $ssiSelected, $mdDialog, $convertDate, $log, Shop, Carrier, $location) {
     super()
 
     $scope.shipmentStatuses = enums.shipmentStatuses
 
     $scope.job = $ssiSelected.job
+    $scope.loading = true
 
     $scope.addAddressLine = () =>
       $scope.shipment ?
@@ -17,27 +18,28 @@ export default class ShipmentDetailController extends DetailController {
             $scope.shipment.address.lines = [
               ...$scope.shipment.address.lines,
               {
-                id: $scope.drawing.info.address.lines.length,
+                id: $scope.shipment.address.lines.length,
                 value: ''
               }]
           : $scope.shipment.address.lines = [{ id: 0, value: '' }]
         : $scope.shipment.address = { lines: [{ id: 0, value: '' }] }
       : $scope.shipment = { address: { lines: [{ id: 0, value: '' }] } }
 
-    this.refresh = () =>
-      $q.all({
-        shipment: Shipment.get($routeParams.shipmentId),
-        shops: Shop.list(),
-        carriers: Carrier.list()
-      }).then(
-        ({ shipment, shops, carriers }) => {
-          $scope.shipment = shipment
-          $scope.shops = shops
-          $scope.carriers = carriers
-        }
-      ).then(() => $scope.loading = false)
-
     if ($routeParams.shipmentId) {
+
+      this.refresh = () =>
+        $q.all({
+          shipment: Shipment.get($routeParams.shipmentId),
+          shops: Shop.list(),
+          carriers: Carrier.list()
+        }).then(
+          ({ shipment, shops, carriers }) => {
+            $scope.shipment = shipment
+            $scope.shops = shops
+            $scope.carriers = carriers
+          }
+        ).then(() => $scope.loading = false)
+
       $scope.loading = true
 
       $scope.update = function update(item)
@@ -65,6 +67,17 @@ export default class ShipmentDetailController extends DetailController {
 
       this.refresh()
     } else {
+      this.refresh = () =>
+        $q.all({
+          shops: Shop.list(),
+          carriers: Carrier.list()
+        }).then(
+          ({ shops, carriers }) => {
+            $scope.shops = shops
+            $scope.carriers = carriers
+          }
+        ).then(() => $scope.loading = false)
+
       $scope.shipment = { jobId: $scope.job.id, address: { lines: [{ id: 0, value: '' }] } }
 
       $scope.create = shipment => {
@@ -99,6 +112,8 @@ export default class ShipmentDetailController extends DetailController {
           )
         }
       }
+
+      this.refresh()
     }
   }
 }

@@ -32,9 +32,9 @@ export default class DrawingDetailController extends DetailController {
        console.log('refreshing')
        $scope.promise = Drawing.get($routeParams.drawingId)
           .then(function (data) {
-           $scope.drawing = data
-           return data
-         })
+            $scope.drawing = data
+            return data
+          })
      }
 
      if ($routeParams.drawingId) {
