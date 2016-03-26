@@ -3,7 +3,7 @@ import { DetailController } from 'utils'
 export default class ShippingGroupDetailController extends DetailController {
   /*@ngInject*/
   constructor($scope, $routeParams, ShippingGroup, enums, $ssiSelected,
-    $mdDialog, $convertDate, $route, $location, $log
+    $mdDialog, $convertDate, $route, $location, $log, $q
   ) {
     super()
 

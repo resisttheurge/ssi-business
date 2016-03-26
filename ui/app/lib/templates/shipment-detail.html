@@ -21,7 +21,7 @@
           <div class="md-toolbar-tools">
             <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2>Shipment {{shipment.number}}</h2>
             <span flex></span>
-            <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(shipment)">Save Changes!</md-button>
+            <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update ? update(shipment) : create(shipment)">Save</md-button>
           </div>
         </md-toolbar>
         <md-content flex>
@@ -47,7 +47,7 @@
                         </md-input-container>
                         <md-input-container>
                           <label>Weight</label>
-                          <input md-maxlength ="10" ng-model="shipment.weight" type="text"></input>
+                          <input min ="0" ng-model="shipment.weight" type="number"></input>
                         </md-input-container>
                         <md-input-container>
                           <label>Bill Of Lading</label>
@@ -59,7 +59,6 @@
                     <div layout-gt-sm="row">
                         <md-input-container>
                           <label>Shop</label>
-                          <input ng-model="shipment.shop.label" type="text"></input>
                           <md-select ng-model="shipment.shop">
                             <md-option ng-repeat="shop in shops track by shop.id" ng-value="shop">
                                    {{shop.label}}
@@ -77,34 +76,41 @@
                     </div>
                   </md-tab>
                   <md-tab label ="Address">
-                    <div layout="column" flex>
+                    <md-content flex>
                       <div layout-margin layout="column">
-                        <div layout="column" flex="70" layout-align="space-between stretch">
-                          <label>Address</label>
-                          <div layout-gt-sm="column">
-                            <md-input-container>
-                              <input ng-model="shipment.address.lines" type="text"></input>
-                            </md-input-container>
-                            <md-input-container>
-                              <label>City</label>
-                              <input ng-model="shipment.address.city" type="text"></input>
-                            </md-input-container>
-                            <md-input-container>
-                              <label>State Or Province</label>
-                              <input ng-model="drawing.info.address.stateOrProvince" type="text"></input>
-                            </md-input-container>
-                            <md-input-container>
-                              <label>Postal Code</label>
-                              <input ng-model="drawing.info.address.postalCode" type="text"></input>
-                            </md-input-container>
-                            <md-input-container>
-                              <label>Country</label>
-                              <input ng-model="drawing.info.address.country" type="text"></input>
-                            </md-input-container>
-                          </div>
+                        <div layout="row" layout-margin ng-repeat="line in shipment.address.lines track by line.id">
+                          <md-input-container flex>
+                            <label>Address line {{$index + 1}}</label>
+                            <input ng-model="line.value" type="text"></input>
+                          </md-input-container>
+                          <md-button ng-click="addAddressLine()" ng-if="$last" class="md-fab md-mini" aria-label="Add Another Address Line">
+                            <md-tooltip md-direction="top">Add Another Address Line</md-tooltip>
+                            <md-icon class="material-icons">add</md-icon>
+                          </md-button>
+                        </div>
+                        <div layout="row" layout-margin>
+                          <md-input-container flex>
+                            <label>City</label>
+                            <input md-maxlength="100" ng-model="shipment.address.city" type="text"></input>
+                          </md-input-container>
+                          <md-input-container flex>
+                            <label>State or Province</label>
+                            <input md-maxlength="100" ng-model="shipment.address.stateOrProvince" type="text"></input>
+                          </md-input-container>
+                          <md-input-container flex>
+                            <label>Postal Code</label>
+                            <input md-maxlength="30" ng-model="shipment.address.postalCode" type="text"></input>
+                          </md-input-container>
+                        </div>
+                        <div layout="row" layout-margin>
+                          <md-input-container flex>
+                            <label>Country</label>
+                            <input md-maxlength="100" ng-model="shipment.address.country" type="text"></input>
+                          </md-input-container>
                         </div>
                       </div>
-                    </div>
+                      <md-divider></md-divider>
+                    </md-content>
                   </md-tab>
                   <md-tab label ="Contact">
                     <div layout="column" flex>
@@ -135,24 +141,12 @@
                       </div>
                     </div>
                   </md-tab>
-
-                  <md-tab label="Reports">
-                    <md-content class="md-padding">
-                      <div ng-controller="ReportController as $reports">
-
-                        <md-button ng-click="$reports.shipment()" style="background-color: #71EEB8; color: black;">
-                          <md-icon class="material-icons">insert_drive_file</md-icon>
-                          Shipment
-                        </md-button>
-
-                      </div>
-                    </md-content>
-                  </md-tab>
                 </md-tabs>
               </form>
             </md-tab>
 
             <md-tab label="Shipment Items">
+              <div ng-controller="ShipmentItemListController">
               <md-table-container>
                 <table md-table md-progress="promise">
                   <thead md-head md-order="query.order" md-on-reorder="onReorder">
@@ -163,13 +157,32 @@
                   </thead>
                   <tbody layout-padding md-body>
                     <tr md-row ng-repeat="shipmentItem in shipmentItems">
+                      <td md-cell class="md-checkbox-cell">
+                        <md-menu md-offset="0 0">
+                          <md-button ng-click="$mdOpenMenu()" class="md-icon-button">
+                              <md-tooltip md-direction="left" md-autohide="true">
+                                Actions
+                              </md-tooltip>
+                              <md-icon md-menu-origin class="material-icons">more_vert</md-icon>
+                          </md-button>
+                          <md-menu-content>
+                            <md-menu-item>
+                              <md-button ng-click="$app.selected.shipmentItem = shipmentItem" ng-href="/jobs/{{$app.selected.job.id}}/shipments/{{$app.selected.shipment.id}}/items/{{shipmentItem.id}}">
+                                <md-icon class="material-icons" md-menu-align-target>edit</md-icon>
+                                Edit
+                              </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                              <md-button ng-click="delete(shipmentItem)" class="md-warn md-hue-2">
+                                <md-icon class="material-icons" md-menu-align-target>delete</md-icon>
+                                Delete
+                              </md-button>
+                            </md-menu-item>
+                          </md-menu-content>
+                        </md-menu>
+                      </td>
                       <td md-cell>{{shipmentItem.shippingItem.label}}</td>
                       <!-- more cells go here -->
-                      <td md-cell>
-                        <md-button class="md-default md-icon-button" ng-href="/jobs/{{$app.selected.job.id}}/shipments/{{$app.selected.shipment.id}}/items/{{shipmentItem.id}}" md-whiteframe="1">
-                          <md-icon class="material icons">edit</md-icon>
-                        </md-button>
-                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -180,6 +193,19 @@
                   <md-icon class="material-icons">add</md-icon>
                 </md-button>
               </div>
+            </div>
+            </md-tab>
+            <md-tab label="Reports">
+              <md-content class="md-padding">
+                <div ng-controller="ReportController as $reports">
+
+                  <md-button ng-click="$reports.shipment()" style="background-color: #71EEB8; color: black;">
+                    <md-icon class="material-icons">insert_drive_file</md-icon>
+                    Shipment
+                  </md-button>
+
+                </div>
+              </md-content>
             </md-tab>
           </md-tabs>
         </md-content>

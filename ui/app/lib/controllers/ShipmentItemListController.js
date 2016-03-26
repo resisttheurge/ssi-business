@@ -15,7 +15,7 @@ export default class ShipmentItemListController extends ListController {
       $mdDialog.show(
         $mdDialog.confirm()
           .title(`Are you sure?`)
-          .textContent(`Are you sure you want to delete shipment item ${item.label}?`)
+          .textContent(`Are you sure you want to delete shipment item ${item.shippingItem.label}?`)
           .ok('ok')
           .cancel('cancel')
       )
@@ -24,13 +24,13 @@ export default class ShipmentItemListController extends ListController {
         () =>
           $mdToast.show(
             $mdToast.simple()
-              .textContent(`Deleted shipment item ${item.label}`)
+              .textContent(`Deleted shipment item ${item.shippingItem.label}`)
               .position('bottom right')
           )
           .then(() => $route.reload()),
         reason => $mdToast.show(
           $mdToast.simple()
-            .textContent(`Could not delete shipment item ${item.label} because ${reason}`)
+            .textContent(`Could not delete shipment item ${item.shippingItem.label} because ${reason}`)
             .position('bottom right')
           )
       )
