@@ -1,7 +1,7 @@
 import { ApiService } from 'utils'
 export default class Drawing extends ApiService {
   /*@ngInject*/
-  constructor ($resource, endpoint, $q, $unpack, Contact, Address) {
+  constructor ($resource, endpoint, $q, $unpack, $convertDate, Contact, Address) {
     super()
 
     this.endpoint = $resource(endpoint + '/drawings/:drawingId', {}, {

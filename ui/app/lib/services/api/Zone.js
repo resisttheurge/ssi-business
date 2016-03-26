@@ -37,7 +37,7 @@ export default class Zone extends ApiService {
           } else {
             return resolve(self.endpoint.update({ zoneId: zone.id }, zone).$promise.then($unpack))
           }
-        })  
+        })
       }
 
     // this.create = zone =>
@@ -92,14 +92,6 @@ export default class Zone extends ApiService {
     //         }
     //       })
     //     }
-
-    this.delete = item =>
-      $q(
-        (resolve, reject) =>
-          item && item.id ?
-            resolve(this.endpoint.delete({ zoneId: item.id }, item).$promise.then($unpack))
-          : reject('cannot call Zone.delete without a parameter')
-      )
 
   }
 }

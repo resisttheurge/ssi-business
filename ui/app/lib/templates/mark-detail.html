@@ -13,7 +13,7 @@
          <div class="md-toolbar-tools">
            <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2><a ng-href="/jobs/{{job.id}}/drawings/{{drawing.id}}">Drawing {{drawing.label}}</a></h2><i class="material-icons">keyboard_arrow_right</i> <h2>Mark {{mark.label}}</h2>
            <span flex></span>
-           <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(mark)">Save Changes!</md-button>
+           <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update ? update(mark) : create(mark)">Save Changes!</md-button>
          </div>
         </md-toolbar>
 
@@ -58,16 +58,24 @@
                         <div>
                           <md-input-container>
                             <label>Completed</label>
-                            <input ng-model="mark.shippingItem.completed" type="text">
+                            <input ng-model="mark.shippingItem.completed" type="number">
                           </md-input-container>
                           <md-input-container>
                             <label>Remarks</label>
                             <input ng-model="mark.shippingItem.remarks" type="text">
                           </md-input-container>
-                          <md-input-container>
-                            <label>Shop Label</label>
-                            <input ng-model="mark.shippingItem.shop.label" type="text">
-                          </md-input-container>
+
+                           <div layout-margin layout="row">
+                            <md-autocomplete
+                                md-selected-item="mark.shippingItem.shop"
+                                md-search-text="shopSearchText"
+                                md-items="shop in queryShops(shopSearchText)"
+                                md-item-text="shop.label"
+                                md-floating-label="Shop" flex>
+                              <span>{{shop.label}}</span>
+                            </md-autocomplete>
+                          </div>
+
                         </div>
 
                       </div>
