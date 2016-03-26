@@ -26,21 +26,31 @@ export default class Drawing extends ApiService {
           : [{ id: 0, value: '' }]
         }
 
-    this.drawingPadLines = drawing => ({
-      ...drawing,
-      address: this.padLines(drawing.address)
-    })
+    this.drawingPadLines = drawing => {
+      const { info } = drawing
+      const { address } = info ? info : {}
+      return {
+        ...drawing,
+        info: {
+          ...info,
+          address: address ? this.padLines(address) : undefined
+        }
+      }
+    }
 
     this.drawingStringToDate = drawing => {
       const { info } = drawing
       const { revisionDate, startDate, shopDate, fieldDate, requestDate } = info ? info : {}
       return {
         ...drawing,
-        revisionDate: revisionDate ? $convertDate.stringToDate(revisionDate) : undefined,
-        startDate: startDate ? $convertDate.stringToDate(startDate) : undefined,
-        shopDate: shopDate ? $convertDate.stringToDate(shopDate) : undefined,
-        fieldDate: fieldDate ? $convertDate.stringToDate(fieldDate) : undefined,
-        requestDate: requestDate ? $convertDate.stringToDate(requestDate) : undefined
+        info: {
+          ...info,
+          revisionDate: revisionDate ? $convertDate.stringToDate(revisionDate) : undefined,
+          startDate: startDate ? $convertDate.stringToDate(startDate) : undefined,
+          shopDate: shopDate ? $convertDate.stringToDate(shopDate) : undefined,
+          fieldDate: fieldDate ? $convertDate.stringToDate(fieldDate) : undefined,
+          requestDate: requestDate ? $convertDate.stringToDate(requestDate) : undefined
+        }
       }
     }
 
@@ -49,11 +59,14 @@ export default class Drawing extends ApiService {
       const { revisionDate, startDate, shopDate, fieldDate, requestDate } = info ? info : {}
       return {
         ...drawing,
-        revisionDate: revisionDate ? revisionDate.toISOString().substring(0, 10) : undefined,
-        startDate: startDate ? startDate.toISOString().substring(0, 10) : undefined,
-        shopDate: shopDate ? shopDate.toISOString().substring(0, 10) : undefined,
-        fieldDate: fieldDate ? fieldDate.toISOString().substring(0, 10) : undefined,
-        requestDate: requestDate ? requestDate.toISOString().substring(0, 10) : undefined
+        info: {
+          ...info,
+          revisionDate: revisionDate ? revisionDate.toISOString().substring(0, 10) : undefined,
+          startDate: startDate ? startDate.toISOString().substring(0, 10) : undefined,
+          shopDate: shopDate ? shopDate.toISOString().substring(0, 10) : undefined,
+          fieldDate: fieldDate ? fieldDate.toISOString().substring(0, 10) : undefined,
+          requestDate: requestDate ? requestDate.toISOString().substring(0, 10) : undefined
+        }
       }
     }
 
@@ -62,7 +75,7 @@ export default class Drawing extends ApiService {
         .then($unpack)
 
     this.get = id =>
-      this.endpoint.get({ shippingGroupId: id }).$promise
+      this.endpoint.get({ drawingId: id }).$promise
         .then($unpack)
         .then(::this.drawingStringToDate)
         .then(::this.drawingPadLines)
@@ -103,7 +116,7 @@ export default class Drawing extends ApiService {
                     .then($unpack)
                 )
             )
-          : reject('cannot call ShippingGroup.update without a parameter')
+          : reject('cannot call Drawing.update without a parameter')
       )
 
     this.prepForCreate = drawing => {
@@ -138,7 +151,7 @@ export default class Drawing extends ApiService {
                     .then($unpack)
                 )
             )
-          : reject('cannot call ShippingGroup.create without a parameter')
+          : reject('cannot call Drawing.create without a parameter')
       )
 
     this.delete = item =>
@@ -146,7 +159,7 @@ export default class Drawing extends ApiService {
         (resolve, reject) =>
           item && item.id ?
             resolve(this.endpoint.delete({ drawingId: item.id }, item).$promise.then($unpack))
-          : reject('cannot call ShippingGroup.delete without a parameter')
+          : reject('cannot call Drawing.delete without a parameter')
       )
 
   }

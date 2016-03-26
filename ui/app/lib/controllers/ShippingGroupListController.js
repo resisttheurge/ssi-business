@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class ShippingGroupListController extends ListController {
   /*@ngInject*/
-  constructor($scope, ShippingGroup, ShippingGroupByJob, $filter, $q, $routeParams) {
+  constructor($scope, ShippingGroup, ShippingGroupByJob, $filter, $q, $routeParams, $mdDialog, $mdToast, $route) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
