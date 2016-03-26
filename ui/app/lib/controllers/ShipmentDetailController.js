@@ -78,7 +78,7 @@ export default class ShipmentDetailController extends DetailController {
           }
         ).then(() => $scope.loading = false)
 
-      $scope.shipment = { jobId: $scope.job.id, address: { lines: [{ id: 0, value: '' }] } }
+      $scope.shipment = { jobId: $scope.job.id, status: 'ACTIVE', address: { lines: [{ id: 0, value: '' }] } }
 
       $scope.create = shipment => {
         if (
