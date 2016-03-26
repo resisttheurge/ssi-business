@@ -32,5 +32,13 @@ export default class Zone extends ApiService {
           : reject('cannot call create without a parameter')
       )
 
+    this.delete = item =>
+      $q(
+        (resolve, reject) =>
+          item && item.id ?
+            resolve(this.endpoint.delete({ zoneId: item.id }, item).$promise.then($unpack))
+          : reject('cannot call Zone.delete without a parameter')
+      )
+
   }
 }

@@ -29,5 +29,14 @@ export default class ShippingGroupItem extends ApiService {
             }
           })
         }
+
+    this.delete = item =>
+      $q(
+        (resolve, reject) =>
+          item && item.id ?
+            resolve(this.endpoint.delete({ shippingGroupItemId: item.id }, item).$promise.then($unpack))
+          : reject('cannot call ShippingGroupItem.delete without a parameter')
+      )
+
   }
 }

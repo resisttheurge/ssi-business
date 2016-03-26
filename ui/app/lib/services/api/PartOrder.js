@@ -32,5 +32,13 @@ export default class PartOrder extends ApiService {
           : reject('cannot call create without a parameter')
       )
 
+    this.delete = item =>
+      $q(
+        (resolve, reject) =>
+          item && item.id ?
+            resolve(this.endpoint.delete({ partOrderId: item.id }, item).$promise.then($unpack))
+          : reject('cannot call PartOrder.delete without a parameter')
+      )
+
   }
 }

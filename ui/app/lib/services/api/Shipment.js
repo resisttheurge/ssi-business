@@ -32,5 +32,13 @@ export default class Shipment extends ApiService {
           : reject('cannot call create without a parameter')
       )
 
+    this.delete = item =>
+      $q(
+        (resolve, reject) =>
+          item && item.id ?
+            resolve(this.endpoint.delete({ shipmentId: item.id }, item).$promise.then($unpack))
+          : reject('cannot call Shipment.delete without a parameter')
+      )
+
   }
 }

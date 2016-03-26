@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class MarkListController extends ListController {
   /*@ngInject*/
-  constructor($scope, MarkByDrawing, $filter, $q, $routeParams) {
+  constructor($scope, MarkByDrawing, $filter, $q, $routeParams, $mdDialog, $mdToast, Mark, $route) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -10,6 +10,30 @@ export default class MarkListController extends ListController {
       limit: 10,
       order: 'id'
     }
+
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete mark ${item.label}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => Mark.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted mark ${item.label}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete mark ${item.label} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     $scope.onPaginate = function (page, limit) {
       return getMarks(angular.extend({}, $scope.query, { page: page, limit: limit }))
