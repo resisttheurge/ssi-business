@@ -12,6 +12,10 @@ export default class Carrier extends ApiService {
       query: { method: 'GET', params:{ carrierId: '' } }
     })
 
+    this.list = () =>
+      this.endpoint.query().$promise
+        .then($unpack)
+
     this.create = item =>
       $q(
         (resolve, reject) =>

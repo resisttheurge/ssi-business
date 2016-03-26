@@ -38,6 +38,10 @@ export default class Shop extends ApiService {
       this.endpoint.get(resultExtension)
     }
 
+    this.list = () =>
+      this.endpoint.query().$promise
+        .then($unpack)
+
     this.update = item =>
       $q(
         (resolve, reject) =>
