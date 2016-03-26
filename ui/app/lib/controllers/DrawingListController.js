@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class DrawingListController extends ListController {
   /*@ngInject*/
-  constructor($scope, DrawingByJob, $filter, $q, $routeParams) {
+  constructor($scope, Drawing, DrawingByJob, $filter, $q, $routeParams) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -18,6 +18,30 @@ export default class DrawingListController extends ListController {
     $scope.onReorder = function (order) {
       return getDrawings(angular.extend({}, $scope.query, { order: order }))
     }
+
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete drawing ${item.label}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => Drawing.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted drawing ${item.label}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete drawing ${item.label} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     function getDrawings(query) {
       return $scope.promise =

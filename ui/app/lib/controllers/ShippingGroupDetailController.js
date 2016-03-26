@@ -2,82 +2,115 @@ import { DetailController } from 'utils'
 
 export default class ShippingGroupDetailController extends DetailController {
   /*@ngInject*/
-  constructor($scope, $routeParams, ShippingGroup, enums, $ssiSelected, $mdDialog, $convertDate) {
+  constructor($scope, $routeParams, ShippingGroup, enums, $ssiSelected,
+    $mdDialog, $convertDate, $route, $location
+  ) {
     super()
 
-    $scope.tagTypes = enums.tagTypes
-    $scope.loading  = true
+    var self = this
+
     $scope.job = $ssiSelected.job;
-    $scope.shippingGroup = $ssiSelected.shippingGroup;
 
-    ShippingGroup.endpoint.get($routeParams, function (response) {
-      if (response.success) {
-        $scope.shippingGroup = response.data
-      } else {
-        $scope.error = true
-        $scope.message = response.message
-      }
+    $scope.tagTypes      = enums.tagTypes;
 
-      $scope.loading = false
-    })
+    $scope.addAddressLine = () =>
+      $scope.shippingGroup ?
+        $scope.shippingGroup.address ?
+          $scope.shippingGroup.address.lines ?
+            $scope.shippingGroup.address.lines = [
+              ...$scope.shippingGroup.address.lines,
+              {
+                id: $scope.shippingGroup.address.lines.length,
+                value: ''
+              }]
+          : $scope.shippingGroup.address.lines = [{ id: 0, value: '' }]
+        : $scope.shippingGroup.address = { lines: [{ id: 0, value: '' }] }
+      : $scope.shippingGroup = { address: { lines: [{ id: 0, value: '' }] } }
 
-    if ($scope.shippingGroup != null) {
-      $scope.revisionDateDisplay = $scope.shippingGroup.info.revisionDate != null ?
-     $convertDate.stringToDate($scope.shippingGroup.info.revisionDate) : undefined
+    function refresh() {
+      console.log('refreshing')
+      $scope.promise = $q.all({
+        shippingGroup: ShippingGroup.get($routeParams.shippingGroupId),
 
-      $scope.startDateDisplay = $scope.shippingGroup.info.startDate != null ?
-     $convertDate.stringToDate($scope.shippingGroup.info.startDate) : undefined
+        //  specialtyItem: SpecialtyItem.endpoint.query().$promise.then(unpack),
+      }).then(function (data) {
+        console.log('extending')
 
-      $scope.shopDateDisplay = $scope.shippingGroup.info.shopDate != null ?
-       $convertDate.stringToDate($scope.shippingGroup.info.shopDate) : undefined
+        angular.extend($scope, data, {
+          loading: false
+        })
 
-      $scope.fieldDateDisplay = $scope.shippingGroup.info.fieldDate != null ?
-     $convertDate.stringToDate($scope.shippingGroup.info.fieldDate) : undefined
-
-      $scope.requestDateDisplay = $scope.shippingGroup.info.requestDate != null ?
-     $convertDate.stringToDate($scope.shippingGroup.info.requestDate) : undefined
-    } else {
-      $scope.revisionDateDisplay = undefined
-      $scope.startDateDisplay = undefined
-      $scope.shopDateDisplay = undefined
-      $scope.fieldDateDisplay = undefined
-      $scope.requestDateDisplay = undefined
+        return data
+        console.log('extending done')
+      })
     }
 
-    $scope.update = function update(item)
-    {
-      ShippingGroup.update(item).then(function (data) { $mdDialog
-        .show($mdDialog.alert()
-        .title('Changes Saved!')
-        .textContent('Changes to this record have been saved')
-        .ok('Close'));
-      }, function (error) { $mdDialog
-        .show($mdDialog.alert()
-        .title('Failed to Save')
-        .textContent('There has been an error, changes have not been saved')
-      .ok('Close'))});
+    if ($routeParams.shippingGroupId) {
+      $scope.shippingGroup = $ssiSelected.shippingGroup;
+
+      $scope.update = function update(item)
+      {
+        if (item.jobId &&
+            item.label) {
+          ShippingGroup.update(item).then(function (data) { $mdDialog
+            .show($mdDialog.alert()
+            .title('Changes Saved!')
+            .textContent('Changes to this record have been saved')
+            .ok('Close')).then(() => $route.reload());
+          }, function (error) { $mdDialog
+            .show($mdDialog.alert()
+            .title('Failed to Save')
+            .textContent('There has been an error, changes have not been saved')
+          .ok('Close'))});
+        } else {
+          $mdDialog
+           .show($mdDialog.alert()
+           .title('Failed to Save')
+           .textContent('Invalid data')
+         .ok('Close'))
+        }
+
+      }
+
+      refresh()
+    } else {
+      $scope.shippingGroup = { jobId: $scope.job.id, info: { address: { lines: [{ id: 0, value: '' }] } } }
+
+      $scope.create = sg =>
+      {
+        if (
+          sg.jobId &&
+          sg.label
+        ) {
+          ShippingGroup.create(sg)
+          .then(
+            data =>
+              $mdDialog.show(
+                $mdDialog.alert()
+                  .title('Record created!')
+                  .textContent('This record has been saved to the database')
+                  .ok('Close')
+              ).then(() => $location.url(`/shipping-groups/${data.id}`)),
+            error => {
+              $log.error(JSON.stringify(error))
+              $mdDialog.show(
+                $mdDialog.alert()
+                  .title('Failed to create record')
+                  .textContent('There has been an error, record could not be created')
+                  .ok('Close')
+              )
+            }
+          )
+        } else {
+          $mdDialog
+           .show($mdDialog.alert()
+           .title('Failed to Save')
+           .textContent('Invalid data')
+         .ok('Close'))
+        }
+      }
     }
 
   }
 
-  // function convertDate(item) {
-  //   return $q(function (resolve, reject) {
-  //     console.log('converting Dates')
-  //       $scope.revisionDateDisplay = data.drawing.info.revisionDate != null ?
-  //        $convertDate.stringToDate(data.drawing.info.revisionDate) : undefined
-  //
-  //       $scope.startDateDisplay = data.drawing.info.startDate != null ?
-  //        $convertDate.stringToDate(data.drawing.info.startDate) : undefined
-  //
-  //       $scope.shopDateDisplay = data.drawing.info.shopDate != null ?
-  //          $convertDate.stringToDate(data.drawing.info.shopDate) : undefined
-  //
-  //       $scope.dueDateDisplay = data.drawing.info.dueDate != null ?
-  //        $convertDate.stringToDate(data.drawing.info.dueDate) : undefined
-  //
-  //       $scope.completeDateDisplay = data.drawing.info.completeDate != null ?
-  //        $convertDate.stringToDate(data.drawing.info.completeDate) : undefined
-  //
-  //        return resolve(data)
-  //      })
 }

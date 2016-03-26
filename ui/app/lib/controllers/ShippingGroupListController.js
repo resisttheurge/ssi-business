@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class ShippingGroupListController extends ListController {
   /*@ngInject*/
-  constructor($scope, ShippingGroupByJob, $filter, $q, $routeParams) {
+  constructor($scope, ShippingGroup, ShippingGroupByJob, $filter, $q, $routeParams) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -18,6 +18,30 @@ export default class ShippingGroupListController extends ListController {
     $scope.onReorder = function (order) {
       return getShippingGroups(angular.extend({}, $scope.query, { order: order }))
     }
+
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete shipping group ${item.label}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => ShippingGroup.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted shipping group ${item.label}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete shipping group ${item.label} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     function getShippingGroups(query) {
       return $scope.promise =

@@ -16,7 +16,7 @@
               <div class="md-toolbar-tools">
                 <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2>Drawing {{drawing.label}}</h2>
                 <span flex></span>
-                <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(drawing)">Save Changes!</md-button>
+                <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update ? update(drawing) : create(drawing)">Save</md-button>
               </div>
             </md-toolbar>
             <md-content>
@@ -81,7 +81,7 @@
                                   <label flex layout="row" layout-align="start center">
                                     <span>Revision Date</span>
                                   </label>
-                                  <md-datepicker ng-model="revisionDateDisplay" md-placeholder="Revision Date"></md-datepicker>
+                                  <md-datepicker ng-model="drawing.info.revisionDate" md-placeholder="Revision Date"></md-datepicker>
                                 </div>
                               </div>
 
@@ -98,25 +98,25 @@
                                   <label flex layout="row" layout-align="start center">
                                     <span>Start Date</span>
                                   </label>
-                                  <md-datepicker ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
+                                  <md-datepicker ng-model="drawing.info.startDate" md-placeholder="Start Date"></md-datepicker>
                                 </div>
                                 <div layout-margin layout="row" layout-align="end">
                                   <label flex layout="row" layout-align="start center">
                                     <span>Shop Date</span>
                                   </label>
-                                  <md-datepicker ng-model="shopDateDisplay" md-placeholder="Shop Date"></md-datepicker>
+                                  <md-datepicker ng-model="drawing.info.shopDate" md-placeholder="Shop Date"></md-datepicker>
                                 </div>
                                 <div layout-margin layout="row" layout-align="end">
                                   <label flex layout="row" layout-align="start center">
                                     <span>Shop Date</span>
                                   </label>
-                                  <md-datepicker ng-model="fieldDateDisplay" md-placeholder="Field Date"></md-datepicker>
+                                  <md-datepicker ng-model="drawing.info.fieldDate" md-placeholder="Field Date"></md-datepicker>
                                 </div>
                                 <div layout-margin layout="row" layout-align="end">
                                   <label flex layout="row" layout-align="start center">
                                     <span>Shop Date</span>
                                   </label>
-                                  <md-datepicker ng-model="requestDateDisplay" md-placeholder="Request Date"></md-datepicker>
+                                  <md-datepicker ng-model="drawing.info.requestDate" md-placeholder="Request Date"></md-datepicker>
                                 </div>
                               </div>
                             </div>
@@ -149,34 +149,41 @@
                           </md-tab>
 
                           <md-tab label ="Address">
-                            <div layout="column" flex>
-                              <div layout-margin layout="row">
-                                <div layout="column" flex="70" layout-align="space-between stretch">
-                                  <label>Address</label>
-                                  <div layout-gt-sm="column">
-                                    <md-input-container>
-                                      <input ng-model="drawing.info.address.lines" type="text">
-                                    </md-input-container>
-                                    <md-input-container>
-                                      <label>City</label>
-                                      <input md-maxlength ="100" ng-model="drawing.info.address.city" type="text">
-                                    </md-input-container>
-                                    <md-input-container>
-                                      <label>State Or Province</label>
-                                      <input md-maxlength ="100" ng-model="drawing.info.address.stateOrProvince" type="text">
-                                    </md-input-container>
-                                    <md-input-container>
-                                      <label>Postal Code</label>
-                                      <input md-maxlength ="30" ng-model="drawing.info.address.postalCode" type="text">
-                                    </md-input-container>
-                                    <md-input-container>
-                                      <label>Country</label>
-                                      <input md-maxlength ="100" ng-model="drawing.info.address.country" type="text">
-                                    </md-input-container>
-                                  </div>
+                            <md-content flex>
+                              <div layout-margin layout="column">
+                                <div layout="row" layout-margin ng-repeat="line in drawing.info.address.lines track by line.id">
+                                  <md-input-container flex>
+                                    <label>Address line {{$index + 1}}</label>
+                                    <input ng-model="line.value" type="text"></input>
+                                  </md-input-container>
+                                  <md-button ng-click="addAddressLine()" ng-if="$last" class="md-fab md-mini" aria-label="Add Another Address Line">
+                                    <md-tooltip md-direction="top">Add Another Address Line</md-tooltip>
+                                    <md-icon class="material-icons">add</md-icon>
+                                  </md-button>
+                                </div>
+                                <div layout="row" layout-margin>
+                                  <md-input-container flex>
+                                    <label>City</label>
+                                    <input md-maxlength="100" ng-model="drawing.info.address.city" type="text"></input>
+                                  </md-input-container>
+                                  <md-input-container flex>
+                                    <label>State or Province</label>
+                                    <input md-maxlength="100" ng-model="drawing.info.address.stateOrProvince" type="text"></input>
+                                  </md-input-container>
+                                  <md-input-container flex>
+                                    <label>Postal Code</label>
+                                    <input md-maxlength="30" ng-model="drawing.info.address.postalCode" type="text"></input>
+                                  </md-input-container>
+                                </div>
+                                <div layout="row" layout-margin>
+                                  <md-input-container flex>
+                                    <label>Country</label>
+                                    <input md-maxlength="100" ng-model="drawing.info.address.country" type="text"></input>
+                                  </md-input-container>
                                 </div>
                               </div>
-                            </div>
+                              <md-divider></md-divider>
+                            </md-content>
                           </md-tab>
 
                           <md-tab label ="Contact">
@@ -215,7 +222,7 @@
 
 
 
-                <md-tab label="Marks">
+                <md-tab ng-if="update" label="Marks">
                   <div ng-controller="MarkListController"
                   <md-table-container>
                     <table md-table md-progress="promise">

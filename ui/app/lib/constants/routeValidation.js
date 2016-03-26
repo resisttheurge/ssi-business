@@ -1,3 +1,3 @@
-export const routeValidation = false
+export const routeValidation = true
 
 export default routeValidation

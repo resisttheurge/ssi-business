@@ -10,7 +10,7 @@
             <div class="md-toolbar-tools">
                   <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2>Shipping Group {{shippingGroup.label}}</h2>
               <span flex></span>
-              <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(shippingGroup)">Save Changes!</md-button>
+              <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update ? update(shippingGroup) : create(shippingGroup)">Save</md-button>
             </div>
           </md-toolbar>
           <md-content>
@@ -69,7 +69,7 @@
                         <label>
                           Revision Date
                         </label>
-                        <md-datepicker ng-model="revisionDateDisplay" md-placeholder="Revision Date"></md-datepicker>
+                        <md-datepicker ng-model="shippingGroup.info.revisionDate" md-placeholder="Revision Date"></md-datepicker>
                       </div>
                     </div>
               </md-tab>
@@ -84,25 +84,25 @@
                             <label flex layout="row" layout-align="start center">
                               <span>Start Date</span>
                             </label>
-                            <md-datepicker ng-model="startDateDisplay" md-placeholder="Start Date"></md-datepicker>
+                            <md-datepicker ng-model="shippingGroup.info.startDate" md-placeholder="Start Date"></md-datepicker>
                           </div>
                           <div layout-margin layout="row" layout-align="end">
                             <label flex layout="row" layout-align="start center">
                               <span>Shop Date</span>
                             </label>
-                            <md-datepicker ng-model="shopDateDisplay" md-placeholder="Shop Date"></md-datepicker>
+                            <md-datepicker ng-model="shippingGroup.info.shopDate" md-placeholder="Shop Date"></md-datepicker>
                           </div>
                           <div layout-margin layout="row" layout-align="end">
                             <label flex layout="row" layout-align="start center">
                               <span>Field Date</span>
                             </label>
-                            <md-datepicker ng-model="fieldDateDisplay" md-placeholder="Field Date"></md-datepicker>
+                            <md-datepicker ng-model="shippingGroup.info.fieldDate" md-placeholder="Field Date"></md-datepicker>
                           </div>
                           <div layout-margin layout="row" layout-align="end">
                             <label flex layout="row" layout-align="start center">
                               <span>Request Date</span>
                             </label>
-                            <md-datepicker ng-model="requestDateDisplay" md-placeholder="Request Date"></md-datepicker>
+                            <md-datepicker ng-model="shippingGroup.info.requestDate" md-placeholder="Request Date"></md-datepicker>
                           </div>
                         </div>
                       </div>
@@ -186,35 +186,41 @@
                   </md-tab>
 
                   <md-tab label ="Address">
-                    <div layout="column" flex>
+                    <md-content flex>
                       <div layout-margin layout="column">
-                        <div layout="column" flex="70" layout-align="space-between stretch">
-                          <label>Address</label>
-                            <div layout-gt-sm="column">
-                            <md-input-container>
-                              <label>Lines</label>
-                              <input ng-model="shippingGroup.info.address.lines" type="text">
-                            </md-input-container>
-                            <md-input-container>
-                              <label>City</label>
-                              <input md-maxlength="100" ng-model="shippingGroup.info.address.city" type="text">
-                            </md-input-container>
-                            <md-input-container>
-                              <label>State Or Province</label>
-                              <input md-maxlength="100" ng-model="shippingGroup.info.address.stateOrProvince" type="text">
-                            </md-input-container>
-                            <md-input-container>
-                              <label>Postal Code</label>
-                              <input md-maxlength="35" ng-model="shippingGroup.info.address.postalCode" type="text">
-                            </md-input-container>
-                            <md-input-container>
-                              <label>Country</label>
-                              <input md-maxlength="100" ng-model="shippingGroup.info.address.country" type="text">
-                            </md-input-container>
-                            </div>
-                          </div>
+                        <div layout="row" layout-margin ng-repeat="line in shippingGroup.info.address.lines track by line.id">
+                          <md-input-container flex>
+                            <label>Address line {{$index + 1}}</label>
+                            <input ng-model="line.value" type="text"></input>
+                          </md-input-container>
+                          <md-button ng-click="addAddressLine()" ng-if="$last" class="md-fab md-mini" aria-label="Add Another Address Line">
+                            <md-tooltip md-direction="top">Add Another Address Line</md-tooltip>
+                            <md-icon class="material-icons">add</md-icon>
+                          </md-button>
+                        </div>
+                        <div layout="row" layout-margin>
+                          <md-input-container flex>
+                            <label>City</label>
+                            <input md-maxlength="100" ng-model="shippingGroup.info.address.city" type="text"></input>
+                          </md-input-container>
+                          <md-input-container flex>
+                            <label>State or Province</label>
+                            <input md-maxlength="100" ng-model="shippingGroup.info.address.stateOrProvince" type="text"></input>
+                          </md-input-container>
+                          <md-input-container flex>
+                            <label>Postal Code</label>
+                            <input md-maxlength="30" ng-model="shippingGroup.info.address.postalCode" type="text"></input>
+                          </md-input-container>
+                        </div>
+                        <div layout="row" layout-margin>
+                          <md-input-container flex>
+                            <label>Country</label>
+                            <input md-maxlength="100" ng-model="shippingGroup.info.address.country" type="text"></input>
+                          </md-input-container>
                         </div>
                       </div>
+                      <md-divider></md-divider>
+                    </md-content>
                     </md-tab>
 
                     <md-tab label="Reports">
@@ -235,7 +241,7 @@
                 </form>
               </md-tab>
 
-              <md-tab label="Shipping Group Items">
+              <md-tab ng-if="update" label="Shipping Group Items">
                 <div ng-controller="ShippingGroupItemListController">
                   <md-table-container>
                     <table md-table md-progress="promise">
