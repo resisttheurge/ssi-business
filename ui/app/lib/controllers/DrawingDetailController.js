@@ -38,7 +38,6 @@ export default class DrawingDetailController extends DetailController {
      }
 
      if ($routeParams.drawingId) {
-       $scope.drawing = $ssiSelected.drawing;
 
        $scope.update = function update(item)
        {
