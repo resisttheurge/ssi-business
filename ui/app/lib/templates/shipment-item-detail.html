@@ -65,6 +65,15 @@
                 <input ng-model="shipmentItem.quantity" type="number" required></textarea>
               </md-input-container>
 
+              <md-input-container>
+                <label>Shipping Item</label>
+                <md-select ng-model="shipmentItem.shippingItem" placeholder="Shipping Item">
+                  <md-option ng-repeat="shippingItem in shippingItems track by shippingItem.id" ng-value="shippingItem">
+                    {{shippingItem.label}}
+                  </md-option>
+                </md-select>
+              </md-input-container>
+
             </form>
           </md-content>
         </md-card>

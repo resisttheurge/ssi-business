@@ -2,7 +2,7 @@ import { DetailController } from 'utils'
 
 export default class ShipmentItemDetailController extends DetailController {
   /*@ngInject*/
-  constructor($scope, $routeParams, ShipmentItem, enums, $mdDialog, $ssiSelected, $log) {
+  constructor($scope, $routeParams, ShipmentItem, ShippingItemByJob, enums, $mdDialog, $ssiSelected, $log) {
     super()
 
     $scope.shippingItemStatuses = enums.shippingItemStatuses
@@ -10,6 +10,8 @@ export default class ShipmentItemDetailController extends DetailController {
 
     $scope.shipment = $ssiSelected.shipment
     $scope.job = $ssiSelected.job
+
+    $scope.shippingItems = ShippingItemByJob.list($scope.job.id);
 
     this.refresh = () =>
       ShipmentItem.get($routeParams.shipmentItemId)
