@@ -2,34 +2,35 @@ import { DetailController } from 'utils'
 
 export default class MarkDetailController extends DetailController {
   /*@ngInject*/
-  constructor($scope, $routeParams, Mark, enums, $ssiSelected, $mdDialog) {
+  constructor($q, Shop, $scope, $routeParams, Mark, enums, $ssiSelected, $mdDialog, $log) {
     super()
 
     $scope.shippingItemStatuses = enums.shippingItemStatuses
     $scope.drawing = $ssiSelected.drawing;
     $scope.job = $ssiSelected.job;
 
-    // Mark.endpoint.get($routeParams, function (response) {
-    //   $scope.loading = true
-    //   if (response.success) {
-    //     $scope.mark = response.data
-    //   } else {
-    //     $scope.error = true
-    //     $scope.message = response.message
-    //   }
-    //
-    //   $scope.loading = false
-    // })
+    Mark.endpoint.get($routeParams, function (response) {
+      $scope.loading = true
+      if (response.success) {
+        $scope.mark = response.data
+      } else {
+        $scope.error = true
+        $scope.message = response.message
+      }
 
-    function refresh() {
-      console.log('refreshing')
-      $scope.promise = Mark.get($routeParams.markId)
-         .then(function (data) {
-          $scope.mark = data
-          $log.debug()
-          return data
-        })
-    }
+      $scope.loading = false
+    })
+
+    $scope.refresh = () =>
+      $q.all({
+        mark: Mark.get($routeParams.markId),
+        shops: Shop.list()
+      }).then(
+        ({ mark, shops }) => {
+          $scope.mark = mark
+          $scope.shops = shops
+        }
+      ).then(() => $scope.loading = false)
 
     if ($routeParams.markId) {
 
@@ -56,13 +57,16 @@ export default class MarkDetailController extends DetailController {
 
       }
 
-      refresh()
+      $scope.refresh()
 
     } else {
+      // $scope.shipment = {
+      //   drawingId: $scope.drawingId.id, status: 'ACTIVE', address: { lines: [{ id: 0, value: '' }] } }
 
       $scope.create = mark =>
     {
       {
+        mark.drawingId = $ssiSelected.drawing.id;
         Mark.create(mark)
         .then(
           data =>
@@ -71,7 +75,7 @@ export default class MarkDetailController extends DetailController {
                 .title('Record created!')
                 .textContent('This record has been saved to the database')
                 .ok('Close')
-            ).then(
+            ).then(() => $location.url(`/jobs/${$ssiSelected.job.id}/drawings/${$ssiSelected.drawing.id}`)),
           error => {
             $log.error(JSON.stringify(error))
             $mdDialog.show(
@@ -82,10 +86,11 @@ export default class MarkDetailController extends DetailController {
             )
           }
         )
-      )
+
       }
     }
-    }
 
+      $scope.refresh()
+    }
   }
 }
