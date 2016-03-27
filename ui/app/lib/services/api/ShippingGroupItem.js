@@ -1,7 +1,8 @@
 import { ApiService } from 'utils'
 export default class ShippingGroupshippingGroupItem extends ApiService {
   /*@ngInject*/
-  constructor ($q, $unpack, $resource, endpoint, ShippingItem) {
+  constructor ($q, $unpack, $resource, endpoint,
+    ShippingItemm, ShippingItemZone, ShippingItemZoneByShippingItem) {
     super()
 
     var service = this;
@@ -19,6 +20,19 @@ export default class ShippingGroupshippingGroupItem extends ApiService {
     this.get = id =>
       this.endpoint.get({ shippingGroupItem: id }).$promise
         .then($unpack)
+        .then(
+          shippingGroupItem =>
+              $q.all({
+                shippingItem: ShippingItem.get(shippingGroupItem.shippingItem.id),
+                shippingItemZones: ShippingItemZoneByShippingItem.list(shippingGroupItem.shippingItem.id)
+              }).then(
+                ({ shippingItem, shippingItemZones }) => ({
+                  ...shippingGroupItem,
+                  shippingItem,
+                  shippingItemZones
+                })
+              )
+          )
 
     // this.create = shippingGroupItem =>
     //   $q(
