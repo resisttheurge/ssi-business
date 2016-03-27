@@ -1,7 +1,7 @@
 import { ApiService } from 'utils'
 export default class Zone extends ApiService {
   /*@ngInject*/
-  constructor($resource, endpoint, $q, $unpack) {
+  constructor($resource, endpoint, $q, $unpack, $convertDate) {
     super()
 
     var self = this;
@@ -28,70 +28,34 @@ export default class Zone extends ApiService {
       })
     }
 
-    self.update = function (zone) {
-        return $q(function (resolve, reject) {
-          if (!zone) {
-            return reject('cannot update without a parameter')
-          } else if (!zone.id) {
-            return reject('cannot update object with missing id')
-          } else {
-            return resolve(self.endpoint.update({ zoneId: zone.id }, zone).$promise.then($unpack))
-          }
-        })
-      }
+    this.get = zoneId =>
+      this.endpoint.get({ zoneId }).$promise
+        .then($unpack)
+        .then(::this.zoneStringToDate)
 
-    // this.create = zone =>
-    //   $q(
-    //     (resolve, reject) =>
-    //       zone ?
-    //         resolve(this.endpoint.create(zone).$promise.then($unpack))
-    //       : reject('cannot call create without a parameter')
-    //   )
+    this.update = zone =>
+      $q(
+        (resolve, reject) =>
+          zone && zone.id ?
+            resolve(this.endpoint.update({ zoneId: zone.id }, self.zoneDateToString(zone)).$promise.then($unpack))
+          : reject('cannot call Zone.update without a parameter')
+      )
 
-    self.create = function (zone) {
-        return $q(function (resolve, reject) {
-          if (!zone) {
-            return reject('cannot call `Zone.create` without a zone parameter')
-          } else {
-            return resolve(zone =>
-              self.endpoint.create(self.zoneDateToString(zone)).$promise
-                .then($unpack)
-            )
-          }
-        })
-      }
+    this.create = zone =>
+      $q(
+        (resolve, reject) =>
+          zone ?
+            resolve(this.endpoint.create(self.zoneDateToString(zone)).$promise.then($unpack))
+          : reject('cannot call Zone.create without a parameter')
+      )
 
-    self.delete = function (zone) {
-        return $q(function (resolve, reject) {
-          if (!zone) {
-            return reject('cannot call `zone.delete` without a zone parameter')
-          } else if (!zone.id) {
-            return reject('cannot call `zone.delete` on a zone object missing an `id` value')
-          } else {
-            return resolve(self.endpoint.delete({ zoneId: zone.id },
-              self.zoneDateToString(zone)).$promise.then($unpack))
-          }
-        })
-      }
-
-    //
-    // self.update = function (zone) {
-    //       return $q(function (resolve, reject) {
-    //         if (!zone) {
-    //           return reject('cannot call `zone.update` without a zone parameter')
-    //         } else if (!zone.id) {
-    //           return reject('cannot call `zone.update` on a zone object missing an `id` value')
-    //         } else {
-    //           return resolve(
-    //             self.prepForUpdate(zone)
-    //               .then(zone =>
-    //                 self.endpoint.update({ zoneId: zone.id }, self.zoneDateToString(zone)).$promise
-    //                   .then($unpack)
-    //               )
-    //           )
-    //         }
-    //       })
-    //     }
+    this.delete = item =>
+      $q(
+        (resolve, reject) =>
+          item && item.id ?
+            resolve(this.endpoint.delete({ zoneId: item.id }).$promise.then($unpack))
+          : reject('cannot call Zone.delete without a parameter')
+      )
 
   }
 }
