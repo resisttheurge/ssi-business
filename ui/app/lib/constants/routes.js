@@ -213,6 +213,38 @@ export const routes = {
       allowedRoles: ['ADMIN', 'EMPLOYEE']
     }
   },
+  '/jobs/:jobId/shipping-groups/:shippingGroupId/items/:shippingGroupItemId/zones/:zoneId': {
+    templateUrl: urls.shippingGroupItemZoneDetail,
+    controller: controllers.ShippingGroupItemZoneDetailController.name,
+    access: {
+      allowAnonymous: false,
+      allowedRoles: ['ADMIN', 'EMPLOYEE']
+    }
+  },
+  '/jobs/:jobId/shipping-groups/:shippingGroupId/items/:shippingGroupItemId/zones/new': {
+    templateUrl: urls.shippingGroupItemZoneDetail,
+    controller: controllers.ShippingGroupItemZoneDetailController.name,
+    access: {
+      allowAnonymous: false,
+      allowedRoles: ['ADMIN', 'EMPLOYEE']
+    }
+  },
+  '/jobs/:jobId/drawings/:drawingId/marks/:markId/zones/:zoneId': {
+    templateUrl: urls.markZoneDetail,
+    controller: controllers.MarkZoneDetailController.name,
+    access: {
+      allowAnonymous: false,
+      allowedRoles: ['ADMIN', 'EMPLOYEE']
+    }
+  },
+  '/jobs/:jobId/drawings/:drawingId/marks/:markId/zones/new': {
+    templateUrl: urls.markZoneDetail,
+    controller: controllers.MarkZoneDetailController.name,
+    access: {
+      allowAnonymous: false,
+      allowedRoles: ['ADMIN', 'EMPLOYEE']
+    }
+  },
   '/jobs/:jobId/shipments': {
     templateUrl: urls.shipmentList,
     controller: controllers.ShipmentListController.name,

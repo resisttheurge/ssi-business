@@ -18,7 +18,7 @@ export default class ShippingGroupshippingGroupItem extends ApiService {
       })
 
     this.get = id =>
-      this.endpoint.get({ shippingGroupItem: id }).$promise
+      this.endpoint.get({ shippingGroupItemId: id }).$promise
         .then($unpack)
         .then(
           shippingGroupItem =>

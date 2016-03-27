@@ -14,6 +14,7 @@ import LoginController from './LoginController'
 import ManufacturerDetailController from './ManufacturerDetailController'
 import ManufacturerListController from './ManufacturerListController'
 import MarkDetailController from './MarkDetailController'
+import MarkZoneDetailController from './MarkZoneDetailController'
 import MarkListController from './MarkListController'
 import PartDetailController from './PartDetailController'
 import PartListController from './PartListController'
@@ -28,6 +29,7 @@ import ShipmentItemListController from './ShipmentItemListController'
 import ShippingGroupDetailController from './ShippingGroupDetailController'
 import ShippingGroupListController from './ShippingGroupListController'
 import ShippingGroupItemDetailController from './ShippingGroupItemDetailController'
+import ShippingGroupItemZoneDetailController from './ShippingGroupItemZoneDetailController'
 import ShippingGroupItemListController from './ShippingGroupItemListController'
 import ShopDetailController from './ShopDetailController'
 import ShopListController from './ShopListController'
@@ -60,6 +62,7 @@ export const controllers = {
   ManufacturerListController,
   MarkDetailController,
   MarkListController,
+  MarkZoneDetailController,
   PartDetailController,
   PartListController,
   PartOrderDetailController,
@@ -73,6 +76,7 @@ export const controllers = {
   ShippingGroupDetailController,
   ShippingGroupListController,
   ShippingGroupItemDetailController,
+  ShippingGroupItemZoneDetailController,
   ShippingGroupItemListController,
   ShopDetailController,
   ShopListController,
@@ -107,6 +111,7 @@ export default
       .controller('ManufacturerDetailController', ManufacturerDetailController)
       .controller('ManufacturerListController', ManufacturerListController)
       .controller('MarkDetailController', MarkDetailController)
+      .controller('MarkZoneDetailController', MarkZoneDetailController)
       .controller('MarkListController', MarkListController)
       .controller('PartDetailController', PartDetailController)
       .controller('PartListController', PartListController)
@@ -121,6 +126,7 @@ export default
       .controller('ShippingGroupDetailController', ShippingGroupDetailController)
       .controller('ShippingGroupListController', ShippingGroupListController)
       .controller('ShippingGroupItemDetailController', ShippingGroupItemDetailController)
+      .controller('ShippingGroupItemZoneDetailController', ShippingGroupItemZoneDetailController)
       .controller('ShippingGroupItemListController', ShippingGroupItemListController)
       .controller('ShopDetailController', ShopDetailController)
       .controller('ShopListController', ShopListController)
