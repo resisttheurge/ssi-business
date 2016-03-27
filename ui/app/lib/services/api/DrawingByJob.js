@@ -1,7 +1,7 @@
 import { ApiService } from 'utils'
 export default class DrawingByJob extends ApiService {
   /*@ngInject*/
-  constructor ($resource, endpoint) {
+  constructor ($resource, endpoint, $unpack) {
     super()
 
     var service = this;
@@ -21,6 +21,10 @@ export default class DrawingByJob extends ApiService {
     this.endpoint = $resource(endpoint + '/jobs/:jobId/drawings', {}, {
         query: { method: 'GET' }
       });
+
+    this.list = jobId =>
+      this.endpoint.query({ jobId }).$promise
+        .then($unpack)
 
     this.get = function ($scope, resultObj, jobId)
     {

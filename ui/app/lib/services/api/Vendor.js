@@ -9,6 +9,10 @@ export default class Vendor extends ApiService {
         query: { method: 'GET', params:{ vendorId: '' } }
       })
 
+    this.list = () =>
+      this.endpoint.query().$promise
+        .then($unpack)
+
     this.update = item =>
       $q(
         (resolve, reject) =>

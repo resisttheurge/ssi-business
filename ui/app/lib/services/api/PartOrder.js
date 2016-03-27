@@ -1,7 +1,7 @@
 import { ApiService } from 'utils'
 export default class partOrder extends ApiService {
   /*@ngInject*/
-  constructor ($resource, endpoint, $q, $unpack) {
+  constructor ($resource, endpoint, $q, $unpack, $convertDate) {
     super()
 
     var self = this;
@@ -28,9 +28,9 @@ export default class partOrder extends ApiService {
       const { requestDate, purchaseDate, releaseDate } = partOrder
       return ({
         ...partOrder,
-        requestDate: requestDate ? $requestDate.stringToDate(requestDate) : undefined,
-        purchaseDate: purchaseDate ? $purchaseDate.stringToDate(purchaseDate) : undefined,
-        releaseDate: releaseDate ? $releaseDate.stringToDate(releaseDate) : undefined
+        requestDate: requestDate ? $convertDate.stringToDate(requestDate) : undefined,
+        purchaseDate: purchaseDate ? $convertDate.stringToDate(purchaseDate) : undefined,
+        releaseDate: releaseDate ? $convertDate.stringToDate(releaseDate) : undefined
       })
     }
 
@@ -44,15 +44,10 @@ export default class partOrder extends ApiService {
       })
     }
 
-    self.get = function (params) {
-        return $q(function (resolve, reject) {
-          return resolve(
-            self.endpoint.get(params).$promise
-              .then($unpack)
-              .then(::self.partOrderStringToDate)
-            )
-        })
-      }
+    this.get = partOrderId =>
+    self.endpoint.get({ partOrderId }).$promise
+      .then($unpack)
+      .then(::self.partOrderStringToDate)
 
     // this.create = partOrder =>
     //   $q(
@@ -67,7 +62,7 @@ export default class partOrder extends ApiService {
           if (!partOrder) {
             return reject('cannot call `partOrder.create` without a partOrder parameter')
           } else {
-            return resolve(partOrder =>
+            return resolve(
               self.endpoint.create(self.partOrderDateToString(partOrder)).$promise
                 .then($unpack)
             )
@@ -84,7 +79,7 @@ export default class partOrder extends ApiService {
             } else {
               return resolve(
                 self.endpoint.update({ partOrderId: partOrder.id },
-                   partOrder).$promise.then($unpack))
+                   self.partOrderDateToString(partOrder)).$promise.then($unpack))
             }
           })
         }

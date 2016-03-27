@@ -9,6 +9,10 @@ export default class Part extends ApiService {
         query: { method: 'GET', params:{ partId: '' } }
       })
 
+    this.list = () =>
+      this.endpoint.query().$promise
+        .then($unpack)
+
     this.update = item =>
       $q(
         (resolve, reject) =>

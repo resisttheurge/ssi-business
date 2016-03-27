@@ -2,37 +2,34 @@ import { DetailController } from 'utils'
 
 export default class PartOrderDetailController extends DetailController {
   /*@ngInject*/
-  constructor($mdDialog, $scope, $routeParams, PartOrder, enums, $ssiSelected, $convertDate) {
+  constructor(
+    $mdDialog, $scope, $routeParams, Manufacturer, Part, PartOrder, Vendor,
+    enums, $ssiSelected, $convertDate, $q, DrawingByJob, $log
+  ) {
     super()
+    $scope.loading = true
+    $scope.partOrderStatuses = enums.partOrderStatuses
+    $scope.partTypes = enums.partTypes
+    $scope.job = $ssiSelected.job
+
     if ($routeParams.partOrderId) {
 
-      $scope.partOrderStatuses = enums.partOrderStatuses
-      $scope.partTypes = enums.partTypes
-      $scope.job = $ssiSelected.job;
-      $scope.partOrder = $ssiSelected.partOrder;
+      this.refresh = () =>
+        $q.all({
+          partOrder: PartOrder.get($routeParams.partOrderId),
+          parts: Part.list(),
+          vendors: Vendor.list(),
+          manufacturers: Manufacturer.list(),
+          drawings: DrawingByJob.list($scope.job.id)
+        }).then(({ partOrder, parts, vendors, manufacturers, drawings }) => {
+          $log.debug(JSON.stringify(partOrder))
+          $scope.partOrder = partOrder
+          $scope.parts = parts
+          $scope.vendors = vendors
+          $scope.manufacturers = manufacturers
+          $scope.drawings = drawings
+        }).then(() => $scope.loading = false)
 
-      PartOrder.endpoint.get({ partOrderId: $routeParams.partOrderId }, function (response) {
-        $scope.loading = true
-        if (response.success) {
-          $scope.partOrder = response.data
-        } else {
-          $scope.error = true
-          $scope.message = response.message
-        }
-
-        //      $scope.partOrder.requestDateDisplay?
-        $scope.requestDateDisplay = $scope.partOrder.requestDate != null ?
-         $convertDate.stringToDate($scope.partOrder.requestDate) : undefined
-
-        $scope.purchaseDateDisplay = $scope.partOrder.purchaseDate != null ?
-         $convertDate.stringToDate($scope.partOrder.purchaseDate) : undefined
-
-        $scope.releaseDateDisplay = $scope.partOrder.releaseDate != null ?
-           $convertDate.stringToDate($scope.partOrder.releaseDate) : undefined
-
-        $scope.loading = false
-      }
-    )
       $scope.update = function update(item)
       {
         if (item.requestedQuantity &&
@@ -58,24 +55,56 @@ export default class PartOrderDetailController extends DetailController {
         }
       }
 
+      this.refresh()
+
     } else {
-      $scope.create = item =>
-        PartOrder.create(item).then(
-          data =>
-            $mdDialog.show(
-              $mdDialog.alert()
-                .title('Record created!')
-                .textContent('This record has been saved to the database')
-                .ok('Close')
-            ),
-          error =>
-            $mdDialog.show(
-              $mdDialog.alert()
-                .title('Failed to create record')
-                .textContent('There has been an error, record could not be created')
-                .ok('Close')
-            )
-        )
+      this.refresh = () =>
+        $q.all({
+          parts: Part.list(),
+          vendors: Vendor.list(),
+          manufacturers: Manufacturer.list(),
+          drawings: DrawingByJob.list($scope.job.id)
+        }).then(({ parts, vendors, manufacturers, drawings }) => {
+          $scope.parts = parts
+          $scope.vendors = vendors
+          $scope.manufacturers = manufacturers
+          $scope.drawings = drawings
+        }).then(() => $scope.loading = false)
+
+      $scope.partOrder = { jobId: $scope.job.id, status: 'ACTIVE' }
+
+      $scope.create = item => {
+        if (
+          item.requestedQuantity &&
+          item.stockQuantity &&
+          item.purchaseQuantity
+        ) {
+          PartOrder.create(item).then(
+            data =>
+              $mdDialog.show(
+                $mdDialog.alert()
+                  .title('Record created!')
+                  .textContent('This record has been saved to the database')
+                  .ok('Close')
+              ),
+            error =>
+              $mdDialog.show(
+                $mdDialog.alert()
+                  .title('Failed to create record')
+                  .textContent('There has been an error, record could not be created')
+                  .ok('Close')
+              )
+          )
+        } else {
+          $mdDialog
+           .show($mdDialog.alert()
+           .title('Failed to Save')
+           .textContent('Invalid data')
+         .ok('Close'))
+        }
+      }
+
+      this.refresh()
     }
   }
 }

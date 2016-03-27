@@ -30,7 +30,7 @@
           <div class="md-toolbar-tools">
             <h2>{{job | jobTitle}}</h2>
             <span flex></span>
-            <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(partOrder)">Save Changes!</md-button>
+            <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update ? update(partOrder) : create(partOrder)">Save</md-button>
           </div>
         </md-toolbar>
 
@@ -46,52 +46,46 @@
                       <div layout="column" flex>
                         <div layout-margin layout="row">
                           <div layout="column" flex="70" layout-align="space-between stretch">
-                            <div layout-margin layout="row">
-                              <md-input-container>
-                                <label>Status</label>
-                                <md-select ng-model="partOrder.status">
-                                  <md-option ng-repeat="partOrderStatus in partOrderStatuses" ng-value="partOrderStatus">
-                                         {{partOrderStatus}}
-                                  </md-option>
-                                </md-select>
-                              </md-input-container>
-                              <md-input-container>
-                                <label>Part Type</label>
-                                <md-select ng-model="partOrder.part.partType">
-                                  <md-option ng-repeat="partType in partTypes" ng-value="partType">
-                                         {{partType}}
-                                  </md-option>
-                                </md-select>
-                              </md-input-container>
-                              <md-input-container>
-                                <label>Number</label>
-                                <input md-maxlength="200" ng-model="partOrder.part.number" type="text">
-                              </md-input-container>
-                            </div>
+                            <md-input-container>
+                              <label>PO</label>
+                              <input md-maxlength="100" ng-model="partOrder.po" type="text">
+                            </md-input-container>
 
-                            <div layout-gt-sm="row">
-                                  <md-input-container class="md-block" flex-gt-sm>
-                                    <label>Description</label>
-                                    <textarea ng-model="partOrder.part.description" md-select-on-focus></textarea>
-                                  </md-input-container>
-                            </div>
+                            <md-input-container>
+                              <label>Drawing</label>
+                              <md-select ng-model="partOrder.drawingId" placeholder="Drawing">
+                                <md-option ng-repeat="drawing in drawings track by drawing.id" ng-value="drawing.id">
+                                  {{drawing.label}} - {{drawing.info.title}}
+                                </md-option>
+                              </md-select>
+                            </md-input-container>
 
-                            <div layout gt-sm="row">
-                              <md-input-container>
-                                <label>Manufacturer</label>
-                                <input md-maxlength="100" ng-model="partOrder.manufacturer.label" type="text">
-                              </md-input-container>
+                            <md-input-container>
+                              <label>Part</label>
+                              <md-select ng-model="partOrder.part" placeholder="Part" ng-model-options="{trackBy: '$value.id'}">
+                                <md-option ng-repeat="part in parts track by part.id" ng-value="part">
+                                  Part No. {{part.number}} - {{part.partType}} - {{part.description}}
+                                </md-option>
+                              </md-select>
+                            </md-input-container>
 
-                              <md-input-container>
-                                <label>Vendor</label>
-                                <input md-maxlength="100" ng-model="partOrder.vendor.label" type="text">
-                              </md-input-container>
+                            <md-input-container>
+                              <label>Manufacturer</label>
+                              <md-select ng-model="partOrder.manufacturer" placeholder="Manufacturer" ng-model-options="{trackBy: '$value.id'}">
+                                <md-option ng-repeat="manufacturer in manufacturers track by manufacturer.id" ng-value="manufacturer">
+                                  {{manufacturer.label}}
+                                </md-option>
+                              </md-select>
+                            </md-input-container>
 
-                              <md-input-container>
-                                <label>PO</label>
-                                <input md-maxlength="100" ng-model="partOrder.po" type="text">
-                              </md-input-container>
-                            </div>
+                            <md-input-container>
+                              <label>Vendor</label>
+                              <md-select ng-model="partOrder.vendor" placeholder="Vendor" ng-model-options="{trackBy: '$value.id'}">
+                                <md-option ng-repeat="vendor in vendors track by vendor.id" ng-value="vendor">
+                                  {{vendor.label}}
+                                </md-option>
+                              </md-select>
+                            </md-input-container>
                           </div>
                         <!-- end main section -->
 
@@ -99,18 +93,26 @@
                           <md-divider></md-divider>
                           <div layout="column" flex="30" layout-align="space-between stretch">
                             <md-input-container>
+                              <label>Status</label>
+                              <md-select ng-model="partOrder.status">
+                                <md-option ng-repeat="partOrderStatus in partOrderStatuses" ng-value="partOrderStatus">
+                                       {{partOrderStatus}}
+                                </md-option>
+                              </md-select>
+                            </md-input-container>
+                            <md-input-container>
                               <label>Requested Quantity</label>
-                              <input md-maxlength ="10" required  ng-model="partOrder.requestedQuantity" type="number">
+                              <input min="0" required  ng-model="partOrder.requestedQuantity" type="number">
                             </md-input-container>
 
                             <md-input-container>
                               <label>Stock Quantity</label>
-                              <input md-maxlength ="10" required ng-model="partOrder.stockQuantity" type="number">
+                              <input min="0" required ng-model="partOrder.stockQuantity" type="number">
                             </md-input-container>
 
                             <md-input-container>
                               <label>Purchase Quantity</label>
-                              <input md-maxlength ="10" required  ng-model="partOrder.purchaseQuantity" type="number">
+                              <input min="0" required  ng-model="partOrder.purchaseQuantity" type="number">
                             </md-input-container>
                           </div>
                         </div>
@@ -129,19 +131,19 @@
                             <label flex layout="row" layout-align="start center">
                               <span>Request Date</span>
                             </label>
-                            <md-datepicker ng-model="requestDateDisplay" md-placeholder="Request Date"></md-datepicker>
+                            <md-datepicker ng-model="partOrder.requestDate" md-placeholder="Request Date"></md-datepicker>
                           </div>
                           <div layout-margin layout="row" layout-align="end">
                             <label flex layout="row" layout-align="start center">
                               <span>Purchase Date</span>
                             </label>
-                            <md-datepicker ng-model="purchaseDateDisplay" md-placeholder="Purchase Date"></md-datepicker>
+                            <md-datepicker ng-model="partOrder.purchaseDate" md-placeholder="Purchase Date"></md-datepicker>
                           </div>
                           <div layout-margin layout="row" layout-align="end">
                             <label flex layout="row" layout-align="start center">
                               <span>Release Date</span>
                             </label>
-                            <md-datepicker ng-model="releaseDateDisplay" md-placeholder="Release Date"></md-datepicker>
+                            <md-datepicker ng-model="partOrder.releaseDate" md-placeholder="Release Date"></md-datepicker>
                           </div>
                       </div>
                     </md-tab>
