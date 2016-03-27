@@ -9,6 +9,10 @@ export default class Manufacturer extends ApiService {
         query: { method: 'GET', params:{ manufacturerId: '' } }
       })
 
+    this.list = () =>
+      this.endpoint.query().$promise
+        .then($unpack)
+
     this.update = item =>
       $q(
         (resolve, reject) =>
