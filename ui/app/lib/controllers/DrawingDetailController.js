@@ -3,11 +3,12 @@ import { DetailController } from 'utils'
 export default class DrawingDetailController extends DetailController {
   /*@ngInject*/
    constructor($log, $scope, $routeParams, $q, Drawing, SpecialtyItem, enums,
-      $ssiSelected, $mdDialog, $convertDate, $route, $location) {
+      $ssiSelected, $mdDialog, $convertDate, $route, $location, Shop, Carrier) {
      super()
      var self = this
 
      $scope.job = $ssiSelected.job;
+     $scope.loading = true
 
      $scope.tagTypes      = enums.tagTypes;
      $scope.drawingTypes  = enums.drawingTypes;
@@ -28,16 +29,20 @@ export default class DrawingDetailController extends DetailController {
        : $scope.drawing.info = { address: { lines: [{ id: 0, value: '' }] } }
      : $scope.drawing = { info: { address: { lines: [{ id: 0, value: '' }] } } }
 
-     function refresh() {
-       console.log('refreshing')
-       $scope.promise = Drawing.get($routeParams.drawingId)
-          .then(function (data) {
-            $scope.drawing = data
-            return data
-          })
-     }
-
      if ($routeParams.drawingId) {
+
+       this.refresh = () =>
+         $scope.promise = $q.all({
+           drawing: Drawing.get($routeParams.drawingId),
+           specialtyItems: SpecialtyItem.list(),
+           shops: Shop.list(),
+           carriers: Carrier.list()
+         }).then(({ drawing, specialtyItems, shops, carriers }) => {
+           $scope.drawing = drawing
+           $scope.specialtyItems = specialtyItems
+           $scope.shops = shops
+           $scope.carriers = carriers
+         }).then(() => $scope.loading = false)
 
        $scope.update = function update(item)
        {
@@ -64,8 +69,19 @@ export default class DrawingDetailController extends DetailController {
 
        }
 
-       refresh()
+       this.refresh()
      } else {
+       this.refresh = () =>
+       $scope.promise = $q.all({
+         specialtyItems: SpecialtyItem.list(),
+         shops: Shop.list(),
+         carriers: Carrier.list()
+       }).then(({ specialtyItems, shops, carriers }) => {
+         $scope.specialtyItems = specialtyItems
+         $scope.shops = shops
+         $scope.carriers = carriers
+       }).then(() => $scope.loading = false)
+
        $scope.drawing = { jobId: $scope.job.id, info: { address: { lines: [{ id: 0, value: '' }] } } }
 
        $scope.create = drawing =>
@@ -83,7 +99,7 @@ export default class DrawingDetailController extends DetailController {
                    .title('Record created!')
                    .textContent('This record has been saved to the database')
                    .ok('Close')
-               ).then(() => $location.url(`/drawings/${data.id}`)),
+               ).then(() => $location.path(`/drawings/${data.id}`)),
              error => {
                $log.error(JSON.stringify(error))
                $mdDialog.show(
@@ -102,6 +118,9 @@ export default class DrawingDetailController extends DetailController {
           .ok('Close'))
          }
        }
+
+       this.refresh()
+
      }
 
    }
