@@ -28,5 +28,9 @@ export default class ShippingGroupByJob extends ApiService {
       service.resultObj = resultObj;
       return this.endpoint.get({ shippingGroupId: shippingGroupId }, resultExtension).$promise;
     }
+
+    this.list = jobId =>
+      this.endpoint.query({ jobId }).$promise
+        .then($unpack)
   }
 }
