@@ -12,6 +12,10 @@ export default class ShippingItem extends ApiService {
         query: { method: 'GET', params:{ shippingItemId: '' } }
       })
 
+    this.get = shippingItemId =>
+      this.endpoint.get({ shippingItemId }).$promise
+        .then($unpack)
+
     self.create = item =>
       $q(
         (resolve, reject) =>
@@ -34,7 +38,9 @@ export default class ShippingItem extends ApiService {
           } else if (!shippingItem.id) {
             return reject('cannot update object with missing id')
           } else {
-            return resolve(self.endpoint.update({ shippingItemId: shippingItem.id }, shippingItem).$promise.then($unpack))
+            return resolve(
+              self.endpoint.update({ shippingItemId: shippingItem.id },
+                 shippingItem).$promise.then($unpack))
           }
         })
       }

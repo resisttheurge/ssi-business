@@ -17,73 +17,90 @@
          </div>
         </md-toolbar>
 
-          <md-content flex>
+        <md-content flex>
+        <md-tabs md-dynamic-height md-border-bottom>
+          <md-tab label="Mark Details">
             <form name="markDetailForm" layout="column" ng-hide="loading">
-              <div layout="column" flex>
-                <div layout-margin layout="row">
-                  <div layout="column" flex="70" layout-align="space-between stretch">
-                    <div layout-margin layout="row">
-                      <md-input-container>
-                        <label>Mark Label</label>
-                        <input md-maxlength ="100" required ng-model="mark.label" type="text">
-                      </md-input-container>
-                    </div>
+              <md-tabs md-dynamic-height md-align-tabs="bottom">
+                <md-tab label = "Mark">
+                <div layout="column" flex>
+                  <div layout-margin layout="row">
+                    <div layout="column" flex="70" layout-align="space-between stretch">
+                      <div layout-margin layout="row">
+                        <md-input-container>
+                          <label>Mark Label</label>
+                          <input md-maxlength ="100" required ng-model="mark.label" type="text">
+                        </md-input-container>
+                      </div>
+
+                          <div>
+                            <label>Shipping Item</label>
+                          </div>
+                          <br></br>
 
                         <div>
-                          <label>Shipping Item</label>
-                        </div>
-                        <br></br>
+                          <div layout="column" flex>
+                            <div layout-margin layout="row">
+                              <md-input-container>
+                                <label>Status</label>
+                                <md-select ng-model="mark.shippingItem.status">
+                                  <md-option ng-repeat="shippingItemStatus in shippingItemStatuses" ng-value="shippingItemStatus">
+                                         {{shippingItemStatus}}
+                                  </md-option>
+                                </md-select>
+                              </md-input-container>
+                              <md-input-container>
+                                <label>Shipping Item Label</label>
+                                <input ng-model="mark.shippingItem.label" type="text">
+                              </md-input-container>
+                              <md-input-container>
+                                <label>Requested</label>
+                                <input ng-model="mark.shippingItem.requested" type="number">
+                              </md-input-container>
+                            </div>
 
-                      <div>
-                        <div layout="column" flex>
-                          <div layout-margin layout="row">
+                          <div>
                             <md-input-container>
-                              <label>Status</label>
-                              <md-select ng-model="mark.shippingItem.status">
-                                <md-option ng-repeat="shippingItemStatus in shippingItemStatuses" ng-value="shippingItemStatus">
-                                       {{shippingItemStatus}}
-                                </md-option>
-                              </md-select>
+                              <label>Completed</label>
+                              <input ng-model="mark.shippingItem.completed" type="number">
                             </md-input-container>
                             <md-input-container>
-                              <label>Shipping Item Label</label>
-                              <input ng-model="mark.shippingItem.label" type="text">
+                              <label>Remarks</label>
+                              <input ng-model="mark.shippingItem.remarks" type="text">
                             </md-input-container>
-                            <md-input-container>
-                              <label>Requested</label>
-                              <input ng-model="mark.shippingItem.requested" type="number">
-                            </md-input-container>
-                          </div>
 
-                        <div>
-                          <md-input-container>
-                            <label>Completed</label>
-                            <input ng-model="mark.shippingItem.completed" type="number">
-                          </md-input-container>
-                          <md-input-container>
-                            <label>Remarks</label>
-                            <input ng-model="mark.shippingItem.remarks" type="text">
-                          </md-input-container>
+                             <div layout-margin layout="row">
+                               <md-input-container>
+                                 <label>Shop</label>
+                                 <md-select ng-model="mark.shippingItem.shop">
+                                   <md-option ng-repeat="shop in shops track by shop.id" ng-value="shop">
+                                          {{shop.label}}
+                                   </md-option>
+                                 </md-select>
+                               </md-input-container>
+                            </div>
 
-                           <div layout-margin layout="row">
-                             <md-input-container>
-                               <label>Shop</label>
-                               <md-select ng-model="mark.shippingItem.shop">
-                                 <md-option ng-repeat="shop in shops track by shop.id" ng-value="shop">
-                                        {{shop.label}}
-                                 </md-option>
-                               </md-select>
-                             </md-input-container>
                           </div>
 
                         </div>
-
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </form>
+              </md-tab>
+              <md-tab label = "Zones">
+                <div layout="column" flex="30" layout-align="space-between stretch">
+                  <div>
+                    <div layout-margin layout="row" layout-align="end">
+                    </div>
+                  </div>
+                </div>
+              </md-tab>
+
+              </form>
+              </md-tabs>
+          </md-tabs>
+
           </md-content>
         </div>
       </md-card>
