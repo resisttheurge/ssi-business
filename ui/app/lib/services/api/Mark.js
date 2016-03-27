@@ -2,25 +2,13 @@ import { ApiService } from 'utils'
 export default class Mark extends ApiService {
   /*@ngInject*/
 
-constructor ($q, $unpack, $resource, endpoint, ShippingItem) {
+constructor ($unpack, $q, $resource, endpoint, ShippingItem) {
     super()
 
     var service = this;
     var self = this;
 
     this.shippingItem = ShippingItem
-
-    var resultExtension = function (response) {
-        service.$scope.loading = true
-        if (response.success) {
-          angular.extend(service.resultObj, response.data);
-        } else {
-          service.$scope.error = true
-          service.$scope.message = response.message
-        }
-
-        service.$scope.loading = false
-      }
 
     this.endpoint = $resource(endpoint + '/marks/:markId', {}, {
         create: { method: 'POST' },
@@ -29,12 +17,9 @@ constructor ($q, $unpack, $resource, endpoint, ShippingItem) {
       });
 
     //   old  get method
-    this.get = function ($scope, resultObj, markId)
-    {
-      service.$scope = $scope;
-      service.resultObj = resultObj;
-      return this.endpoint.query({ markId: markId }, resultExtension).$promise;
-    }
+    this.get = id =>
+      this.endpoint.get({ markId: id }).$promise
+        .then($unpack)
 
     //  //old create method
     // this.create = mark =>
@@ -67,7 +52,7 @@ constructor ($q, $unpack, $resource, endpoint, ShippingItem) {
             return resolve(
               self.prepForCreate(mark)
                 .then(mark =>
-                  self.endpoint.create(self).$promise
+                  self.endpoint.create(mark).$promise
                     .then($unpack)
               )
             )
