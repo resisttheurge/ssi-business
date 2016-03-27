@@ -73,6 +73,53 @@
                   </md-option>
                 </md-select>
               </md-input-container>
+              <md-input-container>
+
+                <label>Shipping Item</label>
+
+                <md-select
+                    ng-model="shipmentItem.shippingItem"
+                    placeholder="Shipping Item"
+                    ng-model-options="{trackBy: '$value.id'}">
+
+                  <md-optgroup
+                      label="Drawings">
+
+                    <md-optgroup
+
+                        ng-repeat="drawing in shippingItemCollection.drawings track by drawing.id"
+                        label="{{drawing.label}} - {{drawing.info.title}}">
+
+                      <md-option
+                          ng-repeat="mark in drawing.marks track by mark.id"
+                          ng-value="mark.shippingItem">
+                        {{mark.shippingItem.label}}
+                      </md-option>
+
+                    </md-optgroup>
+
+                  </md-optgroup>
+
+                  <md-optgroup
+                      label="Shipping Groups">
+
+                    <md-optgroup
+                        ng-repeat="shippingGroup in shippingItemCollection.shippingGroups track by shippingGroup.id"
+                        label="{{shippingGroup.label}} - {{shippingGroup.info.title}}">
+
+                      <md-option
+                          ng-repeat="shippingGroupItem in shippingGroup.shippingGroupItems track by shippingGroupItem.id"
+                          ng-value="shippingGroupItem.shippingItem">
+                        {{shippingGroupItem.shippingItem.label}}
+                      </md-option>
+
+                    </md-optgroup>
+
+                  </md-optgroup>
+
+                </md-select>
+
+              </md-input-container>
 
             </form>
           </md-content>

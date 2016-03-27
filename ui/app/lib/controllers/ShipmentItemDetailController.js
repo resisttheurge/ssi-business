@@ -11,7 +11,7 @@ export default class ShipmentItemDetailController extends DetailController {
     $scope.shipment = $ssiSelected.shipment
     $scope.job = $ssiSelected.job
 
-    $scope.shippingItems = ShippingItemByJob.list($scope.job.id);
+    $scope.shippingItemCollection = ShippingItemByJob.list($scope.job.id);
 
     this.refresh = () =>
       ShipmentItem.get($routeParams.shipmentItemId)

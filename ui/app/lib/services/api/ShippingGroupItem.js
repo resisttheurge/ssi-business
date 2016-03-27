@@ -2,7 +2,7 @@ import { ApiService } from 'utils'
 export default class ShippingGroupshippingGroupItem extends ApiService {
   /*@ngInject*/
   constructor ($q, $unpack, $resource, endpoint,
-    ShippingItemm, ShippingItemZone, ShippingItemZoneByShippingItem) {
+    ShippingItem, ShippingItemZone, ShippingItemZoneByShippingItem) {
     super()
 
     var service = this;
