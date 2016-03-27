@@ -9,14 +9,36 @@ export default class ShipmentItem extends ApiService {
         query: { method: 'GET', params:{ shipmentItemId: '' } }
       })
 
+    var self = this;
+
+    self.shipmentItemDateToString = shipmentItem => {
+      const { shipDate } = shipmentItem
+      return ({
+          ...shipmentItem,
+          shipDate: shipDate ? shipDate.toISOString().substring(0, 10) : undefined
+        })
+    }
+
+    self.shipmentItemStringToDate = shipmentItem => {
+      const { shipDate } = shipmentItem
+      return ({
+        ...shipmentItem,
+        fieldDate: shipDate ? $convertDate.stringToDate(shipDate) : undefined
+      })
+    }
+
+    this.get = shipmentItemId =>
+      this.endpoint.get({ shipmentItemId }).$promise
+        .then($unpack)
+        .then(::this.shipmentItemStringToDate)
+
     this.create = item =>
       $q(
         (resolve, reject) =>
           item ?
-            resolve(this.endpoint.create(item).$promise.then($unpack))
+            resolve(this.endpoint.create(self.shipmentItemDateToString(item)).$promise.then($unpack))
           : reject('cannot call create without a parameter')
       )
-    var self = this;
 
     self.update = function (item) {
         return $q(function (resolve, reject) {
@@ -25,7 +47,7 @@ export default class ShipmentItem extends ApiService {
           } else if (!item.id) {
             return reject('cannot update object with missing id')
           } else {
-            return resolve(self.endpoint.update({ shipmentItemId: item.id }, item).$promise.then($unpack))
+            return resolve(self.endpoint.update({ shipmentItemId: item.id }, self.shipmentItemDateToString(item)).$promise.then($unpack))
           }
         })
       }

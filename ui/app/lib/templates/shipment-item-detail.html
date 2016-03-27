@@ -15,77 +15,58 @@
     <!-- card frame  -->
     <md-card flex="85" layout="column">
       <!-- toolbar/content frame -->
-      <div layout="column">
-        
           <md-toolbar>
             <div class="md-toolbar-tools">
               <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2><a ng-href="/jobs/{{job.id}}/shipments/{{shipment.id}}">Shipment {{shipment.number}}</a></h2><i class="material-icons">keyboard_arrow_right</i> <h2>Shipment Item {{shipmentItem.number}}</h2>
               <span flex></span>
-              <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update(shipmentItem)">Save Changes!</md-button>
+              <md-button class="md-raised" ng-disabled="shipmentItemDetailForm.$pristine || !shipmentItemDetailForm.$valid" ng-click="update ? update(shipmentItem) : create(shipmentItem)">Save Changes!</md-button>
             </div>
           </md-toolbar>
 
-            <md-content  layout-gt-sm="row" layout-padding>
-              <form name="shipmentItemDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
+          <md-content  layout-gt-sm="row" layout-padding>
+            <form name="shipmentItemDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
 
-              <div>
+              <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
+                <label>Status</label>
+                <md-select ng-model="shipmentItem.shippingItem.status">
+                  <md-option ng-repeat="status in shippingItemStatuses" ng-value="status">
+                         {{status}}
+                  </md-option>
+                </md-select>
+              </md-input-container>
 
-                <md-input-container>
-                  <label>Id</label>
-                  <input ng-model="shipmentItem.id" type="text">
-                </md-input-container>
+              <md-input-container>
+                <label>Label</label>
+                <input required ng-model="shipmentItem.shippingItem.label" type="text"></input>
+              </md-input-container>
+              <md-input-container>
+                <label>Requested</label>
+                <input required ng-model="shipmentItem.shippingItem.requested" type="number"></input>
+              </md-input-container>
+              <md-input-container>
+                <label>Completed</label>
+                <input required ng-model="shipmentItem.shippingItem.completed" type="number"></input>
+              </md-input-container>
+              <md-input-container>
+                <label>Remarks</label>
+                <input ng-model="shipmentItem.shippingItem.remarks" type="text"></input>
+              </md-input-container>
+              <md-input-container>
+                <label>Shop</label>
+                <md-select ng-model="shipmentItem.shop">
+                  <md-option ng-repeat="shop in shops track by shop.id" ng-value="shop">
+                         {{shop.label}}
+                  </md-option>
+                </md-select>
+              </md-input-container>
 
-                <md-input-container>
-                  <label>Job Id</label>
-                  <input ng-model="shipmentItem.shipmentId" type="text">
-                </md-input-container>
+              <md-input-container>
+                <label>Quantity</label>
+                <input ng-model="shipmentItem.quantity" type="number" required></textarea>
+              </md-input-container>
 
-                <md-input-container>
-                  <label>Number</label>
-                  <input ng-model="shipmentItem.number" type="text">
-                </md-input-container>
-
-                <div>
-                <md-input-container flex-offset-gt-sm="10" flex style="margin-top: 0px;">
-                  <md-select ng-model="shipmentItem.shippingItem.status">
-                    <md-option ng-repeat="status in shippingItemStatuses" ng-value="status">
-                           {{status}}
-                    </md-option>
-                  </md-select>
-                </md-input-container>
-
-                <md-input-container>
-                  <label>Shop</label>
-                  <input ng-model="shipmentItem.shippingItem.label" type="text">
-                </md-input-container>
-                <md-input-container>
-                  <label>Shop</label>
-                  <input ng-model="shipmentItem.shippingItem.requested" type="text">
-                </md-input-container>
-                <md-input-container>
-                  <label>Shop</label>
-                  <input ng-model="shipmentItem.shippingItem.completed" type="text">
-                </md-input-container>
-                <md-input-container>
-                  <label>Shop</label>
-                  <input ng-model="shipmentItem.shippingItem.remarks" type="text">
-                </md-input-container>
-                <md-input-container>
-                  <label>Shop</label>
-                  <input ng-model="shipmentItem.shippingItem.shop.label" type="text">
-                </md-input-container>
-
-              </div>
-
-                <md-input-container>
-                  <label>Description</label>
-                  <textarea ng-model="shipmentItem.quantity" rows="5" md-select-on-focus></textarea>
-                </md-input-container>
-
-              </div>
-              </form>
-            </md-content>
-          </div>
+            </form>
+          </md-content>
         </md-card>
       </div>
     </div>
