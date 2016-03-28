@@ -20,82 +20,129 @@
                 <!-- <form name="editForm"> -->
                   <md-tabs md-dynamic-height md-align-tabs="bottom">
                     <md-tab label="Shipping Group">
-                      <div layout-margin layout="row">
-                        <div layout="row" flex="70" layout-align="space-between stretch">
+                      <div layout="column">
+                        <div layout="row" layout-margin>
 
-                          <!-- <md-input-container>
-                            <label>Job Id</label>
-                            <input ng-model="shippingGroup.jobId" type="text">
-                          </md-input-container> -->
+                          <div layout="column" flex="50" layout-align="space-between stretch">
+                            <md-input-container flex>
+                              <label>Label</label>
+                              <input md-maxlength ="100" required ng-model="shippingGroup.label" type="text">
+                            </md-input-container>
 
-                          <md-input-container>
-                            <label>Label</label>
-                            <input md-maxlength ="100" required  ng-model="shippingGroup.label" type="text"></input>
-                          </md-input-container>
+                            <md-input-container flex>
+                              <label>Title</label>
+                              <input ng-model="shippingGroup.info.title" type="text">
+                            </md-input-container>
 
-                          <md-checkbox ng-model="shippingGroup.rush">Rush</md-checkbox>
+                            <md-input-container flex>
+                              <label>Revision</label>
+                              <input md-maxlength="100" ng-model="shippingGroup.info.revision" type="text">
+                            </md-input-container>
+
+                          </div>
+
+                          <md-divider></md-divider>
+
+                          <div layout="column" flex="50" layout-align="space-around stretch">
+                            <div layout="row">
+                              <md-input-container flex>
+                                <md-checkbox required ng-model="shippingGroup.rush">Rush</md-checkbox>
+                              </md-input-container>
+                            </div>
+
+                            <div layout="row">
+                              <md-input-container flex>
+                                <label>Tag Type</label>
+                                <md-select ng-model="shippingGroup.info.tagType">
+                                  <md-option ng-repeat="tagType in tagTypes" ng-value="tagType">
+                                         {{tagType}}
+                                  </md-option>
+                                </md-select>
+                              </md-input-container>
+                            </div>
+
+                            <div layout="row">
+                              <md-input-container flex>
+                                <label>Specialty Item </label>
+                                <md-select ng-model="shippingGroup.specialtyItem" ng-model-options="{trackBy: '$value.id'}">
+                                  <md-option ng-repeat="specialtyItem in specialtyItems track by specialtyItem.id" ng-value="specialtyItem">
+                                         {{specialtyItem.label}}
+                                  </md-option>
+                                </md-select>
+                              </md-input-container>
+                            </div>
+
+                            <div layout="row">
+                              <label flex layout="row" layout-align="start center">
+                                <span>Revision Date</span>
+                              </label>
+                              <md-datepicker ng-model="shippingGroup.info.revisionDate" md-placeholder="Revision Date"></md-datepicker>
+                            </div>
+                          </div>
                         </div>
+                        <md-divider></md-divider>
                       </div>
-
-                    <!-- start shipping request stuff -->
-                    <div layout="row" flex="70" layout-align="space-between stretch">
-                    <label>Shipping Request</label>
-                    <!-- <div layout-gt-sm="row"> -->
-
-                      <md-input-container>
-                        <label>Tag Type</label>
-                          <md-select ng-model="shippingGroup.info.tagType">
-                            <md-option ng-repeat="tagType in tagTypes" ng-value="tagType">
-                                   {{tagType}}
-                            </md-option>
-                          </md-select>
-                      </md-input-container>
-
-                      <md-input-container>
-                        <label>Title</label>
-                        <input ng-model="shippingGroup.info.title" type="text"></input>
-                      </md-input-container>
-
-                      <md-input-container>
-                        <label>Revision</label>
-                        <input md-maxlength="100" ng-model="shippingGroup.info.revision" type="text"></input>
-                      </md-input-container>
-                    </div>
-                    <div>
-                      <div layout-gt-sm="row" >
-                        <label>
-                          Revision Date
-                        </label>
-                        <md-datepicker ng-model="shippingGroup.info.revisionDate" md-placeholder="Revision Date"></md-datepicker>
-                      </div>
-                    </div>
               </md-tab>
 
 
                   <md-tab label="More Details">
-                    <md-divider></md-divider>
-                    <label>Shipping Request Dates</label>
-                      <div layout="column" flex="30" layout-align="space-between stretch">
-                        <div>
-                          <div layout-margin layout="row" layout-align="end">
+                    <div layout="column" >
+                      <div layout="row" layout-margin>
+                        <div layout="column" flex="70" layout-align="space-between stretch">
+                          <md-input-container>
+                            <label>File Path</label>
+                            <input md-maxlength ="200" ng-model="shippingGroup.info.filePath" type="text">
+                          </md-input-container>
+                          <md-input-container>
+                            <label>Requested By</label>
+                            <input md-maxlength ="100" ng-model="shippingGroup.info.requestedBy" type="text">
+                          </md-input-container>
+                          <md-input-container>
+                            <label>Prepared By</label>
+                            <input md-maxlength ="100" ng-model="shippingGroup.info.preparedBy" type="text">
+                          </md-input-container>
+                          <div layout="row">
+                            <md-input-container flex>
+                              <label>Shop</label>
+                              <md-select ng-model="shippingGroup.info.shop" ng-model-options="{trackBy: '$value.id'}">
+                                <md-option ng-repeat="shop in shops track by shop.id" ng-value="shop">
+                                       {{shop.label}}
+                                </md-option>
+                              </md-select>
+                            </md-input-container>
+                            <md-input-container flex>
+                              <label>Carrier</label>
+                              <md-select ng-model="shippingGroup.info.carrier" ng-model-options="{trackBy: '$value.id'}">
+                                <md-option ng-repeat="carrier in carriers track by carrier.id" ng-value="carrier">
+                                       {{carrier.label}}
+                                </md-option>
+                              </md-select>
+                            </md-input-container>
+                          </div>
+                        </div>
+
+                        <md-divider></md-divider>
+
+                        <div layout="column" flex="30"  layout-align="space-around stretch">
+                          <div layout="row" layout-align="end">
                             <label flex layout="row" layout-align="start center">
                               <span>Start Date</span>
                             </label>
                             <md-datepicker ng-model="shippingGroup.info.startDate" md-placeholder="Start Date"></md-datepicker>
                           </div>
-                          <div layout-margin layout="row" layout-align="end">
+                          <div layout="row" layout-align="end">
                             <label flex layout="row" layout-align="start center">
                               <span>Shop Date</span>
                             </label>
                             <md-datepicker ng-model="shippingGroup.info.shopDate" md-placeholder="Shop Date"></md-datepicker>
                           </div>
-                          <div layout-margin layout="row" layout-align="end">
+                          <div layout="row" layout-align="end">
                             <label flex layout="row" layout-align="start center">
                               <span>Field Date</span>
                             </label>
                             <md-datepicker ng-model="shippingGroup.info.fieldDate" md-placeholder="Field Date"></md-datepicker>
                           </div>
-                          <div layout-margin layout="row" layout-align="end">
+                          <div layout="row" layout-align="end">
                             <label flex layout="row" layout-align="start center">
                               <span>Request Date</span>
                             </label>
@@ -103,82 +150,7 @@
                           </div>
                         </div>
                       </div>
-
-                    <br></br>
-                      <!-- <md-input-container>
-                        <label>Revision Date</label>
-                        <input ng-model="shippingGroup.info.revisionDate" type="text">
-                      </md-input-container>
-                      <md-input-container>
-                        <label>Start Date</label>
-                        <input ng-model="shippingGroup.info.startDate" type="text">
-                      </md-input-container>
-                      <md-input-container>
-                        <label>Shop Date</label>
-                        <input ng-model="shippingGroup.info.shopDate" type="text">
-                      </md-input-container>
-                      <md-input-container>
-                        <label>Field Date</label>
-                        <input ng-model="shippingGroup.info.fieldDate" type="text">
-                      </md-input-container>
-                      <md-input-container>
-                        <label>Request Date</label>
-                        <input ng-model="shippingGroup.info.requestDate" type="text">
-                      </md-input-container> -->
-                    <div layout-gt-sm="row">
-                      <md-input-container>
-                        <label>Requested By</label>
-                        <input md-maxlength="100" ng-model="shippingGroup.info.requestedBy" type="text"></input>
-                      </md-input-container>
-
-                      <md-input-container>
-                        <label>Prepared By</label>
-                        <input md-maxlength="100" ng-model="shippingGroup.info.preparedBy" type="text"></input>
-                      </md-input-container>
-
-                      <md-input-container>
-                        <label>File Path</label>
-                        <input md-maxlength="200" ng-model="shippingGroup.info.filePath" type="text"></input>
-                      </md-input-container>
-
-                      <md-input-container>
-                        <label>Shop</label>
-                        <input md-maxlength="100" ng-model="shippingGroup.info.shop.label" type="text"></input>
-                      </md-input-container>
-
-                      <md-input-container>
-                        <label>Carrier</label>
-                        <input md-maxlength="100" ng-model="shippingGroup.info.carrier.label" type="text"></input>
-                      </md-input-container>
-                    </div>
-
-                  </md-tab>
-
-                  <md-tab label="Contact">
-
-                    <label>Contact</label>
-                    <div layout="column" flex>
-                      <div layout-margin layout="column">
-                        <div layout="column" flex="70" layout-align="space-between stretch">
-                          <div layout-gt-sm="column">
-                            <md-input-container >
-                              <input md-maxlength="100" ng-model="shippingGroup.info.contact.label" type="text"></input>
-                            </md-input-container>
-                            <md-input-container >
-                              <label>Phone Number</label>
-                              <input md-maxlength="35" ng-model="shippingGroup.info.contact.phone" type="text"></input>
-                            </md-input-container>
-                            <md-input-container >
-                              <label>Fax</label>
-                              <input md-maxlength="35" ng-model="shippingGroup.info.contact.fax" type="text"></input>
-                            </md-input-container>
-                            <md-input-container >
-                              <label>Email</label>
-                              <input md-maxlength="100" ng-model="shippingGroup.info.contact.email" type="text"></input>
-                            </md-input-container>
-                          </div>
-                        </div>
-                      </div>
+                      <md-divider></md-divider>
                     </div>
                   </md-tab>
 
@@ -218,22 +190,34 @@
                       </div>
                       <md-divider></md-divider>
                     </md-content>
-                    </md-tab>
+                  </md-tab>
 
-                    <md-tab label="Reports">
-                      <md-content class="md-padding">
-                        <div ng-controller="ReportController as $reports">
-
-                          <md-button ng-click="$reports.rms()" style="background-color: #71EEB8; color: black;">
-                            <md-icon class="material-icons">insert_drive_file</md-icon>
-                            RMS
-                          </md-button>
-
+                  <md-tab label="Contact">
+                    <div layout="column" flex>
+                      <div layout-margin layout="column">
+                        <div layout="column" flex="70" layout-align="space-between stretch">
+                          <div layout-gt-sm="column">
+                            <md-input-container >
+                              <input md-maxlength="100" ng-model="shippingGroup.info.contact.label" type="text"></input>
+                            </md-input-container>
+                            <md-input-container >
+                              <label>Phone Number</label>
+                              <input md-maxlength="35" ng-model="shippingGroup.info.contact.phone" type="text"></input>
+                            </md-input-container>
+                            <md-input-container >
+                              <label>Fax</label>
+                              <input md-maxlength="35" ng-model="shippingGroup.info.contact.fax" type="text"></input>
+                            </md-input-container>
+                            <md-input-container >
+                              <label>Email</label>
+                              <input md-maxlength="100" ng-model="shippingGroup.info.contact.email" type="text"></input>
+                            </md-input-container>
+                          </div>
                         </div>
-                      </md-content>
-                    </md-tab>
-
-
+                      </div>
+                      <md-divider></md-divider>
+                    </div>
+                  </md-tab>
                   </md-tabs>
                 </form>
               </md-tab>
@@ -287,6 +271,19 @@
                     </md-button>
                   </div>
                 </div>
+              </md-tab>
+
+              <md-tab ng-if="update" label="Reports">
+                <md-content class="md-padding">
+                  <div ng-controller="ReportController as $reports">
+
+                    <md-button ng-click="$reports.rms()" style="background-color: #71EEB8; color: black;">
+                      <md-icon class="material-icons">insert_drive_file</md-icon>
+                      RMS
+                    </md-button>
+
+                  </div>
+                </md-content>
               </md-tab>
             </md-tabs>
           </md-content>

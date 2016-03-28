@@ -15,6 +15,7 @@ import jobList from './job-list'
 import manufacturerDetail from './manufacturer-detail'
 import manufacturerList from './manufacturer-list'
 import markDetail from './mark-detail'
+import markZoneDetail from './mark-zone-detail'
 import partDetail from './part-detail'
 import partList from './part-list'
 import partOrderDetail from './part-order-detail'
@@ -24,6 +25,7 @@ import shipmentDetail from './shipment-detail'
 import shipmentItemDetail from './shipment-item-detail'
 import shippingGroupDetail from './shipping-group-detail'
 import shippingGroupItemDetail from './shipping-group-item-detail'
+import shippingGroupItemZoneDetail from './shipping-group-item-zone-detail'
 import shopDetail from './shop-detail'
 import shopList from './shop-list'
 import specialtyItemDetail from './specialty-item-detail'
@@ -50,6 +52,7 @@ export const urls = {
   manufacturerDetail,
   manufacturerList,
   markDetail,
+  markZoneDetail,
   partDetail,
   partList,
   partOrderDetail,
@@ -59,6 +62,7 @@ export const urls = {
   shipmentItemDetail,
   shippingGroupDetail,
   shippingGroupItemDetail,
+  shippingGroupItemZoneDetail,
   shopDetail,
   shopList,
   specialtyItemDetail,

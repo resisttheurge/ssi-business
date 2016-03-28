@@ -2,23 +2,21 @@ import { DetailController } from 'utils'
 
 export default class ShippingGroupItemDetailController extends DetailController {
   /*@ngInject*/
-  constructor($q, $scope, $routeParams, ShippingGroupItem, enums, $mdDialog, $ssiSelected, Shop) {
+  constructor($q, $scope, $routeParams, ShippingGroupItem, ShippingItemZoneByShippingItem,
+     enums, $mdDialog, $ssiSelected, Shop, ShippingItemZone) {
     super()
 
     $scope.shippingItemStatuses = enums.shippingItemStatuses
     $scope.shippingGroup = $ssiSelected.shippingGroup;
     $scope.job = $ssiSelected.job;
+    $scope.$shippingItemZone = ShippingItemZone;
+    $scope.$ssiSelected = $ssiSelected;
 
-    ShippingGroupItem.endpoint.get({ shippingGroupItemId: $routeParams.shippingGroupItemId },
+    ShippingGroupItem.get($routeParams.shippingGroupItemId).then(
       function (response) {
         $scope.loading = true
-        if (response.success) {
-          $scope.shippingGroupItem = response.data
-        } else {
-          $scope.error = true
-          $scope.message = response.message
-        }
-
+        $scope.shippingGroupItem = response
+        $scope.zones = response.shippingItemZones
         $scope.loading = false
       }
     )

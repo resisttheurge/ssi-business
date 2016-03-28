@@ -25,127 +25,142 @@
                     <form name="editForm" layout="column">
                       <md-tabs md-dynamic-height md-align-tabs="bottom">
                         <md-tab label="Drawing">
-                          <div layout-gt-sm="row">
-                            <!-- <md-input-container>
-                              <label>Id</label>
-                              <input ng-model="drawing.id" type="text">
-                            </md-input-container> -->
-                          <!--  <md-input-container>
-                              <label>Job Id</label>
-                              <input md-maxlength ="10" disabled required ng-model="drawing.jobId" type="text">
-                            </md-input-container> -->
-                            <md-input-container>
-                              <label>Label</label>
-                              <input md-maxlength ="100" required ng-model="drawing.label" type="text">
-                            </md-input-container>
-                            <md-input-container>
-                              <label>Drawing Type</label>
-                              <md-select required ng-model="drawing.drawingType">
-                                <md-option ng-repeat="drawingType in drawingTypes" ng-value="drawingType">
-                                       {{drawingType}}
-                                </md-option>
-                              </md-select>
-                            </md-input-container>
-                          </div>
+                          <div layout="column">
+                            <div layout="row" layout-margin>
 
-                          <label>Specialty Item</label>
-                          <div layout-gt-sm="row">
-                            <md-input-container>
-                              <label>Specialty Item </label>
-                              <input md-maxlength ="100" ng-model="drawing.specialtyItem.label" type="text">
-                            </md-input-container>
+                              <div layout="column" flex="50" layout-align="space-between stretch">
+                                <md-input-container flex>
+                                  <label>Label</label>
+                                  <input md-maxlength ="100" required ng-model="drawing.label" type="text">
+                                </md-input-container>
 
-                            <md-input-container>
-                              <label>Tag Type</label>
-                              <md-select ng-model="drawing.info.tagType">
-                                <md-option ng-repeat="tagType in tagTypes" ng-value="tagType">
-                                       {{tagType}}
-                                </md-option>
-                              </md-select>
-                            </md-input-container>
-                          </div>
-
-                          <div>
-                              <div layout-gt-sm="column" >
-                                <md-input-container layout-gt-sm>
+                                <md-input-container flex>
                                   <label>Title</label>
                                   <input ng-model="drawing.info.title" type="text">
                                 </md-input-container>
-                                <md-input-container>
+
+                                <md-input-container flex>
                                   <label>Revision</label>
                                   <input md-maxlength="100" ng-model="drawing.info.revision" type="text">
                                 </md-input-container>
 
-                              <div layout-gt-sm="row">
-                                <div layout-margin layout="row" layout-align="end">
+                              </div>
+
+                              <md-divider></md-divider>
+
+                              <div layout="column" flex="50" layout-align="space-around stretch">
+                                <div layout="row">
+                                  <md-input-container flex>
+                                    <label>Drawing Type</label>
+                                    <md-select required ng-model="drawing.drawingType">
+                                      <md-option ng-repeat="drawingType in drawingTypes" ng-value="drawingType">
+                                             {{drawingType}}
+                                      </md-option>
+                                    </md-select>
+                                  </md-input-container>
+                                </div>
+
+                                <div layout="row">
+                                  <md-input-container flex>
+                                    <label>Tag Type</label>
+                                    <md-select ng-model="drawing.info.tagType">
+                                      <md-option ng-repeat="tagType in tagTypes" ng-value="tagType">
+                                             {{tagType}}
+                                      </md-option>
+                                    </md-select>
+                                  </md-input-container>
+                                </div>
+
+                                <div layout="row">
+                                  <md-input-container flex>
+                                    <label>Specialty Item </label>
+                                    <md-select ng-model="drawing.specialtyItem" ng-model-options="{trackBy: '$value.id'}">
+                                      <md-option ng-repeat="specialtyItem in specialtyItems track by specialtyItem.id" ng-value="specialtyItem">
+                                             {{specialtyItem.label}}
+                                      </md-option>
+                                    </md-select>
+                                  </md-input-container>
+                                </div>
+
+                                <div layout="row">
                                   <label flex layout="row" layout-align="start center">
                                     <span>Revision Date</span>
                                   </label>
                                   <md-datepicker ng-model="drawing.info.revisionDate" md-placeholder="Revision Date"></md-datepicker>
                                 </div>
                               </div>
-
                             </div>
+                            <md-divider></md-divider>
                           </div>
                         </md-tab>
 
                         <md-tab label="More Details">
-                          <md-divider></md-divider>
-                          <label>Shipping Request Dates</label>
-                            <div layout="column" flex="30" layout-align="space-between stretch">
-                              <div>
-                                <div layout-margin layout="row" layout-align="end">
-                                  <label flex layout="row" layout-align="start center">
-                                    <span>Start Date</span>
-                                  </label>
-                                  <md-datepicker ng-model="drawing.info.startDate" md-placeholder="Start Date"></md-datepicker>
+                            <div layout="column" >
+                              <div layout="row" layout-margin>
+                                <div layout="column" flex="70" layout-align="space-between stretch">
+                                  <md-input-container>
+                                    <label>File Path</label>
+                                    <input md-maxlength ="200" ng-model="drawing.info.filePath" type="text">
+                                  </md-input-container>
+                                  <md-input-container>
+                                    <label>Requested By</label>
+                                    <input md-maxlength ="100" ng-model="drawing.info.requestedBy" type="text">
+                                  </md-input-container>
+                                  <md-input-container>
+                                    <label>Prepared By</label>
+                                    <input md-maxlength ="100" ng-model="drawing.info.preparedBy" type="text">
+                                  </md-input-container>
+                                  <div layout="row">
+                                    <md-input-container flex>
+                                      <label>Shop</label>
+                                      <md-select ng-model="drawing.info.shop" ng-model-options="{trackBy: '$value.id'}">
+                                        <md-option ng-repeat="shop in shops track by shop.id" ng-value="shop">
+                                               {{shop.label}}
+                                        </md-option>
+                                      </md-select>
+                                    </md-input-container>
+                                    <md-input-container flex>
+                                      <label>Carrier</label>
+                                      <md-select ng-model="drawing.info.carrier" ng-model-options="{trackBy: '$value.id'}">
+                                        <md-option ng-repeat="carrier in carriers track by carrier.id" ng-value="carrier">
+                                               {{carrier.label}}
+                                        </md-option>
+                                      </md-select>
+                                    </md-input-container>
+                                  </div>
                                 </div>
-                                <div layout-margin layout="row" layout-align="end">
-                                  <label flex layout="row" layout-align="start center">
-                                    <span>Shop Date</span>
-                                  </label>
-                                  <md-datepicker ng-model="drawing.info.shopDate" md-placeholder="Shop Date"></md-datepicker>
-                                </div>
-                                <div layout-margin layout="row" layout-align="end">
-                                  <label flex layout="row" layout-align="start center">
-                                    <span>Field Date</span>
-                                  </label>
-                                  <md-datepicker ng-model="drawing.info.fieldDate" md-placeholder="Field Date"></md-datepicker>
-                                </div>
-                                <div layout-margin layout="row" layout-align="end">
-                                  <label flex layout="row" layout-align="start center">
-                                    <span>Request Date</span>
-                                  </label>
-                                  <md-datepicker ng-model="drawing.info.requestDate" md-placeholder="Request Date"></md-datepicker>
+
+                                <md-divider></md-divider>
+
+                                <div layout="column" flex="30"  layout-align="space-around stretch">
+                                  <div layout="row" layout-align="end">
+                                    <label flex layout="row" layout-align="start center">
+                                      <span>Start Date</span>
+                                    </label>
+                                    <md-datepicker ng-model="drawing.info.startDate" md-placeholder="Start Date"></md-datepicker>
+                                  </div>
+                                  <div layout="row" layout-align="end">
+                                    <label flex layout="row" layout-align="start center">
+                                      <span>Shop Date</span>
+                                    </label>
+                                    <md-datepicker ng-model="drawing.info.shopDate" md-placeholder="Shop Date"></md-datepicker>
+                                  </div>
+                                  <div layout="row" layout-align="end">
+                                    <label flex layout="row" layout-align="start center">
+                                      <span>Field Date</span>
+                                    </label>
+                                    <md-datepicker ng-model="drawing.info.fieldDate" md-placeholder="Field Date"></md-datepicker>
+                                  </div>
+                                  <div layout="row" layout-align="end">
+                                    <label flex layout="row" layout-align="start center">
+                                      <span>Request Date</span>
+                                    </label>
+                                    <md-datepicker ng-model="drawing.info.requestDate" md-placeholder="Request Date"></md-datepicker>
+                                  </div>
                                 </div>
                               </div>
+                              <md-divider></md-divider>
                             </div>
-                            <md-divider></md-divider>
-
-                              <md-input-container>
-                                <label>Requested By</label>
-                                <input md-maxlength ="100" ng-model="drawing.info.requestedBy" type="text">
-                              </md-input-container>
-
-                              <md-input-container>
-                                <label>Prepared By</label>
-                                <input md-maxlength ="100" ng-model="drawing.info.preparedBy" type="text">
-                              </md-input-container>
-
-                              <md-input-container>
-                                <label>File Path</label>
-                                <input md-maxlength ="200" ng-model="drawing.info.filePath" type="text">
-                              </md-input-container>
-                              <md-input-container>
-
-                                <label>Shop Label</label>
-                                <input md-maxlength="100" ng-model="drawing.info.shop.label" type="text">
-                              </md-input-container>
-                              <md-input-container>
-
-                                <label>Carrier Label</label>
-                                <input md-maxlength="100" ng-model="drawing.info.carrier.label" type="text">
-                              </md-input-container>
                           </md-tab>
 
                           <md-tab label ="Address">
@@ -213,9 +228,9 @@
                                   </div>
                                 </div>
                               </div>
+                              <md-divider></md-divider>
                             </div>
                           </md-tab>
-
                       </md-tabs>
                     </form>
                   </md-tab>

@@ -1,0 +1,34 @@
+<!-- <div>{{zone.id}}</div>
+<div>{{zone.jobId }}</div>
+<div>{{zone.number}}</div>
+<div>{{zone.fieldDate}}</div> -->
+<div flex layout="column" layout-align="start stretch">
+  <!-- outer frame -->
+  <div layout-margin layout="row" layout-align="center stretch">
+    <!-- card frame  -->
+    <md-card flex="85" layout="column">
+      <!-- toolbar/content frame -->
+      <div layout="column">
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2>Zone {{zone.label}}</h2>
+            <span flex></span>
+            <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update ? update(zone) : create(zone)">Save</md-button>
+          </div>
+        </md-toolbar>
+
+        <md-content flex>
+          <form name="editForm">
+            <div layout-gt-sm="row">
+              <md-input-container>
+                <label>Number</label>
+                <input min="0" ng-model="zone.number" type="number">
+              </md-input-container>
+              <md-datepicker flex ng-model="zone.fieldDate" md-placeholder="Field Date"></md-datepicker>
+            </div>
+          </form>
+        </md-content>
+      </div>
+    </md-card>
+  </div>
+</div>

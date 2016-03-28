@@ -24,6 +24,10 @@ export default class SpecialtyItem extends ApiService {
         query: { method: 'GET', params:{ specialtyItemId: '' } }
       });
 
+    this.list = () =>
+      this.endpoint.query().$promise
+        .then($unpack)
+
     this.get = function ($scope, resultObj, specialtyItemId)
     {
       service.$scope = $scope;

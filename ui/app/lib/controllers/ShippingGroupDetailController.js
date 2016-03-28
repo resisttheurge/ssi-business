@@ -3,7 +3,8 @@ import { DetailController } from 'utils'
 export default class ShippingGroupDetailController extends DetailController {
   /*@ngInject*/
   constructor($scope, $routeParams, ShippingGroup, enums, $ssiSelected,
-    $mdDialog, $convertDate, $route, $location, $log, $q
+    $mdDialog, $convertDate, $route, $location, $log, $q, SpecialtyItem, Carrier,
+    Shop
   ) {
     super()
 
@@ -29,22 +30,27 @@ export default class ShippingGroupDetailController extends DetailController {
       : $scope.shippingGroup.info = { address: { lines: [{ id: 0, value: '' }] } }
     : $scope.shippingGroup = { info: { address: { lines: [{ id: 0, value: '' }] } } }
 
-    function refresh() {
-      console.log('refreshing')
-      $scope.promise = $q.all(ShippingGroup.get($routeParams.shippingGroupId))
-        .then(function (data) {
-          $scope.shippingGroup = data
-          return data
-        })
-    }
-
     if ($routeParams.shippingGroupId) {
+      this.refresh = () =>
+      $scope.promise = $q.all({
+        shippingGroup: ShippingGroup.get($routeParams.shippingGroupId),
+        specialtyItems: SpecialtyItem.list(),
+        shops: Shop.list(),
+        carriers: Carrier.list()
+      }).then(({ specialtyItems, shops, carriers }) => {
+        $scope.specialtyItems = specialtyItems
+        $scope.shops = shops
+        $scope.carriers = carriers
+      }).then(() => $scope.loading = false)
+
       $scope.shippingGroup = $ssiSelected.shippingGroup;
 
       $scope.update = function update(item)
       {
         if (item.jobId &&
-            item.label) {
+            item.label &&
+            item.rush !== undefined
+          ) {
           ShippingGroup.update(item).then(function (data) { $mdDialog
             .show($mdDialog.alert()
             .title('Changes Saved!')
@@ -65,15 +71,27 @@ export default class ShippingGroupDetailController extends DetailController {
 
       }
 
-      refresh()
+      this.refresh()
     } else {
+      this.refresh = () =>
+      $scope.promise = $q.all({
+        specialtyItems: SpecialtyItem.list(),
+        shops: Shop.list(),
+        carriers: Carrier.list()
+      }).then(({ specialtyItems, shops, carriers }) => {
+        $scope.specialtyItems = specialtyItems
+        $scope.shops = shops
+        $scope.carriers = carriers
+      }).then(() => $scope.loading = false)
+
       $scope.shippingGroup = { jobId: $scope.job.id, rush: false, info: { address: { lines: [{ id: 0, value: '' }] } } }
 
       $scope.create = sg =>
       {
         if (
           sg.jobId &&
-          sg.label
+          sg.label &&
+          sg.rush !== undefined
         ) {
           ShippingGroup.create(sg)
           .then(
@@ -83,7 +101,7 @@ export default class ShippingGroupDetailController extends DetailController {
                   .title('Record created!')
                   .textContent('This record has been saved to the database')
                   .ok('Close')
-              ).then(() => $location.url(`/shipping-groups/${data.id}`)),
+              ).then(() => $location.path(`/shipping-groups/${data.id}`)),
             error => {
               $log.error(JSON.stringify(error))
               $mdDialog.show(
@@ -102,6 +120,8 @@ export default class ShippingGroupDetailController extends DetailController {
          .ok('Close'))
         }
       }
+
+      this.refresh()
     }
 
   }
