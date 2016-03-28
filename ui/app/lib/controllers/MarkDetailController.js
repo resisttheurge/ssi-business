@@ -4,7 +4,7 @@ export default class MarkDetailController extends DetailController {
   /*@ngInject*/
   constructor(
     $q, Shop, $scope, $routeParams, Mark, enums, $ssiSelected, $mdDialog, $log,
-    $location, $route, ShippingItemZone
+    $location, $route, ShippingItemZone, $mdToast
   ) {
     super()
 
@@ -15,6 +15,30 @@ export default class MarkDetailController extends DetailController {
     $scope.$ssiSelected = $ssiSelected;
 
     $scope.loading = true
+
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete mark information for zone ${item.zone.number}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => ShippingItemZone.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted mark information for zone ${item.zone.number}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete mark information for zone ${item.zone.number} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     if ($routeParams.markId) {
 
@@ -34,6 +58,7 @@ export default class MarkDetailController extends DetailController {
       {
         if (
           mark.drawingId &&
+          mark.label &&
           mark.shippingItem &&
           mark.shippingItem.status &&
           mark.shippingItem.requested !== undefined &&
@@ -71,12 +96,13 @@ export default class MarkDetailController extends DetailController {
           }
         ).then(() => $scope.loading = false)
 
-      $scope.mark = { drawingId: $ssiSelected.id, shippingItem: { status: 'NS', requested: 0, completed: 0 } }
+      $scope.mark = { drawingId: $ssiSelected.drawing.id, shippingItem: { status: 'NS', requested: 0, completed: 0 } }
 
       $scope.create = mark =>
       {
         if (
           mark.drawingId &&
+          mark.label &&
           mark.shippingItem &&
           mark.shippingItem.status &&
           mark.shippingItem.requested !== undefined &&

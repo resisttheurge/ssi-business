@@ -20,16 +20,18 @@
             </div>
           </md-toolbar>
 
-            <md-content>
-              <form name="detailForm">
-                <div layout-gt-sm="row" >
-                  <md-input-container>
-                    <label>Name</label>
+          <md-content flex>
+            <form name="detailForm">
+              <div layout="column" layout-margin>
+                <div layout="row">
+                  <md-input-container flex>
+                    <label>System Type Name</label>
                     <input md-maxlength ="100" required ng-model="systemType.label" type="text">
                   </md-input-container>
                 </div>
-              </form>
-            </md-content>
+              </div>
+            </form>
+          </md-content>
           </div>
         </md-card>
       </div>

@@ -6,57 +6,54 @@
       <!-- toolbar/content frame -->
       <div layout="column">
 
-          <md-toolbar>
-            <div class="md-toolbar-tools">
-              <h1>{{update ? 'Edit User Details' : 'Create New User'}}</h1>
-              <span flex></span>
-              <md-button
-                  class="md-raised"
-                  ng-disabled="detailForm.$pristine || !detailForm.$valid"
-                  ng-click="update ? update(user) : create(user)">
-                Save
-              </md-button>
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <h1>{{update ? 'Edit User Details' : 'Create New User'}}</h1>
+            <span flex></span>
+            <md-button
+                class="md-raised"
+                ng-disabled="detailForm.$pristine || !detailForm.$valid"
+                ng-click="update ? update(user) : create(user)">
+              Save
+            </md-button>
+          </div>
+          <md-progress-linear md-mode="loading ? 'indeterminate' : ''"></md-progress-linear>
+        </md-toolbar>
+        <md-content flex>
+          <ng-form name="detailForm" ng-hide="loading" autocomplete="off">
+            <div layout="column" >
+              <div layout="row" layout-margin>
+                <div layout="column" flex layout-align="space-around">
+                  <md-input-container>
+                    <label>Username</label>
+                    <input ng-model="user.username" type="text" autocomplete="off" required="true" md-maxlength="100" >
+                  </md-input-container>
+                  <md-input-container ng-if="!user.id">
+                    <label>Password</label>
+                    <input name="password" ng-model="user.password" type="password" autocomplete="off" md-minlength="8" required="true">
+                  </md-input-container>
+                  <label ng-hide="user.id || user.password.length >= 8" style="color: red;">* </label>
+                </div>
+                <md-divider></md-divider>
+                <div layout="column" flex layout-align="space-around">
+                  <md-input-container>
+                    <md-checkbox ng-model="user.active" id="activeCheckBox">
+                      Active
+                    </md-checkbox>
+                  </md-input-container>
+                  <md-input-container>
+                    <md-switch class="md-primary" ng-model="user.adminSelected">
+                      {{user.adminSelected ? 'Administrator' : 'Employee'}}
+                    </md-switch>
+                  </md-input-container>
+                </div>
+              </div>
+
             </div>
-          </md-toolbar>
+          </ng-form>
+        </md-content>
 
-<md-content>
-  <form name="detailForm" ng-hide="loading" autocomplete="off">
-    <div layout-gt-sm="row" layout-margin layout-align="start center">
-      <md-input-container>
-        <label>Username</label>
-        <input ng-model="user.username" type="text" autocomplete="off" ng-required="true">
-      </md-input-container>
-
-      <md-input-container ng-if="!user.id">
-        <label>Password</label>
-        <input ng-model="user.password" type="password" autocomplete="off" ng-minlength="8" ng-required="true">
-      </md-input-container>
-
-      <label ng-hide="user.id || user.password.length >= 8" style="color: red;">* Passwords must be at least 8 characters in length</label>
-
-    </div>
-
-      <div layout="row" flex="10" layout-align="start center" layout-margin>
-        <label for="activeCheckBox" style="margin-left: 25px;">Active</label>
-        <md-checkbox ng-model="user.active" id="activeCheckBox">
-        </md-checkbox>
       </div>
-
-
-      <div layout="row" layout-align="center center">
-        <h3 flex="10" style="margin-left: 25px;">User Role: </h3>
-
-        <label ng-if="user.adminSelected === false" style="color: #007700; text-shadow: 0 0 4px #1aff8c; font-weight: bold; margin-right: 10px;">EMPLOYEE</label>
-        <label ng-if="user.adminSelected === true" style="color: GREY; margin-right: 10px;">EMPLOYEE</label>
-
-        <md-switch class="md-primary" ng-model="user.adminSelected"></md-switch>
-
-        <label ng-if="user.adminSelected === true" style="color: #007700; text-shadow: 0 0 4px #1aff8c; font-weight: bold; margin-right: 10px;">ADMIN</label>
-        <label ng-if="user.adminSelected === false" style="color: GREY; margin-right: 10px;">ADMIN</label>
-
-        <span flex></span>
-      </div>
-
-
-  </form>
-</md-content>
+    </md-card>
+  </div>
+</div>

@@ -4,7 +4,8 @@ export default class ShippingGroupItemZoneDetailController extends DetailControl
   /*@ngInject*/
   constructor($scope, $routeParams,
     Zone, ShippingItemZone, ShippingItemZoneByShippingItem,
-     $mdDialog, $ssiSelected, $convertDate, ZoneByJob, $q, $log
+     $mdDialog, $ssiSelected, $convertDate, ZoneByJob, $q, $log, $location,
+     $route
    ) {
     super()
 
@@ -62,7 +63,7 @@ export default class ShippingGroupItemZoneDetailController extends DetailControl
         if (
           shippingItemZone.shippingItemId &&
           shippingItemZone.zone &&
-          shippingItemZone.quantity
+          shippingItemZone.quantity !== undefined
         ) {
           ShippingItemZone.create(shippingItemZone)
           .then(
@@ -91,6 +92,8 @@ export default class ShippingGroupItemZoneDetailController extends DetailControl
          .ok('Close'))
         }
       }
+
+      this.refresh()
     }
 
   }

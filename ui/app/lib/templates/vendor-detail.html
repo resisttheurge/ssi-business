@@ -19,16 +19,18 @@
           </div>
         </md-toolbar>
 
-            <md-content flex>
-              <form name="detailForm">
-                <div layout-gt-sm="row">
-                  <md-input-container>
-                    <label>Name</label>
-                    <input md-maxlength ="100" required ng-model="vendor.label" type="text">
-                  </md-input-container>
-                </div>
-              </form>
-            </md-content>
+        <md-content flex>
+          <form name="detailForm">
+            <div layout="column" layout-margin>
+              <div layout="row">
+                <md-input-container flex>
+                  <label>Vendor Name</label>
+                  <input md-maxlength ="100" required ng-model="vendor.label" type="text">
+                </md-input-container>
+              </div>
+            </div>
+          </form>
+        </md-content>
 
           </div>
         </md-card>

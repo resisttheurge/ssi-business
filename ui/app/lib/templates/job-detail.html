@@ -76,7 +76,7 @@
                             <div layout-margin layout="row">
                               <md-input-container flex>
                                 <label>Status</label>
-                                <md-select required ng-model="job.status">
+                                <md-select ng-disabled="!$app.user.hasRole('ADMIN')" required ng-model="job.status">
                                   <md-option ng-repeat="status in jobStatuses" ng-value="status">
                                          {{status}}
                                   </md-option>
@@ -383,6 +383,9 @@
                   <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
                   <div layout="row" layout-align="end center">
                     <md-button class="md-fab" ng-href="/jobs/{{$app.selected.job.id}}/drawings/new">
+                      <md-tooltip md-direction="top" md-autohide="true">
+                        New Drawing
+                      </md-tooltip>
                       <md-icon class="material-icons">add</md-icon>
                     </md-button>
                   </div>
@@ -439,6 +442,9 @@
                 </md-content>
                 <div layout="row" layout-align="end center">
                   <md-button class="md-fab" ng-href="/jobs/{{$app.selected.job.id}}/shipping-groups/new">
+                    <md-tooltip md-direction="top" md-autohide="true">
+                      New Shipping Group
+                    </md-tooltip>
                     <md-icon class="material-icons">add</md-icon>
                   </md-button>
                 </div>
@@ -492,6 +498,9 @@
                   <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
                   <div layout="row" layout-align="end center">
                     <md-button class="md-fab" ng-href="/jobs/{{$app.selected.job.id}}/shipments/new">
+                      <md-tooltip md-direction="top" md-autohide="true">
+                        New Shipment
+                      </md-tooltip>
                       <md-icon class="material-icons">add</md-icon>
                     </md-button>
                   </div>
@@ -545,6 +554,9 @@
                   <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
                   <div layout="row" layout-align="end center">
                     <md-button class="md-fab" ng-href="/jobs/{{$app.selected.job.id}}/part-orders/new">
+                      <md-tooltip md-direction="top" md-autohide="true">
+                        New Part Order
+                      </md-tooltip>
                       <md-icon class="material-icons">add</md-icon>
                     </md-button>
                   </div>
@@ -598,6 +610,9 @@
                   <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
                   <div layout="row" layout-align="end center">
                     <md-button class="md-fab" ng-href="/jobs/{{$app.selected.job.id}}/zones/new">
+                      <md-tooltip md-direction="top" md-autohide="true">
+                        New Job Zone
+                      </md-tooltip>
                       <md-icon class="material-icons">add</md-icon>
                     </md-button>
                   </div>

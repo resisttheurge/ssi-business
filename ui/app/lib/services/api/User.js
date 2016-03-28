@@ -23,6 +23,10 @@ export default class User extends ApiService {
             resolve(this.endpoint.query({ }).$promise.then($unpack))
       )
 
+    this.get = userId =>
+      this.endpoint.get({ userId }).$promise
+        .then($unpack)
+
     this.create = item =>
       $q(
         (resolve, reject) =>

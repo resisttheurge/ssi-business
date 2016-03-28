@@ -27,52 +27,54 @@
         <md-content flex>
           <md-tabs md-dynamic-height md-border-bottom>
             <md-tab label="Shipment Details">
-              <form name="editForm" layout="column" layout-padding ng-hide="loading">
+              <form name="editForm" layout="column" ng-hide="loading">
                 <md-tabs md-dynamic-height md-align-tabs="bottom">
                   <md-tab label="Shipment">
-                    <div layout-gt-sm="row">
-                      <md-input-container>
-                        <label>Number</label>
-                        <input min = "1" ng-model="shipment.number" type="number"></input>
-                      </md-input-container>
-                    </div>
-                    <div layout-gt-sm="row">
-                        <md-input-container>
-                          <label>Shipment Status</label>
-                          <md-select ng-model="shipment.status">
-                            <md-option ng-repeat="status in shipmentStatuses" ng-value="status">
-                                   {{status}}
-                            </md-option>
-                          </md-select>
-                        </md-input-container>
-                        <md-input-container>
-                          <label>Weight</label>
-                          <input min ="0" ng-model="shipment.weight" type="number"></input>
-                        </md-input-container>
-                        <md-input-container>
-                          <label>Bill Of Lading</label>
-                          <input ng-model="shipment.billOfLading" type="text"></input>
-                        </md-input-container>
-                    </div>
-                    <label>Ship Date</label>
-                    <md-datepicker ng-model="shipment.shipDate" md-placeholder="Ship Date"></md-datepicker>
-                    <div layout-gt-sm="row">
-                        <md-input-container>
-                          <label>Shop</label>
-                          <md-select ng-model="shipment.shop">
-                            <md-option ng-repeat="shop in shops track by shop.id" ng-value="shop">
-                                   {{shop.label}}
-                            </md-option>
-                          </md-select>
-                        </md-input-container>
-                        <md-input-container>
-                          <label>Carrier</label>
-                          <md-select ng-model="shipment.carrier">
-                            <md-option ng-repeat="carrier in carriers track by carrier.id" ng-value="carrier">
-                                   {{carrier.label}}
-                            </md-option>
-                          </md-select>
-                        </md-input-container>
+                    <div layout="column">
+                      <div layout="row" layout-margin>
+                        <div layout="column" flex="70">
+                          <md-input-container>
+                            <label>Number</label>
+                            <input required min = "1" ng-model="shipment.number" type="number"></input>
+                          </md-input-container>
+                          <md-input-container>
+                            <label>Shop</label>
+                            <md-select ng-model="shipment.shop">
+                              <md-option ng-repeat="shop in shops track by shop.id" ng-value="shop">
+                                     {{shop.label}}
+                              </md-option>
+                            </md-select>
+                          </md-input-container>
+                          <md-input-container>
+                            <label>Carrier</label>
+                            <md-select ng-model="shipment.carrier">
+                              <md-option ng-repeat="carrier in carriers track by carrier.id" ng-value="carrier">
+                                     {{carrier.label}}
+                              </md-option>
+                            </md-select>
+                          </md-input-container>
+                        </div>
+                        <div layout="column" flex="30">
+                            <md-input-container>
+                              <label>Shipment Status</label>
+                              <md-select required ng-model="shipment.status">
+                                <md-option ng-repeat="status in shipmentStatuses" ng-value="status">
+                                       {{status}}
+                                </md-option>
+                              </md-select>
+                            </md-input-container>
+                            <md-input-container>
+                              <label>Weight</label>
+                              <input required min ="0" ng-model="shipment.weight" type="number"></input>
+                            </md-input-container>
+                            <md-input-container>
+                              <label>Bill Of Lading</label>
+                              <input ng-model="shipment.billOfLading" type="text"></input>
+                            </md-input-container>
+                            <label>Ship Date</label>
+                            <md-datepicker ng-model="shipment.shipDate" md-placeholder="Ship Date"></md-datepicker>
+                        </div>
+                      </div>
                     </div>
                   </md-tab>
                   <md-tab label ="Address">
@@ -117,7 +119,6 @@
                       <div layout-margin layout="column">
                         <div layout="column" flex="70" layout-align="space-between stretch">
                           <div>
-                            <label>Shipping Request Contact</label>
                             <div layout-gt-sm="column">
                               <md-input-container >
                                 <label>Contact</label>
@@ -140,18 +141,21 @@
                         </div>
                       </div>
                     </div>
+                    <md-divider></md-divider>
                   </md-tab>
                 </md-tabs>
               </form>
             </md-tab>
 
-            <md-tab label="Shipment Items">
+            <md-tab ng-if="update" label="Shipment Items">
               <div ng-controller="ShipmentItemListController">
               <md-table-container>
                 <table md-table md-progress="promise">
                   <thead md-head md-order="query.order" md-on-reorder="onReorder">
                     <tr md-row>
+                      <th md-column></th>
                       <th md-column>Shipment Item</th>
+                      <th md-column>Quantity</th>
                       <!-- more columns go here -->
                     </tr>
                   </thead>
@@ -181,7 +185,8 @@
                           </md-menu-content>
                         </md-menu>
                       </td>
-                      <td md-cell>{{shipmentItem.shippingItem.label}}</td>
+                      <td md-cell>{{shipmentItem.shippingItem.label ? shipmentItem.shippingItem.label : shipmentItem.shippingItem.id}}</td>
+                      <td md-cell>{{shipmentItem.quantity}}</td>
                       <!-- more cells go here -->
                     </tr>
                   </tbody>
@@ -195,7 +200,7 @@
               </div>
             </div>
             </md-tab>
-            <md-tab label="Reports">
+            <md-tab ng-if="update" label="Reports">
               <md-content class="md-padding">
                 <div ng-controller="ReportController as $reports">
 

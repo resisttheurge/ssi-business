@@ -62,7 +62,7 @@ export default class MarkZoneDetailController extends DetailController {
         if (
           shippingItemZone.shippingItemId &&
           shippingItemZone.zone &&
-          shippingItemZone.quantity
+          shippingItemZone.quantity !== undefined
         ) {
           ShippingItemZone.create(shippingItemZone)
           .then(

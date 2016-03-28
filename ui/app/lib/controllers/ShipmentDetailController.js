@@ -45,8 +45,12 @@ export default class ShipmentDetailController extends DetailController {
 
       $scope.update = function update(item)
       {
-        if (item.weight &&
-           item.number) {
+        if (
+          item.jobId &&
+          item.weight !== undefined &&
+          item.status &&
+          item.number !== undefined
+        ) {
           Shipment.update(item).then(function (data) { $mdDialog
             .show($mdDialog.alert()
             .title('Changes Saved!')
@@ -79,12 +83,14 @@ export default class ShipmentDetailController extends DetailController {
           }
         ).then(() => $scope.loading = false)
 
-      $scope.shipment = { jobId: $scope.job.id, status: 'ACTIVE', address: { lines: [{ id: 0, value: '' }] } }
+      $scope.shipment = { jobId: $scope.job.id, status: 'ACTIVE', weight: 0, address: { lines: [{ id: 0, value: '' }] } }
 
       $scope.create = shipment => {
         if (
-          shipment.weight &&
-          shipment.number
+          shipment.jobId &&
+          shipment.weight !== undefined &&
+          shipment.status &&
+          shipment.number !== undefined
         ) {
           Shipment.create(shipment).then(
             data =>

@@ -13,7 +13,7 @@
          <div class="md-toolbar-tools">
            <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2><a ng-href="/jobs/{{job.id}}/drawings/{{drawing.id}}">Drawing {{drawing.label}}</a></h2><i class="material-icons">keyboard_arrow_right</i> <h2>Mark {{mark.label}}</h2>
            <span flex></span>
-           <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update ? update(mark) : create(mark)">Save Changes!</md-button>
+           <md-button class="md-raised" ng-disabled="markDetailForm.$pristine" ng-click="update ? update(mark) : create(mark)">Save</md-button>
          </div>
         </md-toolbar>
 
@@ -23,72 +23,57 @@
             <form name="markDetailForm" layout="column" ng-hide="loading">
               <md-tabs md-dynamic-height md-align-tabs="bottom">
                 <md-tab label = "Mark">
-                <div layout="column" flex>
-                  <div layout-margin layout="row">
-                    <div layout="column" flex="70" layout-align="space-between stretch">
-                      <div layout-margin layout="row">
+                  <div layout="column" flex>
+                    <div layout-margin layout="row">
+                      <div layout="column" flex="70">
                         <md-input-container>
                           <label>Mark Label</label>
-                          <input md-maxlength ="100" required ng-model="mark.label" type="text">
+                          <input md-maxlength ="100" required ng-model="mark.label" type="text"></input>
+                        </md-input-container>
+                        <md-input-container flex>
+                          <label>Shop</label>
+                          <md-select ng-model="mark.shippingItem.shop">
+                            <md-option ng-repeat="shop in shops track by shop.id" ng-value="shop">
+                                   {{shop.label}}
+                            </md-option>
+                          </md-select>
+                        </md-input-container>
+                        <md-input-container>
+                          <label>Remarks</label>
+                          <textarea ng-model="mark.shippingItem.remarks" type="text"></textarea>
                         </md-input-container>
                       </div>
-
-                          <div>
-                            <label>Shipping Item</label>
-                          </div>
-                          <br></br>
-
-                        <div>
-                          <div layout="column" flex>
-                            <div layout-margin layout="row">
-                              <md-input-container>
-                                <label>Status</label>
-                                <md-select ng-model="mark.shippingItem.status">
-                                  <md-option ng-repeat="shippingItemStatus in shippingItemStatuses" ng-value="shippingItemStatus">
-                                         {{shippingItemStatus}}
-                                  </md-option>
-                                </md-select>
-                              </md-input-container>
-                              <md-input-container>
-                                <label>Shipping Item Label</label>
-                                <input ng-model="mark.shippingItem.label" type="text">
-                              </md-input-container>
-                              <md-input-container>
-                                <label>Requested</label>
-                                <input ng-model="mark.shippingItem.requested" type="number">
-                              </md-input-container>
-                            </div>
-
-                          <div>
-                            <md-input-container>
-                              <label>Completed</label>
-                              <input ng-model="mark.shippingItem.completed" type="number">
-                            </md-input-container>
-                            <md-input-container>
-                              <label>Remarks</label>
-                              <input ng-model="mark.shippingItem.remarks" type="text">
-                            </md-input-container>
-
-                             <div layout-margin layout="row">
-                               <md-input-container>
-                                 <label>Shop</label>
-                                 <md-select ng-model="mark.shippingItem.shop">
-                                   <md-option ng-repeat="shop in shops track by shop.id" ng-value="shop">
-                                          {{shop.label}}
-                                   </md-option>
-                                 </md-select>
-                               </md-input-container>
-                            </div>
-
-                          </div>
-
-                        </div>
+                      <md-divider></md-divider>
+                      <div layout="column" flex="30">
+                        <md-input-container>
+                          <label>Shipping Item Label</label>
+                          <input md-maxlength="100" ng-model="mark.shippingItem.label" type="text"></input>
+                        </md-input-container>
+                        <md-input-container>
+                          <label>Shipping Item Status</label>
+                          <md-select required ng-model="mark.shippingItem.status">
+                            <md-option ng-repeat="shippingItemStatus in shippingItemStatuses" ng-value="shippingItemStatus">
+                                   {{shippingItemStatus}}
+                            </md-option>
+                          </md-select>
+                        </md-input-container>
+                        <md-input-container>
+                          <label>Requested</label>
+                          <input required min="0" ng-model="mark.shippingItem.requested" type="number"></input>
+                        </md-input-container>
+                        <md-input-container>
+                          <label>Completed</label>
+                          <input required min="0" ng-model="mark.shippingItem.completed" type="number"></input>
+                        </md-input-container>
                       </div>
                     </div>
                   </div>
-                </div>
+                  <md-divider></md-divider>
+                </md-tab>
+                </form>
+                </md-tabs>
               </md-tab>
-              <md-tab label = "Zones">
+              <md-tab label = "Zones" ng-if="update">
                 <md-content layout-padding layout="column">
                   <md-table-container>
                     <table md-table md-progress="$shippingItemZone.promise">
@@ -96,6 +81,7 @@
                         <tr md-row>
                           <th md-column></th>
                           <th md-column>Zone</th>
+                          <th md-column>Quantity</th>
                           <!-- more columns go here -->
                         </tr>
                       </thead>
@@ -117,7 +103,7 @@
                                   </md-button>
                                 </md-menu-item>
                                 <md-menu-item>
-                                  <md-button ng-click="$shippingItemZone.delete(zone.zone)" class="md-warn md-hue-2">
+                                  <md-button ng-click="delete(zone)" class="md-warn md-hue-2">
                                     <md-icon class="material-icons" md-menu-align-target>delete</md-icon>
                                     Delete
                                   </md-button>
@@ -128,37 +114,41 @@
                           <td md-cell flex>
                             <span>{{zone.zone.number}}</span>
                           </td>
+                          <td md-cell flex>
+                            <span>{{zone.quantity}}</span>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
                   </md-table-container>
-
+                  <md-divider></md-divider>
+                  <div layout="row" layout-align="end center">
+                    <md-button class="md-fab" ng-href="/jobs/{{$ssiSelected.job.id}}/drawings/{{$ssiSelected.drawing.id}}/marks/{{$ssiSelected.mark.id}}/zones/new">
+                      <md-tooltip md-direction="top" md-autohide="true">
+                        New Shipping Item Zone
+                      </md-tooltip>
+                      <md-icon class="material-icons">add</md-icon>
+                    </md-button>
+                  </div>
               </md-content>
-              <div layout="row" layout-align="end center">
-                <md-button class="md-fab" ng-href="/jobs/{{$ssiSelected.job.id}}/drawings/{{$ssiSelected.drawing.id}}/marks/{{$ssiSelected.mark.id}}/zones/new">
-                  <md-icon class="material-icons">add</md-icon>
-                </md-button>
-              </div>
+<md-divider></md-divider>
               </md-tab>
-              </form>
-              </md-tabs>
-            </md-tab>
-          </md-tabs>
+            </md-tabs>
 
-          </md-content>
-        </div>
-      </md-card>
+            </md-content>
+          </div>
+        </md-card>
+      </div>
     </div>
-  </div>
-          <!--ShipmentItem(id: Option[Int],
-                        shipmentId: Int,
-                        shippingItem: ShippingItem,
-                        quantity: Int) -->
+            <!--ShipmentItem(id: Option[Int],
+                          shipmentId: Int,
+                          shippingItem: ShippingItem,
+                          quantity: Int) -->
 
-          <!-- ShippingItem(id: Option[Int],
-                     status: ShippingItemStatus = ShippingItemStatus.NS,
-                     label: Option[String] = None,
-                     requested: Int = 0,
-                     completed: Int = 0,
-                     remarks: Option[String] = None,
-                     shop: Option[Shop] = None) -->
+            <!-- ShippingItem(id: Option[Int],
+                       status: ShippingItemStatus = ShippingItemStatus.NS,
+                       label: Option[String] = None,
+                       requested: Int = 0,
+                       completed: Int = 0,
+                       remarks: Option[String] = None,
+                       shop: Option[Shop] = None) -->

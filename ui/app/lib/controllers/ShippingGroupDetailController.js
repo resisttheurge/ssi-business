@@ -84,7 +84,7 @@ export default class ShippingGroupDetailController extends DetailController {
         $scope.carriers = carriers
       }).then(() => $scope.loading = false)
 
-      $scope.shippingGroup = { jobId: $scope.job.id, rush: false, info: { address: { lines: [{ id: 0, value: '' }] } } }
+      $scope.shippingGroup = { jobId: $ssiSelected.job.id, rush: false, info: { address: { lines: [{ id: 0, value: '' }] } } }
 
       $scope.create = sg =>
       {

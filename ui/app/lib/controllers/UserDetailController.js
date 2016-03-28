@@ -3,7 +3,7 @@ import { DetailController } from 'utils'
 export default class UserDetailController extends DetailController {
   /*@ngInject*/
   constructor(
-    $scope, $routeParams, User, enums, $mdDialog, $route, $location
+    $scope, $routeParams, User, enums, $mdDialog, $route, $location, $q
   ) {
     super()
 
@@ -12,19 +12,20 @@ export default class UserDetailController extends DetailController {
     $scope.user.adminSelected = false;
     $scope.user.active = true;
 
-    if ($routeParams.userId) {
-      User.endpoint.get({ userId: $routeParams.userId }, function (response) {
-        $scope.loading = true
-        if (response.success) {
-          $scope.user = response.data
-          $scope.user.adminSelected = $scope.user.roles.indexOf('ADMIN') >= 0 ? true : false;
-        } else {
-          $scope.error = true
-          $scope.message = response.message
-        }
+    $scope.hasRole = role =>
+      $scope.user ?
+        $scope.user.roles ?
+          $scope.user.roles.indexOf(role) !== -1
+        : false
+      : false
 
-        $scope.loading = false
-      })
+    if ($routeParams.userId) {
+      this.refresh = () =>
+        $q.resolve($scope.loading = true)
+          .then(() => User.get($routeParams.userId))
+          .then(user => $scope.user = user)
+          .then(() => $scope.user.adminSelected = $scope.hasRole('ADMIN'))
+          .then(() => $scope.loading = false)
 
       $scope.update = function update(item) {
         User.update(item).then(
@@ -46,6 +47,8 @@ export default class UserDetailController extends DetailController {
             )
           })
       }
+
+      this.refresh()
 
     } else {
       $scope.create = function (item) {

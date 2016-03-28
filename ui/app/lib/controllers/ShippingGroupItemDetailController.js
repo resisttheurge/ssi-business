@@ -5,7 +5,7 @@ export default class ShippingGroupItemDetailController extends DetailController 
   constructor(
     $q, $scope, $routeParams, ShippingGroupItem, ShippingItemZoneByShippingItem,
      enums, $mdDialog, $ssiSelected, Shop, ShippingItemZone, $route, $location,
-     $log
+     $log, $mdToast
    ) {
     super()
 
@@ -14,6 +14,30 @@ export default class ShippingGroupItemDetailController extends DetailController 
     $scope.job = $ssiSelected.job;
     $scope.$shippingItemZone = ShippingItemZone;
     $scope.$ssiSelected = $ssiSelected;
+
+    $scope.delete = item =>
+      $mdDialog.show(
+        $mdDialog.confirm()
+          .title(`Are you sure?`)
+          .textContent(`Are you sure you want to delete shipping group item information for zone ${item.zone.number}?`)
+          .ok('ok')
+          .cancel('cancel')
+      )
+      .then(() => ShippingItemZone.delete(item))
+      .then(
+        () =>
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Deleted shipping group item information for zone ${item.zone.number}`)
+              .position('bottom right')
+          )
+          .then(() => $route.reload()),
+        reason => $mdToast.show(
+          $mdToast.simple()
+            .textContent(`Could not delete shipping group item information for zone ${item.zone.number} because ${reason}`)
+            .position('bottom right')
+          )
+      )
 
     if ($routeParams.shippingGroupItemId) {
 
@@ -32,7 +56,12 @@ export default class ShippingGroupItemDetailController extends DetailController 
       $scope.update = function update(item)
       {
         if (
-          item.shippingItemlabel
+          item.shippingGroupId &&
+          item.label &&
+          item.shippingItem &&
+          item.shippingItem.status &&
+          item.shippingItem.requested !== undefined &&
+          item.shippingItem.completed !== undefined
         ) {
           ShippingGroupItem.update(item).then(function (data) { $mdDialog
             .show($mdDialog.alert()
@@ -71,7 +100,12 @@ export default class ShippingGroupItemDetailController extends DetailController 
 
       $scope.create = item => {
         if (
-          item.label
+          item.shippingGroupId &&
+          item.label &&
+          item.shippingItem &&
+          item.shippingItem.status &&
+          item.shippingItem.requested !== undefined &&
+          item.shippingItem.completed !== undefined
         ) {
           ShippingGroupItem.create(item)
             .then(
