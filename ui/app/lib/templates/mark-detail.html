@@ -91,17 +91,16 @@
               <md-tab label = "Zones">
                 <md-content layout-padding layout="column">
                   <md-table-container>
-                    <table md-table md-progress="$jobs.promise">
-                      <thead md-head md-order="$jobs.query.order" md-on-reorder="$jobs.onReorder">
+                    <table md-table md-progress="$shippingItemZone.promise">
+                      <thead md-head md-order="$shippingItemZone.query.order" md-on-reorder="$shippingItemZone.onReorder">
                         <tr md-row>
                           <th md-column></th>
-                          <th md-column>Job</th>
-                          <th md-column md-order-by="status">Status</th>
+                          <th md-column>Zone</th>
                           <!-- more columns go here -->
                         </tr>
                       </thead>
                       <tbody md-body>
-                        <tr md-row ng-repeat="job in $jobs.jobs">
+                        <tr md-row ng-repeat="zone in zones">
                           <td md-cell class="md-checkbox-cell">
                             <md-menu md-offset="0 0">
                               <md-button ng-click="$mdOpenMenu()" class="md-icon-button">
@@ -112,13 +111,13 @@
                               </md-button>
                               <md-menu-content>
                                 <md-menu-item>
-                                  <md-button ng-click="$app.selected.job = job" ng-href="/jobs/{{job.id}}">
+                                  <md-button ng-click="$app.selected.mark.zone = zone" ng-href="/jobs/{{$ssiSelected.job.id}}/drawings/{{$ssiSelected.drawing.id}}/marks/{{$ssiSelected.mark.id}}/zones/{{zone.id}}">
                                     <md-icon class="material-icons" md-menu-align-target>edit</md-icon>
                                     Edit
                                   </md-button>
                                 </md-menu-item>
                                 <md-menu-item>
-                                  <md-button ng-click="$jobs.delete(job)" class="md-warn md-hue-2">
+                                  <md-button ng-click="$shippingItemZone.delete(zone.zone)" class="md-warn md-hue-2">
                                     <md-icon class="material-icons" md-menu-align-target>delete</md-icon>
                                     Delete
                                   </md-button>
@@ -127,19 +126,15 @@
                             </md-menu>
                           </td>
                           <td md-cell flex>
-                            <span>{{job | jobTitle}}</span>
+                            <span>{{zone.zone.number}}</span>
                           </td>
-                          <td md-cell flex>
-                            <span>{{job | jobStatus}}</span>
-                          </td>
-                          <!-- more cells go here -->
                         </tr>
                       </tbody>
                     </table>
                   </md-table-container>
-                </md-content>
-              </md-tab>
 
+              </md-content>
+              </md-tab>
               </form>
               </md-tabs>
             </md-tab>

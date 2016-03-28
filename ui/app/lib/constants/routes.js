@@ -213,7 +213,7 @@ export const routes = {
       allowedRoles: ['ADMIN', 'EMPLOYEE']
     }
   },
-  '/jobs/:jobId/shipping-groups/:shippingGroupId/items/:shippingGroupItemId/zones/:zoneId': {
+  '/jobs/:jobId/shipping-groups/:shippingGroupId/items/:shippingGroupItemId/zones/:shippingItemZoneId': {
     templateUrl: urls.shippingGroupItemZoneDetail,
     controller: controllers.ShippingGroupItemZoneDetailController.name,
     access: {
@@ -229,7 +229,7 @@ export const routes = {
       allowedRoles: ['ADMIN', 'EMPLOYEE']
     }
   },
-  '/jobs/:jobId/drawings/:drawingId/marks/:markId/zones/:zoneId': {
+  '/jobs/:jobId/drawings/:drawingId/marks/:markId/zones/:shippingItemZoneId': {
     templateUrl: urls.markZoneDetail,
     controller: controllers.MarkZoneDetailController.name,
     access: {

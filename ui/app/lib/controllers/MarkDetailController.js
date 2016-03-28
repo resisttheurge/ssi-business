@@ -2,8 +2,8 @@ import { DetailController } from 'utils'
 
 export default class MarkDetailController extends DetailController {
   /*@ngInject*/
-  constructor($q, Shop, $scope, $routeParams, Mark, ShippingItemZoneByShippingItem,
-     enums, $ssiSelected, $mdDialog, $log) {
+  constructor($q, Shop, $scope, $routeParams, Mark,
+    ShippingItemZone, ShippingItemZoneByShippingItem, enums, $ssiSelected, $mdDialog, $log) {
     super()
 
     $scope.shippingItemStatuses = enums.shippingItemStatuses
@@ -12,18 +12,14 @@ export default class MarkDetailController extends DetailController {
     $scope.$shippingItemZone = ShippingItemZone;
     $scope.$ssiSelected = $ssiSelected;
 
-    Mark.endpoint.get($routeParams, function (response) {
-      $scope.loading = true
-      if (response.success) {
-        $scope.mark = response.data
+    Mark.get($routeParams.markId).then(
+      function (response) {
+        $scope.loading = true
+        $scope.mark = response
         $scope.zones = response.shippingItemZones
-      } else {
-        $scope.error = true
-        $scope.message = response.message
+        $scope.loading = false
       }
-
-      $scope.loading = false
-    })
+    )
 
     $scope.refresh = () =>
       $q.all({

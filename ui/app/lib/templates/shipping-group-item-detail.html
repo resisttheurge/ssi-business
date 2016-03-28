@@ -18,8 +18,8 @@
             </div>
           </md-toolbar>
 
-          <md-content  layout-gt-sm="row" layout-padding>
-          <md-tabs md-dynamic-height md-border-bottom>
+          <md-content flex>
+          <md-tabs md-dynamic-height md-border-bottom >
             <md-tab label="Shipping Group Item Details">
             <form name="shippingGroupDetailForm" layout="column" flex style="overflow-x : hidden" ng-hide="loading">
               <md-tabs md-dynamic-height md-align-tabs="bottom">
@@ -87,13 +87,13 @@
                               </md-button>
                               <md-menu-content>
                                 <md-menu-item>
-                                  <md-button ng-click="$app.selected.shippingGroupItem.zone = zone.zone" ng-href="/jobs/{{$ssiSelected.job.id}}/shipping-groups/{{$ssiSelected.shippingGroup.id}}/item/{{$ssiSelected.shippingGroupItem.id}}/zones/{{zone.zone.id}}">
+                                  <md-button ng-click="$app.selected.shippingGroupItem.zone = zone" ng-href="/jobs/{{$ssiSelected.job.id}}/shipping-groups/{{$ssiSelected.shippingGroup.id}}/items/{{$ssiSelected.shippingGroupItem.id}}/zones/{{zone.id}}">
                                     <md-icon class="material-icons" md-menu-align-target>edit</md-icon>
                                     Edit
                                   </md-button>
                                 </md-menu-item>
                                 <md-menu-item>
-                                  <md-button ng-click="$shippingItemZone.delete(zone.zone)" class="md-warn md-hue-2">
+                                  <md-button ng-click="$shippingItemZone.delete(zone)" class="md-warn md-hue-2">
                                     <md-icon class="material-icons" md-menu-align-target>delete</md-icon>
                                     Delete
                                   </md-button>

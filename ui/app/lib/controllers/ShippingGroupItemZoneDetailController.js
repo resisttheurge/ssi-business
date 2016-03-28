@@ -3,22 +3,32 @@ import { DetailController } from 'utils'
 export default class ShippingGroupItemZoneDetailController extends DetailController {
   /*@ngInject*/
   constructor($scope, $routeParams,
-    Zone, ShippingItemZone, ShippingItemZoneByShippingItem, $mdDialog, $ssiSelected, $convertDate) {
+    Zone, ShippingItemZone, ShippingItemZoneByShippingItem,
+     $mdDialog, $ssiSelected, $convertDate, ZoneByJob, $q, $log
+   ) {
     super()
 
     $scope.job = $ssiSelected.job
 
-    this.refresh = () =>
-      Zone.get($routeParams.zoneId)
-        .then(zone => $scope.zone = zone)
-        .then(() => $scope.loading = false)
+    if ($routeParams.shippingItemZoneId) {
+      this.refresh = () =>
+        $q.all({
+          shippingItemZone: ShippingItemZone.get($routeParams.shippingItemZoneId),
+          zones: ZoneByJob.list($ssiSelected.job.id)
+        }).then(({ shippingItemZone, zones }) => {
+          $scope.shippingItemZone = shippingItemZone
+          $scope.zones = zones
+        }, error => $log.error(JSON.stringify(error))).then(() => $scope.loading = false)
 
-    if ($routeParams.zoneId) {
       $scope.loading = true
-      $scope.update = function update(item)
+      $scope.update = function update(shippingItemZone)
       {
-        if (item.number) {
-          Zone.update(item).then(function (data) { $mdDialog
+        if (
+          shippingItemZone.shippingItemId &&
+          shippingItemZone.zone &&
+          shippingItemZone.quantity
+        ) {
+          ShippingItemZone.update(shippingItemZone).then(function (data) { $mdDialog
             .show($mdDialog.alert()
             .title('Changes Saved!')
             .textContent('Changes to this record have been saved')
@@ -39,11 +49,22 @@ export default class ShippingGroupItemZoneDetailController extends DetailControl
 
       this.refresh()
     } else {
-      $scope.zone = { jobId: $scope.job.id }
+      this.refresh = () =>
+        $q.all({
+          zones: ZoneByJob.list($ssiSelected.job.id)
+        }).then(({ shippingItemZone, zones }) => {
+          $scope.zones = zones
+        }).then(() => $scope.loading = false)
 
-      $scope.create = zone => {
-        if (zone.number) {
-          Zone.create(zone)
+      $scope.shippingItemZone = { shippingItemId: $ssiSelected.shippingGroupItem.shippingItem.id, quantity: 0 }
+
+      $scope.create = shippingItemZone => {
+        if (
+          shippingItemZone.shippingItemId &&
+          shippingItemZone.zone &&
+          shippingItemZone.quantity
+        ) {
+          ShippingItemZone.create(shippingItemZone)
           .then(
             data =>
               $mdDialog.show(
@@ -51,7 +72,7 @@ export default class ShippingGroupItemZoneDetailController extends DetailControl
                   .title('Record created!')
                   .textContent('This record has been saved to the database')
                   .ok('Close')
-              ).then(() => $location.url(`/zones/${data.id}`)),
+              ).then(() => $location.path(`/jobs/${$ssiSelected.job.id}/shipping-groups/${$ssiSelected.shippingGroup.id}/items/${$ssiSelected.shippingGroupItem.id}/zones/${data.id}`)),
             error => {
               $log.error(JSON.stringify(error))
               $mdDialog.show(
