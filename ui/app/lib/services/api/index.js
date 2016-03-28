@@ -31,6 +31,7 @@ import ShippingGroupItem from './ShippingGroupItem'
 import ShippingGroupItemByShippingGroup from './ShippingGroupItemByShippingGroup'
 import ShippingItem from './ShippingItem'
 import ShippingItemZone from './ShippingItemZone'
+import ShippingItemByJob from './ShippingItemByJob'
 import ShippingItemZoneByShippingItem from './ShippingItemZoneByShippingItem'
 import Shop from './Shop'
 import SpecialtyItem from './SpecialtyItem'
@@ -74,6 +75,7 @@ angular
   .service('ShippingGroupItemByShippingGroup', ShippingGroupItemByShippingGroup)
   .service('ShippingItem', ShippingItem)
   .service('ShippingItemZone', ShippingItemZone)
+  .service('ShippingItemByJob', ShippingItemByJob)
   .service('ShippingItemZoneByShippingItem', ShippingItemZoneByShippingItem)
   .service('Shop', Shop)
   .service('SpecialtyItem', SpecialtyItem)

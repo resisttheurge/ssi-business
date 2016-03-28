@@ -2,7 +2,7 @@ import { DetailController } from 'utils'
 
 export default class ShipmentItemDetailController extends DetailController {
   /*@ngInject*/
-  constructor($scope, $routeParams, ShipmentItem, ShippingItemByJob, enums, $mdDialog, $ssiSelected, $log) {
+  constructor($scope, $routeParams, ShipmentItem, ShippingItemByJob, enums, $mdDialog, $ssiSelected, $log, $location) {
     super()
 
     $scope.shippingItemStatuses = enums.shippingItemStatuses
@@ -10,8 +10,9 @@ export default class ShipmentItemDetailController extends DetailController {
 
     $scope.shipment = $ssiSelected.shipment
     $scope.job = $ssiSelected.job
+    ShippingItemByJob.list($scope.job.id).then(collection => $scope.shippingItemCollection = collection);
 
-    $scope.shippingItemCollection = ShippingItemByJob.list($scope.job.id);
+    var self = this;
 
     this.refresh = () =>
       ShipmentItem.get($routeParams.shipmentItemId)
@@ -22,6 +23,7 @@ export default class ShipmentItemDetailController extends DetailController {
       $scope.loading = true
       $scope.update = function update(item)
       {
+        $scope.loading = true;
         ShipmentItem.update(item).then(function (data) { $mdDialog
           .show($mdDialog.alert()
           .title('Changes Saved!')
@@ -31,7 +33,7 @@ export default class ShipmentItemDetailController extends DetailController {
           .show($mdDialog.alert()
           .title('Failed to Save')
           .textContent('There has been an error, changes have not been saved')
-        .ok('Close'))});
+        .ok('Close'))}).finally(() => self.refresh());
       }
 
       this.refresh()

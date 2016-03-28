@@ -47,32 +47,12 @@
                 <label>Completed</label>
                 <input required ng-model="shipmentItem.shippingItem.completed" type="number"></input>
               </md-input-container>
-              <md-input-container>
-                <label>Remarks</label>
-                <input ng-model="shipmentItem.shippingItem.remarks" type="text"></input>
-              </md-input-container>
-              <md-input-container>
-                <label>Shop</label>
-                <md-select ng-model="shipmentItem.shop">
-                  <md-option ng-repeat="shop in shops track by shop.id" ng-value="shop">
-                         {{shop.label}}
-                  </md-option>
-                </md-select>
-              </md-input-container>
 
               <md-input-container>
                 <label>Quantity</label>
                 <input ng-model="shipmentItem.quantity" type="number" required></textarea>
               </md-input-container>
 
-              <md-input-container>
-                <label>Shipping Item</label>
-                <md-select ng-model="shipmentItem.shippingItem" placeholder="Shipping Item">
-                  <md-option ng-repeat="shippingItem in shippingItems track by shippingItem.id" ng-value="shippingItem">
-                    {{shippingItem.label}}
-                  </md-option>
-                </md-select>
-              </md-input-container>
               <md-input-container>
 
                 <label>Shipping Item</label>
