@@ -2,7 +2,7 @@ import { DetailController } from 'utils'
 
 export default class ManufacturerDetailController extends DetailController {
   /*@ngInject*/
-  constructor($mdDialog, $scope, $routeParams, Manufacturer) {
+  constructor($mdDialog, $scope, $routeParams, Manufacturer, $route, $location) {
     super()
     if ($routeParams.manufacturerId) {
       Manufacturer.endpoint.get({ manufacturerId: $routeParams.manufacturerId }, function (response) {
@@ -26,7 +26,7 @@ export default class ManufacturerDetailController extends DetailController {
                 .title('Changes Saved!')
                 .textContent('Changes to this record have been saved')
                 .ok('Close')
-            )
+            ).then(() => $route.reload())
           }, function (error) {
 
             $mdDialog.show(
@@ -46,7 +46,7 @@ export default class ManufacturerDetailController extends DetailController {
                 .title('Record created!')
                 .textContent('This record has been saved to the database')
                 .ok('Close')
-            ),
+            ).then(() => $location.path(`/manufacturers/${data.id}`)),
           error =>
             $mdDialog.show(
               $mdDialog.alert()

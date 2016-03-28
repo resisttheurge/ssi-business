@@ -2,7 +2,9 @@ import { DetailController } from 'utils'
 
 export default class ShopDetailController extends DetailController {
   /*@ngInject*/
-  constructor($mdDialog, $scope, $routeParams, Shop) {
+  constructor(
+    $mdDialog, $scope, $routeParams, Shop, $location, $route
+  ) {
     super()
     if ($routeParams.shopId) {
 
@@ -26,7 +28,7 @@ export default class ShopDetailController extends DetailController {
             .show($mdDialog.alert()
             .title('Changes Saved!')
             .textContent('Changes to this record have been saved')
-            .ok('Close'));
+            .ok('Close')).then(() => $route.reload());
 
           }, function (error) { $mdDialog
             .show($mdDialog.alert()
@@ -50,7 +52,7 @@ export default class ShopDetailController extends DetailController {
                 .title('Record created!')
                 .textContent('This record has been saved to the database')
                 .ok('Close')
-            ),
+            ).then(() => $location.path(`/shops/${data.id}`)),
           error =>
             $mdDialog.show(
               $mdDialog.alert()

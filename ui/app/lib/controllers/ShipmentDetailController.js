@@ -2,8 +2,9 @@ import { DetailController } from 'utils'
 
 export default class ShipmentDetailController extends DetailController {
   /*@ngInject*/
-  constructor($q, $scope, $routeParams, Shipment, enums,
-    $ssiSelected, $mdDialog, $convertDate, $log, Shop, Carrier, $location) {
+  constructor($q, $scope, $routeParams, Shipment, enums, $ssiSelected, $mdDialog,
+    $convertDate, $log, Shop, Carrier, $location, $route
+  ) {
     super()
 
     $scope.shipmentStatuses = enums.shipmentStatuses
@@ -50,7 +51,7 @@ export default class ShipmentDetailController extends DetailController {
             .show($mdDialog.alert()
             .title('Changes Saved!')
             .textContent('Changes to this record have been saved')
-            .ok('Close'));
+            .ok('Close')).then(() => $route.reload());
           }, function (error) { $mdDialog
             .show($mdDialog.alert()
             .title('Failed to Save')
@@ -92,7 +93,7 @@ export default class ShipmentDetailController extends DetailController {
                   .title('Record created!')
                   .textContent('This record has been saved to the database')
                   .ok('Close')
-              ).then(() => $location.url(`/shipments/${data.id}`)),
+              ).then(() => $location.path(`/jobs/${$ssiSelected.job.id}/shipments/${data.id}`)),
             error => {
               $log.error(JSON.stringify(error))
               $mdDialog.show(

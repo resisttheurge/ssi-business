@@ -4,7 +4,7 @@ export default class MarkZoneDetailController extends DetailController {
   /*@ngInject*/
   constructor($scope, $routeParams,
     Zone, ShippingItemZone, ShippingItemZoneByShippingItem, $mdDialog,
-    $ssiSelected, $convertDate, $q, ZoneByJob
+    $ssiSelected, $convertDate, $q, ZoneByJob, $location, $route
   ) {
     super()
 

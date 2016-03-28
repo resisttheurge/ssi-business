@@ -99,7 +99,7 @@ export default class DrawingDetailController extends DetailController {
                    .title('Record created!')
                    .textContent('This record has been saved to the database')
                    .ok('Close')
-               ).then(() => $location.path(`/drawings/${data.id}`)),
+               ).then(() => $location.path(`/jobs/${$ssiSelected.job.id}/drawings/${data.id}`)),
              error => {
                $log.error(JSON.stringify(error))
                $mdDialog.show(

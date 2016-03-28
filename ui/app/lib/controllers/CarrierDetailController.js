@@ -2,7 +2,7 @@ import { DetailController } from 'utils'
 
 export default class CarrierDetailController extends DetailController {
   /*@ngInject*/
-  constructor($scope, $routeParams, $mdDialog, Carrier) {
+  constructor($scope, $routeParams, $mdDialog, Carrier, $location, $route) {
     super()
     if ($routeParams.carrierId) {
       $scope.update = function update(item)
@@ -12,7 +12,7 @@ export default class CarrierDetailController extends DetailController {
             .show($mdDialog.alert()
             .title('Changes Saved!')
             .textContent('Changes to this record have been saved')
-            .ok('Close'));
+            .ok('Close')).then(() => $route.reload());
           }, function (error) { $mdDialog
             .show($mdDialog.alert()
             .title('Failed to Save')
@@ -47,7 +47,7 @@ export default class CarrierDetailController extends DetailController {
                 .title('Record created!')
                 .textContent('This record has been saved to the database')
                 .ok('Close')
-            ),
+            ).then(() => $location.path(`/carriers/${data.id}`)),
           error =>
             $mdDialog.show(
               $mdDialog.alert()

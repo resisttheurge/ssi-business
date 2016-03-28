@@ -2,7 +2,9 @@ import { DetailController } from 'utils'
 
 export default class UserDetailController extends DetailController {
   /*@ngInject*/
-  constructor($scope, $routeParams, User, enums, $mdDialog) {
+  constructor(
+    $scope, $routeParams, User, enums, $mdDialog, $route, $location
+  ) {
     super()
 
     $scope.userRoleTypes = enums.userRoleTypes
@@ -33,7 +35,7 @@ export default class UserDetailController extends DetailController {
                 .title('Changes Saved!')
                 .textContent('Changes to this record have been saved')
                 .ok('Close')
-            )
+            ).then(() => $route.reload())
           }, function (error) {
 
             $mdDialog.show(
@@ -58,7 +60,7 @@ export default class UserDetailController extends DetailController {
                 .title('Record created!')
                 .textContent('This record has been saved to the database')
                 .ok('Close')
-            ),
+            ).then(() => $location.path(`/users/${data.id}`)),
           error =>
             $mdDialog.show(
               $mdDialog.alert()

@@ -2,7 +2,10 @@ import { DetailController } from 'utils'
 
 export default class ZoneDetailController extends DetailController {
   /*@ngInject*/
-  constructor($scope, $routeParams, Zone, $mdDialog, $ssiSelected, $convertDate) {
+  constructor(
+    $scope, $routeParams, Zone, $mdDialog, $ssiSelected, $convertDate,
+    $location, $route
+  ) {
     super()
 
     $scope.job = $ssiSelected.job
@@ -21,7 +24,7 @@ export default class ZoneDetailController extends DetailController {
             .show($mdDialog.alert()
             .title('Changes Saved!')
             .textContent('Changes to this record have been saved')
-            .ok('Close'));
+            .ok('Close')).then(() => $route.reload());
           }, function (error) { $mdDialog
             .show($mdDialog.alert()
             .title('Failed to Save')
@@ -50,7 +53,7 @@ export default class ZoneDetailController extends DetailController {
                   .title('Record created!')
                   .textContent('This record has been saved to the database')
                   .ok('Close')
-              ).then(() => $location.url(`/zones/${data.id}`)),
+              ).then(() => $location.url(`/jobs/${$ssiSelected.job.id}/zones/${data.id}`)),
             error => {
               $log.error(JSON.stringify(error))
               $mdDialog.show(

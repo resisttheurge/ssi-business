@@ -2,8 +2,11 @@ import { DetailController } from 'utils'
 
 export default class ShippingGroupItemDetailController extends DetailController {
   /*@ngInject*/
-  constructor($q, $scope, $routeParams, ShippingGroupItem, ShippingItemZoneByShippingItem,
-     enums, $mdDialog, $ssiSelected, Shop, ShippingItemZone) {
+  constructor(
+    $q, $scope, $routeParams, ShippingGroupItem, ShippingItemZoneByShippingItem,
+     enums, $mdDialog, $ssiSelected, Shop, ShippingItemZone, $route, $location,
+     $log
+   ) {
     super()
 
     $scope.shippingItemStatuses = enums.shippingItemStatuses
@@ -12,36 +15,30 @@ export default class ShippingGroupItemDetailController extends DetailController 
     $scope.$shippingItemZone = ShippingItemZone;
     $scope.$ssiSelected = $ssiSelected;
 
-    ShippingGroupItem.get($routeParams.shippingGroupItemId).then(
-      function (response) {
-        $scope.loading = true
-        $scope.shippingGroupItem = response
-        $scope.zones = response.shippingItemZones
-        $scope.loading = false
-      }
-    )
-
-    $scope.refresh = () =>
-      $q.all({
-        shippingGroupItem: ShippingGroupItem.get($routeParams.shippingGroupItemId),
-        shops: Shop.list()
-      }).then(
-        ({ shippingGroupItem, shops }) => {
-          $scope.shippingGroupItem = shippingGroupItem
-          $scope.shops = shops
-        }
-      ).then(() => $scope.loading = false)
-
     if ($routeParams.shippingGroupItemId) {
+
+      this.refresh = () =>
+        $q.all({
+          shippingGroupItem: ShippingGroupItem.get($routeParams.shippingGroupItemId),
+          shops: Shop.list()
+        }).then(
+          ({ shippingGroupItem, shops }) => {
+            $scope.shippingGroupItem = shippingGroupItem
+            $scope.zones = shippingGroupItem.shippingItemZones
+            $scope.shops = shops
+          }
+        ).then(() => $scope.loading = false)
 
       $scope.update = function update(item)
       {
-        if (item.label) {
+        if (
+          item.shippingItemlabel
+        ) {
           ShippingGroupItem.update(item).then(function (data) { $mdDialog
             .show($mdDialog.alert()
             .title('Changes Saved!')
             .textContent('Changes to this record have been saved')
-            .ok('Close'));
+            .ok('Close')).then(() => $route.reload());
           }, function (error) { $mdDialog
             .show($mdDialog.alert()
             .title('Failed to Save')
@@ -57,31 +54,26 @@ export default class ShippingGroupItemDetailController extends DetailController 
 
       }
 
-      $scope.refresh()
+      this.refresh()
 
     } else {
-      $scope.create = item =>
 
-        // ShippingGroupItem.create(item).then(
-        //   data =>
-        //     $mdDialog.show(
-        //       $mdDialog.alert()
-        //         .title('Record created!')
-        //         .textContent('This record has been saved to the database')
-        //         .ok('Close')
-        //     ),
-        //   error =>
-        //     $mdDialog.show(
-        //       $mdDialog.alert()
-        //         .title('Failed to create record')
-        //         .textContent('There has been an error, record could not be created')
-        //         .ok('Close')
-        //     )
-        // )
-        {
-          {
-            shippingGroupItem.shippingGroupId = $ssiSelected.shippingGroup.id;
-            ShippingGroupItem.create(shippingGroupItem)
+      this.refresh = () =>
+        $q.all({
+          shops: Shop.list()
+        }).then(
+          ({ shops }) => {
+            $scope.shops = shops
+          }
+        ).then(() => $scope.loading = false)
+
+      $scope.shippingGroupItem = { shippingGroupId: $ssiSelected.shippingGroup.id, shippingItem: { status: 'NS', requested: 0, completed: 0 } }
+
+      $scope.create = item => {
+        if (
+          item.label
+        ) {
+          ShippingGroupItem.create(item)
             .then(
               item =>
                 $mdDialog.show(
@@ -89,7 +81,7 @@ export default class ShippingGroupItemDetailController extends DetailController 
                     .title('Record created!')
                     .textContent('This record has been saved to the database')
                     .ok('Close')
-                ).then(() => $location.url(`/jobs/${$ssiSelected.job.id}/drawings/${$ssiSelected.drawing.id}`)),
+                ).then(() => $location.url(`/jobs/${$ssiSelected.job.id}/shipping-groups/${$ssiSelected.shippingGroup.id}/items/${item.id}`)),
               error => {
                 $log.error(JSON.stringify(error))
                 $mdDialog.show(
@@ -100,11 +92,16 @@ export default class ShippingGroupItemDetailController extends DetailController 
                 )
               }
             )
-
-          }
+        } else {
+          $mdDialog
+           .show($mdDialog.alert()
+           .title('Failed to Save')
+           .textContent('Invalid data')
+         .ok('Close'))
         }
+      }
 
-      $scope.refresh()
+      this.refresh()
 
     }
   }

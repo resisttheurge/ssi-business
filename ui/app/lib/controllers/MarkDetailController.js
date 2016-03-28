@@ -2,8 +2,10 @@ import { DetailController } from 'utils'
 
 export default class MarkDetailController extends DetailController {
   /*@ngInject*/
-  constructor($q, Shop, $scope, $routeParams, Mark,
-    ShippingItemZone, ShippingItemZoneByShippingItem, enums, $ssiSelected, $mdDialog, $log) {
+  constructor(
+    $q, Shop, $scope, $routeParams, Mark, enums, $ssiSelected, $mdDialog, $log,
+    $location, $route, ShippingItemZone
+  ) {
     super()
 
     $scope.shippingItemStatuses = enums.shippingItemStatuses
@@ -12,31 +14,31 @@ export default class MarkDetailController extends DetailController {
     $scope.$shippingItemZone = ShippingItemZone;
     $scope.$ssiSelected = $ssiSelected;
 
-    Mark.get($routeParams.markId).then(
-      function (response) {
-        $scope.loading = true
-        $scope.mark = response
-        $scope.zones = response.shippingItemZones
-        $scope.loading = false
-      }
-    )
-
-    $scope.refresh = () =>
-      $q.all({
-        mark: Mark.get($routeParams.markId),
-        shops: Shop.list()
-      }).then(
-        ({ mark, shops }) => {
-          $scope.mark = mark
-          $scope.shops = shops
-        }
-      ).then(() => $scope.loading = false)
+    $scope.loading = true
 
     if ($routeParams.markId) {
 
+      this.refresh = () =>
+        $q.all({
+          mark: Mark.get($routeParams.markId),
+          shops: Shop.list()
+        }).then(
+          ({ mark, shops }) => {
+            $scope.mark = mark
+            $scope.zones = mark.shippingItemZones
+            $scope.shops = shops
+          }
+        ).then(() => $scope.loading = false)
+
       $scope.update = function update(item)
       {
-        if (item.label) {
+        if (
+          mark.drawingId &&
+          mark.shippingItem &&
+          mark.shippingItem.status &&
+          mark.shippingItem.requested !== undefined &&
+          mark.shippingItem.completed !== undefined
+        ) {
           Mark.update(item).then(function (data) { $mdDialog
             .show($mdDialog.alert()
             .title('Changes Saved!')
@@ -57,40 +59,59 @@ export default class MarkDetailController extends DetailController {
 
       }
 
-      $scope.refresh()
+      this.refresh()
 
     } else {
-      // $scope.shipment = {
-      //   drawingId: $scope.drawingId.id, status: 'ACTIVE', address: { lines: [{ id: 0, value: '' }] } }
+      this.refresh = () =>
+        $q.all({
+          shops: Shop.list()
+        }).then(
+          ({ shops }) => {
+            $scope.shops = shops
+          }
+        ).then(() => $scope.loading = false)
+
+      $scope.mark = { drawingId: $ssiSelected.id, shippingItem: { status: 'NS', requested: 0, completed: 0 } }
 
       $scope.create = mark =>
-    {
       {
-        mark.drawingId = $ssiSelected.drawing.id;
-        Mark.create(mark)
-        .then(
-          data =>
-            $mdDialog.show(
-              $mdDialog.alert()
-                .title('Record created!')
-                .textContent('This record has been saved to the database')
-                .ok('Close')
-            ).then(() => $location.url(`/jobs/${$ssiSelected.job.id}/drawings/${$ssiSelected.drawing.id}`)),
-          error => {
-            $log.error(JSON.stringify(error))
-            $mdDialog.show(
-              $mdDialog.alert()
-                .title('Failed to create record')
-                .textContent('There has been an error, record could not be created')
-                .ok('Close')
-            )
-          }
-        )
+        if (
+          mark.drawingId &&
+          mark.shippingItem &&
+          mark.shippingItem.status &&
+          mark.shippingItem.requested !== undefined &&
+          mark.shippingItem.completed !== undefined
+        ) {
+          Mark.create(mark)
+          .then(
+            data =>
+              $mdDialog.show(
+                $mdDialog.alert()
+                  .title('Record created!')
+                  .textContent('This record has been saved to the database')
+                  .ok('Close')
+              ).then(() => $location.path(`/jobs/${$ssiSelected.job.id}/drawings/${$ssiSelected.drawing.id}/marks/${data.id}`)),
+            error => {
+              $log.error(JSON.stringify(error))
+              $mdDialog.show(
+                $mdDialog.alert()
+                  .title('Failed to create record')
+                  .textContent('There has been an error, record could not be created')
+                  .ok('Close')
+              )
+            }
+          )
+        } else {
+          $mdDialog
+           .show($mdDialog.alert()
+           .title('Failed to Save')
+           .textContent('Invalid data')
+         .ok('Close'))
+        }
 
       }
-    }
 
-      $scope.refresh()
+      this.refresh()
     }
   }
 }

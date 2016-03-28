@@ -4,7 +4,7 @@ export default class PartOrderDetailController extends DetailController {
   /*@ngInject*/
   constructor(
     $mdDialog, $scope, $routeParams, Manufacturer, Part, PartOrder, Vendor,
-    enums, $ssiSelected, $convertDate, $q, DrawingByJob, $log
+    enums, $ssiSelected, $convertDate, $q, DrawingByJob, $log, $route, $location
   ) {
     super()
     $scope.loading = true
@@ -40,7 +40,7 @@ export default class PartOrderDetailController extends DetailController {
             .alert()
             .title('Changes Saved!')
             .textContent('Changes to this record have been saved')
-            .ok('Close'));
+            .ok('Close')).then(() => $route.reload());
           }, function (error) { $mdDialog
             .show($mdDialog.alert()
             .title('Failed to Save')
@@ -86,7 +86,7 @@ export default class PartOrderDetailController extends DetailController {
                   .title('Record created!')
                   .textContent('This record has been saved to the database')
                   .ok('Close')
-              ),
+              ).then(() => $location.path(`/jobs/${$ssiSelected.job.id}/part-orders/${data.id}`)),
             error =>
               $mdDialog.show(
                 $mdDialog.alert()

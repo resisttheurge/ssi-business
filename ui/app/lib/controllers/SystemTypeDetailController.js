@@ -2,7 +2,9 @@ import { DetailController } from 'utils'
 
 export default class SystemTypeDetailController extends DetailController {
   /*@ngInject*/
-  constructor($mdDialog, $scope, $routeParams, SystemType) {
+  constructor(
+    $mdDialog, $scope, $routeParams, SystemType, $route, $location
+  ) {
     super()
     if ($routeParams.systemTypeId) {
       SystemType.endpoint.get({ systemTypeId: $routeParams.systemTypeId }, function (response) {
@@ -24,7 +26,7 @@ export default class SystemTypeDetailController extends DetailController {
             .show($mdDialog.alert()
             .title('Changes Saved!')
             .textContent('Changes to this record have been saved')
-            .ok('Close'));
+            .ok('Close')).then(() => $route.reload());
           }, function (error) { $mdDialog
             .show($mdDialog.alert()
             .title('Failed to Save')
@@ -48,7 +50,7 @@ export default class SystemTypeDetailController extends DetailController {
                 .title('Record created!')
                 .textContent('This record has been saved to the database')
                 .ok('Close')
-            ),
+            ).then(() => $location.path(`/system-types/${data.id}`)),
           error =>
             $mdDialog.show(
               $mdDialog.alert()

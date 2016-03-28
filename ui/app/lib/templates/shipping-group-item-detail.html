@@ -29,7 +29,7 @@
 
                 <md-input-container>
                   <label>Label</label>
-                  <input md-maxlength = "250" ng-model="shippingGroupItem.shippingItem.label" type="text">
+                  <input md-maxlength = "250" ng-model="shippingGroupItem.label" type="text">
                 </md-input-container>
 
                 <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
@@ -72,6 +72,7 @@
                         <tr md-row>
                           <th md-column></th>
                           <th md-column>Zone</th>
+                          <th md-column>Quantity</th>
                           <!-- more columns go here -->
                         </tr>
                       </thead>
@@ -104,12 +105,20 @@
                           <td md-cell flex>
                             <span>{{zone.zone.number}}</span>
                           </td>
+                          <td md-cell flex>
+                            <span>{{zone.quantity}}</span>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
                   </md-table-container>
 
               </md-content>
+              <div layout="row" layout-align="end center">
+                <md-button class="md-fab" ng-href="/jobs/{{$ssiSelected.job.id}}/shipping-groups/{{$ssiSelected.shippingGroup.id}}/items/{{$ssiSelected.shippingGroupItem.id}}/zones/new">
+                  <md-icon class="material-icons">add</md-icon>
+                </md-button>
+              </div>
               </md-tab>
 
             </form>
