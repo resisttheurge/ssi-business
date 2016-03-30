@@ -5,6 +5,7 @@ lazy val `ssi-business` =
     .settings(
       name := "ssi-business",
       libraryDependencies ++= deps.main,
+      javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
       addCompilerPlugin("org.scalamacros" %% "paradise" % "2.1.+" cross CrossVersion.full),
       unmanagedSourceDirectories in Compile += baseDirectory.value / "generated",
       unmanagedResourceDirectories in Compile += baseDirectory.value / "ui" / "dist",
