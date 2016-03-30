@@ -19,7 +19,7 @@ const entry = {
 // output options and file(s)
 const output = {
   path: path.resolve(__dirname, 'dist', 'app'),
-  publicPath: production ? 'http://10.1.1.136/' : 'http://localhost:8080/',
+  publicPath: production ? 'http://192.168.0.5/' : 'http://localhost:8080/',
   filename: '[name].[hash].js',
   chunkFilename: '[name].[hash].js'
 }
