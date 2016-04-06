@@ -124,9 +124,6 @@ const prodPlugins =
     new webpack.NoErrorsPlugin(),
     new webpack.optimize.DedupePlugin()
 
-    // new webpack.optimize.UglifyJsPlugin({
-    //   mangle: false
-    // })
   ] : []
 
 const plugins = [
