@@ -101,7 +101,7 @@
                               </label>
                               <md-datepicker ng-model="job.completeDate" md-placeholder="Complete Date"></md-datepicker>
                             </div>
-                            <div layout-margin layout="row">
+                            <div layout-margin layout="row" ng-hide="!$app.user.hasRole('ADMIN')">
                               <md-input-container flex>
                                 <label>Contract Price</label>
                                 <input max="9999999999999999999.9999" min="0.0001" ng-model="job.contractPrice" type="number" step="0.0001">
