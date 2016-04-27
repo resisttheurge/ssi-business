@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class JobListController extends ListController {
   /*@ngInject*/
-  constructor($q, $route, $filter, $scope, Job, enums, $mdDialog, $mdToast) {
+  constructor($q, $route, $filter, $scope, Job, enums, $mdDialog, $mdToast, JobAddresses) {
     super()
 
     var self = this;
@@ -13,11 +13,13 @@ export default class JobListController extends ListController {
     this.query = {
       page: 1,
       limit: 10,
-      order: 'id',
+      order: ['identifier.label', 'identifier.year', 'identifier.prefix'],
       filters: {
         active: true
       }
     }
+
+    self.JobAddresses = JobAddresses;
 
     $scope.$watch('showInactive',
                     function toggle(newValue, oldValue) {
@@ -74,17 +76,36 @@ export default class JobListController extends ListController {
           )
       )
 
-    this.getJobs = () =>
+    this.attachDisplayAddress = jobs =>
+    {
+      jobs.forEach(job => {
+
+        JobAddresses.get({ jobId: job.id }).then(address => {
+
+          job.displayAddress =
+            {
+              city: address.shipping.city,
+              state: address.shipping.stateOrProvince
+            }
+
+        });
+
+      });
+      return jobs;
+    }
+
+    self.getJobs = () =>
       this.promise =
         Job.list(this.query.filters)
           .then(::this.jobSearchFilter)
           .then(::this.storeTotal)
+          .then(this.attachDisplayAddress)
           .then(this.sort(this.query))
           .then(this.page(this.query))
           .then(::this.store)
 
     $scope.$watchCollection(() => this.search, (o) => this.getJobs())
-    this.getJobs()
+    self.getJobs()
   }
 
   jobSearchFilter(jobs) {
@@ -107,7 +128,10 @@ export default class JobListController extends ListController {
   }
 
   sort({ order }) {
-    return array => this.orderBy(array, order)
+    return array => {
+      order.forEach(constraint => array = this.orderBy(array, constraint));
+      return array;
+    }
   }
 
   page({ page, limit }) {

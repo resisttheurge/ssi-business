@@ -45,7 +45,9 @@
                   <th md-column></th>
                   <th md-column>Job</th>
                   <th md-column md-order-by="status">Status</th>
-                  <!-- more columns go here -->
+                  <th md-column>Client</th>
+                  <th md-column>City</th>
+                  <th md-column>State</th>
                 </tr>
               </thead>
               <tbody md-body>
@@ -79,6 +81,15 @@
                   </td>
                   <td md-cell flex>
                     <span>{{job | jobStatus}}</span>
+                  </td>
+                  <td md-cell flex>
+                    <span>{{job.contact.label}}</span>
+                  </td>
+                  <td md-cell flex>
+                    <span>{{job.displayAddress.city}}</span>
+                  </td>
+                  <td md-cell flex>
+                    <span>{{job.displayAddress.state}}</span>
                   </td>
                   <!-- more cells go here -->
                 </tr>
