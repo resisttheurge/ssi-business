@@ -345,6 +345,9 @@
                         <tr md-row>
                           <th md-column></th>
                           <th md-column>Drawing</th>
+                          <th md-column>Description</th>
+                          <th md-column>Revision Level</th>
+                          <th md-column>Type</th>
                           <!-- more columns go here -->
                         </tr>
                       </thead>
@@ -375,6 +378,9 @@
                             </md-menu>
                           </td>
                           <td md-cell>{{drawing.label}}</td>
+                          <td md-cell>{{drawing.info.title}}</td>
+                          <td md-cell>{{drawing.info.revision}}</td>
+                          <td md-cell>{{drawing.info.tagType}}</td>
                           <!-- more cells go here -->
                         </tr>
                       </tbody>
@@ -394,7 +400,7 @@
             </md-tab>
 
             <!-- Shipping Groups -->
-            <md-tab ng-if="update" label="Shipping Groups">
+            <md-tab ng-if="update" label="RMS">
               <md-content class="md-padding">
                 <div ng-controller="ShippingGroupListController">
                   <md-table-container>
@@ -403,6 +409,7 @@
                         <tr md-row>
                           <th md-column></th>
                           <th md-column>Shipping Group</th>
+                          <th md-column>Title</th>
                           <!-- more columns go here -->
                         </tr>
                       </thead>
@@ -433,6 +440,7 @@
                             </md-menu>
                           </td>
                           <td md-cell>{{shippingGroup.label}}</td>
+                          <td md-cell>{{shippingGroup.info.title}}</td>
                           <!-- more cells go here -->
                         </tr>
                       </tbody>
@@ -460,6 +468,11 @@
                       <thead md-head md-order="query.order" md-on-reorder="onReorder">
                         <tr md-row>
                           <th md-column>Shipment</th>
+                          <th md-column>Ship From</th>
+                          <th md-column>Ship Via</th>
+                          <th md-column>Weight</th>
+                          <th md-column>Bill Of Lading</th>
+                          <th md-column>Weight</th>
                           <!-- more columns go here -->
                         </tr>
                       </thead>
@@ -490,6 +503,11 @@
                             </md-menu>
                           </td>
                           <td md-cell>{{shipment.number}}</td>
+                          <td md-cell>{{shipment.shop.label}}</td>
+                          <td md-cell>{{shipment.carrier.label}}</td>
+                          <td md-cell>{{shipment.weight}}</td>
+                          <td md-cell>{{shipment.billOfLading}}</td>
+                          <td md-cell>{{shipment.shipDate}}</td>
                           <!-- more cells go here -->
                         </tr>
                       </tbody>
@@ -508,14 +526,14 @@
               </md-content>
             </md-tab>
 
-            <md-tab ng-if="update" label="Part Orders">
+            <md-tab ng-if="update" label="ABM">
               <md-content class="md-padding">
                 <div ng-controller="PartOrderListController">
                   <md-table-container>
                     <table md-table md-progress="promise">
                       <thead md-head md-order="query.order" md-on-reorder="onReorder">
                         <tr md-row>
-                          <th md-column>Part Order</th>
+                          <th md-column>ABM #</th>
                           <!-- more columns go here -->
                         </tr>
                       </thead>
@@ -545,7 +563,9 @@
                               </md-menu-content>
                             </md-menu>
                           </td>
-                          <td md-cell>[{{partOrder.id}}] {{partOrder.part.number}}</td>
+                          <td md-cell>{{$index + 1}}</td>
+                          <td md-cell>{{partOrder.part.description}}</td>
+                          <td md-cell>{{partOrder.status}}</td>
                           <!-- more cells go here -->
                         </tr>
                       </tbody>

@@ -243,7 +243,11 @@
                     <table md-table md-progress="promise">
                       <thead md-head md-order="query.order" md-on-reorder="onReorder">
                         <tr md-row>
+                          <th md-column></th>
                           <th md-column>Mark</th>
+                          <th md-column>Description</th>
+                          <th md-column>Required</th>
+                          <th md-column>Shipped</th>
                           <!-- more columns go here -->
                         </tr>
                       </thead>
@@ -274,6 +278,9 @@
                             </md-menu>
                           </td>
                           <td md-cell>{{mark.label}}</td>
+                          <td md-cell>{{mark.shippingItem.label}}</td>
+                          <td md-cell>{{mark.shippingItem.requested}}</td>
+                          <td md-cell>{{mark.shippingItem.completed}}</td>
                           <!-- more cells go here -->
                         </tr>
                       </tbody>
