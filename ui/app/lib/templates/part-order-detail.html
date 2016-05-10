@@ -36,16 +36,22 @@
 
           <md-content>
             <md-tabs md-dynamic-height md-border-bottom>
-              <md-tab label="Part Order Details">
+              <md-tab label="ABM Details">
                 <form name="editForm" layout="column" ng-hide="loading">
 
                   <md-tabs md-dynamic-height md-align-tabs="bottom">
-
-                    <md-tab label="Part Order">
+                    <md-tab label="ABM">
                       <!-- start main section -->
                       <div layout="column" flex>
+
                         <div layout-margin layout="row">
                           <div layout="column" flex="70" layout-align="space-between stretch">
+
+                            <md-input-container>
+                              <label>ABM</label>
+                              <input md-maxlength="100" ng-model="$app.selected.partOrder.ABM" type="text" disabled="true">
+                            </md-input-container>
+
                             <md-input-container>
                               <label>PO</label>
                               <input md-maxlength="100" ng-model="partOrder.po" type="text">
@@ -64,7 +70,7 @@
                               <label>Part</label>
                               <md-select ng-model="partOrder.part" placeholder="Part" ng-model-options="{trackBy: '$value.id'}">
                                 <md-option ng-repeat="part in parts track by part.id" ng-value="part">
-                                  Part No. {{part.number}} - {{part.partType}} - {{part.description}}
+                                  {{part.description}}
                                 </md-option>
                               </md-select>
                             </md-input-container>
@@ -119,7 +125,7 @@
                       </div>
                     </md-tab>
 
-                    <md-tab label="Part Order Dates">
+                    <md-tab label="ABM Dates">
                       <div layout="column" flex="30" layout-align="space-between stretch">
                           <div layout-margin layout="row" layout-align="center">
                             <md-input-container>

@@ -19,9 +19,13 @@ table.md-table:not(.md-row-select) th.md-column:first-child {
   width: 24px;
 }
 
+md-select-value > span {
+  width: 100%;
+}
+
 @media print
 {
-    
+
     canvas
     {
         display: inline !important;
