@@ -2,10 +2,138 @@ import { ListController } from 'utils'
 
 export default class JobListController extends ListController {
   /*@ngInject*/
-  constructor($q, $route, $filter, $scope, Job, enums, $mdDialog, $mdToast, JobAddresses) {
+  constructor($q, $route, $filter, $scope, Job, enums, $mdDialog, $mdToast, JobAddresses, Customer, JobSearchParameters) {
     super()
 
     var self = this;
+    console.log(JobSearchParameters)
+    self.JobSearchParameters = JobSearchParameters;
+
+    self.searchPrompt = function (event) {
+      $mdDialog.show({
+        clickOutsideToClose: true,
+        scope: $scope,
+        preserveScope: true,
+        template: `<md-dialog-content>
+                <form name="searchForm">
+                <md-content flex layout-padding>
+
+                <div ng-model="$jobs.search" type=text style="margin-bottom=0px;">
+                  <label style="margin-right: 15px;">Job Number</label>
+                  <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
+                    <md-select ng-model="$jobs.JobSearchParameters.prefix" style="width: 50px;">
+                      <md-option ng-repeat="prefix in $jobs.prefixes" ng-value="prefix">
+                             {{prefix}}
+                      </md-option>
+                    </md-select>
+                  </md-input-container>
+                    -
+                  <md-input-container style="margin-top: 24px; width: 50px;">
+                    <input ng-model="$jobs.JobSearchParameters.year" type="number">
+                  </md-input-container>
+                    -
+                  <md-input-container style="margin-top: 24px; width: 125px;">
+                    <input ng-model="$jobs.JobSearchParameters.label" type="text">
+                  </md-input-container>
+                </div>
+
+                <label class="md-block" flex>Customer</label>
+                <md-autocomplete
+                    md-selected-item="$jobs.JobSearchParameters.customer"
+                    md-search-text="customerSearchText"
+                    md-items="customer in queryCustomers(customerSearchText)"
+                    md-item-text="customer.label"
+                    md-floating-label="Customer" layout-margin>
+                  <span>{{customer.label}}</span>
+                </md-autocomplete>
+
+                <label class="md-block" flex>Location</label>
+                <div layout="row">
+
+                 <md-input-container flex="70">
+                    <label>City</label>
+                    <input name="city" ng-model="$jobs.JobSearchParameters.city">
+                 </md-input-container>
+
+
+
+                 <md-input-container flex="30">
+                    <label>State</label>
+                    <input name="state" ng-model="$jobs.JobSearchParameters.state">
+                 </md-input-container>
+
+                 </div>
+
+                 <label class="md-block" flex>Description</label>
+                 <md-input-container class="md-block">
+                    <label>Description</label>
+                    <input name="description" ng-model="$jobs.JobSearchParameters.description">
+                 </md-input-container>
+
+                 <label class="md-block" flex>Start Date</label>
+                 <div class="md-block" layout = "row">
+
+                 <div flex = "50">
+                    <label>From</label>
+                    <md-datepicker ng-model="$jobs.JobSearchParameters.startDateBefore"></md-datepicker>
+                 </div>
+
+                 <div flex = "50">
+                    <label>Until</label>
+                    <md-datepicker ng-model="$jobs.JobSearchParameters.startDateAfter"></md-datepicker>
+                 </div>
+
+                 </div>
+
+                 <label class="md-block" flex>End Date</label>
+                 <div class="md-block" layout = "row">
+
+                 <div flex = "50">
+                    <label>From</label>
+                    <md-datepicker ng-model="$jobs.JobSearchParameters.endDateBefore"></md-datepicker>
+                 </div>
+
+                 <div flex = "50">
+                    <label>Until</label>
+                    <md-datepicker ng-model="$jobs.JobSearchParameters.endDateAfter"></md-datepicker>
+                 </div>
+
+                 </div>
+
+                 <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                    <md-button class="md-raised md-primary" ng-click="done()">Done</md-button>
+                    <md-button class="md-raised md-warn" ng-click="clear()">Clear</md-button>
+                 </section>
+
+                 </md-content>
+               </form>
+            </md-dialog-content>`,
+        controller: function SearchController($scope, $mdDialog, $unpack, $filter, $q, JobSearchParameters) {
+
+          $scope.$jobs = self;
+
+          function filter(expression, comparator) {
+            return function (array) {
+              return $q(function (resolve, reject) {
+                return resolve($filter('filter')(array, expression, comparator))
+              })
+            }
+          }
+
+          $scope.queryCustomers = function queryCustomers(expression) {
+            return Customer.endpoint.query().$promise.then($unpack).then(filter(expression))
+          }
+
+          $scope.done = function () {
+            $mdDialog.hide();
+          }
+
+          $scope.clear = function () {
+            for (var member in JobSearchParameters) delete JobSearchParameters[member];
+          }
+        }
+      });
+    };
 
     this.search = {}
     this.total = 0
@@ -76,50 +204,76 @@ export default class JobListController extends ListController {
           )
       )
 
-    this.attachDisplayAddress = jobs =>
+    this.database101 = jobs =>
     {
-      jobs.forEach(job => {
 
-        JobAddresses.get({ jobId: job.id }).then(address => {
+      var promiseResults = [];
+
+      jobs.forEach((job, idx) => {
+
+        promiseResults[idx] = JobAddresses.get({ jobId: job.id }).then(address => {
 
           job.displayAddress =
-            {
-              city: address.shipping.city,
-              state: address.shipping.stateOrProvince
-            }
+          {
+            city: address.shipping.city,
+            state: address.shipping.stateOrProvince
+          }
 
+          return job;
         });
 
       });
-      return jobs;
+
+      return $q.all(promiseResults);
     }
 
     self.getJobs = () =>
       this.promise =
         Job.list(this.query.filters)
+          .then(this.database101)
           .then(::this.jobSearchFilter)
           .then(::this.storeTotal)
-          .then(this.attachDisplayAddress)
           .then(this.sort(this.query))
           .then(this.page(this.query))
           .then(::this.store)
 
-    $scope.$watchCollection(() => this.search, (o) => this.getJobs())
+    $scope.$watchCollection(() => this.JobSearchParameters, (o) => this.getJobs())
     self.getJobs()
   }
 
   jobSearchFilter(jobs) {
-    return this.search
+
+    console.log(this);
+    console.log(this.JobSearchParameters);
+
+    return this.JobSearchParameters
       ? jobs.filter(job =>
-        job.identifier.prefix === (this.search.prefix || job.identifier.prefix)
-          && `${job.identifier.year}`
-              .substring(2, 4)
-              .match(new RegExp(`^${this.search.year || ''}.*`))
-          && job.identifier.label
-              .toUpperCase()
-              .match(new RegExp(`^${(this.search.label || '').toUpperCase()}.*`))
-      )
-      : jobs
+          job.identifier.prefix === (this.JobSearchParameters.prefix || job.identifier.prefix)
+            && `${job.identifier.year}`
+                .substring(2, 4)
+                .match(new RegExp(`^${this.JobSearchParameters.year || ''}.*`))
+            && job.identifier.label
+                .toUpperCase()
+                .match(new RegExp(`^${(this.JobSearchParameters.label || '').toUpperCase()}.*`))
+            && (job.customer !== undefined && job.customer.label
+                .toUpperCase()
+                .match(new RegExp(`^${((this.JobSearchParameters.customer && this.JobSearchParameters.customer.label) || '').toUpperCase()}.*`)))
+            && (this.JobSearchParameters.city === undefined || (job.displayAddress.city && job.displayAddress.city
+                .toUpperCase()
+                .match(new RegExp(`^${(this.JobSearchParameters.city || '').toUpperCase()}.*`))))
+            && (this.JobSearchParameters.state === undefined || (job.displayAddress.state && job.displayAddress.state
+                .toUpperCase()
+                .match(new RegExp(`^${(this.JobSearchParameters.state || '').toUpperCase()}.*`))))
+            && job.description
+                .toUpperCase()
+                .match(new RegExp(`.*${(this.JobSearchParameters.description || '').toUpperCase()}.*`))
+            && (this.JobSearchParameters.startDateBefore === undefined || (job.startDate && Date.parse(job.startDate) >= Date.parse(this.JobSearchParameters.startDateBefore)))
+            && (this.JobSearchParameters.startDateAfter === undefined || (job.startDate && Date.parse(job.startDate) <= Date.parse(this.JobSearchParameters.startDateAfter)))
+            && (this.JobSearchParameters.endDateBefore === undefined || (job.endDate && Date.parse(job.endDate) >= Date.parse(this.JobSearchParameters.endDateBefore)))
+            && (this.JobSearchParameters.endDateAfter === undefined || (job.endDate && Date.parse(job.endDate) <= Date.parse(this.JobSearchParameters.endDateAfter)))
+
+    )
+    : jobs
   }
 
   storeTotal(array) {

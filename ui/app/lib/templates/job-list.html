@@ -12,12 +12,27 @@
             <md-switch ng-model="showInactive">
               {{showInactive ? 'Showing All Jobs' : 'Showing Active Jobs' }}
             </md-switch>
+
+
+            <!-- [ ] Search Popup -->
+
+            <md-button ng-click="$jobs.searchPrompt($event)" class="md-icon-button">
+              <md-tooltip md-direction="left" md-autohide="true">
+                Search
+              </md-tooltip>
+              <md-icon md-menu-origin class="material-icons">search</md-icon>
+            </md-button>
+
+            <!-- [X] Search Popup -->
+
+<!--
             <md-button ng-click="$jobs.showSearch = !$jobs.showSearch" class="md-icon-button">
               <md-tooltip md-direction="left" md-autohide="true">
                 Search
               </md-tooltip>
               <md-icon md-menu-origin class="material-icons">search</md-icon>
             </md-button>
+
             <div ng-show="$jobs.showSearch" ng-model="$jobs.search" type=text style="margin-bottom=0px;">
               <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
                 <md-select ng-model="$jobs.search.prefix" style="width: 50px;">
@@ -35,7 +50,10 @@
                 <input ng-model="$jobs.search.label" type="text">
               </md-input-container>
             </div>
+-->
           </div>
+
+
         </md-toolbar>
         <md-content layout-padding layout="column">
           <md-table-container>
@@ -83,7 +101,7 @@
                     <span>{{job | jobStatus}}</span>
                   </td>
                   <td md-cell flex>
-                    <span>{{job.contact.label}}</span>
+                    <span>{{job.customer.label}}</span>
                   </td>
                   <td md-cell flex>
                     <span>{{job.displayAddress.city}}</span>
