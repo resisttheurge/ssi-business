@@ -130,6 +130,7 @@ export default class JobListController extends ListController {
 
           $scope.clear = function () {
             for (var member in JobSearchParameters) delete JobSearchParameters[member];
+            $scope.customerSearchText = undefined;
           }
         }
       });
