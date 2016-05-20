@@ -13,7 +13,7 @@
             </h2>
 
             <span flex></span>
-            <md-button class="md-raised" ng-disabled="jobForm.$pristine || restricted" ng-click="update ? update(job, jobAddresses, jobSchedules) : create(job, jobAddresses, jobSchedules)">Save</md-button>
+            <md-button class="md-raised" ng-disabled="jobForm.$pristine || restricted" ng-click="update ? update(job, jobAddresses, jobSchedules) : create(job, jobAddresses, jobSchedules)">{{restricted ? 'ADMIN ONLY' : 'Save'}}</md-button>
           </div>
         </md-toolbar>
         <md-content flex>

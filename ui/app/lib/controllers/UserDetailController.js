@@ -28,6 +28,13 @@ export default class UserDetailController extends DetailController {
           .then(() => $scope.loading = false)
 
       $scope.update = function update(item) {
+
+        if (item.adminSelected) {
+          item.roles = ['ADMIN']
+        } else {
+          item.roles = ['EMPLOYEE']
+        }
+
         User.update(item).then(
           function (data) {
             $mdDialog.show(
