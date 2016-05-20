@@ -9,7 +9,7 @@
           <div class="md-toolbar-tools">
             <h2 flex>Jobs</h2>
 
-            <md-switch ng-model="showInactive">
+            <md-switch ng-model="showInactive" ng-click="$jobs.Job.cacheInvalid = true;">
               {{showInactive ? 'Showing All Jobs' : 'Showing Active Jobs' }}
             </md-switch>
 
