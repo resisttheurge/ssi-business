@@ -10,17 +10,30 @@ export default class Job extends ApiService {
     this.addresses = JobAddresses
     this.schedules = JobSchedules
 
+    this.cache = [];
+    this.cacheInvalid = true;
+    this.attachAddressess = false;
+
     self.endpoint = $resource(endpoint + '/jobs/:jobId', {}, {
         create: { method: 'POST' },
         update: { method: 'PATCH' },
         query: { method: 'GET', params:{ jobId: '' } }
       })
 
-    self.list = function (params) {
-        return $q(function (resolve, reject) {
-          return resolve(self.endpoint.query(params).$promise.then($unpack))
+    self.list = (params) => {
+      if (self.cacheInvalid === true) {
+        return $q((resolve, reject) => {
+          return resolve(self.endpoint.query(params).$promise.then($unpack).then(results => {
+            self.cache = results;
+            self.cacheInvalid = false;
+            self.attachAddressess = true;
+            return results;
+          }))
         })
+      } else {
+        return $q.resolve(self.cache);
       }
+    }
 
     self.jobStringToDate = job => {
       const { startDate, dueDate, completeDate } = job

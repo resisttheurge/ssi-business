@@ -6,7 +6,13 @@ export default class JobListController extends ListController {
     super()
 
     var self = this;
-    console.log(JobSearchParameters)
+
+    var jobBatchSize = 100;
+
+    this.Job = Job;
+
+    Job.cacheInvalid = true;
+
     self.JobSearchParameters = JobSearchParameters;
 
     self.searchPrompt = function (event) {
@@ -162,6 +168,7 @@ export default class JobListController extends ListController {
                         }
                       }
 
+                      Job.cacheInvalid = true;
                       self.getJobs();
                     }
                 );
@@ -205,27 +212,90 @@ export default class JobListController extends ListController {
           )
       )
 
+    this.processAddressBatch = (jobs, jobBatchSize) =>
+    {
+      // let promiseResults = [];
+      // let batch =  [];
+
+      return jobs.length === 0
+        ? $q.resolve([])
+        : $q.all(
+          jobs
+            .slice(0, jobBatchSize)
+            .map(
+              job =>
+                JobAddresses
+                  .get({ jobId: job.id })
+                  .then(
+                    address => ({
+                      ...job,
+                      displayAddress: {
+                        city: address.shipping.city,
+                        state: address.shipping.stateOrProvince
+                      }
+                    })
+                  )
+            )
+          ).then(
+            updated =>
+              this.processAddressBatch(jobs.slice(jobBatchSize), jobBatchSize)
+                .then(
+                  processed =>
+                    [...updated, ...processed]
+                  )
+          )
+
+      //
+      // for (let i = 0; i < jobBatchSize; i++)
+      // {
+      //   if (index <= jobs.length)
+      //   {
+      //     batch[i] = jobs[index];
+      //     index++;
+      //   } else {
+      //     done = true;
+      //   }
+      //
+      //   batch.forEach((job, idx) => {
+      //
+      //     if (job !== undefined && job.id !== undefined)
+      //     {
+      //       promiseResults[idx] = JobAddresses.get({ jobId: job.id }).then(address => {
+      //
+      //         job.displayAddress =
+      //         {
+      //           city: address.shipping.city,
+      //           state: address.shipping.stateOrProvince
+      //         }
+      //
+      //         return job;
+      //       });
+      //     }
+      //   });
+      //
+      //   return $q.all(promiseResults).then(addressedJobs =>
+      //   {
+      //     if (!done)
+      //     {
+      //       batch = [];
+      //       this.processAddressBatch(jobs, index, done, jobBatchSize);
+      //     }
+      //   })
+      //
+      // }
+
+    }
+
     this.database101 = jobs =>
     {
+      if (Job.attachAddressess) {
+        Job.attachAddressess = false;
+        return this.processAddressBatch(jobs, 1000).then(result => Job.cache = result);
+      } else {
+        return $q.resolve(jobs);
+      }
 
-      var promiseResults = [];
-
-      jobs.forEach((job, idx) => {
-
-        promiseResults[idx] = JobAddresses.get({ jobId: job.id }).then(address => {
-
-          job.displayAddress =
-          {
-            city: address.shipping.city,
-            state: address.shipping.stateOrProvince
-          }
-
-          return job;
-        });
-
-      });
-
-      return $q.all(promiseResults);
+      // return jobs;
     }
 
     self.getJobs = () =>
@@ -238,14 +308,15 @@ export default class JobListController extends ListController {
           .then(this.page(this.query))
           .then(::this.store)
 
-    $scope.$watchCollection(() => this.JobSearchParameters, (o) => this.getJobs())
+    $scope.$watchCollection(() => this.JobSearchParameters,
+      (o) => {
+        this.getJobs();
+        this.query.page = 1;
+      })
     self.getJobs()
   }
 
   jobSearchFilter(jobs) {
-
-    console.log(this);
-    console.log(this.JobSearchParameters);
 
     return this.JobSearchParameters
       ? jobs.filter(job =>
@@ -265,9 +336,9 @@ export default class JobListController extends ListController {
             && (this.JobSearchParameters.state === undefined || (job.displayAddress.state && job.displayAddress.state
                 .toUpperCase()
                 .match(new RegExp(`^${(this.JobSearchParameters.state || '').toUpperCase()}.*`))))
-            && job.description
+            && (job.description === undefined || job.description
                 .toUpperCase()
-                .match(new RegExp(`.*${(this.JobSearchParameters.description || '').toUpperCase()}.*`))
+                .match(new RegExp(`.*${(this.JobSearchParameters.description || '').toUpperCase()}.*`)))
             && (this.JobSearchParameters.startDateBefore === undefined || (job.startDate && Date.parse(job.startDate) >= Date.parse(this.JobSearchParameters.startDateBefore)))
             && (this.JobSearchParameters.startDateAfter === undefined || (job.startDate && Date.parse(job.startDate) <= Date.parse(this.JobSearchParameters.startDateAfter)))
             && (this.JobSearchParameters.endDateBefore === undefined || (job.endDate && Date.parse(job.endDate) >= Date.parse(this.JobSearchParameters.endDateBefore)))
