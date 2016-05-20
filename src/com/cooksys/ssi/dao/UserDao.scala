@@ -71,7 +71,9 @@ object UserDao extends CrudDao[User] {
   override def updateAction(id: Int, user: User)(implicit ec: EC) =
     for {
       before <- Users.byId(id).withRoles.result
-      rows <- Users.byId(id).update(user.copy(password = Option(BCrypt.hashpw(user.password.get, BCrypt.gensalt()))))
+      rows <- user.password.isDefined
+        ? Users.byId(id).update(user.copy(password = Option(BCrypt.hashpw(user.password.get, BCrypt.gensalt()))))
+        : Users.byId(id).map(u => (u.username, u.active)).update((user.username, user.active))
       roleUpdate <- updateRoles(id, user.roles.getOrElse(Seq.empty))
       after <- Users.byId(id).withRoles.result
     } yield {
