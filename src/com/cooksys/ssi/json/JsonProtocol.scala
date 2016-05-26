@@ -237,7 +237,7 @@ trait JsonProtocol
 
   implicit val JobShipmentReportRequestFormatter = rootFormat(jsonFormat1(JobShipmentReportRequest))
 
-  implicit val ManagementReviewReportRequestFormatter = rootFormat(jsonFormat2(ManagementReviewReportRequest))
+  implicit val ManagementReviewReportRequestFormatter = rootFormat(jsonFormat8(ManagementReviewReportRequest))
 
   implicit val PartFormatter = rootFormat(jsonFormat4(Part))
 
