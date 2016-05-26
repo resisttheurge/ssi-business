@@ -52,7 +52,7 @@ export default class ShipmentItemDetailController extends DetailController {
                 .ok('Close')
             )
             .then(() => $ssiSelected.shipmentItem = data)
-            .then(() => $location.url(`/job/${$ssiSelected.job.id}/shipments/${$ssiSelected.shipment.id}/items/${data.id}`)),
+            .then(() => $location.path(`/jobs/${$ssiSelected.job.id}/shipments/${$ssiSelected.shipment.id}/items/${data.id}`)),
             error => {
               $log.error(JSON.stringify(error))
               $mdDialog.show(

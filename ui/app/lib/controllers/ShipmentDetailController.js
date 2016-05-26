@@ -99,7 +99,9 @@ export default class ShipmentDetailController extends DetailController {
                   .title('Record created!')
                   .textContent('This record has been saved to the database')
                   .ok('Close')
-              ).then(() => $location.path(`/jobs/${$ssiSelected.job.id}/shipments/${data.id}`)),
+              )
+              .then(() => $ssiSelected.shipment = data)
+              .then(() => $location.path(`/jobs/${$ssiSelected.job.id}/shipments/${data.id}`)),
             error => {
               $log.error(JSON.stringify(error))
               $mdDialog.show(
