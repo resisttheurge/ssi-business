@@ -5,7 +5,7 @@ constructor() {
 }
 
   stringToDate(dateString) {
-    var newDate = new Date(dateString)
+    var newDate = new Date(dateString + ' 06:00:00')
     return newDate
   }
 
