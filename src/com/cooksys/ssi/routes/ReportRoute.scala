@@ -96,7 +96,13 @@ case class ReportRoute(path: String)(implicit val ec: ExecutionContext) extends 
                 title = "Management Review Report",
                 data = ReportUtil.MANAGEMENT_REVIEW.generate(
                   params.start.toString,
-                  params.end.toString
+                  params.end.toString,
+                  params.prefix,
+                  params.year.toString,
+                  params.label,
+                  params.city,
+                  params.state,
+                  params.customer
                 )
               )
             }
