@@ -22,8 +22,7 @@
             <md-tabs md-dynamic-height md-border-bottom>
               <md-tab label="Shipping Group Item Details">
                 <form name="editForm" layout="column" ng-hide="loading">
-                  <md-tabs md-dynamic-height md-align-tabs="bottom">
-                    <md-tab label = "Shipping Group Item">
+                  <md-content flex>
                       <div layout="column" flex>
                         <div layout-margin layout="row">
                           <div layout="column" flex="70">
@@ -70,9 +69,8 @@
                         </div>
                       </div>
                       <md-divider></md-divider>
-                    </md-tab>
+                    <md-content>
                     </form>
-                    </md-tabs>
                   </md-tab>
                   <md-tab label = "Zones" ng-if="update">
                     <md-content layout-padding layout="column">

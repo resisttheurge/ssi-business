@@ -28,8 +28,7 @@
           <md-tabs md-dynamic-height md-border-bottom>
             <md-tab label="Shipment Details">
               <form name="editForm" layout="column" ng-hide="loading">
-                <md-tabs md-dynamic-height md-align-tabs="bottom">
-                  <md-tab label="Shipment">
+                <md-content flex>
                     <div layout="column">
                       <div layout="row" layout-margin>
                         <div layout="column" flex="70">
@@ -76,10 +75,7 @@
                         </div>
                       </div>
                     </div>
-                  </md-tab>
-                  <md-tab label ="Address">
-                    <md-content flex>
-                      <div layout-margin layout="column">
+                    <div layout-margin layout="column">
                         <div layout="row" layout-margin ng-repeat="line in shipment.address.lines track by line.id">
                           <md-input-container flex>
                             <label>Address line {{$index + 1}}</label>
@@ -112,9 +108,6 @@
                         </div>
                       </div>
                       <md-divider></md-divider>
-                    </md-content>
-                  </md-tab>
-                  <md-tab label ="Contact">
                     <div layout="column" flex>
                       <div layout-margin layout="column">
                         <div layout="column" flex="70" layout-align="space-between stretch">
@@ -142,8 +135,7 @@
                       </div>
                     </div>
                     <md-divider></md-divider>
-                  </md-tab>
-                </md-tabs>
+                </md-content>
               </form>
             </md-tab>
 

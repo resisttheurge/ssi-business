@@ -139,6 +139,7 @@
                   </div>
                   <md-divider></md-divider>
                   <div layout-margin layout="column">
+                    <label>Shipping Address</label>
                     <div layout="row" layout-margin ng-repeat="line in jobAddresses.shipping.lines track by line.id">
                       <md-input-container flex>
                         <label>Address line {{$index + 1}}</label>
@@ -172,6 +173,7 @@
                   </div>
                   <md-divider></md-divider>
                   <div layout-margin layout="column">
+                    <label>Invoicing Address</label>
                     <div layout="row" layout-margin ng-repeat="line in jobAddresses.invoicing.lines track by line.id">
                       <md-input-container flex>
                         <label>Address line {{$index + 1}}</label>
