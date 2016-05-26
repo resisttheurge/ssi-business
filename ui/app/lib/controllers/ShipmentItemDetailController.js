@@ -10,7 +10,36 @@ export default class ShipmentItemDetailController extends DetailController {
 
     $scope.shipment = $ssiSelected.shipment
     $scope.job = $ssiSelected.job
-    ShippingItemByJob.list($scope.job.id).then(collection => $scope.shippingItemCollection = collection);
+    ShippingItemByJob.list($scope.job.id)
+      .then(collection => ({
+        ...collection,
+        drawings:
+          collection.drawings
+            .map(drawing => ({
+              ...drawing,
+              marks: drawing.marks.filter(
+                mark =>
+                  mark.shippingItem.status !== 'SHPD'
+                    && !(mark.shippingItem.requested < 1)
+                    && !(mark.shippingItem.completed === mark.shippingItem.requested)
+              )
+            }))
+            .filter(drawing => drawing.marks.length > 0),
+        shippingGroups:
+          collection.shippingGroups
+            .map(shippingGroup => ({
+              ...shippingGroup,
+              marks: shippingGroup.shippingGroupItems.filter(
+                shippingGroupItem =>
+                  shippingGroupItem.shippingItem.status !== 'SHPD'
+                    && !(shippingGroupItem.shippingItem.requested < 1)
+                    && !(shippingGroupItem.shippingItem.completed === shippingGroupItem.shippingItem.requested)
+              )
+            }))
+            .filter(shippingGroup => shippingGroup.shippingGroupItems.length > 0)
+
+      }))
+      .then(collection => $scope.shippingItemCollection = collection);
 
     var self = this;
 
