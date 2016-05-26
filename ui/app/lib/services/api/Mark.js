@@ -80,8 +80,11 @@ constructor ($unpack, $q, $resource, endpoint,
           } else if (!mark.id) {
             return reject('cannot update object with missing id')
           } else {
-            self.prepForUpdate(mark)
-            return resolve(self.endpoint.update({ markId: mark.id }, mark).$promise.then($unpack))
+            return resolve(
+              self.prepForUpdate(mark)
+                .then(mark => self.endpoint.update({ markId: mark.id }, mark).$promise)
+                .then($unpack)
+              )
           }
         })
       }
@@ -93,12 +96,15 @@ constructor ($unpack, $q, $resource, endpoint,
           mark.shippingItem.id ?
             resolve(
               this.shippingItem.update(mark.shippingItem)
-                .then(() => mark)
+                .then(({ before, after }) => {
+                  mark.shippingItem = after
+                  return mark
+                })
             )
           : resolve(
               this.shippingItem.create(mark.shippingItem)
-                    .then(shippingItem => {
-                      mark.shippingItem = shippingItem
+                    .then(({ before, after }) => {
+                      mark.shippingItem = after
                       return mark
                     })
                 )

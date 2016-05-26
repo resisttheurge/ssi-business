@@ -8,4 +8,4 @@ export default
   angular
     .module('ssi.configs.old', [ssiConstants.name])
     .config(routeConfig)
-    .config(prodConfig)
+    // .config(prodConfig)

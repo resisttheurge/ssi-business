@@ -57,12 +57,12 @@ export default class MarkDetailController extends DetailController {
       $scope.update = function update(item)
       {
         if (
-          mark.drawingId &&
-          mark.label &&
-          mark.shippingItem &&
-          mark.shippingItem.status &&
-          mark.shippingItem.requested !== undefined &&
-          mark.shippingItem.completed !== undefined
+          item.drawingId &&
+          item.label &&
+          item.shippingItem &&
+          item.shippingItem.status &&
+          item.shippingItem.requested !== undefined &&
+          item.shippingItem.completed !== undefined
         ) {
           Mark.update(item).then(function (data) { $mdDialog
             .show($mdDialog.alert()
