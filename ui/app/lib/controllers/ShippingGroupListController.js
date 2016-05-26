@@ -45,8 +45,7 @@ export default class ShippingGroupListController extends ListController {
 
     function getShippingGroups(query) {
       return $scope.promise =
-        ShippingGroupByJob.endpoint.query($routeParams).$promise
-          .then(unpackResponse)
+        ShippingGroupByJob.list($routeParams)
           .then(total)
           .then(sort(query))
           .then(page(query))

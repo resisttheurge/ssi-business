@@ -33,7 +33,7 @@ export default class ShippingGroup extends ApiService {
         ...sg,
         info: {
           ...info,
-          address: address ? this.padLines(address) : undefined
+          address: this.padLines(address)
         }
       }
     }
@@ -73,6 +73,8 @@ export default class ShippingGroup extends ApiService {
     this.list = () =>
       this.endpoint.query().$promise
         .then($unpack)
+        .then(groups => groups.map(::this.sgStringToDate))
+        .then(groups => groups.map(::this.sgPadLines))
 
     this.get = id =>
       this.endpoint.get({ shippingGroupId: id }).$promise
