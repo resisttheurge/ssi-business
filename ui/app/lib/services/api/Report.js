@@ -18,9 +18,9 @@ export default class Report extends ApiService {
             .$promise
             .then(report => report.data).catch('some exception')
 
-    self.managementReview = (start, end) =>
+    self.managementReview = (start, end, prefix, year, label, city, state, customer) =>
           self.endpoint
-            .generate({ reportTitle: 'management-review' }, { start, end })
+            .generate({ reportTitle: 'management-review' }, { start, end, prefix, year, label, city, state, customer })
             .$promise
             .then(report => report.data).catch('some exception')
 
