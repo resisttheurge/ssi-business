@@ -18,8 +18,7 @@
               <md-tab label="RMS Details">
                 <form name="editForm" flex style="overflow-x : hidden">
                 <!-- <form name="editForm"> -->
-                  <md-tabs md-dynamic-height md-align-tabs="bottom">
-                    <md-tab label="Shipping Group">
+                  <md-content flex>
                       <div layout="column">
                         <div layout="row" layout-margin>
 
@@ -82,10 +81,6 @@
                         </div>
                         <md-divider></md-divider>
                       </div>
-              </md-tab>
-
-
-                  <md-tab label="More Details">
                     <div layout="column" >
                       <div layout="row" layout-margin>
                         <div layout="column" flex="70" layout-align="space-between stretch">
@@ -152,10 +147,6 @@
                       </div>
                       <md-divider></md-divider>
                     </div>
-                  </md-tab>
-
-                  <md-tab label ="Address">
-                    <md-content flex>
                       <div layout-margin layout="column">
                         <div layout="row" layout-margin ng-repeat="line in shippingGroup.info.address.lines track by line.id">
                           <md-input-container flex>
@@ -189,10 +180,6 @@
                         </div>
                       </div>
                       <md-divider></md-divider>
-                    </md-content>
-                  </md-tab>
-
-                  <md-tab label="Contact">
                     <div layout="column" flex>
                       <div layout-margin layout="column">
                         <div layout="column" flex="70" layout-align="space-between stretch">
@@ -217,8 +204,7 @@
                       </div>
                       <md-divider></md-divider>
                     </div>
-                  </md-tab>
-                  </md-tabs>
+                  </md-content>
                 </form>
               </md-tab>
 

@@ -23,8 +23,7 @@
                 <md-tabs md-dynamic-height md-border-bottom>
                   <md-tab label="Drawing Details">
                     <form name="editForm" layout="column">
-                      <md-tabs md-dynamic-height md-align-tabs="bottom">
-                        <md-tab label="Drawing">
+                      <md-content>
                           <div layout="column">
                             <div layout="row" layout-margin>
 
@@ -92,9 +91,6 @@
                             </div>
                             <md-divider></md-divider>
                           </div>
-                        </md-tab>
-
-                        <md-tab label="More Details">
                             <div layout="column" >
                               <div layout="row" layout-margin>
                                 <div layout="column" flex="70" layout-align="space-between stretch">
@@ -161,11 +157,8 @@
                               </div>
                               <md-divider></md-divider>
                             </div>
-                          </md-tab>
-
-                          <md-tab label ="Address">
-                            <md-content flex>
                               <div layout-margin layout="column">
+                                <label>Shipping Address</label>
                                 <div layout="row" layout-margin ng-repeat="line in drawing.info.address.lines track by line.id">
                                   <md-input-container flex>
                                     <label>Address line {{$index + 1}}</label>
@@ -198,10 +191,6 @@
                                 </div>
                               </div>
                               <md-divider></md-divider>
-                            </md-content>
-                          </md-tab>
-
-                          <md-tab label ="Contact">
                             <div layout="column" flex>
                               <div layout-margin layout="column">
                                 <div layout="column" flex="70" layout-align="space-between stretch">
@@ -230,8 +219,7 @@
                               </div>
                               <md-divider></md-divider>
                             </div>
-                          </md-tab>
-                      </md-tabs>
+                      </md-content>
                     </form>
                   </md-tab>
 

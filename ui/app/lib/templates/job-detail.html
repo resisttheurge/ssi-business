@@ -20,318 +20,300 @@
           <md-tabs md-dynamic-height md-border-bottom>
             <md-tab label="Job Details">
               <form name="jobForm" layout="column" ng-hide="{{mode}}">
-                <md-tabs md-dynamic-height md-align-tabs="bottom">
-                  <md-tab label="Job">
-                    <md-content flex>
-                      <div layout="column" flex>
+                <md-content flex>
+                  <div layout="column" flex>
+                    <div layout-margin layout="row">
+                      <div layout="column" flex="70" layout-align="space-between stretch">
                         <div layout-margin layout="row">
-                          <div layout="column" flex="70" layout-align="space-between stretch">
-                            <div layout-margin layout="row">
-                              <md-input-container>
-                                <label>Prefix</label>
-                                <md-select required ng-model="job.identifier.prefix" >
-                                  <md-option ng-repeat="prefix in prefixes" ng-value="prefix">
-                                    {{prefix}}
-                                  </md-option>
-                                </md-select>
-                              </md-input-container>
-                              <md-input-container>
-                                <label>Year</label>
-                                <input required max="9999" min="1" ng-model="job.identifier.year" type="number"></input>
-                              </md-input-container>
-                              <md-input-container flex>
-                                <label>Label</label>
-                                <input required md-maxlength="20" ng-model="job.identifier.label" type="text"></input>
-                              </md-input-container>
-                            </div>
-                            <div layout-margin layout="row">
-                              <md-autocomplete
-                                  md-selected-item="job.salesperson"
-                                  md-search-text="salespersonSearchText"
-                                  md-items="salesperson in querySalespeople(salespersonSearchText)"
-                                  md-item-text="salesperson.label"
-                                  md-floating-label="Salesperson" flex>
-                                <span>{{salesperson.label}}</span>
-                              </md-autocomplete>
-                            </div>
-                            <div layout-margin layout="row">
-                              <md-autocomplete
-                                  md-selected-item="job.shop"
-                                  md-search-text="shopSearchText"
-                                  md-items="shop in queryShops(shopSearchText)"
-                                  md-item-text="shop.label"
-                                  md-floating-label="Shop" flex>
-                                <span>{{shop.label}}</span>
-                              </md-autocomplete>
-                            </div>
-                            <div layout-margin layout="row">
-                              <md-input-container flex>
-                                <label>Description</label>
-                                <textarea ng-model="job.description"></textarea>
-                              </md-input-container>
-                            </div>
-                          </div>
-                          <md-divider></md-divider>
-                          <div layout="column" flex="30" layout-align="space-between stretch">
-                            <div layout-margin layout="row">
-                              <md-input-container flex>
-                                <label>Status</label>
-                                <md-select ng-disabled="!$app.user.hasRole('ADMIN')" required ng-model="job.status">
-                                  <md-option ng-repeat="status in jobStatuses" ng-value="status">
-                                         {{status}}
-                                  </md-option>
-                                </md-select>
-                              </md-input-container>
-                            </div>
-                            <div layout-margin layout="row" layout-align="end">
-                              <label flex layout="row" layout-align="start center">
-                                <span>Start Date</span>
-                              </label>
-                              <md-datepicker ng-model="job.startDate" md-placeholder="Start Date"></md-datepicker>
-                            </div>
-                            <div layout-margin layout="row" layout-align="end">
-                              <label flex layout="row" layout-align="start center">
-                                <span>Due Date</span>
-                              </label>
-                              <md-datepicker ng-model="job.dueDate" md-placeholder="Due Date"></md-datepicker>
-                            </div>
-                            <div layout-margin layout="row" layout-align="end">
-                              <label flex layout="row" layout-align="start center">
-                                <span>Complete Date</span>
-                              </label>
-                              <md-datepicker ng-model="job.completeDate" md-placeholder="Complete Date"></md-datepicker>
-                            </div>
-                            <div layout-margin layout="row" ng-hide="!$app.user.hasRole('ADMIN')">
-                              <md-input-container flex>
-                                <label>Contract Price</label>
-                                <input max="9999999999999999999.9999" min="0.0001" ng-model="job.contractPrice" type="number" step="0.0001">
-                              </md-input-container>
-                            </div>
-                          </div>
+                          <md-input-container>
+                            <label>Prefix</label>
+                            <md-select required ng-model="job.identifier.prefix" >
+                              <md-option ng-repeat="prefix in prefixes" ng-value="prefix">
+                                {{prefix}}
+                              </md-option>
+                            </md-select>
+                          </md-input-container>
+                          <md-input-container>
+                            <label>Year</label>
+                            <input required max="9999" min="1" ng-model="job.identifier.year" type="number"></input>
+                          </md-input-container>
+                          <md-input-container flex>
+                            <label>Label</label>
+                            <input required md-maxlength="20" ng-model="job.identifier.label" type="text"></input>
+                          </md-input-container>
                         </div>
-                      </div>
-                      <md-divider></md-divider>
-                    </md-content>
-                  </md-tab>
-                  <md-tab label="Customer">
-                    <md-content flex>
-                      <div layout-margin layout="column">
+                        <div layout-margin layout="row">
+                          <md-autocomplete
+                              md-selected-item="job.salesperson"
+                              md-search-text="salespersonSearchText"
+                              md-items="salesperson in querySalespeople(salespersonSearchText)"
+                              md-item-text="salesperson.label"
+                              md-floating-label="Salesperson" flex>
+                            <span>{{salesperson.label}}</span>
+                          </md-autocomplete>
+                        </div>
+                        <div layout-margin layout="row">
+                          <md-autocomplete
+                              md-selected-item="job.shop"
+                              md-search-text="shopSearchText"
+                              md-items="shop in queryShops(shopSearchText)"
+                              md-item-text="shop.label"
+                              md-floating-label="Shop" flex>
+                            <span>{{shop.label}}</span>
+                          </md-autocomplete>
+                        </div>
                         <div layout-margin layout="row">
                           <md-input-container flex>
-                            <label>Contact</label>
-                            <input ng-model="job.contact.label" type="text">
-                          </md-input-container>
-                          <md-input-container flex>
-                            <label>Phone Number</label>
-                            <input ng-model="job.contact.phone" type="text">
-                          </md-input-container>
-                          <md-input-container flex>
-                            <label>Fax</label>
-                            <input ng-model="job.contact.fax" type="text">
-                          </md-input-container>
-                          <md-input-container flex>
-                            <label>Email</label>
-                            <input ng-model="job.contact.email" type="text">
-                          </md-input-container>
-                        </div>
-                        <md-autocomplete
-                            md-selected-item="job.customer"
-                            md-search-text="customerSearchText"
-                            md-items="customer in queryCustomers(customerSearchText)"
-                            md-item-text="customer.label"
-                            md-floating-label="Customer" layout-margin>
-                          <span>{{customer.label}}</span>
-                        </md-autocomplete>
-                      </div>
-                      <md-divider></md-divider>
-                    </md-content>
-                  </md-tab>
-                  <md-tab label="Shipping Address">
-                    <md-content flex>
-                      <div layout-margin layout="column">
-                        <div layout="row" layout-margin ng-repeat="line in jobAddresses.shipping.lines track by line.id">
-                          <md-input-container flex>
-                            <label>Address line {{$index + 1}}</label>
-                            <input ng-model="line.value" type="text"></input>
-                          </md-input-container>
-                          <md-button ng-click="addAddressLine('shipping')" ng-if="$last" class="md-fab md-mini" aria-label="Add Another Address Line">
-                            <md-tooltip md-direction="top">Add Another Address Line</md-tooltip>
-                            <md-icon class="material-icons">add</md-icon>
-                          </md-button>
-                        </div>
-                        <div layout="row" layout-margin>
-                          <md-input-container flex>
-                            <label>City</label>
-                            <input md-maxlength="100" ng-model="jobAddresses.shipping.city" type="text"></input>
-                          </md-input-container>
-                          <md-input-container flex>
-                            <label>State or Province</label>
-                            <input md-maxlength="100" ng-model="jobAddresses.shipping.stateOrProvince" type="text"></input>
-                          </md-input-container>
-                          <md-input-container flex>
-                            <label>Postal Code</label>
-                            <input md-maxlength="30" ng-model="jobAddresses.shipping.postalCode" type="text"></input>
-                          </md-input-container>
-                        </div>
-                        <div layout="row" layout-margin>
-                          <md-input-container flex>
-                            <label>Country</label>
-                            <input md-maxlength="100" ng-model="jobAddresses.shipping.country" type="text"></input>
+                            <label>Description</label>
+                            <textarea ng-model="job.description"></textarea>
                           </md-input-container>
                         </div>
                       </div>
                       <md-divider></md-divider>
-                    </md-content>
-                  </md-tab>
-                  <md-tab label="Invoicing Address">
-                    <md-content flex>
-                      <div layout-margin layout="column">
-                        <div layout="row" layout-margin ng-repeat="line in jobAddresses.invoicing.lines track by line.id">
+                      <div layout="column" flex="30" layout-align="space-between stretch">
+                        <div layout-margin layout="row">
                           <md-input-container flex>
-                            <label>Address line {{$index + 1}}</label>
-                            <input ng-model="line.value" type="text"></input>
-                          </md-input-container>
-                          <md-button ng-click="addAddressLine('invoicing')" ng-if="$last" class="md-fab md-mini" aria-label="Add Another Address Line">
-                            <md-tooltip md-direction="top">Add Another Address Line</md-tooltip>
-                            <md-icon class="material-icons">add</md-icon>
-                          </md-button>
-                        </div>
-                        <div layout="row" layout-margin>
-                          <md-input-container flex>
-                            <label>City</label>
-                            <input md-maxlength="100" ng-model="jobAddresses.invoicing.city" type="text"></input>
-                          </md-input-container>
-                          <md-input-container flex>
-                            <label>State or Province</label>
-                            <input md-maxlength="100" ng-model="jobAddresses.invoicing.stateOrProvince" type="text"></input>
-                          </md-input-container>
-                          <md-input-container flex>
-                            <label>Postal Code</label>
-                            <input md-maxlength="30" ng-model="jobAddresses.invoicing.postalCode" type="text"></input>
+                            <label>Status</label>
+                            <md-select ng-disabled="!$app.user.hasRole('ADMIN')" required ng-model="job.status">
+                              <md-option ng-repeat="status in jobStatuses" ng-value="status">
+                                     {{status}}
+                              </md-option>
+                            </md-select>
                           </md-input-container>
                         </div>
-                        <div layout="row" layout-margin>
+                        <div layout-margin layout="row" layout-align="end">
+                          <label flex layout="row" layout-align="start center">
+                            <span>Start Date</span>
+                          </label>
+                          <md-datepicker ng-model="job.startDate" md-placeholder="Start Date"></md-datepicker>
+                        </div>
+                        <div layout-margin layout="row" layout-align="end">
+                          <label flex layout="row" layout-align="start center">
+                            <span>Due Date</span>
+                          </label>
+                          <md-datepicker ng-model="job.dueDate" md-placeholder="Due Date"></md-datepicker>
+                        </div>
+                        <div layout-margin layout="row" layout-align="end">
+                          <label flex layout="row" layout-align="start center">
+                            <span>Complete Date</span>
+                          </label>
+                          <md-datepicker ng-model="job.completeDate" md-placeholder="Complete Date"></md-datepicker>
+                        </div>
+                        <div layout-margin layout="row" ng-hide="!$app.user.hasRole('ADMIN')">
                           <md-input-container flex>
-                            <label>Country</label>
-                            <input md-maxlength="100" ng-model="jobAddresses.invoicing.country" type="text"></input>
+                            <label>Contract Price</label>
+                            <input max="9999999999999999999.9999" min="0.0001" ng-model="job.contractPrice" type="number" step="0.0001">
                           </md-input-container>
                         </div>
                       </div>
-                      <md-divider></md-divider>
-                    </md-content>
-                  </md-tab>
-                  <md-tab label="Scheduling">
-                    <md-content flex>
+                    </div>
+                  </div>
+                  <md-divider></md-divider>
+                  <div layout-margin layout="column">
+                    <div layout-margin layout="row">
+                      <md-input-container flex>
+                        <label>Contact</label>
+                        <input ng-model="job.contact.label" type="text">
+                      </md-input-container>
+                      <md-input-container flex>
+                        <label>Phone Number</label>
+                        <input ng-model="job.contact.phone" type="text">
+                      </md-input-container>
+                      <md-input-container flex>
+                        <label>Fax</label>
+                        <input ng-model="job.contact.fax" type="text">
+                      </md-input-container>
+                      <md-input-container flex>
+                        <label>Email</label>
+                        <input ng-model="job.contact.email" type="text">
+                      </md-input-container>
+                    </div>
+                    <md-autocomplete
+                        md-selected-item="job.customer"
+                        md-search-text="customerSearchText"
+                        md-items="customer in queryCustomers(customerSearchText)"
+                        md-item-text="customer.label"
+                        md-floating-label="Customer" layout-margin>
+                      <span>{{customer.label}}</span>
+                    </md-autocomplete>
+                  </div>
+                  <md-divider></md-divider>
+                  <div layout-margin layout="column">
+                    <label>Shipping Address</label>
+                    <div layout="row" layout-margin ng-repeat="line in jobAddresses.shipping.lines track by line.id">
+                      <md-input-container flex>
+                        <label>Address line {{$index + 1}}</label>
+                        <input ng-model="line.value" type="text"></input>
+                      </md-input-container>
+                      <md-button ng-click="addAddressLine('shipping')" ng-if="$last" class="md-fab md-mini" aria-label="Add Another Address Line">
+                        <md-tooltip md-direction="top">Add Another Address Line</md-tooltip>
+                        <md-icon class="material-icons">add</md-icon>
+                      </md-button>
+                    </div>
+                    <div layout="row" layout-margin>
+                      <md-input-container flex>
+                        <label>City</label>
+                        <input md-maxlength="100" ng-model="jobAddresses.shipping.city" type="text"></input>
+                      </md-input-container>
+                      <md-input-container flex>
+                        <label>State or Province</label>
+                        <input md-maxlength="100" ng-model="jobAddresses.shipping.stateOrProvince" type="text"></input>
+                      </md-input-container>
+                      <md-input-container flex>
+                        <label>Postal Code</label>
+                        <input md-maxlength="30" ng-model="jobAddresses.shipping.postalCode" type="text"></input>
+                      </md-input-container>
+                    </div>
+                    <div layout="row" layout-margin>
+                      <md-input-container flex>
+                        <label>Country</label>
+                        <input md-maxlength="100" ng-model="jobAddresses.shipping.country" type="text"></input>
+                      </md-input-container>
+                    </div>
+                  </div>
+                  <md-divider></md-divider>
+                  <div layout-margin layout="column">
+                    <label>Invoicing Address</label>
+                    <div layout="row" layout-margin ng-repeat="line in jobAddresses.invoicing.lines track by line.id">
+                      <md-input-container flex>
+                        <label>Address line {{$index + 1}}</label>
+                        <input ng-model="line.value" type="text"></input>
+                      </md-input-container>
+                      <md-button ng-click="addAddressLine('invoicing')" ng-if="$last" class="md-fab md-mini" aria-label="Add Another Address Line">
+                        <md-tooltip md-direction="top">Add Another Address Line</md-tooltip>
+                        <md-icon class="material-icons">add</md-icon>
+                      </md-button>
+                    </div>
+                    <div layout="row" layout-margin>
+                      <md-input-container flex>
+                        <label>City</label>
+                        <input md-maxlength="100" ng-model="jobAddresses.invoicing.city" type="text"></input>
+                      </md-input-container>
+                      <md-input-container flex>
+                        <label>State or Province</label>
+                        <input md-maxlength="100" ng-model="jobAddresses.invoicing.stateOrProvince" type="text"></input>
+                      </md-input-container>
+                      <md-input-container flex>
+                        <label>Postal Code</label>
+                        <input md-maxlength="30" ng-model="jobAddresses.invoicing.postalCode" type="text"></input>
+                      </md-input-container>
+                    </div>
+                    <div layout="row" layout-margin>
+                      <md-input-container flex>
+                        <label>Country</label>
+                        <input md-maxlength="100" ng-model="jobAddresses.invoicing.country" type="text"></input>
+                      </md-input-container>
+                    </div>
+                  </div>
+                  <md-divider></md-divider>
+                  <div layout="column" flex>
+
+                    <div layout="row" layout-align="space-between stretch" layout-margin>
+
                       <div layout="column" flex>
 
-                        <div layout="row" layout-align="space-between stretch" layout-margin>
-
-                          <div layout="column" flex>
-
-                            <div layout="column" flex layout-margin>
-                              <label>Engineering</label>
-                              <div layout="row" layout-align="end">
-                                <label flex layout="row" layout-align="start center">
-                                  <span>Start</span>
-                                </label>
-                                <md-datepicker ng-model="jobSchedules.engineering.startDate" md-placeholder="Start"></md-datepicker>
-                              </div>
-                              <div layout="row" layout-align="end">
-                                <label flex layout="row" layout-align="start center">
-                                  <span>Complete</span>
-                                </label>
-                                <md-datepicker ng-model="jobSchedules.engineering.completeDate" md-placeholder="Complete"></md-datepicker>
-                              </div>
-                            </div>
-
+                        <div layout="column" flex layout-margin>
+                          <label>Engineering</label>
+                          <div layout="row" layout-align="end">
+                            <label flex layout="row" layout-align="start center">
+                              <span>Start</span>
+                            </label>
+                            <md-datepicker ng-model="jobSchedules.engineering.startDate" md-placeholder="Start"></md-datepicker>
                           </div>
-
-                          <md-divider></md-divider>
-
-                          <div layout="column" flex>
-
-                            <div layout="column" flex layout-margin>
-                              <label >Mechanical</label>
-                              <div  layout="row" layout-align="end">
-                                <label flex layout="row" layout-align="start center">
-                                  <span>Start</span>
-                                </label>
-                                <md-datepicker ng-model="jobSchedules.mechanical.startDate" md-placeholder="Start"></md-datepicker>
-                              </div>
-                              <div  layout="row" layout-align="end">
-                                <label flex layout="row" layout-align="start center">
-                                  <span>Complete</span>
-                                </label>
-                                <md-datepicker ng-model="jobSchedules.mechanical.completeDate" md-placeholder="Complete"></md-datepicker>
-                              </div>
-                            </div>
-
-                            <md-divider></md-divider>
-
-                            <div layout="column" flex layout-margin>
-                              <label >Electrical</label>
-                              <div  layout="row" layout-align="end">
-                                <label flex layout="row" layout-align="start center">
-                                  <span>Start</span>
-                                </label>
-                                <md-datepicker ng-model="jobSchedules.electrical.startDate" md-placeholder="Start"></md-datepicker>
-                              </div>
-                              <div  layout="row" layout-align="end">
-                                <label flex layout="row" layout-align="start center">
-                                  <span>Complete</span>
-                                </label>
-                                <md-datepicker ng-model="jobSchedules.electrical.completeDate" md-placeholder="Complete"></md-datepicker>
-                              </div>
-                            </div>
-
+                          <div layout="row" layout-align="end">
+                            <label flex layout="row" layout-align="start center">
+                              <span>Complete</span>
+                            </label>
+                            <md-datepicker ng-model="jobSchedules.engineering.completeDate" md-placeholder="Complete"></md-datepicker>
                           </div>
-
-                          <md-divider></md-divider>
-
-                          <div layout="column" flex>
-
-                            <div layout="column" flex layout-margin>
-                              <label >Shipping</label>
-                              <div  layout="row" layout-align="end">
-                                <label flex layout="row" layout-align="start center">
-                                  <span>Start</span>
-                                </label>
-                                <md-datepicker ng-model="jobSchedules.shipping.startDate" md-placeholder="Start"></md-datepicker>
-                              </div>
-                              <div  layout="row" layout-align="end">
-                                <label flex layout="row" layout-align="start center">
-                                  <span>Complete</span>
-                                </label>
-                                <md-datepicker ng-model="jobSchedules.shipping.completeDate" md-placeholder="Complete"></md-datepicker>
-                              </div>
-                            </div>
-
-                            <md-divider></md-divider>
-
-                            <div layout="column" flex layout-margin>
-                              <label >Installation</label>
-                              <div  layout="row" layout-align="end">
-                                <label flex layout="row" layout-align="start center">
-                                  <span>Start</span>
-                                </label>
-                                <md-datepicker ng-model="jobSchedules.installation.startDate" md-placeholder="Start"></md-datepicker>
-                              </div>
-                              <div  layout="row" layout-align="end">
-                                <label flex layout="row" layout-align="start center">
-                                  <span>Complete</span>
-                                </label>
-                                <md-datepicker ng-model="jobSchedules.installation.completeDate" md-placeholder="Complete"></md-datepicker>
-                              </div>
-                            </div>
-
-                          </div>
-
                         </div>
+
                       </div>
+
                       <md-divider></md-divider>
-                    </md-content>
-                  </md-tab>
-                </md-tabs>
+
+                      <div layout="column" flex>
+
+                        <div layout="column" flex layout-margin>
+                          <label >Mechanical</label>
+                          <div  layout="row" layout-align="end">
+                            <label flex layout="row" layout-align="start center">
+                              <span>Start</span>
+                            </label>
+                            <md-datepicker ng-model="jobSchedules.mechanical.startDate" md-placeholder="Start"></md-datepicker>
+                          </div>
+                          <div  layout="row" layout-align="end">
+                            <label flex layout="row" layout-align="start center">
+                              <span>Complete</span>
+                            </label>
+                            <md-datepicker ng-model="jobSchedules.mechanical.completeDate" md-placeholder="Complete"></md-datepicker>
+                          </div>
+                        </div>
+
+                        <md-divider></md-divider>
+
+                        <div layout="column" flex layout-margin>
+                          <label >Electrical</label>
+                          <div  layout="row" layout-align="end">
+                            <label flex layout="row" layout-align="start center">
+                              <span>Start</span>
+                            </label>
+                            <md-datepicker ng-model="jobSchedules.electrical.startDate" md-placeholder="Start"></md-datepicker>
+                          </div>
+                          <div  layout="row" layout-align="end">
+                            <label flex layout="row" layout-align="start center">
+                              <span>Complete</span>
+                            </label>
+                            <md-datepicker ng-model="jobSchedules.electrical.completeDate" md-placeholder="Complete"></md-datepicker>
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <md-divider></md-divider>
+
+                      <div layout="column" flex>
+
+                        <div layout="column" flex layout-margin>
+                          <label >Shipping</label>
+                          <div  layout="row" layout-align="end">
+                            <label flex layout="row" layout-align="start center">
+                              <span>Start</span>
+                            </label>
+                            <md-datepicker ng-model="jobSchedules.shipping.startDate" md-placeholder="Start"></md-datepicker>
+                          </div>
+                          <div  layout="row" layout-align="end">
+                            <label flex layout="row" layout-align="start center">
+                              <span>Complete</span>
+                            </label>
+                            <md-datepicker ng-model="jobSchedules.shipping.completeDate" md-placeholder="Complete"></md-datepicker>
+                          </div>
+                        </div>
+
+                        <md-divider></md-divider>
+
+                        <div layout="column" flex layout-margin>
+                          <label >Installation</label>
+                          <div  layout="row" layout-align="end">
+                            <label flex layout="row" layout-align="start center">
+                              <span>Start</span>
+                            </label>
+                            <md-datepicker ng-model="jobSchedules.installation.startDate" md-placeholder="Start"></md-datepicker>
+                          </div>
+                          <div  layout="row" layout-align="end">
+                            <label flex layout="row" layout-align="start center">
+                              <span>Complete</span>
+                            </label>
+                            <md-datepicker ng-model="jobSchedules.installation.completeDate" md-placeholder="Complete"></md-datepicker>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </div>
+                  <md-divider></md-divider>
+                </md-content>
               </form>
             </md-tab>
 
