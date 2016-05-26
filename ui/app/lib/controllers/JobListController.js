@@ -11,8 +11,6 @@ export default class JobListController extends ListController {
 
     this.Job = Job;
 
-    Job.cacheInvalid = true;
-
     self.JobSearchParameters = JobSearchParameters;
 
     self.searchPrompt = function (event) {
@@ -144,7 +142,6 @@ export default class JobListController extends ListController {
 
     this.search = {}
     this.total = 0
-    $scope.showInactive = false;
     this.query = {
       page: 1,
       limit: 10,
@@ -156,8 +153,12 @@ export default class JobListController extends ListController {
 
     self.JobAddresses = JobAddresses;
 
-    $scope.$watch('showInactive',
+    $scope.$watch('$jobs.Job.showInactive',
                     function toggle(newValue, oldValue) {
+
+                      if (newValue === oldValue)
+                        return;
+
                       if (newValue === true)
                       {
                         self.query.filters = {};
@@ -172,6 +173,12 @@ export default class JobListController extends ListController {
                       self.getJobs();
                     }
                 );
+
+    this.refresh = function ()
+    {
+      Job.cacheInvalid = true;
+      self.getJobs();
+    }
 
     this.jobTitle = $filter('jobTitle')
     this.jobStatus = $filter('jobStatus')
@@ -244,45 +251,6 @@ export default class JobListController extends ListController {
                     [...updated, ...processed]
                   )
           )
-
-      //
-      // for (let i = 0; i < jobBatchSize; i++)
-      // {
-      //   if (index <= jobs.length)
-      //   {
-      //     batch[i] = jobs[index];
-      //     index++;
-      //   } else {
-      //     done = true;
-      //   }
-      //
-      //   batch.forEach((job, idx) => {
-      //
-      //     if (job !== undefined && job.id !== undefined)
-      //     {
-      //       promiseResults[idx] = JobAddresses.get({ jobId: job.id }).then(address => {
-      //
-      //         job.displayAddress =
-      //         {
-      //           city: address.shipping.city,
-      //           state: address.shipping.stateOrProvince
-      //         }
-      //
-      //         return job;
-      //       });
-      //     }
-      //   });
-      //
-      //   return $q.all(promiseResults).then(addressedJobs =>
-      //   {
-      //     if (!done)
-      //     {
-      //       batch = [];
-      //       this.processAddressBatch(jobs, index, done, jobBatchSize);
-      //     }
-      //   })
-      //
-      // }
 
     }
 
