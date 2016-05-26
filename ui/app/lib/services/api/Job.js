@@ -10,6 +10,7 @@ export default class Job extends ApiService {
     this.addresses = JobAddresses
     this.schedules = JobSchedules
 
+    this.showInactive = false;
     this.cache = [];
     this.cacheInvalid = true;
     this.attachAddressess = false;

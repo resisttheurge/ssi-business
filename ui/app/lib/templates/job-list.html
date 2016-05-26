@@ -9,7 +9,7 @@
           <div class="md-toolbar-tools">
             <h2 flex>Jobs</h2>
 
-            <md-switch ng-model="showInactive" ng-click="$jobs.Job.cacheInvalid = true;">
+            <md-switch ng-model="$jobs.Job.showInactive" ng-click="$jobs.Job.cacheInvalid = true;">
               {{showInactive ? 'Showing All Jobs' : 'Showing Active Jobs' }}
             </md-switch>
 
@@ -25,32 +25,14 @@
 
             <!-- [X] Search Popup -->
 
-<!--
-            <md-button ng-click="$jobs.showSearch = !$jobs.showSearch" class="md-icon-button">
+
+            <md-button ng-click="$jobs.refresh()" class="md-icon-button">
               <md-tooltip md-direction="left" md-autohide="true">
-                Search
+                Refresh
               </md-tooltip>
-              <md-icon md-menu-origin class="material-icons">search</md-icon>
+              <md-icon md-menu-origin class="material-icons">refresh</md-icon>
             </md-button>
 
-            <div ng-show="$jobs.showSearch" ng-model="$jobs.search" type=text style="margin-bottom=0px;">
-              <md-input-container style="margin-top: 0px; margin-right: 20px; width: 50px;">
-                <md-select ng-model="$jobs.search.prefix" style="width: 50px;">
-                  <md-option ng-repeat="prefix in $jobs.prefixes" ng-value="prefix">
-                         {{prefix}}
-                  </md-option>
-                </md-select>
-              </md-input-container>
-                -
-              <md-input-container style="margin-top: 24px; width: 50px;">
-                <input ng-model="$jobs.search.year" type="number">
-              </md-input-container>
-                -
-              <md-input-container style="margin-top: 24px; width: 125px;">
-                <input ng-model="$jobs.search.label" type="text">
-              </md-input-container>
-            </div>
--->
           </div>
 
 
