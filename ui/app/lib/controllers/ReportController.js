@@ -259,6 +259,9 @@ export default class ReportController {
            controller: function DialogController($scope, $mdDialog) {
 
              $scope.closeDialog = function () {
+
+               $scope.reportFrom = undefined;
+               $scope.reportTo = undefined;
                $scope.jobPrefix = undefined;
                $scope.jobYear = undefined;
                $scope.jobLabel = undefined;
@@ -266,6 +269,7 @@ export default class ReportController {
                $scope.state = undefined;
                $scope.customer = undefined;
                $scope.customerSearchText = undefined;
+
                $mdDialog.hide();
              }
 
@@ -279,6 +283,8 @@ export default class ReportController {
                    else
                     self.failAlert();
 
+                   $scope.reportFrom = undefined;
+                   $scope.reportTo = undefined;
                    $scope.jobPrefix = undefined;
                    $scope.jobYear = undefined;
                    $scope.jobLabel = undefined;
@@ -286,7 +292,7 @@ export default class ReportController {
                    $scope.state = undefined;
                    $scope.customer = undefined;
                    $scope.customerSearchText = undefined;
-                   
+
                  });
              }
 
