@@ -259,19 +259,25 @@ export default class ReportController {
            controller: function DialogController($scope, $mdDialog) {
 
              $scope.closeDialog = function () {
+               delete $scope.jobPrefix;
+               delete $scope.jobYear;
+               delete $scope.jobLabel;
+               delete $scope.city;
+               delete $scope.state;
+               delete $scope.customer;
                $mdDialog.hide();
              }
 
              $scope.displayReport = function () {
                $mdDialog.hide();
                Report.managementReview(
-                 $scope.reportFrom ? $scope.reportFrom.toISOString().substring(0, 10) : undefined, $scope.reportTo ? $scope.reportTo.toISOString().substring(0, 10) : undefined, $scope.jobPrefix || "", ($scope.jobYear && "" + $scope.jobYear) || "", $scope.jobLabel || "", $scope.city || "", $scope.state || "", ($scope.customer && $scope.customer.label) || "").then(function (report)
+                 $scope.reportFrom ? $scope.reportFrom.toISOString().substring(0, 10) : undefined, $scope.reportTo ? $scope.reportTo.toISOString().substring(0, 10) : undefined, $scope.jobPrefix || '', ($scope.jobYear && '' + $scope.jobYear) || '', $scope.jobLabel || '', $scope.city || '', $scope.state || '', ($scope.customer && $scope.customer.label) || '').then(function (report)
                {
-                 if (report.length > 0)
-                  window.open('data:application/pdf;base64,' + report);
-                 else
-                  self.failAlert();
-               });
+                   if (report.length > 0)
+                    window.open('data:application/pdf;base64,' + report);
+                   else
+                    self.failAlert();
+                 });
              }
 
            }
