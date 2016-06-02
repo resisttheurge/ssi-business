@@ -277,6 +277,13 @@ export default class ReportController {
                     window.open('data:application/pdf;base64,' + report);
                    else
                     self.failAlert();
+
+                   delete $scope.jobPrefix;
+                   delete $scope.jobYear;
+                   delete $scope.jobLabel;
+                   delete $scope.city;
+                   delete $scope.state;
+                   delete $scope.customer;
                  });
              }
 
