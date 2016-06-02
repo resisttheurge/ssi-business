@@ -11,7 +11,7 @@ public class DataUtil {
 	private static final SimpleDateFormat mdyFormat = new SimpleDateFormat("MM/dd/yyyy");
 
 	public static String convertRaw(String data){
-		return escapeHtml4(escapeXml11(Strings.nullToEmpty(data)));
+		return escapeHtml4(escapeXml10(Strings.nullToEmpty(data)));
 	}
 	
 	public static String convertRaw(int data){
