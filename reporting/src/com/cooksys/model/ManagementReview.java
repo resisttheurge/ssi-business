@@ -77,9 +77,11 @@ public class ManagementReview implements VariableGenerator<ManagementReview>
 		{
 			e.printStackTrace();
 		}
-		mgmtList.get(0).onTimeOrders = _onTimeOrders;
-		mgmtList.get(0).lateOrders = _lateOrders;
-		mgmtList.get(0).noStatusOrders = _noStatusOrders;
+		if(mgmtList.size() > 0) {
+			mgmtList.get(0).onTimeOrders = _onTimeOrders;
+			mgmtList.get(0).lateOrders = _lateOrders;
+			mgmtList.get(0).noStatusOrders = _noStatusOrders;
+		}
 		return mgmtList;
 	}
 
