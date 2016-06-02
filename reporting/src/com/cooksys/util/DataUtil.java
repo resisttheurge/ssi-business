@@ -11,7 +11,7 @@ public class DataUtil {
 	private static final SimpleDateFormat mdyFormat = new SimpleDateFormat("MM/dd/yyyy");
 
 	public static String convertRaw(String data){
-		return escapeXml11(escapeHtml4(Strings.nullToEmpty(data)));
+		return escapeHtml4(escapeXml11(Strings.nullToEmpty(data)));
 	}
 	
 	public static String convertRaw(int data){
@@ -19,11 +19,11 @@ public class DataUtil {
 	}
 	
 	public static String convertRaw(Date data){
-		return data == null ? "" : mdyFormat.format(data);
+		return convertRaw(data == null ? "" : mdyFormat.format(data));
 	}
 	
 	public static String convertHeaderYear(Date data){
 		//magic numbers lol read the getYear() javadoc
-		return data == null ? "" : String.valueOf(data.getYear() - 100);
+		return convertRaw(data == null ? "" : String.valueOf(data.getYear() - 100));
 	}
 }
