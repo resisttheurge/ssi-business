@@ -1,6 +1,6 @@
 package com.cooksys.util;
 
-import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
+import static org.apache.commons.lang3.StringEscapeUtils.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +11,7 @@ public class DataUtil {
 	private static final SimpleDateFormat mdyFormat = new SimpleDateFormat("MM/dd/yyyy");
 
 	public static String convertRaw(String data){
-		return escapeHtml4(Strings.nullToEmpty(data));
+		return escapeXml11(escapeHtml4(Strings.nullToEmpty(data)));
 	}
 	
 	public static String convertRaw(int data){
