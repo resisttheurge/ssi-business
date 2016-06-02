@@ -25,17 +25,23 @@ public class ManagementReview implements VariableGenerator<ManagementReview>
 	String status;
 	String description;
 	
-	static int onTimeOrders;
-	static int lateOrders;
-	static int noStatusOrders;
+	int onTimeOrders;
+	int lateOrders;
+	int noStatusOrders;
 	
 	@Override
 	public List<ManagementReview> generateVariables(ResultSet rawData)
 	{
+		int _onTimeOrders = 0;
+		int _lateOrders = 0;
+		int _noStatusOrders = 0;
+
 		ArrayList<ManagementReview> mgmtList = new ArrayList<ManagementReview>();
 
 		try
 		{
+
+
 			while (rawData.next())
 			{
 				ManagementReview mgmtReview = new ManagementReview();
@@ -57,27 +63,24 @@ public class ManagementReview implements VariableGenerator<ManagementReview>
 				mgmtReview.setCompleteDate(convertRaw(completeDate));
 				mgmtReview.setStatus(convertRaw(rawData.getString(10)));
 				mgmtReview.setDescription(convertRaw(rawData.getString(11)));
-				
-				tallyOrders(dueDate, completeDate);
-				
+
+				if(dueDate == null || completeDate == null)
+					_noStatusOrders++;
+				else if(dueDate.getTime() >= completeDate.getTime())
+					_onTimeOrders++;
+				else
+					_lateOrders++;
+
 				mgmtList.add(mgmtReview);
 			}
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
-
+		mgmtList.get(0).onTimeOrders = _onTimeOrders;
+		mgmtList.get(0).lateOrders = _lateOrders;
+		mgmtList.get(0).noStatusOrders = _noStatusOrders;
 		return mgmtList;
-	}
-
-	private void tallyOrders(Date dueDate, Date completeDate)
-	{
-		if(dueDate == null || completeDate == null)
-			noStatusOrders++;
-		else if(dueDate.getTime() >= completeDate.getTime())
-			onTimeOrders++;
-		else
-			lateOrders++;	
 	}
 
 	public String getPrefix()
@@ -192,32 +195,32 @@ public class ManagementReview implements VariableGenerator<ManagementReview>
 
 	public int getOnTimeOrders()
 	{
-		return onTimeOrders;
+		return this.onTimeOrders;
 	}
 
 	public void setOnTimeOrders(int onTimeOrders)
 	{
-		ManagementReview.onTimeOrders = onTimeOrders;
+		this.onTimeOrders = onTimeOrders;
 	}
 
 	public int getLateOrders()
 	{
-		return lateOrders;
+		return this.lateOrders;
 	}
 
 	public void setLateOrders(int lateOrders)
 	{
-		ManagementReview.lateOrders = lateOrders;
+		this.lateOrders = lateOrders;
 	}
 
 	public int getNoStatusOrders()
 	{
-		return noStatusOrders;
+		return this.noStatusOrders;
 	}
 
 	public void setNoStatusOrders(int noStatusOrders)
 	{
-		ManagementReview.noStatusOrders = noStatusOrders;
+		this.noStatusOrders = noStatusOrders;
 	}
 
 }
