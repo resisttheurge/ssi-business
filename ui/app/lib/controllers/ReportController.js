@@ -259,12 +259,13 @@ export default class ReportController {
            controller: function DialogController($scope, $mdDialog) {
 
              $scope.closeDialog = function () {
-               delete $scope.jobPrefix;
-               delete $scope.jobYear;
-               delete $scope.jobLabel;
-               delete $scope.city;
-               delete $scope.state;
-               delete $scope.customer;
+               $scope.jobPrefix = undefined;
+               $scope.jobYear = undefined;
+               $scope.jobLabel = undefined;
+               $scope.city = undefined;
+               $scope.state = undefined;
+               $scope.customer = undefined;
+               $scope.customerSearchText = undefined;
                $mdDialog.hide();
              }
 
@@ -278,12 +279,14 @@ export default class ReportController {
                    else
                     self.failAlert();
 
-                   delete $scope.jobPrefix;
-                   delete $scope.jobYear;
-                   delete $scope.jobLabel;
-                   delete $scope.city;
-                   delete $scope.state;
-                   delete $scope.customer;
+                   $scope.jobPrefix = undefined;
+                   $scope.jobYear = undefined;
+                   $scope.jobLabel = undefined;
+                   $scope.city = undefined;
+                   $scope.state = undefined;
+                   $scope.customer = undefined;
+                   $scope.customerSearchText = undefined;
+                   
                  });
              }
 
