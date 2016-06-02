@@ -1,7 +1,7 @@
 import { ApiService } from 'utils'
 export default class ShippingGroupByJob extends ApiService {
   /*@ngInject*/
-  constructor ($resource, endpoint, $unpack) {
+  constructor ($resource, endpoint, $unpack, $convertDate) {
     super()
 
     var service = this;

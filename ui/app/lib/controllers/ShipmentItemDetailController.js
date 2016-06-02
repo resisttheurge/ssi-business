@@ -10,7 +10,7 @@ export default class ShipmentItemDetailController extends DetailController {
 
     $scope.shipment = $ssiSelected.shipment
     $scope.job = $ssiSelected.job
-    ShippingItemByJob.list($scope.job.id)
+    ShippingItemByJob.list($routeParams)
       .then(collection => ({
         ...collection,
         drawings:

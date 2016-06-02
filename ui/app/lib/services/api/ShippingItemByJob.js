@@ -9,10 +9,10 @@ export default class ShippingItemByJob extends ApiService {
   ) {
     super()
 
-    this.list = jobId =>
+    this.list = ({ jobId }) =>
       $q.all({
         drawings: DrawingByJob.list(jobId),
-        shippingGroups: ShippingGroupByJob.list(jobId)
+        shippingGroups: ShippingGroupByJob.list({ jobId })
       }).then(
         ({ drawings, shippingGroups }) =>
           $q.all({
