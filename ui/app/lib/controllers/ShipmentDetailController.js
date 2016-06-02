@@ -150,7 +150,7 @@ export default class ShipmentDetailController extends DetailController {
                         <md-option
                             ng-repeat="mark in drawing.marks track by mark.id"
                             ng-value="mark.shippingItem">
-                          {{mark.label}}{{mark.shippingItem.label ? ' - ' + mark.shippingItem.label : ''}}
+                          {{mark.label}}{{mark.shippingItem.label ? ' - ' + mark.shippingItem.label : ''}}<strong>{{"  (" + mark.shippingItem.completed + "/" + mark.shippingItem.requested + ")"}}</strong>
                         </md-option>
                       </md-optgroup>
                     </md-optgroup>
@@ -162,7 +162,7 @@ export default class ShipmentDetailController extends DetailController {
                         <md-option
                             ng-repeat="shippingGroupItem in shippingGroup.shippingGroupItems track by shippingGroupItem.id"
                             ng-value="shippingGroupItem.shippingItem">
-                          {{shippingGroupItem.label}}{{shippingGroupItem.shippingItem.label ? ' - ' + shippingGroupItem.shippingItem.label : ''}}
+                          {{shippingGroupItem.label}}{{shippingGroupItem.shippingItem.label ? ' - ' + shippingGroupItem.shippingItem.label : ''}}<strong>{{"  (" + shippingGroupItem.shippingItem.completed + "/" + shippingGroupItem.shippingItem.requested + ")"}}</strong>
                         </md-option>
                       </md-optgroup>
                     </md-optgroup>
