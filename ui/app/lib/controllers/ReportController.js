@@ -264,7 +264,8 @@ export default class ReportController {
 
              $scope.displayReport = function () {
                $mdDialog.hide();
-               Report.managementReview($scope.reportFrom.toISOString().substring(0, 10), $scope.reportTo.toISOString().substring(0, 10), $scope.jobPrefix, $scope.jobYear, $scope.jobLabel, city, state, customer).then(function (report)
+               Report.managementReview(
+                 $scope.reportFrom ? $scope.reportFrom.toISOString().substring(0, 10) : "", $scope.reportTo ? $scope.reportTo.toISOString().substring(0, 10) : "", $scope.jobPrefix || "", $scope.jobYear || "", $scope.jobLabel || "", $scope.city || "", $scope.state || "", $scope.customer || "").then(function (report)
                {
                  if (report.length > 0)
                   window.open('data:application/pdf;base64,' + report);
