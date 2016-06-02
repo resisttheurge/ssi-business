@@ -90,6 +90,20 @@ export default class ShipmentItemListController extends ListController {
       return $scope.shipmentItems = shipmentItems
     }
 
+    $scope.$watch(() => { return ShipmentItem.refresh },
+
+    (newValue, oldValue) => {
+      if (ShipmentItem.refresh === true)
+      {
+        getShipmentItems($scope.query = {
+          page: 1,
+          limit: 10,
+          order: 'id'
+        })
+        ShipmentItem.refresh = false;
+      }
+    })
+
     getShipmentItems($scope.query)
   }
 }

@@ -11,6 +11,8 @@ export default class ShipmentItem extends ApiService {
 
     var self = this;
 
+    self.refresh = false;
+
     self.shipmentItemDateToString = shipmentItem => {
       const { shipDate } = shipmentItem
       return ({

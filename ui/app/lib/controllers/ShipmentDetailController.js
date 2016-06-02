@@ -124,5 +124,145 @@ export default class ShipmentDetailController extends DetailController {
 
       this.refresh()
     }
+
+    $scope.addPrompt = function (event) {
+      $mdDialog.show({
+        clickOutsideToClose: true,
+        scope: $scope,
+        preserveScope: true,
+        template: `<md-dialog-content>
+
+          <form name="shipmentItemDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
+            <div layout="column" layout-margin>
+              <div layout="row">
+                <md-input-container flex>
+                  <label>Shipping Item</label>
+                  <md-select
+                      required
+                      ng-model="shipmentItem.shippingItem"
+                      placeholder="Shipping Item"
+                      ng-model-options="{trackBy: '$value.id'}">
+                    <md-optgroup
+                        label="Drawings">
+                      <md-optgroup
+                          ng-repeat="drawing in shippingItemCollection.drawings track by drawing.id"
+                          label="{{drawing.label}}{{drawing.info.title ? ' - ' + drawing.info.title : ''}}">
+                        <md-option
+                            ng-repeat="mark in drawing.marks track by mark.id"
+                            ng-value="mark.shippingItem">
+                          {{mark.label}}{{mark.shippingItem.label ? ' - ' + mark.shippingItem.label : ''}}
+                        </md-option>
+                      </md-optgroup>
+                    </md-optgroup>
+                    <md-optgroup
+                        label="Shipping Groups">
+                      <md-optgroup
+                          ng-repeat="shippingGroup in shippingItemCollection.shippingGroups track by shippingGroup.id"
+                          label="{{shippingGroup.label}}{{shippingGroup.info.title ? ' - ' + shippingGroup.info.title : ''}}">
+                        <md-option
+                            ng-repeat="shippingGroupItem in shippingGroup.shippingGroupItems track by shippingGroupItem.id"
+                            ng-value="shippingGroupItem.shippingItem">
+                          {{shippingGroupItem.label}}{{shippingGroupItem.shippingItem.label ? ' - ' + shippingGroupItem.shippingItem.label : ''}}
+                        </md-option>
+                      </md-optgroup>
+                    </md-optgroup>
+                  </md-select>
+                </md-input-container>
+              </div>
+
+              <div layout="row">
+                <md-input-container flex>
+                  <label>Quantity</label>
+                  <input min="0" ng-model="shipmentItem.quantity" type="number" required></textarea>
+                </md-input-container>
+              </div>
+            </div>
+
+            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+               <md-button class="md-raised md-primary" ng-disabled="shipmentItemDetailForm.$invalid" ng-click="done()">Done</md-button>
+               <md-button class="md-raised md-warn" ng-click="cancel()">Cancel</md-button>
+            </section>
+
+          </form>
+
+            </md-dialog-content>`,
+        controller: function AddShipmentItemController($scope, $routeParams, ShipmentItem, ShippingItemByJob, enums, $mdDialog, $ssiSelected, $log, $location) {
+
+          $scope.shippingItemStatuses = enums.shippingItemStatuses
+
+          $scope.shipment = $ssiSelected.shipment
+          $scope.job = $ssiSelected.job
+
+          ShippingItemByJob.list($routeParams)
+            .then(collection => ({
+              ...collection,
+              drawings:
+                collection.drawings
+                  .map(drawing => ({
+                    ...drawing,
+                    marks: drawing.marks.filter(
+                      mark =>
+                        mark.shippingItem.status !== 'SHPD'
+                          && !(mark.shippingItem.requested < 1)
+                          && !(mark.shippingItem.completed === mark.shippingItem.requested)
+                    )
+                  }))
+                  .filter(drawing => drawing.marks.length > 0),
+              shippingGroups:
+                collection.shippingGroups
+                  .map(shippingGroup => ({
+                    ...shippingGroup,
+                    marks: shippingGroup.shippingGroupItems.filter(
+                      shippingGroupItem =>
+                        shippingGroupItem.shippingItem.status !== 'SHPD'
+                          && !(shippingGroupItem.shippingItem.requested < 1)
+                          && !(shippingGroupItem.shippingItem.completed === shippingGroupItem.shippingItem.requested)
+                    )
+                  }))
+                  .filter(shippingGroup => shippingGroup.shippingGroupItems.length > 0)
+
+            }))
+            .then(collection => $scope.shippingItemCollection = collection);
+
+          $scope.shipmentItem = { shipmentId: $scope.shipment.id }
+
+          $scope.create = shipmentItem => {
+            ShipmentItem.create(shipmentItem)
+            .then(
+              data =>
+                $mdDialog.show(
+                  $mdDialog.alert()
+                    .title('Record created!')
+                    .textContent('This record has been saved to the database')
+                    .ok('Close')
+                )
+                .then(() => {
+                  $ssiSelected.shipmentItem = data
+                  ShipmentItem.refresh = true
+                }),
+                  error => {
+                    $log.error(JSON.stringify(error))
+                    $mdDialog.show(
+                      $mdDialog.alert()
+                        .title('Failed to create record')
+                        .textContent('There has been an error, record could not be created')
+                        .ok('Close')
+                    )
+                  }
+                )
+          }
+
+          $scope.done = function () {
+            $scope.create($scope.shipmentItem);
+          }
+
+          $scope.cancel = function () {
+            $mdDialog.hide();
+          }
+
+        }
+      });
+    };
+
   }
 }
