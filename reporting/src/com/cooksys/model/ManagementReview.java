@@ -72,7 +72,7 @@ public class ManagementReview implements VariableGenerator<ManagementReview>
 
 	private void tallyOrders(Date dueDate, Date completeDate)
 	{
-		if(completeDate == null)
+		if(dueDate == null || completeDate == null)
 			noStatusOrders++;
 		else if(dueDate.getTime() >= completeDate.getTime())
 			onTimeOrders++;
