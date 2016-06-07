@@ -225,9 +225,9 @@ trait JsonProtocol
 
   implicit val JobIdentifierFormatter = rootFormat(jsonFormat3(JobIdentifier))
 
-  implicit val JobFormatter = rootFormat(jsonFormat12(Job))
-
   implicit val JobAddressesFormatter = rootFormat(jsonFormat2(JobAddresses))
+
+  implicit val JobFormatter = rootFormat(jsonFormat13(Job))
 
   implicit val JobReportRequestFormatter = rootFormat(jsonFormat1(JobReportRequest))
 

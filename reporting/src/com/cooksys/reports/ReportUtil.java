@@ -1,6 +1,7 @@
 package com.cooksys.reports;
 
 import java.io.*;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,11 +74,11 @@ public class ReportUtil<T extends VariableGenerator> implements Reporting<T> {
 	}
 
 	@Override
-	public byte[] generate(String... args) {
+	public byte[] generate(Connection connection, String... args) {
 		
 		List varList = null;
 		try {
-			varList = model.newInstance().generateVariables(args);
+			varList = model.newInstance().generateVariables(connection,args);
 		} catch (InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,11 +96,11 @@ public class ReportUtil<T extends VariableGenerator> implements Reporting<T> {
 	}
 
 	@Override
-	public File generate(File f, String... args) {
+	public File generate(Connection connection, File f, String... args) {
 
 		List varList = null;
 		try {
-			varList = model.newInstance().generateVariables(args);
+			varList = model.newInstance().generateVariables(connection, args);
 		} catch (InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

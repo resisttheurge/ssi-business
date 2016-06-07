@@ -1,5 +1,6 @@
 package com.cooksys.model.shippingGroupShipper;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class ShipperInfo
 	}
 
 	@Override
-	public List<ShipperInfo> generateVariables(ResultSet rawData) {
+	public List<ShipperInfo> generateVariables(Connection connection, ResultSet rawData) {
 		// TODO Auto-generated method stu
 		return null;
 	}

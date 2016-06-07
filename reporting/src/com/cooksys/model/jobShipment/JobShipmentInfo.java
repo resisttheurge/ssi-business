@@ -1,5 +1,6 @@
 package com.cooksys.model.jobShipment;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class JobShipmentInfo
 	}
 
 	@Override
-	public List<JobShipmentInfo> generateVariables(ResultSet rawData) {
+	public List<JobShipmentInfo> generateVariables(Connection connection, ResultSet rawData) {
 		// TODO Auto-generated method stu
 		return null;
 	}

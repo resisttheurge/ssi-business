@@ -3,6 +3,7 @@ package com.cooksys.model.shippingGroupShipper;
 import static com.cooksys.util.DataUtil.convertHeaderYear;
 import static com.cooksys.util.DataUtil.convertRaw;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -178,7 +179,7 @@ public class ShippingGroupShipper implements VariableGenerator<ShippingGroupShip
 	}
 
 	@Override
-	public List<ShippingGroupShipper> generateVariables(ResultSet rawData) {
+	public List<ShippingGroupShipper> generateVariables(Connection connection, ResultSet rawData) {
 		ArrayList<ShippingGroupShipper> result = new ArrayList<ShippingGroupShipper>();
 
 		try {
@@ -204,7 +205,7 @@ public class ShippingGroupShipper implements VariableGenerator<ShippingGroupShip
 				item.dateShipped = convertRaw(rawData.getString(16));
 				item.proNo = convertRaw(rawData.getString(17));
 
-				ResultSet shipperInfoSet = Connector.executeStoredProcedure(new ShipperInfo(),
+				ResultSet shipperInfoSet = Connector.executeStoredProcedure(connection, new ShipperInfo(),
 						new String[] { item.shippingGroupId });
 
 				while (shipperInfoSet.next()) {

@@ -3,7 +3,9 @@ package com.cooksys.ssi.utils.conversions
 import java.sql.{Date, Timestamp}
 import java.util.Calendar
 
+import com.cooksys.ssi.models
 import com.cooksys.ssi.models._
+import slick.model
 import slick.schema.Tables._
 
 object RowConversions extends RowConversions
@@ -128,7 +130,7 @@ trait RowConversions {
       completeDate = row.completeDate
     )
 
-  implicit def fromJobsRowWithDependents(row: (JobsRow, Option[ShopsRow], Option[SalespeopleRow], Option[CustomersRow], Option[ContactsRow])): Job =
+  implicit def fromJobsRowWithDependents(row: (JobsRow, Option[ShopsRow], Option[SalespeopleRow], Option[CustomersRow], Option[ContactsRow], Option[AddressesRow])): Job =
     Job(
       id = Some(row._1.id),
       identifier = JobIdentifier(
@@ -145,7 +147,8 @@ trait RowConversions {
       shop = row._2.map(s => s: Shop),
       salesperson = row._3.map(s => s: Salesperson),
       customer = row._4.map(c => c: Customer),
-      contact = row._5.map(c => c: Contact)
+      contact = row._5.map(c => c: Contact),
+      addresses = row._6.map(address => models.JobAddresses(Some(address), None))
     )
 
   implicit def toManufacturersRow(manufacturer: Manufacturer): ManufacturersRow =

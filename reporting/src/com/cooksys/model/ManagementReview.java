@@ -3,6 +3,7 @@ package com.cooksys.model;
 import static com.cooksys.util.DataUtil.convertHeaderYear;
 import static com.cooksys.util.DataUtil.convertRaw;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,7 +31,7 @@ public class ManagementReview implements VariableGenerator<ManagementReview>
 	int noStatusOrders;
 	
 	@Override
-	public List<ManagementReview> generateVariables(ResultSet rawData)
+	public List<ManagementReview> generateVariables(Connection connection, ResultSet rawData)
 	{
 		int _onTimeOrders = 0;
 		int _lateOrders = 0;

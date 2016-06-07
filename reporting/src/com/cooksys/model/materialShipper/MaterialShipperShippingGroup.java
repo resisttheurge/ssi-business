@@ -1,5 +1,6 @@
 package com.cooksys.model.materialShipper;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class MaterialShipperShippingGroup
 	}
 
 	@Override
-	public List<MaterialShipperShippingGroup> generateVariables(ResultSet rawData) {
+	public List<MaterialShipperShippingGroup> generateVariables(Connection connection, ResultSet rawData) {
 		// TODO Auto-generated method stu
 		return null;
 	}

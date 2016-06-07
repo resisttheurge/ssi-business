@@ -1,5 +1,6 @@
 package com.cooksys.model.shipment;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class CustomerJob implements VariableGenerator<CustomerJob>
 	HashMap<String, Double> subtotalByCarrier = new HashMap<String, Double>();
 
 	@Override
-	public List<CustomerJob> generateVariables(ResultSet rawData)
+	public List<CustomerJob> generateVariables(Connection connection, ResultSet rawData)
 	{
 
 		ArrayList<CustomerJob> result = new ArrayList<CustomerJob>();
@@ -42,7 +43,7 @@ public class CustomerJob implements VariableGenerator<CustomerJob>
 			year = convertHeaderYear(rawData.getDate(4));
 			label = convertRaw(rawData.getString(5));
 			
-			ResultSet shipmentSet = Connector.executeStoredProcedure(new Shipment(), new String[]{jobId});
+			ResultSet shipmentSet = Connector.executeStoredProcedure(connection, new Shipment(), new String[]{jobId});
 			
 			while(shipmentSet.next())
 			{

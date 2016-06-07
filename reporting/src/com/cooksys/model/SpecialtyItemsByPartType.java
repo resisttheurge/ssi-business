@@ -3,6 +3,7 @@ package com.cooksys.model;
 import static com.cooksys.util.DataUtil.convertHeaderYear;
 import static com.cooksys.util.DataUtil.convertRaw;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class SpecialtyItemsByPartType implements VariableGenerator<SpecialtyItem
 	
 
 	@Override
-	public List<SpecialtyItemsByPartType> generateVariables(ResultSet rawData)
+	public List<SpecialtyItemsByPartType> generateVariables(Connection connection, ResultSet rawData)
 	{
 		ArrayList<SpecialtyItemsByPartType> itemList = new ArrayList<SpecialtyItemsByPartType>();
 		

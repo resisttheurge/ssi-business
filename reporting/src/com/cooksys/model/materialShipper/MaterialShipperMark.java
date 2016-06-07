@@ -1,5 +1,6 @@
 package com.cooksys.model.materialShipper;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +74,7 @@ public class MaterialShipperMark implements VariableGenerator<MaterialShipperMar
 		this.zoneList = zoneList;
 	}
 	@Override
-	public List<MaterialShipperMark> generateVariables(ResultSet rawData) {
+	public List<MaterialShipperMark> generateVariables(Connection connection, ResultSet rawData) {
 		// TODO Auto-generated method stub
 		return null;
 	}

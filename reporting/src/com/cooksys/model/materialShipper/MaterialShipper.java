@@ -2,6 +2,7 @@ package com.cooksys.model.materialShipper;
 
 import static com.cooksys.util.DataUtil.convertRaw;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 
 
 	@Override
-	public List<MaterialShipper> generateVariables(ResultSet rawData) {
+	public List<MaterialShipper> generateVariables(Connection connection, ResultSet rawData) {
 
 		List<MaterialShipper> result = new ArrayList<MaterialShipper>();
 
@@ -39,10 +40,10 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 				item.jobName = convertRaw(rawData.getString(2));
 				item.jobNumber = convertRaw(rawData.getString(3)) + "-" + convertRaw(rawData.getString(4)) + "-" + convertRaw(rawData.getString(5));
 
-				ResultSet drawingSet = Connector.executeStoredProcedure(new MaterialShipperDrawing(),
+				ResultSet drawingSet = Connector.executeStoredProcedure(connection, new MaterialShipperDrawing(),
 						new String[] { item.jobId });
 
-				ResultSet zoneListSet = Connector.executeStoredProcedure("ZoneList", new String[] { item.jobId});
+				ResultSet zoneListSet = Connector.executeStoredProcedure(connection, "ZoneList", new String[] { item.jobId});
 				HashSet<MaterialShipperZone> zoneBaseSet = new HashSet<MaterialShipperZone>();
 				
 				while(zoneListSet.next())
@@ -64,7 +65,7 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 					drawing.setRevisionDate(convertRaw(drawingSet.getDate(4)));					
 					drawing.setDrawingId(convertRaw(drawingSet.getString(5)));
 							
-					ResultSet markSet = Connector.executeStoredProcedure(new MaterialShipperMark(),
+					ResultSet markSet = Connector.executeStoredProcedure(connection, new MaterialShipperMark(),
 							new String[] { drawing.getDrawingId() });
 					
 					while(markSet.next())
@@ -80,7 +81,7 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 						mark.setCompleted(convertRaw(markSet.getString(7)));
 						mark.setStatus(convertRaw(markSet.getString(8)));
 						
-						ResultSet zoneSet = Connector.executeStoredProcedure(new MaterialShipperZone(),
+						ResultSet zoneSet = Connector.executeStoredProcedure(connection, new MaterialShipperZone(),
 								new String[] { mark.getMarkId() });
 						
 						HashSet<MaterialShipperZone> cloneZone = (HashSet<MaterialShipperZone>) zoneBaseSet.clone();
@@ -109,7 +110,7 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 				
 				
 				
-				ResultSet shippingGroupSet = Connector.executeStoredProcedure("MaterialShipperShippingGroup",
+				ResultSet shippingGroupSet = Connector.executeStoredProcedure(connection, "MaterialShipperShippingGroup",
 						new String[] { item.jobId });
 
 				while(shippingGroupSet.next())
@@ -122,7 +123,7 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 					shippingGroup.setRevisionDate(convertRaw(shippingGroupSet.getDate(4)));					
 					shippingGroup.setDrawingId(convertRaw(shippingGroupSet.getString(5)));
 							
-					ResultSet markSet = Connector.executeStoredProcedure(new MaterialShipperShippingGroupItem(),
+					ResultSet markSet = Connector.executeStoredProcedure(connection, new MaterialShipperShippingGroupItem(),
 							new String[] { shippingGroup.getDrawingId() });
 					
 					while(markSet.next())
@@ -138,7 +139,7 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 						shippingGroupItem.setCompleted(convertRaw(markSet.getString(7)));
 						shippingGroupItem.setStatus(convertRaw(markSet.getString(8)));
 						
-						ResultSet zoneList = getZoneList(shippingGroupItem);
+						ResultSet zoneList = getZoneList(connection, shippingGroupItem);
 						
 						HashSet<MaterialShipperZone> cloneZone = (HashSet<MaterialShipperZone>) zoneBaseSet.clone();
 						
@@ -178,10 +179,10 @@ public class MaterialShipper implements VariableGenerator<MaterialShipper> {
 	}
 
 
-	private ResultSet getZoneList(MaterialShipperShippingGroupItem shippingGroupItem) {
+	private ResultSet getZoneList(Connection connection, MaterialShipperShippingGroupItem shippingGroupItem) {
 		try {
 			if(zoneList == null || zoneList.isLast())
-				zoneList = Connector.executeStoredProcedure(new MaterialShipperZone(),
+				zoneList = Connector.executeStoredProcedure(connection, new MaterialShipperZone(),
 					new String[] { shippingGroupItem.getMarkId() });
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

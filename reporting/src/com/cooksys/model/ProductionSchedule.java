@@ -1,5 +1,6 @@
 package com.cooksys.model;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,17 +39,17 @@ public class ProductionSchedule implements VariableGenerator<ProductionSchedule>
 	static String weekEnding;
 	
 	@Override
-	public List<ProductionSchedule> generateVariables(String[] args)
+	public List<ProductionSchedule> generateVariables(Connection connection, String[] args)
 	{
 		weekEnding = args[0];
 		
-		ResultSet set = Connector.executeStoredProcedure(this, new String[]{});
+		ResultSet set = Connector.executeStoredProcedure(connection, this, new String[]{});
 		
-		return set != null ? generateVariables(set) : new ArrayList<ProductionSchedule>();
+		return set != null ? generateVariables(connection, set) : new ArrayList<ProductionSchedule>();
 	}
 	
 	@Override
-	public List<ProductionSchedule> generateVariables(ResultSet rawData)
+	public List<ProductionSchedule> generateVariables(Connection connection, ResultSet rawData)
 	{
 		ArrayList<ProductionSchedule> result = new ArrayList<ProductionSchedule>();
 		

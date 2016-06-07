@@ -1,5 +1,6 @@
 package com.cooksys.model.shipment;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class Shipment implements VariableGenerator<Shipment>{
 		this.posted = posted;
 	}
 	@Override
-	public List<Shipment> generateVariables(ResultSet rawData)
+	public List<Shipment> generateVariables(Connection connection, ResultSet rawData)
 	{
 		// TODO Auto-generated method stub
 		return null;

@@ -16,76 +16,47 @@ import com.typesafe.config.ConfigFactory;
 
 public class Connector {
 
-	private static Connector instance;
+    private Connector() {
 
-	Connection connection;
-	Logger log = LoggerFactory.getLogger(Connector.class);
+    }
 
-	private Connector() {
-		getConnection();
-	}
+    public static <T extends VariableGenerator> ResultSet executeStoredProcedure(Connection connection, T type, String[] args) {
 
-	private void getConnection() {
+        try {
+            CallableStatement callableStatement = connection.prepareCall(type.getStoredProcedureName(args));
 
-		if (connection == null) {
-			Config conf = ConfigFactory.load().getConfig("database.test");
+            for (int i = 1; i <= args.length; i++)
+                callableStatement.setString(i, args[i - 1]);
 
-			try {
-				Class.forName(conf.getString("driver"));
-				connection = DriverManager.getConnection(conf.getString("url"), conf.getString("user"),
-						conf.getString("password"));
-			} catch (ClassNotFoundException | SQLException e) {
-				log.info("Error has occured in Connector", e);
-			}
-		}
+            return callableStatement.executeQuery();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-	}
+        return null;
+    }
 
-	public static <T extends VariableGenerator> ResultSet executeStoredProcedure(T type, String[] args) {
+    public static <T extends VariableGenerator> ResultSet executeStoredProcedure(Connection connection, String spName, String[] args) {
 
-		instance = instance == null ? getInstance() : instance;
+        try {
+            CallableStatement callableStatement = connection.prepareCall(getStoredProcedureName(spName, args));
 
-		try {
-			CallableStatement callableStatement = instance.connection.prepareCall(type.getStoredProcedureName(args));
+            for (int i = 1; i <= args.length; i++)
+                callableStatement.setString(i, args[i - 1]);
 
-			for (int i = 1; i <= args.length; i++)
-				callableStatement.setString(i, args[i - 1]);
+            return callableStatement.executeQuery();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-			return callableStatement.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        return null;
+    }
 
-		return null;
-	}
-
-	public static <T extends VariableGenerator> ResultSet executeStoredProcedure(String spName, String[] args) {
-
-		instance = instance == null ? getInstance() : instance;
-
-		try {
-			CallableStatement callableStatement = instance.connection.prepareCall(getStoredProcedureName(spName, args));
-
-			for (int i = 1; i <= args.length; i++)
-				callableStatement.setString(i, args[i - 1]);
-
-			return callableStatement.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	private static Connector getInstance() {
-		return new Connector();
-	}
-
-	private static String getStoredProcedureName(String sp, String[] argLength) {
-		return "{call " + sp + "("
-				+ String.join(",", Collections.nCopies(argLength != null ? argLength.length : 0, "?")) + ")}";
-	}
+    private static String getStoredProcedureName(String sp, String[] argLength) {
+        return "{call " + sp + "("
+                + String.join(",", Collections.nCopies(argLength != null ? argLength.length : 0, "?")) + ")}";
+    }
 
 }

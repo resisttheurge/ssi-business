@@ -3,6 +3,7 @@ package com.cooksys.model.jobShipment;
 import static com.cooksys.util.DataUtil.convertHeaderYear;
 import static com.cooksys.util.DataUtil.convertRaw;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -168,7 +169,7 @@ public class JobShipment implements VariableGenerator<JobShipment> {
 	}
 
 	@Override
-	public List<JobShipment> generateVariables(ResultSet rawData) {
+	public List<JobShipment> generateVariables(Connection connection, ResultSet rawData) {
 		ArrayList<JobShipment> result = new ArrayList<JobShipment>();
 
 		try {
@@ -193,7 +194,7 @@ public class JobShipment implements VariableGenerator<JobShipment> {
 				item.billOfLading = convertRaw(rawData.getString(15));
 				item.date = convertRaw(rawData.getString(16));
 
-				ResultSet jobShipmentInfoSet = Connector.executeStoredProcedure(new JobShipmentInfo(),
+				ResultSet jobShipmentInfoSet = Connector.executeStoredProcedure(connection, new JobShipmentInfo(),
 						new String[] { item.shipmentId });
 
 				while (jobShipmentInfoSet.next()) {

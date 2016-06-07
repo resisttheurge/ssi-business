@@ -2,6 +2,7 @@ package com.cooksys.model;
 
 import static com.cooksys.util.DataUtil.*;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +89,7 @@ public class Zone implements VariableGenerator<Zone> {
 
 
 	@Override
-	public List<Zone> generateVariables(ResultSet rawData) {
+	public List<Zone> generateVariables(Connection connection, ResultSet rawData) {
 		
 		List<Zone> result = new ArrayList<Zone>();
 		

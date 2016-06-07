@@ -2,6 +2,7 @@ package com.cooksys.model;
 
 import static com.cooksys.util.DataUtil.convertRaw;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +103,7 @@ public class LayoutDrawing implements VariableGenerator<LayoutDrawing> {
 	}
 
 	@Override
-	public List<LayoutDrawing> generateVariables(ResultSet rawData) {
+	public List<LayoutDrawing> generateVariables(Connection connection, ResultSet rawData) {
 
 		List<LayoutDrawing> result = new ArrayList<LayoutDrawing>();
 

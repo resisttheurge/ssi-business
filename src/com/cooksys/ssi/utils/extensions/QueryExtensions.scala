@@ -5,6 +5,7 @@ import com.cooksys.ssi.models._
 import com.cooksys.ssi.utils.conversions._
 import shapeless.syntax.std.tuple._
 import slick.driver.MySQLDriver.api._
+import slick.schema.Tables
 import slick.schema.Tables._
 
 object QueryExtensions extends QueryExtensions
@@ -49,15 +50,17 @@ trait QueryExtensions {
 
     def withDependents =
       for {
-        ((((job, shop), salesperson), customer), contact) <- {
+        ((((((job, shop), salesperson), customer), contact), jobAddress), address) <- {
           self
             .joinLeft(Shops).on(_.shopId === _.id)
             .joinLeft(Salespeople).on(_._1.salespersonId === _.id)
             .joinLeft(Customers).on(_._1._1.customerId === _.id)
             .joinLeft(Contacts).on(_._1._1._1.contactId === _.id)
+            .joinLeft(Tables.JobAddresses).on((left, right) => left._1._1._1._1.id === right.jobId && right.addressType === "SHIPPING")
+            .joinLeft(Addresses).on(_._2.map(_.addressId).getOrElse(-1) === _.id)
         }
       } yield
-        (job, shop, salesperson, customer, contact)
+        (job, shop, salesperson, customer, contact, address)
 
     def update(job: Job) =
       self

@@ -3,6 +3,7 @@ package com.cooksys.model;
 import static com.cooksys.util.DataUtil.convertHeaderYear;
 import static com.cooksys.util.DataUtil.convertRaw;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +24,10 @@ public class SpecialtyItemsByJob implements VariableGenerator<SpecialtyItemsByJo
 	static String year;
 
 	@Override
-	public List<SpecialtyItemsByJob> generateVariables(String[] args)
+	public List<SpecialtyItemsByJob> generateVariables(Connection connection, String[] args)
 	{
 
-		ResultSet customerHeaderSet = Connector.executeStoredProcedure(new CustomerJob(), args);
+		ResultSet customerHeaderSet = Connector.executeStoredProcedure(connection, new CustomerJob(), args);
 		try
 		{
 			customerHeaderSet.next();
@@ -40,11 +41,11 @@ public class SpecialtyItemsByJob implements VariableGenerator<SpecialtyItemsByJo
 			e.printStackTrace();
 		}
 
-		return VariableGenerator.super.generateVariables(args);
+		return VariableGenerator.super.generateVariables(connection, args);
 	}
 
 	@Override
-	public List<SpecialtyItemsByJob> generateVariables(ResultSet rawData)
+	public List<SpecialtyItemsByJob> generateVariables(Connection connection, ResultSet rawData)
 	{
 		ArrayList<SpecialtyItemsByJob> itemList = new ArrayList<SpecialtyItemsByJob>();
 
