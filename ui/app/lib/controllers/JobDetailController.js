@@ -5,10 +5,11 @@ export default class JobDetailController extends DetailController {
   constructor(
     $scope, $route, $location, $routeParams, $q, Address, Customer, Job, Schedule,
     Shop, Salesperson, enums, $filter, $mdDialog, $unpack, $convertDate,
-    JobAddresses, JobSchedules, $log, $ssiUser
+    JobAddresses, JobSchedules, $log, $ssiUser, $ssiSelected
   ) {
     super()
 
+    $scope.$ssiSelected = $ssiSelected;
     $scope.restricted = !$ssiUser.hasRole('ADMIN');
 
     function filter(expression, comparator) {

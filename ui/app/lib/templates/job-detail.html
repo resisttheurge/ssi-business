@@ -535,7 +535,7 @@
                               </md-button>
                               <md-menu-content>
                                 <md-menu-item>
-                                  <md-button ng-click="$app.selected.partOrder = partOrder; $app.selected.partOrder.ABM = $index + 1" ng-href="/jobs/{{$app.selected.job.id}}/part-orders/{{partOrder.id}}">
+                                  <md-button ng-click="$app.selected.partOrder = partOrder" ng-href="/jobs/{{$app.selected.job.id}}/part-orders/{{partOrder.id}}">
                                     <md-icon class="material-icons" md-menu-align-target>edit</md-icon>
                                     Edit
                                   </md-button>
@@ -549,8 +549,8 @@
                               </md-menu-content>
                             </md-menu>
                           </td>
-                          <td md-cell>{{$index + 1}}</td>
-                          <td md-cell>{{partOrder.part.description}}</td>
+                          <td md-cell>{{partOrder.abmNumber}}</td>
+                          <td md-cell>{{partOrder.partDescription}}</td>
                           <td md-cell>{{partOrder.status}}</td>
                           <!-- more cells go here -->
                         </tr>
@@ -559,7 +559,7 @@
                   </md-table-container>
                   <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
                   <div layout="row" layout-align="end center">
-                    <md-button class="md-fab" ng-href="/jobs/{{$app.selected.job.id}}/part-orders/new">
+                    <md-button class="md-fab" ng-click="$ssiSelected.partOrder = { abmNumber : partOrders.length + 1 }" ng-href="/jobs/{{$app.selected.job.id}}/part-orders/new">
                       <md-tooltip md-direction="top" md-autohide="true">
                         New Part Order
                       </md-tooltip>

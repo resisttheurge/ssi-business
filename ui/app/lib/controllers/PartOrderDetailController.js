@@ -3,7 +3,7 @@ import { DetailController } from 'utils'
 export default class PartOrderDetailController extends DetailController {
   /*@ngInject*/
   constructor(
-    $mdDialog, $scope, $routeParams, Manufacturer, Part, PartOrder, Vendor,
+    $mdDialog, $scope, $routeParams, Manufacturer, PartOrder, Vendor,
     enums, $ssiSelected, $convertDate, $q, DrawingByJob, $log, $route, $location
   ) {
     super()
@@ -17,7 +17,6 @@ export default class PartOrderDetailController extends DetailController {
       this.refresh = () =>
         $q.all({
           partOrder: PartOrder.get($routeParams.partOrderId),
-          parts: Part.list(),
           vendors: Vendor.list(),
           manufacturers: Manufacturer.list(),
           drawings: DrawingByJob.list($scope.job.id)
@@ -60,7 +59,6 @@ export default class PartOrderDetailController extends DetailController {
     } else {
       this.refresh = () =>
         $q.all({
-          parts: Part.list(),
           vendors: Vendor.list(),
           manufacturers: Manufacturer.list(),
           drawings: DrawingByJob.list($scope.job.id)
@@ -71,7 +69,7 @@ export default class PartOrderDetailController extends DetailController {
           $scope.drawings = drawings
         }).then(() => $scope.loading = false)
 
-      $scope.partOrder = { jobId: $scope.job.id, status: 'ACTIVE' }
+      $scope.partOrder = { jobId: $scope.job.id, status: 'ACTIVE', ...$ssiSelected.partOrder }
 
       $scope.create = item => {
         if (
