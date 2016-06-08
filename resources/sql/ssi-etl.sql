@@ -313,8 +313,8 @@ select  i.shipping_items_id,
 		t.description, 
 		(SELECT CASE WHEN t.`qty reqd` is null THEN 0 ELSE t.`qty reqd` END) AS required,
 		(SELECT CASE WHEN t.`qty comp` is null THEN 0 ELSE t.`qty comp` END) AS completed,
-		t.remarks, (select s.id from shops s where s.label = t.shop) as shop from `Material Shipper`.tags t 
-        left join idsLinkTemp i on t.jobid = i.jobid 
+		t.remarks, (select s.id from shops s where s.label = t.shop) as shop from idsLinkTemp i 
+        left join `Material Shipper`.tags t on t.jobid = i.jobid 
         and t.DWGID = i.dwgid
         and t.mark = i.mark
         and t.tagid = i.tagid
@@ -759,22 +759,27 @@ select * from `ssi-business`.parts;
 
 delete from `ssi-business`.parts;*/
 
+/* 
 insert into `ssi-business`.parts(type, number, description)
 
 SELECT `part type`, `part no`, `part description` FROM `Material Shipper`.abm
 where (`part no` is not null or `part description` is not null);
+*/ 
 
 /*insert into part_orders
 select * from `ssi-business`.part_orders;
 
 delete from `ssi-business`.part_orders;*/
 
-insert into `ssi-business`.part_orders(job_id,status,part_id,manufacturer_id,vendor_id,po,requested_quantity,stock_quantity,
+insert into `ssi-business`.part_orders(job_id,abm_number, status, part_type, part_number, part_description, manufacturer_id,vendor_id,po,requested_quantity,stock_quantity,
 purchase_quantity,request_date,purchase_date,release_date,released_by)
 
 SELECT a.jobid,
+a.abm,
 (SELECT CASE WHEN a.`delete` != 1 THEN 'ACTIVE' ELSE 'DELETED' END) AS status,
-(select p.id from parts p where p.type = a.`part type` and p.number = a.`part no` and p.description = a.`part description`) as partid,
+a.`PART TYPE` as part_type,
+a.`PART NO` as part_number,
+a.`PART DESCRIPTION` as part_description,
 (select m.id from manufacturers m where m.label = a.manufacturer) as manufid,
 (select v.id from vendors v where v.label = a.vendor) as vendorid,
 a.po,

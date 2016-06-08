@@ -4,7 +4,7 @@ USE `ssi-business`;
 --
 -- Host: localhost    Database: ssi-business
 -- ------------------------------------------------------
--- Server version	5.7.10-log
+-- Server version	5.7.12-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,41 +16,6 @@ USE `ssi-business`;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `addenda`
---
-
-DROP TABLE IF EXISTS `addenda`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `addenda` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `job_id` int(10) unsigned NOT NULL,
-  `label` varchar(50) NOT NULL,
-  `description` text NOT NULL,
-  `contract_price` decimal(19,4) DEFAULT NULL,
-  `salesperson_id` int(10) unsigned DEFAULT NULL,
-  `contact_id` int(10) unsigned DEFAULT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQUE_REVISION_LABEL` (`job_id`,`label`),
-  KEY `addenda__salespeople__fk_idx` (`salesperson_id`),
-  KEY `addenda__contacts__fk_idx` (`contact_id`),
-  CONSTRAINT `addenda__contacts__fk` FOREIGN KEY (`contact_id`) REFERENCES `contacts` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
-  CONSTRAINT `addenda__jobs__fk` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `addenda__salespeople__fk` FOREIGN KEY (`salesperson_id`) REFERENCES `salespeople` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `addenda`
---
-
-LOCK TABLES `addenda` WRITE;
-/*!40000 ALTER TABLE `addenda` DISABLE KEYS */;
-/*!40000 ALTER TABLE `addenda` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `addresses`
@@ -67,17 +32,8 @@ CREATE TABLE `addresses` (
   `postal_code` varchar(30) DEFAULT NULL,
   `country` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100709 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `addresses`
---
-
-LOCK TABLES `addresses` WRITE;
-/*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
-/*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `carriers`
@@ -91,17 +47,8 @@ CREATE TABLE `carriers` (
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `label_UNIQUE` (`label`)
-) ENGINE=InnoDB AUTO_INCREMENT=360 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `carriers`
---
-
-LOCK TABLES `carriers` WRITE;
-/*!40000 ALTER TABLE `carriers` DISABLE KEYS */;
-/*!40000 ALTER TABLE `carriers` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `contacts`
@@ -117,17 +64,8 @@ CREATE TABLE `contacts` (
   `fax` varchar(35) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26319 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `contacts`
---
-
-LOCK TABLES `contacts` WRITE;
-/*!40000 ALTER TABLE `contacts` DISABLE KEYS */;
-/*!40000 ALTER TABLE `contacts` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `customers`
@@ -141,17 +79,8 @@ CREATE TABLE `customers` (
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `label_UNIQUE` (`label`)
-) ENGINE=InnoDB AUTO_INCREMENT=4885 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `customers`
---
-
-LOCK TABLES `customers` WRITE;
-/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `drawings`
@@ -175,17 +104,8 @@ CREATE TABLE `drawings` (
   CONSTRAINT `drawings__jobs__fk` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `drawings__shipping_requests__fk` FOREIGN KEY (`shipping_request_id`) REFERENCES `shipping_requests` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `drawings__specialty_items__fk` FOREIGN KEY (`specialty_item_id`) REFERENCES `specialty_items` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=24230 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `drawings`
---
-
-LOCK TABLES `drawings` WRITE;
-/*!40000 ALTER TABLE `drawings` DISABLE KEYS */;
-/*!40000 ALTER TABLE `drawings` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `job_addresses`
@@ -204,17 +124,8 @@ CREATE TABLE `job_addresses` (
   KEY `job_addresses__addresses__fk_idx` (`address_id`),
   CONSTRAINT `job_addresses__addresses__fk` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `job_addresses__jobs__fk` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=119966 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `job_addresses`
---
-
-LOCK TABLES `job_addresses` WRITE;
-/*!40000 ALTER TABLE `job_addresses` DISABLE KEYS */;
-/*!40000 ALTER TABLE `job_addresses` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `job_system_types`
@@ -233,17 +144,8 @@ CREATE TABLE `job_system_types` (
   KEY `job_system_types__system_types__fk_idx` (`system_type_id`),
   CONSTRAINT `job_system_types__jobs__fk` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `job_system_types__system_types__fk` FOREIGN KEY (`system_type_id`) REFERENCES `system_types` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=17336 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `job_system_types`
---
-
-LOCK TABLES `job_system_types` WRITE;
-/*!40000 ALTER TABLE `job_system_types` DISABLE KEYS */;
-/*!40000 ALTER TABLE `job_system_types` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `jobs`
@@ -276,17 +178,8 @@ CREATE TABLE `jobs` (
   CONSTRAINT `jobs__customers__fk` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `jobs__salespeople__fk` FOREIGN KEY (`salesperson_id`) REFERENCES `salespeople` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `jobs__shops__fk` FOREIGN KEY (`shop_id`) REFERENCES `shops` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=13119 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `jobs`
---
-
-LOCK TABLES `jobs` WRITE;
-/*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
-/*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `manufacturers`
@@ -300,17 +193,8 @@ CREATE TABLE `manufacturers` (
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `label_UNIQUE` (`label`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `manufacturers`
---
-
-LOCK TABLES `manufacturers` WRITE;
-/*!40000 ALTER TABLE `manufacturers` DISABLE KEYS */;
-/*!40000 ALTER TABLE `manufacturers` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `marks`
@@ -330,17 +214,8 @@ CREATE TABLE `marks` (
   KEY `marks__shipping_items__fk_idx` (`shipping_item_id`),
   CONSTRAINT `marks__drawings__fk` FOREIGN KEY (`drawing_id`) REFERENCES `drawings` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `marks__shipping_items__fk` FOREIGN KEY (`shipping_item_id`) REFERENCES `shipping_items` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=168774 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `marks`
---
-
-LOCK TABLES `marks` WRITE;
-/*!40000 ALTER TABLE `marks` DISABLE KEYS */;
-/*!40000 ALTER TABLE `marks` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `part_orders`
@@ -353,8 +228,11 @@ CREATE TABLE `part_orders` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `job_id` int(10) unsigned NOT NULL,
   `drawing_id` int(10) unsigned DEFAULT NULL,
+  `abm_number` int(11) DEFAULT NULL,
   `status` enum('ACTIVE','COMPLETED','CANCELLED','DELETED') NOT NULL,
-  `part_id` int(10) unsigned DEFAULT NULL,
+  `part_type` enum('MECH','ELEC') DEFAULT NULL,
+  `part_number` varchar(100) DEFAULT NULL,
+  `part_description` varchar(255) DEFAULT NULL,
   `manufacturer_id` int(10) unsigned DEFAULT NULL,
   `vendor_id` int(10) unsigned DEFAULT NULL,
   `po` varchar(100) DEFAULT NULL,
@@ -367,51 +245,15 @@ CREATE TABLE `part_orders` (
   `released_by` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `purchase_orders__drawings__fk_idx` (`drawing_id`),
-  KEY `purchase_orders__parts__fk_idx` (`part_id`),
   KEY `purchase_orders__manufacturers__fk_idx` (`manufacturer_id`),
   KEY `purchase_orders__vendors__fk_idx` (`vendor_id`),
   KEY `purchase_orders__jobs__fk` (`job_id`),
   CONSTRAINT `purchase_orders__drawings__fk` FOREIGN KEY (`drawing_id`) REFERENCES `drawings` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `purchase_orders__jobs__fk` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `purchase_orders__manufacturers__fk` FOREIGN KEY (`manufacturer_id`) REFERENCES `manufacturers` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
-  CONSTRAINT `purchase_orders__parts__fk` FOREIGN KEY (`part_id`) REFERENCES `parts` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `purchase_orders__vendors__fk` FOREIGN KEY (`vendor_id`) REFERENCES `vendors` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=943 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `part_orders`
---
-
-LOCK TABLES `part_orders` WRITE;
-/*!40000 ALTER TABLE `part_orders` DISABLE KEYS */;
-/*!40000 ALTER TABLE `part_orders` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `parts`
---
-
-DROP TABLE IF EXISTS `parts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `parts` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `type` enum('MECH','ELEC') NOT NULL,
-  `number` varchar(200) DEFAULT NULL,
-  `description` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1060 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `parts`
---
-
-LOCK TABLES `parts` WRITE;
-/*!40000 ALTER TABLE `parts` DISABLE KEYS */;
-/*!40000 ALTER TABLE `parts` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `salespeople`
@@ -425,17 +267,8 @@ CREATE TABLE `salespeople` (
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `label_UNIQUE` (`label`)
-) ENGINE=InnoDB AUTO_INCREMENT=152 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `salespeople`
---
-
-LOCK TABLES `salespeople` WRITE;
-/*!40000 ALTER TABLE `salespeople` DISABLE KEYS */;
-/*!40000 ALTER TABLE `salespeople` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `schedules`
@@ -453,17 +286,8 @@ CREATE TABLE `schedules` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE_JOB_SCHEDULE_TYPE` (`job_id`,`schedule_type`),
   CONSTRAINT `job_schedules__jobs__fk` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=32959 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `schedules`
---
-
-LOCK TABLES `schedules` WRITE;
-/*!40000 ALTER TABLE `schedules` DISABLE KEYS */;
-/*!40000 ALTER TABLE `schedules` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `shipment_items`
@@ -482,17 +306,8 @@ CREATE TABLE `shipment_items` (
   KEY `shipment_items__shipping_items__fk_idx` (`shipping_item_id`),
   CONSTRAINT `shipment_items__shipments__fk` FOREIGN KEY (`shipment_id`) REFERENCES `shipments` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `shipment_items__shipping_items__fk` FOREIGN KEY (`shipping_item_id`) REFERENCES `shipping_items` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=159016 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `shipment_items`
---
-
-LOCK TABLES `shipment_items` WRITE;
-/*!40000 ALTER TABLE `shipment_items` DISABLE KEYS */;
-/*!40000 ALTER TABLE `shipment_items` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `shipments`
@@ -524,17 +339,8 @@ CREATE TABLE `shipments` (
   CONSTRAINT `shipments__contacts__fk` FOREIGN KEY (`contact_id`) REFERENCES `contacts` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `shipments__jobs__fk` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `shipments__shops__fk` FOREIGN KEY (`shop_id`) REFERENCES `shops` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1302 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `shipments`
---
-
-LOCK TABLES `shipments` WRITE;
-/*!40000 ALTER TABLE `shipments` DISABLE KEYS */;
-/*!40000 ALTER TABLE `shipments` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `shipping_group_items`
@@ -555,17 +361,8 @@ CREATE TABLE `shipping_group_items` (
   KEY `shipping_groupt_items__shipping_items__fk_idx` (`shipping_item_id`),
   CONSTRAINT `shipping_group_items__shipping_groups__fk` FOREIGN KEY (`shipping_group_id`) REFERENCES `shipping_groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `shipping_groupt_items__shipping_items__fk` FOREIGN KEY (`shipping_item_id`) REFERENCES `shipping_items` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=29746 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `shipping_group_items`
---
-
-LOCK TABLES `shipping_group_items` WRITE;
-/*!40000 ALTER TABLE `shipping_group_items` DISABLE KEYS */;
-/*!40000 ALTER TABLE `shipping_group_items` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `shipping_groups`
@@ -586,17 +383,8 @@ CREATE TABLE `shipping_groups` (
   KEY `shipping_groups__shipping_requests__fk_idx` (`shipping_request_id`),
   CONSTRAINT `shipping_groups__jobs__fk` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `shipping_groups__shipping_requests__fk` FOREIGN KEY (`shipping_request_id`) REFERENCES `shipping_requests` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=24222 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `shipping_groups`
---
-
-LOCK TABLES `shipping_groups` WRITE;
-/*!40000 ALTER TABLE `shipping_groups` DISABLE KEYS */;
-/*!40000 ALTER TABLE `shipping_groups` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `shipping_item_zones`
@@ -616,17 +404,8 @@ CREATE TABLE `shipping_item_zones` (
   KEY `shipping_item_zones__zones__fk_idx` (`zone_id`),
   CONSTRAINT `shipping_item_zones__shipping_items__fk` FOREIGN KEY (`shipping_item_id`) REFERENCES `shipping_items` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `shipping_item_zones__zones__fk` FOREIGN KEY (`zone_id`) REFERENCES `zones` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=203991 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `shipping_item_zones`
---
-
-LOCK TABLES `shipping_item_zones` WRITE;
-/*!40000 ALTER TABLE `shipping_item_zones` DISABLE KEYS */;
-/*!40000 ALTER TABLE `shipping_item_zones` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `shipping_items`
@@ -646,17 +425,8 @@ CREATE TABLE `shipping_items` (
   PRIMARY KEY (`id`),
   KEY `shipping_items__shops__fk_idx` (`shop_id`),
   CONSTRAINT `shipping_items__shops__fk` FOREIGN KEY (`shop_id`) REFERENCES `shops` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=143808 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `shipping_items`
---
-
-LOCK TABLES `shipping_items` WRITE;
-/*!40000 ALTER TABLE `shipping_items` DISABLE KEYS */;
-/*!40000 ALTER TABLE `shipping_items` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `shipping_requests`
@@ -692,17 +462,8 @@ CREATE TABLE `shipping_requests` (
   CONSTRAINT `shipping_requests__carriers__fk` FOREIGN KEY (`carrier_id`) REFERENCES `carriers` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `shipping_requests__contacts__fk` FOREIGN KEY (`contact_id`) REFERENCES `contacts` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `shipping_requests__shops__fk` FOREIGN KEY (`shop_id`) REFERENCES `shops` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=38185 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `shipping_requests`
---
-
-LOCK TABLES `shipping_requests` WRITE;
-/*!40000 ALTER TABLE `shipping_requests` DISABLE KEYS */;
-/*!40000 ALTER TABLE `shipping_requests` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `shops`
@@ -716,17 +477,8 @@ CREATE TABLE `shops` (
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `label_UNIQUE` (`label`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `shops`
---
-
-LOCK TABLES `shops` WRITE;
-/*!40000 ALTER TABLE `shops` DISABLE KEYS */;
-/*!40000 ALTER TABLE `shops` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `specialty_items`
@@ -740,17 +492,8 @@ CREATE TABLE `specialty_items` (
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `label_UNIQUE` (`label`)
-) ENGINE=InnoDB AUTO_INCREMENT=1272 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `specialty_items`
---
-
-LOCK TABLES `specialty_items` WRITE;
-/*!40000 ALTER TABLE `specialty_items` DISABLE KEYS */;
-/*!40000 ALTER TABLE `specialty_items` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `system_types`
@@ -764,17 +507,8 @@ CREATE TABLE `system_types` (
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `label_UNIQUE` (`label`)
-) ENGINE=InnoDB AUTO_INCREMENT=279 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `system_types`
---
-
-LOCK TABLES `system_types` WRITE;
-/*!40000 ALTER TABLE `system_types` DISABLE KEYS */;
-/*!40000 ALTER TABLE `system_types` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user_roles`
@@ -793,41 +527,6 @@ CREATE TABLE `user_roles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_roles`
---
-
-LOCK TABLES `user_roles` WRITE;
-/*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `user_tokens`
---
-
-DROP TABLE IF EXISTS `user_tokens`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_tokens` (
-  `user_id` int(10) unsigned NOT NULL,
-  `token` char(36) NOT NULL,
-  `expires` datetime DEFAULT NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `token_UNIQUE` (`token`),
-  CONSTRAINT `user_tokens__users__fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user_tokens`
---
-
-LOCK TABLES `user_tokens` WRITE;
-/*!40000 ALTER TABLE `user_tokens` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_tokens` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `users`
 --
 
@@ -841,17 +540,8 @@ CREATE TABLE `users` (
   `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `users`
---
-
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `vendors`
@@ -865,17 +555,8 @@ CREATE TABLE `vendors` (
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `label_UNIQUE` (`label`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `vendors`
---
-
-LOCK TABLES `vendors` WRITE;
-/*!40000 ALTER TABLE `vendors` DISABLE KEYS */;
-/*!40000 ALTER TABLE `vendors` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `zones`
@@ -892,17 +573,8 @@ CREATE TABLE `zones` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE_JOB_ZONE_NUMBER` (`job_id`,`number`),
   CONSTRAINT `zones__jobs__fk` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4905 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `zones`
---
-
-LOCK TABLES `zones` WRITE;
-/*!40000 ALTER TABLE `zones` DISABLE KEYS */;
-/*!40000 ALTER TABLE `zones` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Dumping routines for database 'ssi-business'
@@ -1781,4 +1453,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-03-30 16:19:07
+-- Dump completed on 2016-06-08 16:17:53

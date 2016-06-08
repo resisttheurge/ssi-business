@@ -12,14 +12,6 @@ object QueryExtensions extends QueryExtensions
 
 trait QueryExtensions {
 
-  implicit class AddendaQueryExtensions[C[_]](self: Query[Addenda, AddendaRow, C]) {
-    def withDependents =
-      (self joinLeft Salespeople on (_.salespersonId === _.id) joinLeft Contacts on (_._1.contactId === _.id))
-        .map {
-          case ((addendum, salesperson), contact) => (addendum, salesperson, contact)
-        }
-  }
-
   implicit class DrawingsQueryExtensions[C[_]](self: Query[Drawings, DrawingsRow, C]) {
 
     def byId(id: Rep[Int]) = self filter (_.id === id)
@@ -168,14 +160,13 @@ trait QueryExtensions {
   implicit class PartOrdersQueryExtensions[C[_]](self: Query[PartOrders, PartOrdersRow, C]) {
     def withDependents =
       for {
-        (((po, part), vendor), manufacturer) <- {
+        ((po, vendor), manufacturer) <- {
           self
-            .joinLeft(Parts).on(_.partId === _.id)
-            .joinLeft(Vendors).on(_._1.vendorId === _.id)
-            .joinLeft(Manufacturers).on(_._1._1.manufacturerId === _.id)
+            .joinLeft(Vendors).on(_.vendorId === _.id)
+            .joinLeft(Manufacturers).on(_._1.manufacturerId === _.id)
         }
       } yield {
-        (po, part, vendor, manufacturer)
+        (po, vendor, manufacturer)
       }
 
   }

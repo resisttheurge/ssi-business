@@ -9,13 +9,7 @@ import scala.concurrent.ExecutionContext
 
 case class InnerJobRoute(jobId: Int)(implicit db: Database, ec: ExecutionContext) extends BaseRoute {
   override def internal: Route =
-    pathPrefix("addenda") {
-      pathEndOrSingleSlash {
-        get {
-          AddendumDao.indexByJobId(jobId)
-        }
-      }
-    } ~ pathPrefix("addresses") {
+    pathPrefix("addresses") {
       pathEndOrSingleSlash {
         get {
           JobDao.addressesByJobId(jobId)

@@ -12,40 +12,6 @@ object RowConversions extends RowConversions
 
 trait RowConversions {
 
-  implicit def fromAddendaRow(row: AddendaRow): Addendum =
-    Addendum(
-      id = Some(row.id),
-      jobId = row.jobId,
-      label = row.label,
-      description = row.description,
-      contractPrice = row.contractPrice,
-      created = Some(row.created)
-    )
-
-  implicit def fromAddendaRowWithDependents(row: (AddendaRow, Option[SalespeopleRow], Option[ContactsRow])): Addendum =
-    Addendum(
-      id = Some(row._1.id),
-      jobId = row._1.jobId,
-      label = row._1.label,
-      description = row._1.description,
-      contractPrice = row._1.contractPrice,
-      salesperson = row._2.map(r => r: Salesperson),
-      contact = row._3.map(r => r: Contact),
-      created = Some(row._1.created)
-    )
-
-  implicit def toAddendaRow(addendum: Addendum): AddendaRow =
-    AddendaRow(
-      id = addendum.id.getOrElse(-1),
-      jobId = addendum.jobId,
-      label = addendum.label,
-      description = addendum.description,
-      contractPrice = addendum.contractPrice,
-      salespersonId = addendum.salesperson.flatMap(_.id),
-      contactId = addendum.contact.flatMap(_.id),
-      created = addendum.created.getOrElse(new Timestamp(Calendar.getInstance().getTimeInMillis))
-    )
-
   implicit def toAddressesRow(address: Address): AddressesRow =
     AddressesRow(
       address.id.getOrElse(-1),
@@ -156,12 +122,6 @@ trait RowConversions {
 
   implicit def fromManufacturersRow(manufacturersRow: ManufacturersRow): Manufacturer =
     Manufacturer(Option(manufacturersRow.id), manufacturersRow.label)
-
-  implicit def toPartsRow(part: Part): PartsRow =
-    PartsRow(if (part.id.isDefined) part.id.get else -1, part.partType, part.number, part.description)
-
-  implicit def fromPartsRow(partsRow: PartsRow): Part =
-    Part(Option(partsRow.id), partsRow.`type`, partsRow.number, partsRow.description)
 
   implicit def fromSchedulesRow(row: SchedulesRow): Schedule =
     Schedule(
@@ -352,8 +312,11 @@ trait RowConversions {
       id = por.id.getOrElse(-1),
       jobId = por.jobId,
       drawingId = por.drawingId,
+      abmNumber = por.abmNumber,
       status = por.status,
-      partId = por.part.flatMap(_.id),
+      partType = por.partType.map(s => s: String),
+      partNumber = por.partNumber,
+      partDescription = por.partDescription,
       manufacturerId = por.manufacturer.flatMap(_.id),
       vendorId = por.vendor.flatMap(_.id),
       po = por.po,
@@ -371,7 +334,11 @@ trait RowConversions {
       id = por.id,
       jobId = por.jobId,
       drawingId = por.drawingId,
+      abmNumber = por.abmNumber,
       status = por.status,
+      partType = por.partType.map(s => s: PartType),
+      partNumber = por.partNumber,
+      partDescription = por.partDescription,
       po = por.po,
       requestedQuantity = por.requestedQuantity,
       stockQuantity = por.stockQuantity,
@@ -382,11 +349,10 @@ trait RowConversions {
       releasedBy = por.releasedBy
     )
 
-  implicit def fromPartOrdersRowWithDependents(por: (PartOrdersRow, Option[PartsRow], Option[VendorsRow], Option[ManufacturersRow])): PartOrder =
+  implicit def fromPartOrdersRowWithDependents(por: (PartOrdersRow, Option[VendorsRow], Option[ManufacturersRow])): PartOrder =
     (por._1: PartOrder).copy(
-      part = por._2.map(p => p: Part),
-      vendor = por._3.map(p => p: Vendor),
-      manufacturer = por._4.map(p => p: Manufacturer)
+      vendor = por._2.map(p => p: Vendor),
+      manufacturer = por._3.map(p => p: Manufacturer)
     )
 
   implicit def toShippingItemZonesRow(siz: ShippingItemZone): ShippingItemZonesRow =

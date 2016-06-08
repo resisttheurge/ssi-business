@@ -53,7 +53,7 @@ object PartOrderDao extends CrudDao[PartOrder] {
     for {
       before <- PartOrders.filter(_.id === id).withDependents.result.headOption
       rows <- PartOrders.filter(_.id === id).map(r =>
-        (r.jobId, r.drawingId, r.status, r.partId, r.manufacturerId, r.vendorId, r.po, r.requestedQuantity, r.stockQuantity,
+        (r.jobId, r.drawingId, r.abmNumber, r.status, r.partType, r.partNumber, r.partDescription, r.manufacturerId, r.vendorId, r.po, r.requestedQuantity, r.stockQuantity,
           r.purchaseQuantity, r.requestDate, r.purchaseDate, r.releaseDate, r.releasedBy))
         .update((model: PartOrdersRow).tail)
       after <- PartOrders.filter(_.id === id).withDependents.result.headOption

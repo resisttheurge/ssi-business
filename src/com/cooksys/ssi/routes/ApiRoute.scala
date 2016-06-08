@@ -10,7 +10,6 @@ case class ApiRoute(path: String)(implicit db: Database, ec: ExecutionContext) e
   override def internal =
     cors {
       pathPrefix(path) {
-        CrudRoute("addenda", AddendumDao) ~
           CrudRoute("addresses", AddressDao) ~
           AuthRoute("auth") ~
           CrudRoute("carriers", CarrierDao) ~
@@ -21,7 +20,6 @@ case class ApiRoute(path: String)(implicit db: Database, ec: ExecutionContext) e
           CrudRoute("manufacturers", ManufacturerDao) ~
           CrudRoute("marks", MarkDao) ~
           CrudRoute("part-orders", PartOrderDao) ~
-          CrudRoute("parts", PartDao) ~
           ReportRoute("reports") ~
           CrudRoute("salespeople", SalespersonDao) ~
           CrudRoute("schedules", ScheduleDao) ~

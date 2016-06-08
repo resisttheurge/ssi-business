@@ -209,8 +209,6 @@ trait JsonProtocol
 
   implicit val ContactFormatter = rootFormat(jsonFormat5(Contact))
 
-  implicit val AddendumFormatter = rootFormat(jsonFormat8(Addendum))
-
   implicit val AddressFormatter = rootFormat(jsonFormat6(Address))
 
   implicit val ShippingRequestFormatter = rootFormat(jsonFormat16(ShippingRequest))
@@ -239,8 +237,6 @@ trait JsonProtocol
 
   implicit val ManagementReviewReportRequestFormatter = rootFormat(jsonFormat8(ManagementReviewReportRequest))
 
-  implicit val PartFormatter = rootFormat(jsonFormat4(Part))
-
   implicit val ProductionScheduleReportRequestFormatter = rootFormat(jsonFormat1(ProductionScheduleReportRequest))
 
   implicit val ReportFormatter = rootFormat(jsonFormat2(Report))
@@ -255,7 +251,7 @@ trait JsonProtocol
 
   implicit val ShippingItemFormatter = rootFormat(jsonFormat7(ShippingItem))
 
-  implicit val PartOrderFormatter = rootFormat(jsonFormat15(PartOrder))
+  implicit val PartOrderFormatter = rootFormat(jsonFormat18(PartOrder))
 
   implicit val ShippingItemZoneFormatter = rootFormat(jsonFormat4(ShippingItemZone))
 
