@@ -10,7 +10,7 @@
             <h2 flex>Jobs</h2>
 
             <md-switch ng-model="$jobs.Job.showInactive" ng-click="$jobs.Job.cacheInvalid = true;">
-              {{showInactive ? 'Showing All Jobs' : 'Showing Active Jobs' }}
+              {{$jobs.Job.showInactive ? 'Showing All Jobs' : 'Showing Active Jobs' }}
             </md-switch>
 
 
@@ -86,10 +86,10 @@
                     <span>{{job.customer.label}}</span>
                   </td>
                   <td md-cell flex>
-                    <span>{{job.displayAddress.city}}</span>
+                    <span>{{job.addresses.shipping.city}}</span>
                   </td>
                   <td md-cell flex>
-                    <span>{{job.displayAddress.state}}</span>
+                    <span>{{job.addresses.shipping.stateOrProvince}}</span>
                   </td>
                   <!-- more cells go here -->
                 </tr>

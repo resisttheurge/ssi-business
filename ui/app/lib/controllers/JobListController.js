@@ -269,7 +269,6 @@ export default class JobListController extends ListController {
     self.getJobs = () =>
       this.promise =
         Job.list(this.query.filters)
-          .then(this.database101)
           .then(::this.jobSearchFilter)
           .then(::this.storeTotal)
           .then(this.sort(this.query))
@@ -285,7 +284,7 @@ export default class JobListController extends ListController {
   }
 
   jobSearchFilter(jobs) {
-
+    console.dir(jobs)
     return this.JobSearchParameters
       ? jobs.filter(job =>
           job.identifier.prefix === (this.JobSearchParameters.prefix || job.identifier.prefix)
@@ -298,10 +297,10 @@ export default class JobListController extends ListController {
             && (job.customer !== undefined && job.customer.label
                 .toUpperCase()
                 .match(new RegExp(`^${((this.JobSearchParameters.customer && this.JobSearchParameters.customer.label) || '').toUpperCase()}.*`)))
-            && (this.JobSearchParameters.city === undefined || (job.displayAddress.city && job.displayAddress.city
+            && (this.JobSearchParameters.city === undefined || (job.addresses.shipping.city && job.addresses.shipping.city
                 .toUpperCase()
                 .match(new RegExp(`^${(this.JobSearchParameters.city || '').toUpperCase()}.*`))))
-            && (this.JobSearchParameters.state === undefined || (job.displayAddress.state && job.displayAddress.state
+            && (this.JobSearchParameters.state === undefined || (job.addresses.shipping.stateOrProvince && job.addresses.shipping.stateOrProvince
                 .toUpperCase()
                 .match(new RegExp(`^${(this.JobSearchParameters.state || '').toUpperCase()}.*`))))
             && (job.description === undefined || job.description
