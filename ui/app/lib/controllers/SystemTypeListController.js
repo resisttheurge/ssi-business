@@ -8,7 +8,7 @@ export default class SystemTypeListController extends ListController {
     $scope.query = {
       page: 1,
       limit: 10,
-      order: 'id'
+      order: 'label'
     }
 
     $scope.onPaginate = function (page, limit) {

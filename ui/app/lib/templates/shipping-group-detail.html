@@ -216,6 +216,7 @@
                         <tr md-row>
                           <th md-column></th>
                           <th md-column>RMS Item</th>
+                          <th md-column>Description</th>
                           <th md-column>Required</th>
                           <th md-column>Shipped</th>
                           <!-- more columns go here -->
@@ -248,6 +249,7 @@
                             </md-menu>
                           </td>
                           <td md-cell>{{shippingGroupItem.label}}</td>
+                          <td md-cell>{{shippingGroupItem.shippingItem.label}}</td>
                           <td md-cell>{{shippingGroupItem.shippingItem.requested}}</td>
                           <td md-cell>{{shippingGroupItem.shippingItem.completed}}</td>
                           <!-- more cells go here -->

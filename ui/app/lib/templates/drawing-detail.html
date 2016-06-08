@@ -19,7 +19,10 @@
                 <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update ? update(drawing) : create(drawing)">Save</md-button>
               </div>
             </md-toolbar>
+
             <md-content flex>
+              <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="Drawing Detail">
                     <form name="editForm" layout="column">
                           <div layout="column">
                             <div layout="row" layout-margin>
@@ -218,7 +221,7 @@
                             </div>
 
                     </form>
-                    </md-content>
+                    
                   </md-tab>
 
 
