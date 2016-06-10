@@ -748,8 +748,85 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ManagementReview`(IN dateOne date, IN dateTwo date)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ManagementReview`(in instart varchar(10),
+				 in inend varchar(200),
+                 in inprefix varchar(200),
+                 in inyear varchar(200),
+                 in inlabel varchar(200),
+                 in incity varchar(200),
+                 in instate varchar(200),
+                 in incustomer varchar(200))
 BEGIN
+	
+	DROP TEMPORARY TABLE IF EXISTS jobstarttemp;
+    
+
+    if instart = '' then
+		create temporary table jobstarttemp select id from jobs;
+    else
+		create temporary table jobstarttemp select id from jobs where start_date >= instart;
+	end if;
+    
+    DROP TEMPORARY TABLE IF EXISTS jobendtemp;
+    if inend = '' then
+		create temporary table jobendtemp select id from jobstarttemp;
+    else
+		create temporary table jobendtemp select id from jobs where start_date <= inend and id in (select id from jobstarttemp);
+	end if;
+
+	DROP TEMPORARY TABLE IF EXISTS jobprefixtemp;
+    if inprefix = '' then
+		create temporary table jobprefixtemp select id from jobendtemp;
+    else
+		create temporary table jobprefixtemp select id from jobs where prefix like concat(inprefix,'%') and id in (select id from jobendtemp);
+	end if;
+    
+    DROP TEMPORARY TABLE IF EXISTS jobyeartemp;
+    if inyear = '' then
+		create temporary table jobyeartemp select id from jobprefixtemp;
+    else
+		create temporary table jobyeartemp select id from jobs where year like concat('%', inyear,'%') and id in (select id from jobprefixtemp);
+	end if;
+    
+    DROP TEMPORARY TABLE IF EXISTS joblabeltemp;
+    if inlabel = '' then
+		create temporary table joblabeltemp select id from jobyeartemp;
+    else
+		create temporary table joblabeltemp select id from jobs where label like concat(inlabel,'%') and id in (select id from jobyeartemp);
+	end if;
+    
+    DROP TEMPORARY TABLE IF EXISTS addresscitytemp;
+    if incity = '' then
+		create temporary table addresscitytemp select id from addresses;
+    else
+		create temporary table addresscitytemp select id from addresses where city like concat(incity,'%');
+	end if;
+    
+    DROP TEMPORARY TABLE IF EXISTS customerlabeltemp;
+    if incustomer = '' then
+		create temporary table customerlabeltemp select id from customers;
+    else
+		create temporary table customerlabeltemp select id from customers where label like concat(incustomer,'%');
+	end if;
+    
+    DROP TEMPORARY TABLE IF EXISTS addressstatetemp;
+    if instate = '' then
+		create temporary table addressstatetemp select id from addresscitytemp;
+    else
+		create temporary table addressstatetemp select id from addresses where state_or_province like concat(instate,'%') and id in (select id from addresscitytemp);
+	end if;
+    
+    DROP TEMPORARY TABLE IF EXISTS validjobidtemp;
+    create temporary table validjobidtemp
+    select * 
+    from jobs 
+    where id in (select id 
+                 from joblabeltemp) 
+    and id in (select job_id 
+			   from job_addresses 
+               where address_id in (select id 
+								    from addressstatetemp))
+	and customer_id in (select id from customerlabeltemp);
 SELECT DISTINCT
     j.prefix,
     j.year,
@@ -760,7 +837,16 @@ SELECT DISTINCT
     j.start_date,
     j.due_date,
     j.complete_date,
-    j.status,
+    (SELECT 
+            CASE WHEN j.complete_date is null or j.due_date is null
+				THEN ''               
+                ELSE CASE 
+						WHEN j.complete_date <= j.due_date
+						THEN 'ON TIME'
+                        ELSE 'LATE'
+					END
+                END
+        ) AS status,
     j.description
 FROM
     jobs j
@@ -775,8 +861,9 @@ FROM
 WHERE
     j.status NOT IN ('CANCELLED' , 'DELETED', 'DRAFT')
         AND ja.address_type = 'SHIPPING'
-        AND j.start_date BETWEEN dateOne AND dateTwo
+        AND j.id in (select id from validjobidtemp)
 ORDER BY j.prefix , j.year , j.label;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
