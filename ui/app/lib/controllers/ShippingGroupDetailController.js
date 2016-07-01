@@ -13,6 +13,7 @@ export default class ShippingGroupDetailController extends DetailController {
     $scope.job = $ssiSelected.job;
     $scope.tagType = 'S';
     $scope.tagTypes      = enums.tagTypes;
+    $scope.shopDate = new Date();
 
     $scope.addAddressLine = () =>
       $scope.shippingGroup ?
