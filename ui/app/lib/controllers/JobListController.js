@@ -169,6 +169,7 @@ export default class JobListController extends ListController {
                         }
                       }
 
+                      self.JobSearchParameters = "";
                       Job.cacheInvalid = true;
                       self.getJobs();
                     }
@@ -294,7 +295,7 @@ export default class JobListController extends ListController {
             && job.identifier.label
                 .toUpperCase()
                 .match(new RegExp(`^${(this.JobSearchParameters.label || '').toUpperCase()}.*`))
-            && (job.customer !== undefined && job.customer.label
+            && (job.customer === undefined || job.customer.label
                 .toUpperCase()
                 .match(new RegExp(`^${((this.JobSearchParameters.customer && this.JobSearchParameters.customer.label) || '').toUpperCase()}.*`)))
             && (this.JobSearchParameters.city === undefined || (job.addresses.shipping.city && job.addresses.shipping.city

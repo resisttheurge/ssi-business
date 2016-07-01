@@ -52,7 +52,7 @@
                             <div layout="row">
                               <md-input-container flex>
                                 <label>Tag Type</label>
-                                <md-select ng-model="shippingGroup.info.tagType">
+                                <md-select ng-model="tagType">
                                   <md-option ng-repeat="tagType in tagTypes" ng-value="tagType">
                                          {{tagType}}
                                   </md-option>
@@ -100,7 +100,7 @@
                             <md-input-container flex>
                               <label>Shop</label>
                               <md-select ng-model="shippingGroup.info.shop" ng-model-options="{trackBy: '$value.id'}">
-                                <md-option ng-repeat="shop in shops track by shop.id" ng-value="shop">
+                                <md-option ng-repeat="shop in shops track by shop.id" ng-value="shop" ng-selected="{{shop.label == 'MEM'}}">
                                        {{shop.label}}
                                 </md-option>
                               </md-select>

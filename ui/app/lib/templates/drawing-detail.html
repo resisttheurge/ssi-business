@@ -110,7 +110,7 @@
                                     <md-input-container flex>
                                       <label>Shop</label>
                                       <md-select ng-model="drawing.info.shop" ng-model-options="{trackBy: '$value.id'}">
-                                        <md-option ng-repeat="shop in shops track by shop.id" ng-value="shop">
+                                        <md-option ng-repeat="shop in shops track by shop.id" ng-value="shop" ng-selected="{{shop.label == 'MEM'}}">
                                                {{shop.label}}
                                         </md-option>
                                       </md-select>

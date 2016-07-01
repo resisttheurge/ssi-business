@@ -11,7 +11,7 @@ export default class ShippingGroupDetailController extends DetailController {
     var self = this
 
     $scope.job = $ssiSelected.job;
-
+    $scope.tagType = 'S';
     $scope.tagTypes      = enums.tagTypes;
 
     $scope.addAddressLine = () =>
