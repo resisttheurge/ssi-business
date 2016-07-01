@@ -11,7 +11,6 @@ export default class ShippingGroupDetailController extends DetailController {
     var self = this
 
     $scope.job = $ssiSelected.job;
-    $scope.tagType = 'S';
     $scope.tagTypes      = enums.tagTypes;
     $scope.shopDate = new Date();
 
@@ -127,6 +126,7 @@ export default class ShippingGroupDetailController extends DetailController {
 
       this.refresh()
     }
+    $scope.shippingGroup.info.tagType = 'S';
 
   }
 
