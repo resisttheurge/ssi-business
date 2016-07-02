@@ -123,5 +123,10 @@ export default class DrawingDetailController extends DetailController {
 
      }
 
+     $log.info('scope ::: ', $scope);
+     $log.info('drawing ::: ',$scope.drawing);
+     //if(!$scope.drawing.id){
+     //   $scope.drawing.info.shop = { id : 1, label: 'MEM' };
+     //}
    }
 }
