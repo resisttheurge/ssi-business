@@ -267,8 +267,8 @@ export default class ShipmentDetailController extends DetailController {
     $log.info('scope ::: ', $scope);
     $log.info('shipment ::: ',$scope.shipment);
     $log.info('scope ::: ', $scope);
-    if(!$scope.shipment.id){
-      $scope.shipment.shop = { id : 1, label: 'MEM' };
-    }
+    //if(!$scope.shipment.id){
+    //  $scope.shipment.shop = { id : 1, label: 'MEM' };
+    //}
   }
 }
