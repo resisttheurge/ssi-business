@@ -9,7 +9,7 @@ export default class DrawingDetailController extends DetailController {
 
      $scope.job = $ssiSelected.job;
      $scope.loading = true
-
+     $scope.drawing = $ssiSelected.drawing;
      $scope.tagTypes      = enums.tagTypes;
      $scope.drawingTypes  = enums.drawingTypes;
 
@@ -123,10 +123,8 @@ export default class DrawingDetailController extends DetailController {
 
      }
 
-     $log.info('scope ::: ', $scope);
-     $log.info('drawing ::: ',$scope.drawing);
-     //if(!$scope.drawing.id){
-     //   $scope.drawing.info.shop = { id : 1, label: 'MEM' };
-     //}
+     if(!$scope.drawing.id){
+       $scope.drawing.info.shop = { id : 1, label: 'MEM' };
+     }
    }
 }

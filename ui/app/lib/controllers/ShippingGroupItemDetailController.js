@@ -137,8 +137,6 @@ export default class ShippingGroupItemDetailController extends DetailController 
 
       this.refresh()
 
-      $log.info('scope ::: ', $scope);
-      $log.info('shippingGroupItem.shippingItem ::: ',$scope.shippingGroupItem.shippingItem);
       if(!$scope.shippingGroupItem.shippingItem.id){
         $scope.shippingGroupItem.shippingItem.shop = { id : 1, label: 'MEM' };
       }

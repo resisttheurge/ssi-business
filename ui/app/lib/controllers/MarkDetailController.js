@@ -13,6 +13,7 @@ export default class MarkDetailController extends DetailController {
     $scope.job = $ssiSelected.job;
     $scope.$shippingItemZone = ShippingItemZone;
     $scope.$ssiSelected = $ssiSelected;
+    $scope.mark = $ssiSelected.mark;
 
     $scope.loading = true
 
@@ -139,10 +140,8 @@ export default class MarkDetailController extends DetailController {
 
       this.refresh()
     }
-    $log.info('scope ::: ', $scope);
-    $log.info('mark ::: ',$scope.mark);
-    //if(!$scope.mark.id){
-    //  $scope.mark.shippingItem.shop = { id : 1, label: 'MEM' };
-    //}
+    if(!$scope.mark.id){
+     $scope.mark.shippingItem.shop = { id : 1, label: 'MEM' };
+    }
   }
 }
