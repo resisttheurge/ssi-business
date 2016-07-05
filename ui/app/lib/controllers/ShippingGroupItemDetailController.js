@@ -115,7 +115,10 @@ export default class ShippingGroupItemDetailController extends DetailController 
                     .title('Record created!')
                     .textContent('This record has been saved to the database')
                     .ok('Close')
-                ).then(() => $location.url(`/jobs/${$ssiSelected.job.id}/shipping-groups/${$ssiSelected.shippingGroup.id}/items/${item.id}`)),
+                ).then(() => {
+                $ssiSelected.shippingGroupItem = item
+                $location.url(`/jobs/${$ssiSelected.job.id}/shipping-groups/${$ssiSelected.shippingGroup.id}/items/${item.id}`)
+              }),
               error => {
                 $log.error(JSON.stringify(error))
                 $mdDialog.show(
