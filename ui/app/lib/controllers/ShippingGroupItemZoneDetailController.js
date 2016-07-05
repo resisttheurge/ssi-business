@@ -10,6 +10,8 @@ export default class ShippingGroupItemZoneDetailController extends DetailControl
     super()
 
     $scope.job = $ssiSelected.job
+    $scope.shippingGroup = $ssiSelected.shippingGroup
+    $scope.shippingItem = $ssiSelected.shippingGroupItem
 
     if ($routeParams.shippingItemZoneId) {
       this.refresh = () =>

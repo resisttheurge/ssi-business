@@ -11,7 +11,7 @@
       <div layout="column">
         <md-toolbar>
           <div class="md-toolbar-tools">
-            <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2>Zone {{shippingItemZone.label}}</h2>
+            <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2><i class="material-icons">keyboard_arrow_right</i><h2><a ng-href="/jobs/{{job.id}}/drawings/{{drawing.id}}">Drawing {{drawing.label}}</a></h2><i class="material-icons">keyboard_arrow_right</i><h2><a ng-href="/jobs/{{job.id}}/drawings/{{drawing.id}}/marks/{{mark.id}}">Mark {{mark.label}}</a></h2><i class="material-icons">keyboard_arrow_right</i><h2>Zone {{zone.label}}</h2>
             <span flex></span>
             <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update ? update(shippingItemZone) : create(shippingItemZone)">Save</md-button>
           </div>

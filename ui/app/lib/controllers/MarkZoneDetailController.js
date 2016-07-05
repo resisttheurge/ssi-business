@@ -9,6 +9,8 @@ export default class MarkZoneDetailController extends DetailController {
     super()
 
     $scope.job = $ssiSelected.job
+    $scope.drawing = $ssiSelected.drawing
+    $scope.mark = $ssiSelected.mark
 
     if ($routeParams.shippingItemZoneId) {
       this.refresh = () =>
