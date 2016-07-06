@@ -73,9 +73,9 @@ export default class PartOrderDetailController extends DetailController {
 
       $scope.create = item => {
         if (
-          item.requestedQuantity &&
-          item.stockQuantity &&
-          item.purchaseQuantity
+          item.requestedQuantity >= 0 &&
+          item.stockQuantity >= 0 &&
+          item.purchaseQuantity >= 0
         ) {
           PartOrder.create(item).then(
             data =>
