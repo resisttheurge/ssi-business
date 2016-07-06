@@ -1,0 +1,71 @@
+<md-sidenav layout="column" md-component-id="navigation-sidenav" class="md-sidenav-left" md-whiteframe="4">
+  <md-toolbar>
+    <div layout="row" class="md-toolbar-tools">
+      <md-button ng-click="$navigation.toggle()" class="md-icon-button" aria-label="Close Navigation Menu">
+        <md-icon class="material-icons">close</md-icon>
+      </md-button>
+      <h2 flex>Navigation</h2>
+    </div>
+  </md-toolbar>
+  <md-content layout="column" flex>
+    <md-list>
+      <md-list-item ng-href="/" ng-click="$navigation.user.logout(); $navigation.toggle()">
+        <md-icon class="material-icons">exit_to_app</md-icon>
+        <span flex></span>
+        <label>Logout</label>
+      </md-list-item>
+      <md-divider ng-show="$navigation.user.roles.indexOf('ADMIN') >= 0" md-inset></md-divider>
+      <md-list-item ng-show="$navigation.user.roles.indexOf('ADMIN') >= 0" ng-click="$navigation.toggle()" ng-href="/users">
+        <md-icon class="material-icons">face</md-icon>
+        <span flex></span>
+        <label>Users</label>
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/jobs">
+        <span flex></span>
+        Jobs
+        <span flex></span>
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/carriers">
+        <span flex></span>
+        Carriers
+        <span flex></span>
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/customers">
+        <span flex></span>
+        Customers
+        <span flex></span>
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/manufacturers">
+        <span flex></span>
+        Manufacturers
+        <span flex></span>
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/salespeople">
+        <span flex></span>
+        Salespeople
+        <span flex></span>
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/shops">
+        <span flex></span>
+        Shops
+        <span flex></span>
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/specialty-items">
+        <span flex></span>
+        Specialty Items
+        <span flex></span>
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/system-types">
+        <span flex></span>
+        System Types
+        <span flex></span>
+      </md-list-item>
+      <md-list-item ng-click="$navigation.toggle()" ng-href="/vendors">
+        <span flex></span>
+        Vendors
+        <span flex></span>
+      </md-list-item>
+    </md-list>
+  </md-content>
+</md-sidenav>

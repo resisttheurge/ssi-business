@@ -1,5 +1,6 @@
 package com.cooksys.model;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class User implements VariableGenerator<User>{
 	}
 	
 	@Override
-	public List<User> generateVariables(ResultSet rawData)
+	public List<User> generateVariables(Connection connection, ResultSet rawData)
 	{
 		return null;
 	}

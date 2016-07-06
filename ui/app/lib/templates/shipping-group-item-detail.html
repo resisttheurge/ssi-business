@@ -1,0 +1,150 @@
+          <!-- <div>{{shippingGroupItem.id}}</div>
+          <div>{{shippingGroupItem.shippingGroupId}}</div>
+          <div>{{shippingGroupItem.shippingItem}}</div>
+          <div>{{shippingGroupItem.label}}</div> -->
+<div flex layout="column" layout-align="start stretch">
+  <!-- outer frame -->
+  <div layout-margin layout="row" layout-align="center stretch">
+    <!-- card frame  -->
+    <md-card flex="85" layout="column">
+      <!-- toolbar/content frame -->
+      <div layout="column">
+
+          <md-toolbar>
+            <div class="md-toolbar-tools">
+              <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2><a ng-href="/jobs/{{job.id}}/shipping-groups/{{shippingGroup.id}}">Shipping Group {{shippingGroup.label}}</a></h2><i class="material-icons">keyboard_arrow_right</i> <h2>Shipping Group Item {{shippingGroupItem.label}}</h2>
+              <span flex></span>
+              <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update ? update(shippingGroupItem) : create(shippingGroupItem)">Save</md-button>
+            </div>
+          </md-toolbar>
+
+          <md-content flex>
+            <md-tabs md-dynamic-height md-border-bottom>
+              <md-tab label="Shipping Group Item Details">
+                <form name="editForm" layout="column" ng-hide="loading">
+                  <md-content flex>
+                      <div layout="column" flex>
+                        <div layout-margin layout="row">
+                          <div layout="column" flex="70">
+                            <md-input-container>
+                              <label>Shipping Group Item Label</label>
+                              <input md-maxlength ="100" required ng-model="shippingGroupItem.label" type="text"></input>
+                            </md-input-container>
+                            <md-input-container flex>
+                              <label>Shop</label>
+                              <md-select ng-model="shippingGroupItem.shippingItem.shop" ng-model-options="{trackBy: '$value.id'}">
+                                <md-option ng-repeat="shop in shops track by shop.id" ng-value="shop">
+                                       {{shop.label}}
+                                </md-option>
+                              </md-select>
+                            </md-input-container>
+                            <md-input-container>
+                              <label>Remarks</label>
+                              <textarea ng-model="shippingGroupItem.shippingItem.remarks" type="text"></textarea>
+                            </md-input-container>
+                          </div>
+                          <md-divider></md-divider>
+                          <div layout="column" flex="30">
+                            <md-input-container>
+                              <label>Shipping Item Label</label>
+                              <input md-maxlength="100" ng-model="shippingGroupItem.shippingItem.label" type="text"></input>
+                            </md-input-container>
+                            <md-input-container>
+                              <label>Shipping Item Status</label>
+                              <md-select required ng-model="shippingGroupItem.shippingItem.status">
+                                <md-option ng-repeat="shippingItemStatus in shippingItemStatuses" ng-value="shippingItemStatus">
+                                       {{shippingItemStatus}}
+                                </md-option>
+                              </md-select>
+                            </md-input-container>
+                            <md-input-container>
+                              <label>Requested</label>
+                              <input required min="0" ng-model="shippingGroupItem.shippingItem.requested" type="number"></input>
+                            </md-input-container>
+                            <md-input-container>
+                              <label>Completed</label>
+                              <input required min="0" ng-model="shippingGroupItem.shippingItem.completed" type="number"></input>
+                            </md-input-container>
+                          </div>
+                        </div>
+                      </div>
+                      <md-divider></md-divider>
+                    <md-content>
+                    </form>
+                  </md-tab>
+                  <md-tab label = "Zones" ng-if="update">
+                    <md-content layout-padding layout="column">
+                      <md-table-container>
+                        <table md-table md-progress="$shippingItemZone.promise">
+                          <thead md-head md-order="$shippingItemZone.query.order" md-on-reorder="$shippingItemZone.onReorder">
+                            <tr md-row>
+                              <th md-column></th>
+                              <th md-column>Zone</th>
+                              <th md-column>Quantity</th>
+                              <!-- more columns go here -->
+                            </tr>
+                          </thead>
+                          <tbody md-body>
+                            <tr md-row ng-repeat="zone in zones">
+                              <td md-cell class="md-checkbox-cell">
+                                <md-menu md-offset="0 0">
+                                  <md-button ng-click="$mdOpenMenu()" class="md-icon-button">
+                                      <md-tooltip md-direction="left" md-autohide="true">
+                                        Actions
+                                      </md-tooltip>
+                                      <md-icon md-menu-origin class="material-icons">more_vert</md-icon>
+                                  </md-button>
+                                  <md-menu-content>
+                                    <md-menu-item>
+                                      <md-button ng-click="$app.selected.shippingGroupItem.zone = zone" ng-href="/jobs/{{$ssiSelected.job.id}}/shipping-groups/{{$ssiSelected.shippingGroup.id}}/items/{{$ssiSelected.shippingGroupItem.id}}/zones/{{zone.id}}">
+                                        <md-icon class="material-icons" md-menu-align-target>edit</md-icon>
+                                        Edit
+                                      </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                      <md-button ng-click="delete(zone)" class="md-warn md-hue-2">
+                                        <md-icon class="material-icons" md-menu-align-target>delete</md-icon>
+                                        Delete
+                                      </md-button>
+                                    </md-menu-item>
+                                  </md-menu-content>
+                                </md-menu>
+                              </td>
+                              <td md-cell flex>
+                                <span>{{zone.zone.number}}</span>
+                              </td>
+                              <td md-cell flex>
+                                <span>{{zone.quantity}}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </md-table-container>
+                      <md-divider></md-divider>
+                      <div layout="row" layout-align="end center">
+                        <md-button class="md-fab" ng-href="/jobs/{{$ssiSelected.job.id}}/shipping-groups/{{$ssiSelected.shippingGroup.id}}/items/{{$ssiSelected.shippingGroupItem.id}}/zones/new">
+                          <md-tooltip md-direction="top" md-autohide="true">
+                            New Shipping Item Zone
+                          </md-tooltip>
+                          <md-icon class="material-icons">add</md-icon>
+                        </md-button>
+                      </div>
+                  </md-content>
+    <md-divider></md-divider>
+                  </md-tab>
+                </md-tabs>
+          </md-content>
+        </div>
+            <!-- outer frame -->
+      </md-card >
+    </div>
+              <!-- card frame  -->
+                <!-- toolbar/content frame -->
+</div>
+              <!-- case class ShippingItem(id: Option[Int],
+                                      status: ShippingItemStatus = ShippingItemStatus.NS,
+                                      label: Option[String] = None,
+                                      requested: Int = 0,
+                                      completed: Int = 0,
+                                      remarks: Option[String] = None,
+                                      shop: Option[Shop] = None) -->

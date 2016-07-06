@@ -1,0 +1,38 @@
+<div flex layout="column" layout-align="start stretch">
+  <!-- outer frame -->
+  <div layout-margin layout="row" layout-align="center stretch">
+    <!-- card frame  -->
+    <md-card flex="85" layout="column">
+      <!-- toolbar/content frame -->
+      <div layout="column">
+
+          <md-toolbar>
+
+            <div class="md-toolbar-tools">
+              <h1>{{update ? 'Edit Manufacturer Details' : 'Create New Manufacturer'}}</h1>
+              <span flex></span>
+              <md-button
+                  class="md-raised"
+                  ng-disabled="detailForm.$pristine"
+                  ng-click="update ? update(manufacturer) : create(manufacturer)">
+                Save
+              </md-button>
+            </div>
+          </md-toolbar>
+
+          <md-content flex>
+            <form name="detailForm">
+              <div layout="column" layout-margin>
+                <div layout="row">
+                  <md-input-container flex>
+                    <label>Manufacturer Name</label>
+                    <input md-maxlength ="100" required ng-model="manufacturer.label" type="text">
+                  </md-input-container>
+                </div>
+              </div>
+            </form>
+          </md-content>
+        </div>
+      </md-card>
+    </div>
+  </div>

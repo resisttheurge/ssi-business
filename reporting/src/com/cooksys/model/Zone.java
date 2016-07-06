@@ -1,7 +1,8 @@
 package com.cooksys.model;
 
-import static com.cooksys.util.DataUtil.convertRaw;
+import static com.cooksys.util.DataUtil.*;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +89,7 @@ public class Zone implements VariableGenerator<Zone> {
 
 
 	@Override
-	public List<Zone> generateVariables(ResultSet rawData) {
+	public List<Zone> generateVariables(Connection connection, ResultSet rawData) {
 		
 		List<Zone> result = new ArrayList<Zone>();
 		
@@ -100,7 +101,7 @@ public class Zone implements VariableGenerator<Zone> {
 				item.number = convertRaw(rawData.getInt(1));
 				item.fieldDate =convertRaw(rawData.getDate(2));
 				item.prefix = convertRaw(rawData.getString(3));
-				item.year = convertRaw(rawData.getInt(4));
+				item.year = convertHeaderYear(rawData.getDate(4));
 				item.label = convertRaw(rawData.getString(5));
 				
 				result.add(item);

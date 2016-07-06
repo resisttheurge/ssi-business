@@ -1,0 +1,77 @@
+<div flex layout="column" layout-align="start stretch">
+  <!-- outer frame -->
+  <div layout-margin layout="row" layout-align="center stretch">
+    <!-- card frame  -->
+    <md-card flex="85" layout="column">
+      <!-- toolbar/content frame -->
+      <div layout="column">
+        <md-toolbar class="md-primary">
+          <div class="md-toolbar-tools">
+            <h2 flex>Specialty Items</h2>
+            <md-button ng-click="showSearch = !showSearch" class="md-icon-button">
+              <md-tooltip md-direction="left" md-autohide="true">
+                Search
+              </md-tooltip>
+              <md-icon md-menu-origin class="material-icons">search</md-icon>
+            </md-button>
+            <input ng-show="showSearch" ng-model="search" type=text style="margin-bottom=0px;">
+          </div>
+        </md-toolbar>
+        <md-content layout-padding layout="column">
+          <md-table-container>
+            <table md-table md-progress="promise">
+              <thead md-head md-order="query.order" md-on-reorder="onReorder">
+                <tr md-row>
+                  <th md-column></th>
+                  <th md-column md-order-by="label">Specialty Item</th>
+                  <!-- more columns go here -->
+                </tr>
+              </thead>
+              <tbody md-body>
+                <tr md-row ng-repeat="specialtyItem in specialtyItems">
+                  <td md-cell class="md-checkbox-cell">
+                    <md-menu md-offset="0 0">
+                      <md-button ng-click="$mdOpenMenu()" class="md-icon-button">
+                          <md-tooltip md-direction="left" md-autohide="true">
+                            Actions
+                          </md-tooltip>
+                          <md-icon md-menu-origin class="material-icons">more_vert</md-icon>
+                      </md-button>
+                      <md-menu-content>
+                        <md-menu-item>
+                          <md-button ng-href="/specialty-items/{{specialtyItem.id}}">
+                            <md-icon class="material-icons" md-menu-align-target>edit</md-icon>
+                            Edit
+                          </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                          <md-button ng-click="delete(specialtyItem)" class="md-warn md-hue-2">
+                            <md-icon class="material-icons" md-menu-align-target>delete</md-icon>
+                            Delete
+                          </md-button>
+                        </md-menu-item>
+                      </md-menu-content>
+                    </md-menu>
+                  </td>
+                  <td md-cell flex>
+                    <span>{{specialtyItem.label}}</span>
+                  </td>
+                  <!-- more cells go here -->
+                </tr>
+              </tbody>
+            </table>
+          </md-table-container>
+        </md-content>
+      </div>
+      <footer layout="column">
+        <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+      </footer>
+    </md-card>
+  </div>
+</div>
+<md-button class="md-fab md-fab-bottom-right" ng-href="/specialty-items/new">
+  <md-tooltip md-direction="top" md-autohide="true">
+    New Specialty Item
+  </md-tooltip>
+  <md-icon class="material-icons">add</md-icon>
+</md-button>
