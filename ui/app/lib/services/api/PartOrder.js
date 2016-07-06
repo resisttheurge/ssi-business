@@ -115,7 +115,7 @@ export default class partOrder extends ApiService {
           } else {
             return resolve(
               self.endpoint.delete({ partOrderId: partOrder.id },
-                 self.partOrderDateToString(partOrder)).$promise.then($unpack))
+                 self.partOrder).$promise.then($unpack))
           }
         })
       }

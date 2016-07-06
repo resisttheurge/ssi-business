@@ -15,7 +15,7 @@ export default class PartOrderListController extends ListController {
       $mdDialog.show(
         $mdDialog.confirm()
           .title(`Are you sure?`)
-          .textContent(`Are you sure you want to delete part order [${item.id}] ${item.part.number}?`)
+          .textContent(`Are you sure you want to delete part order [${item.id}] ${item.partNumber}?`)
           .ok('ok')
           .cancel('cancel')
       )
@@ -24,13 +24,13 @@ export default class PartOrderListController extends ListController {
         () =>
           $mdToast.show(
             $mdToast.simple()
-              .textContent(`Deleted part order [${item.id}] ${item.part.number}`)
+              .textContent(`Deleted part order [${item.id}] ${item.partNumber}`)
               .position('bottom right')
           )
           .then(() => $route.reload()),
         reason => $mdToast.show(
           $mdToast.simple()
-            .textContent(`Could not delete part order [${item.id}] ${item.part.number} because ${reason}`)
+            .textContent(`Could not delete part order [${item.id}] ${item.partNumber} because ${reason}`)
             .position('bottom right')
           )
       )
