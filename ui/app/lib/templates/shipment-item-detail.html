@@ -1,0 +1,76 @@
+<!-- <div>{{shipmentItem.id }}</div>
+<div>{{shipmentItem.jobId}}</div>
+<div>{{shipmentItem.number}}</div>
+<div>{{shipmentItem.status}}</div>
+<div>{{shipmentItem.shop}}</div>
+<div>{{shipmentItemItem.carrier}}</div>
+<div>{{shipmentItem.weight}}</div>
+<div>{{shipmentItem.billOfLading}}</div>
+<div>{{shipmentItem.shipDate}}</div>
+<div>{{shipmentItem.contact}}</div>
+<div>{{shipmentItem.address}}</div> -->
+<div flex layout="column" layout-align="start stretch">
+  <!-- outer frame -->
+  <div layout-margin layout="row" layout-align="center stretch">
+    <!-- card frame  -->
+    <md-card flex="85" layout="column">
+      <!-- toolbar/content frame -->
+          <md-toolbar>
+            <div class="md-toolbar-tools">
+              <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2><a ng-href="/jobs/{{job.id}}/shipments/{{shipment.id}}">Shipment {{shipment.number}}</a></h2><i class="material-icons">keyboard_arrow_right</i> <h2>Shipment Item {{shipmentItem.number}}</h2>
+              <span flex></span>
+              <md-button class="md-raised" ng-disabled="shipmentItemDetailForm.$pristine || !shipmentItemDetailForm.$valid" ng-click="update ? update(shipmentItem) : create(shipmentItem)">Save</md-button>
+            </div>
+          </md-toolbar>
+
+          <md-content flex>
+            <form name="shipmentItemDetailForm" flex style="overflow-x : hidden" ng-hide="loading">
+              <div layout="column" layout-margin>
+                <div layout="row">
+                  <md-input-container flex>
+                    <label>Shipping Item</label>
+                    <md-select
+                        required
+                        ng-model="shipmentItem.shippingItem"
+                        placeholder="Shipping Item"
+                        ng-model-options="{trackBy: '$value.id'}">
+                      <md-optgroup
+                          label="Drawings">
+                        <md-optgroup
+                            ng-repeat="drawing in shippingItemCollection.drawings track by drawing.id"
+                            label="{{drawing.label}}{{drawing.info.title ? ' - ' + drawing.info.title : ''}}">
+                          <md-option
+                              ng-repeat="mark in drawing.marks track by mark.id"
+                              ng-value="mark.shippingItem">
+                            {{mark.label}}{{mark.shippingItem.label ? ' - ' + mark.shippingItem.label : ''}}
+                          </md-option>
+                        </md-optgroup>
+                      </md-optgroup>
+                      <md-optgroup
+                          label="Shipping Groups">
+                        <md-optgroup
+                            ng-repeat="shippingGroup in shippingItemCollection.shippingGroups track by shippingGroup.id"
+                            label="{{shippingGroup.label}}{{shippingGroup.info.title ? ' - ' + shippingGroup.info.title : ''}}">
+                          <md-option
+                              ng-repeat="shippingGroupItem in shippingGroup.shippingGroupItems track by shippingGroupItem.id"
+                              ng-value="shippingGroupItem.shippingItem">
+                            {{shippingGroupItem.label}}{{shippingGroupItem.shippingItem.label ? ' - ' + shippingGroupItem.shippingItem.label : ''}}
+                          </md-option>
+                        </md-optgroup>
+                      </md-optgroup>
+                    </md-select>
+                  </md-input-container>
+                </div>
+
+                <div layout="row">
+                  <md-input-container flex>
+                    <label>Quantity</label>
+                    <input required min="0" ng-model="shipmentItem.quantity" type="number" required></textarea>
+                  </md-input-container>
+                </div>
+              </div>
+            </form>
+          </md-content>
+        </md-card>
+      </div>
+    </div>

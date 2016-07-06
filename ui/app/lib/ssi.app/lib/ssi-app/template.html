@@ -1,0 +1,24 @@
+<div layout-fill layout="row" md-theme="{{$app.theme}}">
+  <ssi-navigation></ssi-navigation>
+  <div layout-fill layout="column">
+    <md-toolbar class="md-hue-2">
+      <div layout="row" layout-align="space-between center" class="md-toolbar-tools">
+        <md-button ng-disabled="$app.user.isLoggedOut || $app.user.navDisabled" ng-click="$app.toggleNavigation()" class="md-icon-button md-hue-2" aria-label="Open Navigation Menu">
+          <md-tooltip md-direction="right">
+            Navigation
+          </md-tooltip>
+          <md-icon class="material-icons">menu</md-icon>
+        </md-button>
+        <a ng-href="/">SSI Business</a>
+        <md-button ng-disabled="$app.user.isLoggedOut || $app.user.navDisabled" ng-click="$app.toggleSettings()" class="md-icon-button md-hue-2" aria-label="Open Reports Menu">
+          <md-tooltip md-direction="left">
+            Reports
+          </md-tooltip>
+          <md-icon class="material-icons">insert_drive_file</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <ng-view flex layout="column" layout-align="start stretch"></ng-view>
+  </div>
+  <ssi-settings></ssi-settings>
+</div>

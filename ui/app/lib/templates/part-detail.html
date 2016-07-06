@@ -1,0 +1,52 @@
+<div flex layout="column" layout-align="start stretch">
+  <!-- outer frame -->
+  <div layout-margin layout="row" layout-align="center stretch">
+    <!-- card frame  -->
+    <md-card flex="85" layout="column">
+      <!-- toolbar/content frame -->
+      <div layout="column">
+
+          <md-toolbar>
+            <div class="md-toolbar-tools">
+              <h1>{{update ? 'Edit Part Details' : 'Create New Part'}}</h1>
+              <span flex></span>
+              <md-button
+                  class="md-raised"
+                  ng-disabled="detailForm.$pristine"
+                  ng-click="update ? update(part) : create(part)">
+                Save
+              </md-button>
+            </div>
+          </md-toolbar>
+          <md-content flex>
+            <form name="detailForm">
+              <div layout="column" layout-margin>
+                <div layout="row">
+                  <md-input-container flex>
+                    <label>Number</label>
+                    <input md-maxlength="200" ng-model="part.number" type="text">
+                  </md-input-container>
+                </div>
+                <div layout="row">
+                  <md-input-container flex>
+                    <label>Part Type</label>
+                      <md-select ng-model="part.partType">
+                        <md-option ng-repeat="partType in partTypes" ng-value="partType">
+                               {{partType}}
+                        </md-option>
+                      </md-select>
+                  </md-input-container>
+                </div>
+                <div layout="row">
+                  <md-input-container flex>
+                    <label>Description</label>
+                    <textarea ng-model="part.description" md-select-on-focus></textarea>
+                  </md-input-container>
+                </div>
+              </div>
+              </form>
+          </md-content>
+        </div>
+      </md-card>
+    </div>
+  </div>

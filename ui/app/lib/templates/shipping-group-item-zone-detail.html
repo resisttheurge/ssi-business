@@ -1,0 +1,45 @@
+<!-- <div>{{zone.id}}</div>
+<div>{{zone.jobId }}</div>
+<div>{{zone.number}}</div>
+<div>{{zone.fieldDate}}</div> -->
+<div flex layout="column" layout-align="start stretch">
+  <!-- outer frame -->
+  <div layout-margin layout="row" layout-align="center stretch">
+    <!-- card frame  -->
+    <md-card flex="85" layout="column">
+      <!-- toolbar/content frame -->
+      <div layout="column">
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2><i class="material-icons">keyboard_arrow_right</i><h2><a ng-href="/jobs/{{job.id}}/shipping-groups/{{shippingGroup.id}}">Shipping Group {{shippingGroup.label}}</a></h2><i class="material-icons">keyboard_arrow_right</i><h2><a ng-href="/jobs/{{job.id}}/shipping-groups/{{shippingGroup.id}}/items/{{shippingItem.id}}">Shipping Group Item {{shippingGroupItem.label}}</a></h2><i class="material-icons">keyboard_arrow_right</i><h2>Zone {{zone.label}}</h2>
+            <span flex></span>
+            <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update ? update(shippingItemZone) : create(shippingItemZone)">Save</md-button>
+          </div>
+        </md-toolbar>
+
+        <md-content flex>
+          <form name="editForm">
+            <div layout="column" layout-margin>
+              <div layout="row">
+                <md-input-container flex>
+                  <label>Zone</label>
+                  <md-select required ng-model="shippingItemZone.zone" placeholder="Zone" ng-model-options="{trackBy: '$value.id'}">
+                    <md-option ng-repeat="zone in zones track by zone.id" ng-value="zone">
+                      {{zone.number}}
+                    </md-option>
+                  </md-select>
+                </md-input-container>
+              </div>
+              <div layout="row">
+                <md-input-container flex>
+                  <label>Quantity</label>
+                  <input required min="0" ng-model="shippingItemZone.quantity" type="number">
+                </md-input-container>
+              </div>
+            </div>
+          </form>
+        </md-content>
+      </div>
+    </md-card>
+  </div>
+</div>

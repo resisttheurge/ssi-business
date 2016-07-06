@@ -1,0 +1,126 @@
+<!DOCTYPE html [
+    <!ENTITY nbsp "&#160;"> 
+]>
+
+<html>
+	<#assign aDateTime = .now>
+	<#assign aDate = aDateTime?date>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Production Schedule</title>
+
+<style type="text/css">
+
+@page {
+	size: A4 landscape;
+	@bottom-right{
+	    font-size:80%;
+	    content: "Page " counter(page)  " of " counter(pages);
+    }
+    @bottom-left{
+/*     	content: "${aDate?string.full}"; */
+    }
+}
+
+.head1 {
+	color: #000;
+	font-size: x-large;
+}
+
+.head2 {
+	color: #496192;
+	font-size: large;
+}
+
+.head3 {
+	color: #000;
+	font-size: medium
+}
+
+.paragraph {
+	text-align: justify;
+}
+
+.toc {
+	list-style-type: none;
+}
+
+.toc a::after {
+	content: leader('.') target-counter(attr(href), page);
+}
+
+table {
+	-fs-table-paginate: paginate;
+	page-break-inside: avoid;
+}
+
+th{
+	font-size: 15px;
+	text-align: center;
+}
+
+td{
+	font-size: 13px;
+	text-align: left;
+	padding-left: 5px;
+	border: 0.25px solid black;
+}
+
+</style>
+
+</head>
+
+<body>
+	<div id="header">
+		<img src="/ssilogo.png" alt="Southern Systems, Inc."
+			style="height: 75px;" />
+		<p class="head1">Production Schedule - ${prod[0].weekEnding}</p>
+	</div>
+	
+	<#list prod as job>
+	<table border="1" cellspacing="0" cellpadding="0" align="center"
+		width="100%">
+		<thead>
+			<tr style="background: #CCC0DA">
+				<th align="center" height="35px" width="15%">Customer &amp; Job Number</th>
+				<th align="center" width="7%">Entered &amp; Due Date</th>
+				<th align="center" width="5%">Dates</th>
+				<th align="center" width="7%">ENGR</th>
+				<th align="center" width="7%">MECH</th>
+				<th align="center" width="7%">ELEC</th>
+				<th align="center" width="7%">SHIP</th>
+				<th align="center" width="7%">FIELD</th>
+				<th align="center" width="37%">Description</th>
+			</tr>
+		</thead>
+		<tr>
+			<td id="job" align="center" height="25px" width="15%">${job.customer}<br/>${job.city},${job.state}</td>
+			<td align="center" width="7%">${job.startDate}</td>
+			<td align="center" width="5%">START</td>
+			<td align="center" width="7%">${job.engStart}</td>
+			<td align="center" width="7%">${job.mechStart}</td>
+			<td align="center" width="7%">${job.eleStart}</td>
+			<td align="center" width="7%">${job.shipStart}</td>
+			<td align="center" width="7%">${job.instStart}</td>
+			<td align="center" width="37%" rowspan="3">${job.description}</td>
+		</tr>
+		<tr>
+			<td align="center" height="25px" width="15%">${job.prefix}-${job.year}-${job.label}</td>
+			<td align="center" width="7%">${job.dueDate}</td>
+			<td align="center" width="5%">COMP.</td>
+			<td align="center" width="7%">${job.engComp}</td>
+			<td align="center" width="7%">${job.mechComp}</td>
+			<td align="center" width="7%">${job.eleComp}</td>
+			<td align="center" width="7%">${job.shipComp}</td>
+			<td align="center" width="7%">${job.instComp}</td>
+		</tr>
+		<tr>
+			<td style="vertical-align:top;'" width="60%" height="50px" colspan="8" >*ITEMS
+				REQUIRING ATTENTION</td>
+		</tr>
+
+	</table>
+	<br/>
+	</#list>
+</body>
+</html>
