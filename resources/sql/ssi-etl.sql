@@ -203,22 +203,16 @@ SELECT
             '-',
             3) AS Label,
             (SELECT 
-            CASE j.`delete`
-                    WHEN 1 THEN 'DELETED'
-                    ELSE CASE (SELECT 
-                                1
-                            FROM
-                                `Material Shipper`.`date closed` dc
-                            WHERE
-                                dateclosed IS NOT NULL
-                                    AND jobId LIKE j.JOBID)
-                            WHEN 1 THEN 'COMPLETED'
-                            ELSE CASE j.active
-							WHEN 1 THEN 'ACTIVE'
-                        ELSE 'INACTIVE'
-                        END
-                    END
-                END
+				CASE j.`delete` 
+					WHEN 1 THEN 'CANCELLED' 
+					ELSE CASE (SELECT 1 FROM `Material Shipper`.`date closed` dc WHERE dateclosed IS NOT NULL AND jobId LIKE j.JOBID)
+						   WHEN 1 THEN 'COMPLETED' 
+						   ELSE CASE j.active 
+											WHEN 1 THEN 'ACTIVE'
+											ELSE 'COMPLETED'
+											END
+							END
+					END
         ) AS status,
     j.DESCRIPTION as description,
     (SELECT `contract price` FROM `buddy order data`.`buddy orders` where jobid = j.jobid) AS contractPrice,
