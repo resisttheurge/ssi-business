@@ -42,23 +42,24 @@ trait QueryExtensions {
 
     def withDependents =
       for {
-        ((((((job, shop), salesperson), customer), contact), jobAddress), address) <- {
+        (((((((job, shop), salesperson), customer), invoicingCustomer), contact), jobAddress), address) <- {
           self
             .joinLeft(Shops).on(_.shopId === _.id)
             .joinLeft(Salespeople).on(_._1.salespersonId === _.id)
             .joinLeft(Customers).on(_._1._1.customerId === _.id)
-            .joinLeft(Contacts).on(_._1._1._1.contactId === _.id)
-            .joinLeft(Tables.JobAddresses).on((left, right) => left._1._1._1._1.id === right.jobId && right.addressType === "SHIPPING")
+            .joinLeft(Customers).on(_._1._1._1.invoicingCustomerId === _.id)
+            .joinLeft(Contacts).on(_._1._1._1._1.contactId === _.id)
+            .joinLeft(Tables.JobAddresses).on((left, right) => left._1._1._1._1._1.id === right.jobId && right.addressType === "SHIPPING")
             .joinLeft(Addresses).on(_._2.map(_.addressId).getOrElse(-1) === _.id)
         }
       } yield
-        (job, shop, salesperson, customer, contact, address)
+        (job, shop, salesperson, customer, invoicingCustomer, contact, address)
 
     def update(job: Job) =
       self
         .map(r =>
           (r.prefix, r.year, r.label, r.status, r.description, r.contractPrice, r.startDate, r.dueDate,
-            r.shopId, r.salespersonId, r.customerId, r.contactId, r.completeDate)
+            r.shopId, r.salespersonId, r.customerId, r.invoicingCustomerId, r.contactId, r.completeDate)
         )
         .update((job: JobsRow).tail)
 
