@@ -269,20 +269,20 @@ trait Tables {
     * @param customerId    Database column customer_id SqlType(INT UNSIGNED), Default(None)
     * @param contactId     Database column contact_id SqlType(INT UNSIGNED), Default(None)
     * @param completeDate  Database column complete_date SqlType(DATE), Default(None) */
-  case class JobsRow(id: Int, prefix: String, year: Short, label: String, status: String = "INACTIVE", description: Option[String] = None, contractPrice: Option[scala.math.BigDecimal] = None, startDate: Option[java.sql.Date] = None, dueDate: Option[java.sql.Date] = None, shopId: Option[Int] = None, salespersonId: Option[Int] = None, customerId: Option[Int] = None, contactId: Option[Int] = None, completeDate: Option[java.sql.Date] = None)
+  case class JobsRow(id: Int, prefix: String, year: Short, label: String, status: String = "INACTIVE", description: Option[String] = None, contractPrice: Option[scala.math.BigDecimal] = None, startDate: Option[java.sql.Date] = None, dueDate: Option[java.sql.Date] = None, shopId: Option[Int] = None, salespersonId: Option[Int] = None, customerId: Option[Int] = None, invoicingCustomerId:Option[Int] = None, contactId: Option[Int] = None, completeDate: Option[java.sql.Date] = None)
 
   /** GetResult implicit for fetching JobsRow objects using plain SQL queries */
   implicit def GetResultJobsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Short], e3: GR[Option[String]], e4: GR[Option[scala.math.BigDecimal]], e5: GR[Option[java.sql.Date]], e6: GR[Option[Int]]): GR[JobsRow] = GR {
     prs => import prs._
-      JobsRow.tupled((<<[Int], <<[String], <<[Short], <<[String], <<[String], <<?[String], <<?[scala.math.BigDecimal], <<?[java.sql.Date], <<?[java.sql.Date], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[java.sql.Date]))
+      JobsRow.tupled((<<[Int], <<[String], <<[Short], <<[String], <<[String], <<?[String], <<?[scala.math.BigDecimal], <<?[java.sql.Date], <<?[java.sql.Date], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[Int], <<?[java.sql.Date]))
   }
 
   /** Table description of table jobs. Objects of this class serve as prototypes for rows in queries. */
   class Jobs(_tableTag: Tag) extends Table[JobsRow](_tableTag, "jobs") {
-    def * = (id, prefix, year, label, status, description, contractPrice, startDate, dueDate, shopId, salespersonId, customerId, contactId, completeDate) <>(JobsRow.tupled, JobsRow.unapply)
+    def * = (id, prefix, year, label, status, description, contractPrice, startDate, dueDate, shopId, salespersonId, customerId, invoicingCustomerId, contactId, completeDate) <>(JobsRow.tupled, JobsRow.unapply)
 
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(prefix), Rep.Some(year), Rep.Some(label), Rep.Some(status), description, contractPrice, startDate, dueDate, shopId, salespersonId, customerId, contactId, completeDate).shaped.<>({ r => import r._; _1.map(_ => JobsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6, _7, _8, _9, _10, _11, _12, _13, _14))) }, (_: Any) => throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), Rep.Some(prefix), Rep.Some(year), Rep.Some(label), Rep.Some(status), description, contractPrice, startDate, dueDate, shopId, salespersonId, customerId, invoicingCustomerId, contactId, completeDate).shaped.<>({ r => import r._; _1.map(_ => JobsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15))) }, (_: Any) => throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
@@ -308,6 +308,7 @@ trait Tables {
     val salespersonId: Rep[Option[Int]] = column[Option[Int]]("salesperson_id", O.Default(None))
     /** Database column customer_id SqlType(INT UNSIGNED), Default(None) */
     val customerId: Rep[Option[Int]] = column[Option[Int]]("customer_id", O.Default(None))
+    val invoicingCustomerId: Rep[Option[Int]] = column[Option[Int]]("invoicing_customer_id", O.Default(None))
     /** Database column contact_id SqlType(INT UNSIGNED), Default(None) */
     val contactId: Rep[Option[Int]] = column[Option[Int]]("contact_id", O.Default(None))
     /** Database column complete_date SqlType(DATE), Default(None) */
