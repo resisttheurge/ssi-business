@@ -47,7 +47,7 @@ trait QueryExtensions {
             .joinLeft(Shops).on(_.shopId === _.id)
             .joinLeft(Salespeople).on(_._1.salespersonId === _.id)
             .joinLeft(Customers).on(_._1._1.customerId === _.id)
-            .joinLeft(Customers).on(_._1._1._1.customerId === _.id)
+            .joinLeft(Customers).on(_._1._1._1.invoicingCustomerId === _.id)
             .joinLeft(Contacts).on(_._1._1._1._1.contactId === _.id)
             .joinLeft(Tables.JobAddresses).on((left, right) => left._1._1._1._1._1.id === right.jobId && right.addressType === "SHIPPING")
             .joinLeft(Addresses).on(_._2.map(_.addressId).getOrElse(-1) === _.id)
