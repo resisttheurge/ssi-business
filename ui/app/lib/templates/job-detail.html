@@ -136,6 +136,14 @@
                         md-floating-label="Customer" layout-margin>
                       <span>{{customer.label}}</span>
                     </md-autocomplete>
+                    <md-autocomplete
+                        md-selected-item="job.invoicingCustomer"
+                        md-search-text="invoicingCustomerSearchText"
+                        md-items="invoicingCustomer in queryCustomers(invoicingCustomerSearchText)"
+                        md-item-text="invoicingCustomer.label"
+                        md-floating-label="Invoicing Customer" layout-margin>
+                      <span>{{invoicingCustomer.label}}</span>
+                    </md-autocomplete>
                   </div>
                   <md-divider></md-divider>
                   <div layout-margin layout="column">
