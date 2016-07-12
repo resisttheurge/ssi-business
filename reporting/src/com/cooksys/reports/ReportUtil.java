@@ -118,7 +118,7 @@ public class ReportUtil<T extends VariableGenerator> implements Reporting<T> {
 				return f;
 			}
 		}
-		try {
+		try {\
 			FileOutputStream fos = new FileOutputStream(f);
 			String htmlStr = generateHtml(template, getVarMap(varList));
 			
