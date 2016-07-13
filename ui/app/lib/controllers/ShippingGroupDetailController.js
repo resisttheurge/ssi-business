@@ -48,14 +48,17 @@ export default class ShippingGroupDetailController extends DetailController {
       $scope.update = function update(item)
       {
         if (item.jobId &&
-            item.label &&
+            // item.label &&
             item.rush !== undefined
           ) {
-          ShippingGroup.update(item).then(function (data) { $mdDialog
+          ShippingGroup.update(item).then(function (data) {
+            $scope.shippingGroup = data.after;
+
+            $mdDialog
             .show($mdDialog.alert()
             .title('Changes Saved!')
             .textContent('Changes to this record have been saved')
-            .ok('Close')).then(() => $route.reload());
+            .ok('Close'));
           }, function (error) { $mdDialog
             .show($mdDialog.alert()
             .title('Failed to Save')
@@ -89,7 +92,7 @@ export default class ShippingGroupDetailController extends DetailController {
       {
         if (
           sg.jobId &&
-          sg.label &&
+          // sg.label &&
           sg.rush !== undefined
         ) {
           ShippingGroup.create(sg)

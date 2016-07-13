@@ -304,9 +304,9 @@ export default class JobListController extends ListController {
             && (this.JobSearchParameters.state === undefined || (job.addresses.shipping.stateOrProvince && job.addresses.shipping.stateOrProvince
                 .toUpperCase()
                 .match(new RegExp(`^${(this.JobSearchParameters.state || '').toUpperCase()}.*`))))
-            && (job.description === undefined || job.description
+            && (!this.JobSearchParameters.description || (job.description !== undefined && job.description
                 .toUpperCase()
-                .match(new RegExp(`.*${(this.JobSearchParameters.description || '').toUpperCase()}.*`)))
+                .match(new RegExp(`.*${(this.JobSearchParameters.description || '').toUpperCase()}.*`))))
             && (this.JobSearchParameters.startDateBefore === undefined || (job.startDate && Date.parse(job.startDate) >= Date.parse(this.JobSearchParameters.startDateBefore)))
             && (this.JobSearchParameters.startDateAfter === undefined || (job.startDate && Date.parse(job.startDate) <= Date.parse(this.JobSearchParameters.startDateAfter)))
             && (this.JobSearchParameters.completeDateBefore === undefined || (job.completeDate && Date.parse(job.completeDate) >= Date.parse(this.JobSearchParameters.completeDateBefore)))
