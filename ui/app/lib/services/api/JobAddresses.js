@@ -48,7 +48,7 @@ export default class JobAddresses extends ApiService {
             invoicing
           : Address.create(invoicing).then(newInvoicing => {
               newInvoicing.lines = invoicing.lines
-              newInvoicing
+              return newInvoicing
             }).then(invoicing => this.create(job, { invoicing })).then(() => {})
         : undefined
       ].filter(x => x !== undefined))
