@@ -142,7 +142,7 @@ export default class Job extends ApiService {
           } else if (!job.id) {
             return reject('cannot call `Job.delete` on a job object missing an `id` value')
           } else {
-            return resolve(self.endpoint.delete({ jobId: job.id }, self.jobDateToString(job)).$promise.then($unpack))
+            return resolve(self.endpoint.delete({ jobId: job.id }, job).$promise.then($unpack))
           }
         })
       }
