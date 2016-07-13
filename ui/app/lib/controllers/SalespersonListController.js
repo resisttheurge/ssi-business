@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class SalespersonListController extends ListController {
   /*@ngInject*/
-  constructor($scope, Salesperson, $filter, $q, $mdDialog, $mdToast) {
+  constructor($scope, Salesperson, $filter, $q, $mdDialog, $mdToast, $route) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -37,7 +37,7 @@ export default class SalespersonListController extends ListController {
               .textContent(`Deleted salesperson ${item.label}`)
               .position('bottom right')
           )
-          .then(() => $route.reload()),
+          .then(() => $route.reload()).then(() => this.refresh()),
         reason => $mdToast.show(
           $mdToast.simple()
             .textContent(`Could not delete salesperson ${item.label} because ${reason}`)
