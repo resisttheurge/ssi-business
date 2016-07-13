@@ -1,9 +1,7 @@
 export const jobStatuses = [
-  'INACTIVE',
   'ACTIVE',
   'COMPLETED',
-  'CANCELLED',
-  'DELETED'
+  'CANCELLED'
 ]
 
 export const prefixes = [
