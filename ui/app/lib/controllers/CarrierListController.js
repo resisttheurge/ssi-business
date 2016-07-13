@@ -37,7 +37,7 @@ export default class CarrierListController extends ListController {
               .textContent(`Deleted carrier ${item.label}`)
               .position('bottom right')
           )
-          .then(() => $route.reload()),
+          .then(() => $route.reload()).then(() => this.refresh()),
         reason => $mdToast.show(
           $mdToast.simple()
             .textContent(`Could not delete carrier ${item.label} because ${reason}`)

@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class SystemTypeListController extends ListController {
   /*@ngInject*/
-  constructor($scope, SystemType, $filter, $q, $mdDialog, $mdToast) {
+  constructor($scope, SystemType, $filter, $q, $mdDialog, $mdToast, $route) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -37,7 +37,7 @@ export default class SystemTypeListController extends ListController {
               .textContent(`Deleted system type ${item.label}`)
               .position('bottom right')
           )
-          .then(() => $route.reload()),
+          .then(() => $route.reload()).then(() => this.refresh()),
         reason => $mdToast.show(
           $mdToast.simple()
             .textContent(`Could not delete system type ${item.label} because ${reason}`)

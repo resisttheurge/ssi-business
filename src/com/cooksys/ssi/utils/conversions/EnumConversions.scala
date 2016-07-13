@@ -54,11 +54,9 @@ trait EnumConversions {
 
   implicit def toJobStatus(x: String): JobStatus =
     x match {
-      case "INACTIVE" => JobStatus.INACTIVE
       case "ACTIVE" => JobStatus.ACTIVE
       case "COMPLETED" => JobStatus.COMPLETED
       case "CANCELLED" => JobStatus.CANCELLED
-      case "DELETED" => JobStatus.DELETED
     }
 
   implicit def fromPartOrderStatus(x: PartOrderStatus): String = x.toString

@@ -17,6 +17,30 @@ export default class ManufacturerDetailController extends DetailController {
         $scope.loading = false
       })
 
+      $scope.delete = item =>
+        $mdDialog.show(
+          $mdDialog.confirm()
+            .title(`Are you sure?`)
+            .textContent(`Are you sure you want to delete manufacturer?`)
+            .ok('ok')
+            .cancel('cancel')
+        )
+        .then(() => Manufacturer.delete(item))
+        .then(
+          () =>
+            $mdToast.show(
+              $mdToast.simple()
+                .textContent(`Deleted manufacturer ${item.label}`)
+                .position('bottom right')
+            )
+            .then(() => $route.reload()),
+          reason => $mdToast.show(
+            $mdToast.simple()
+              .textContent(`Could not delete  manufacturer ${item.label}`)
+              .position('bottom right')
+            )
+        )
+
       $scope.update = function update(item) {
         Manufacturer.update(item).then(
           function (data) {

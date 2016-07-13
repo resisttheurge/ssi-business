@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class ManufacturerListController extends ListController {
   /*@ngInject*/
-  constructor($scope, Manufacturer, $filter, $q, $mdDialog, $mdToast) {
+  constructor($scope, Manufacturer, $filter, $q, $mdDialog, $mdToast, $route) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
@@ -37,7 +37,7 @@ export default class ManufacturerListController extends ListController {
               .textContent(`Deleted manufacturer ${item.label}`)
               .position('bottom right')
           )
-          .then(() => $route.reload()),
+          .then(() => $route.reload()).then(() => this.refresh()),
         reason => $mdToast.show(
           $mdToast.simple()
             .textContent(`Could not delete manufacturer ${item.label} because ${reason}`)
