@@ -13,7 +13,7 @@ export default class SystemType extends ApiService {
       $q(
         (resolve, reject) =>
           item && item.id ?
-            resolve(this.endpoint.update({ systemtTypeId: item.id }, item).$promise.then($unpack))
+            resolve(this.endpoint.update({ systemTypeId: item.id }, item).$promise.then($unpack))
           : reject('cannot call create without a parameter')
       )
 
