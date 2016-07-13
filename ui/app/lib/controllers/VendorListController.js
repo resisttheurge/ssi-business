@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class VendorListController extends ListController {
   /*@ngInject*/
-  constructor($scope, Vendor, $filter, $q) {
+  constructor($scope, Vendor, $filter, $q, $mdDialog, $mdToast) {
     super()
     var orderBy = $filter('orderBy')
     $scope.query = {
