@@ -94,12 +94,12 @@ export default class JobListController extends ListController {
 
                  <div flex = "50">
                     <label>From</label>
-                    <md-datepicker ng-model="$jobs.JobSearchParameters.endDateBefore"></md-datepicker>
+                    <md-datepicker ng-model="$jobs.JobSearchParameters.completeDateBefore"></md-datepicker>
                  </div>
 
                  <div flex = "50">
                     <label>Until</label>
-                    <md-datepicker ng-model="$jobs.JobSearchParameters.endDateAfter"></md-datepicker>
+                    <md-datepicker ng-model="$jobs.JobSearchParameters.completeDateAfter"></md-datepicker>
                  </div>
 
                  </div>
@@ -309,8 +309,8 @@ export default class JobListController extends ListController {
                 .match(new RegExp(`.*${(this.JobSearchParameters.description || '').toUpperCase()}.*`)))
             && (this.JobSearchParameters.startDateBefore === undefined || (job.startDate && Date.parse(job.startDate) >= Date.parse(this.JobSearchParameters.startDateBefore)))
             && (this.JobSearchParameters.startDateAfter === undefined || (job.startDate && Date.parse(job.startDate) <= Date.parse(this.JobSearchParameters.startDateAfter)))
-            && (this.JobSearchParameters.endDateBefore === undefined || (job.endDate && Date.parse(job.endDate) >= Date.parse(this.JobSearchParameters.endDateBefore)))
-            && (this.JobSearchParameters.endDateAfter === undefined || (job.endDate && Date.parse(job.endDate) <= Date.parse(this.JobSearchParameters.endDateAfter)))
+            && (this.JobSearchParameters.completeDateBefore === undefined || (job.completeDate && Date.parse(job.completeDate) >= Date.parse(this.JobSearchParameters.completeDateBefore)))
+            && (this.JobSearchParameters.completeDateAfter === undefined || (job.completeDate && Date.parse(job.completeDate) <= Date.parse(this.JobSearchParameters.completeDateAfter)))
 
     )
     : jobs
