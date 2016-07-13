@@ -10,7 +10,7 @@
             <div class="md-toolbar-tools">
                   <h2><a ng-href="/jobs/{{job.id}}">Job {{job | jobTitle}}</a></h2> <i class="material-icons">keyboard_arrow_right</i> <h2>Shipping Group {{shippingGroup.label}}</h2>
               <span flex></span>
-              <md-button class="md-raised" ng-disabled="editForm.$pristine" ng-click="update ? update(shippingGroup) : create(shippingGroup)">Save</md-button>
+              <md-button class="md-raised" ng-click="update ? update(shippingGroup) : create(shippingGroup)">Save</md-button>
             </div>
           </md-toolbar>
           <md-content>
@@ -24,8 +24,8 @@
 
                           <div layout="column" flex="50" layout-align="space-between stretch">
                             <md-input-container flex>
-                              <label>Label</label>
-                              <input md-maxlength ="100" required ng-model="shippingGroup.label" type="text">
+                              <label>Label (leave blank to generate default)</label>
+                              <input md-maxlength ="100" ng-model="shippingGroup.label" type="text">
                             </md-input-container>
 
                             <md-input-container flex>
