@@ -291,7 +291,7 @@ export default class JobListController extends ListController {
           job.identifier.prefix === (this.JobSearchParameters.prefix || job.identifier.prefix)
             && `${job.identifier.year}`
                 .substring(2, 4)
-                .match(new RegExp(`^${this.JobSearchParameters.year || ''}.*`))
+                .match(new RegExp(`^${this.JobSearchParameters.year ? this.JobSearchParameters.year < 10 ? '0' + this.JobSearchParameters.year : this.JobSearchParameters.year : ''}.*`))
             && job.identifier.label
                 .toUpperCase()
                 .match(new RegExp(`^${(this.JobSearchParameters.label || '').toUpperCase()}.*`))

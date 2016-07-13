@@ -77,6 +77,7 @@ trait RowConversions {
       shopId = job.shop.flatMap(_.id),
       salespersonId = job.salesperson.flatMap(_.id),
       customerId = job.customer.flatMap(_.id),
+      invoicingCustomerId = job.invoicingCustomer.flatMap(_.id),
       contactId = job.contact.flatMap(_.id)
     )
 
@@ -96,7 +97,7 @@ trait RowConversions {
       completeDate = row.completeDate
     )
 
-  implicit def fromJobsRowWithDependents(row: (JobsRow, Option[ShopsRow], Option[SalespeopleRow], Option[CustomersRow], Option[ContactsRow], Option[AddressesRow])): Job =
+  implicit def fromJobsRowWithDependents(row: (JobsRow, Option[ShopsRow], Option[SalespeopleRow], Option[CustomersRow], Option[CustomersRow], Option[ContactsRow], Option[AddressesRow])): Job =
     Job(
       id = Some(row._1.id),
       identifier = JobIdentifier(
@@ -113,8 +114,9 @@ trait RowConversions {
       shop = row._2.map(s => s: Shop),
       salesperson = row._3.map(s => s: Salesperson),
       customer = row._4.map(c => c: Customer),
-      contact = row._5.map(c => c: Contact),
-      addresses = row._6.map(address => models.JobAddresses(Some(address), None))
+      invoicingCustomer = row._5.map(c => c: Customer),
+      contact = row._6.map(c => c: Contact),
+      addresses = row._7.map(address => models.JobAddresses(Some(address), None))
     )
 
   implicit def toManufacturersRow(manufacturer: Manufacturer): ManufacturersRow =

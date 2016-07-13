@@ -18,5 +18,6 @@ case class Job(id: Option[Int],
                shop: Option[Shop] = None,
                salesperson: Option[Salesperson] = None,
                customer: Option[Customer] = None,
+               invoicingCustomer: Option[Customer] = None,
                contact: Option[Contact] = None,
                addresses: Option[JobAddresses] = None)
