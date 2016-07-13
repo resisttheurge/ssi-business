@@ -293,7 +293,7 @@ trait Tables {
     /** Database column label SqlType(VARCHAR), Length(20,true) */
     val label: Rep[String] = column[String]("label", O.Length(20, varying = true))
     /** Database column status SqlType(ENUM), Length(9,false), Default(INACTIVE) */
-    val status: Rep[String] = column[String]("status", O.Length(9, varying = false), O.Default("INACTIVE"))
+    val status: Rep[String] = column[String]("status", O.Length(9, varying = false), O.Default("ACTIVE"))
     /** Database column description SqlType(TEXT), Default(None) */
     val description: Rep[Option[String]] = column[Option[String]]("description", O.Default(None))
     /** Database column contract_price SqlType(DECIMAL), Default(None) */
