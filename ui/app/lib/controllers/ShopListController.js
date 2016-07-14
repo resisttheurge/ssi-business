@@ -19,6 +19,8 @@ export default class ShopListController extends ListController {
       return getShops(angular.extend({}, $scope.query, { order: order }))
     }
 
+    $scope.$watch('search', function (x, y) { getShops($scope.query) }, true)
+
     $scope.delete = item =>
       $mdDialog.show(
         $mdDialog.confirm()
@@ -47,10 +49,15 @@ export default class ShopListController extends ListController {
       return $scope.promise =
         Shop.endpoint.query().$promise
           .then(unpackResponse)
+          .then(searchFilter)
           .then(total)
           .then(sort(query))
           .then(page(query))
           .then(store)
+    }
+
+    function searchFilter(items) {
+      return $filter('filter')(items, $scope.search, false, 'label')
     }
 
     function unpackResponse(response) {

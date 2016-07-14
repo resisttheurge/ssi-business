@@ -82,7 +82,7 @@ export default class DrawingDetailController extends DetailController {
          $scope.carriers = carriers
        }).then(() => $scope.loading = false)
 
-       $scope.drawing = { jobId: $scope.job.id, drawingType: 'DETAIL', info: { address: { lines: [{ id: 0, value: '' }] } } }
+       $scope.drawing = { jobId: $scope.job.id, drawingType: 'DETAIL', info: { shop: { id : 1, label: 'MEM' }, address: { lines: [{ id: 0, value: '' }] } } }
 
        $scope.create = drawing =>
        {
@@ -121,10 +121,6 @@ export default class DrawingDetailController extends DetailController {
 
        this.refresh()
 
-     }
-
-     if(!$scope.drawing.id){
-       $scope.drawing.info.shop = { id : 1, label: 'MEM' };
      }
    }
 }

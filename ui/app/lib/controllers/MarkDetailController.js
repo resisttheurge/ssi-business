@@ -97,7 +97,7 @@ export default class MarkDetailController extends DetailController {
           }
         ).then(() => $scope.loading = false)
 
-      $scope.mark = { drawingId: $ssiSelected.drawing.id, shippingItem: { status: 'NS', requested: 0, completed: 0 } }
+      $scope.mark = { drawingId: $ssiSelected.drawing.id, shippingItem: { status: 'NS', requested: 0, completed: 0, shop: { id: 1, label: 'MEM' } } }
 
       $scope.create = mark =>
       {
@@ -139,9 +139,6 @@ export default class MarkDetailController extends DetailController {
       }
 
       this.refresh()
-    }
-    if(!$scope.mark.id){
-     $scope.mark.shippingItem.shop = { id : 1, label: 'MEM' };
     }
   }
 }

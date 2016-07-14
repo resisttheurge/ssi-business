@@ -57,21 +57,7 @@ export default class SalespersonListController extends ListController {
     }
 
     function searchFilter(items) {
-
-      var resultArray = [];
-      if ($scope.search)
-      {
-        if (items)
-          resultArray = items.filter(function (item) {
-            var names = item.label.split(' ');
-            for (var itemIndex = 0; itemIndex < names.length; itemIndex++)
-              if (names[itemIndex].toUpperCase().match(new RegExp('^' + $scope.search.toUpperCase() + '.*')))
-                return true;
-          })
-
-        return resultArray;
-      } else
-        return items;
+      return $filter('filter')(items, $scope.search, false, 'label')
     }
 
     function unpackResponse(response) {
