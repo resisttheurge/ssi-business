@@ -83,7 +83,7 @@ export default class ShipmentDetailController extends DetailController {
           }
         ).then(() => $scope.loading = false)
 
-      $scope.shipment = { jobId: $scope.job.id, status: 'ACTIVE', weight: 0, address: { lines: [{ id: 0, value: '' }] } }
+      $scope.shipment = { jobId: $scope.job.id, status: 'ACTIVE', weight: 0, shop: { id: 1, label: 'MEM' }, address: { lines: [{ id: 0, value: '' }] } }
 
       $scope.create = shipment => {
         if (
@@ -263,9 +263,5 @@ export default class ShipmentDetailController extends DetailController {
         }
       });
     };
-
-    if(!$scope.shipment.id){
-     $scope.shipment.shop = { id : 1, label: 'MEM' };
-    }
   }
 }
