@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.cooksys.model.LayoutDrawing;
 import com.cooksys.model.ManagementReview;
+import com.cooksys.model.JobSearch;
 import com.cooksys.model.ProductionSchedule;
 import com.cooksys.model.SpecialtyItemsByJob;
 import com.cooksys.model.SpecialtyItemsByPartType;
@@ -35,6 +36,7 @@ public class ReportUtil<T extends VariableGenerator> implements Reporting<T> {
 	public static final ReportUtil<CustomerJob> SHIP_VIA = new ReportUtil<CustomerJob>("Ship Via", "ship_via.html", "ship", CustomerJob.class);
 	public static final ReportUtil<CustomerJob> SHIPMENT = new ReportUtil<CustomerJob>("Shipment", "shipment.html", "ship", CustomerJob.class);
 	public static final ReportUtil<ManagementReview> MANAGEMENT_REVIEW = new ReportUtil<ManagementReview>("Management Review", "management_review.html", "mgmt", ManagementReview.class);
+	public static final ReportUtil<JobSearch> JOB_SEARCH = new ReportUtil<JobSearch>("Job Search", "job_search.html", "js", JobSearch.class);
 	public static final ReportUtil<ProductionSchedule> PRODUCTION_SCHEDULE = new ReportUtil<ProductionSchedule>("Production Schedule", "production_schedule.html", "prod", ProductionSchedule.class);
 	public static final ReportUtil<SpecialtyItemsByJob> SPECIALTY_ITEMS_BY_JOB = new ReportUtil<SpecialtyItemsByJob>("Specialty Items By Job", "specialty_items_by_job.html", "job", SpecialtyItemsByJob.class);
 	public static final ReportUtil<SpecialtyItemsByPartType> SPECIALTY_ITEMS_BY_PART_TYPE = new ReportUtil<SpecialtyItemsByPartType>("Specialty Items By Part Type", "specialty_items_by_part_type.html", "part", SpecialtyItemsByPartType.class);
