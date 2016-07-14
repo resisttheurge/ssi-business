@@ -1,4 +1,5 @@
 import { ListController } from 'utils'
+import escapeRegExp from 'lodash.escaperegexp';
 
 export default class JobListController extends ListController {
   /*@ngInject*/
@@ -292,22 +293,22 @@ export default class JobListController extends ListController {
           job.identifier.prefix === (this.JobSearchParameters.prefix || job.identifier.prefix)
             && (!this.JobSearchParameters.year || `${job.identifier.year}`
                 .substring(2, 4)
-                .match(new RegExp(`^${this.JobSearchParameters.year}.*`)))
+                .match(new RegExp(`^${escapeRegExp(this.JobSearchParameters.year)}.*`)))
             && job.identifier.label
                 .toUpperCase()
-                .match(new RegExp(`^${(this.JobSearchParameters.label || '').toUpperCase()}.*`))
+                .match(new RegExp(`^${escapeRegExp(this.JobSearchParameters.label || '').toUpperCase()}.*`))
             && (!this.JobSearchParameters.customerSearchText || (job.customer !== undefined && job.customer.label !== undefined &&
                 job.customer.label.toUpperCase()
-                .match(new RegExp(`^${this.JobSearchParameters.customerSearchText.toUpperCase()}.*`))))
+                .match(new RegExp(`^${escapeRegExp(this.JobSearchParameters.customerSearchText.toUpperCase())}.*`))))
             && (this.JobSearchParameters.city === undefined || (job.addresses.shipping.city && job.addresses.shipping.city
                 .toUpperCase()
-                .match(new RegExp(`^${(this.JobSearchParameters.city || '').toUpperCase()}.*`))))
+                .match(new RegExp(`^${escapeRegExp(this.JobSearchParameters.city || '').toUpperCase()}.*`))))
             && (this.JobSearchParameters.state === undefined || (job.addresses.shipping.stateOrProvince && job.addresses.shipping.stateOrProvince
                 .toUpperCase()
-                .match(new RegExp(`^${(this.JobSearchParameters.state || '').toUpperCase()}.*`))))
+                .match(new RegExp(`^${escapeRegExp(this.JobSearchParameters.state || '').toUpperCase()}.*`))))
             && (!this.JobSearchParameters.description || (job.description !== undefined && job.description
                 .toUpperCase()
-                .match(new RegExp(`.*${(this.JobSearchParameters.description || '').toUpperCase()}.*`))))
+                .match(new RegExp(`.*${escapeRegExp(this.JobSearchParameters.description || '').toUpperCase()}.*`))))
             && (this.JobSearchParameters.startDateBefore === undefined || (job.startDate && Date.parse(job.startDate) >= Date.parse(this.JobSearchParameters.startDateBefore)))
             && (this.JobSearchParameters.startDateAfter === undefined || (job.startDate && Date.parse(job.startDate) <= Date.parse(this.JobSearchParameters.startDateAfter)))
             && (this.JobSearchParameters.completeDateBefore === undefined || (job.completeDate && Date.parse(job.completeDate) >= Date.parse(this.JobSearchParameters.completeDateBefore)))
