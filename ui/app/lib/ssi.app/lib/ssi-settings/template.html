@@ -30,6 +30,11 @@
           Management Review
         </md-list-item>
 
+        <md-list-item ng-click="$reports.jobSearch()" ng-show="$reports.user.roles.indexOf('ADMIN') >= 0">
+          <md-icon flex class="material-icons">insert_drive_file</md-icon>
+          Job Search
+        </md-list-item>
+
       </div>
 
     </md-list>

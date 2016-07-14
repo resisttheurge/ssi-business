@@ -3,9 +3,10 @@ import ModalJobReportController from './ModalJobReportController'
 
 export default class ReportController {
   /*@ngInject*/
-   constructor($scope, $routeParams, $q, $ssiSelected, $mdDialog, $convertDate, $unpack, Report, endpoint, enums, Customer, $filter) {
+   constructor($scope, $routeParams, $q, $ssiSelected, $mdDialog, $convertDate, $unpack, Report, endpoint, enums, Customer, $filter, $ssiUser) {
 
      var self = this;
+     this.user = $ssiUser
 
      $scope.prefixes = enums.prefixes
 
@@ -299,6 +300,122 @@ export default class ReportController {
            }
          });
      };
+
+     self.jobSearch = function specialtyItemsByPartType(entry)
+     {
+       $mdDialog.show({
+           clickOutsideToClose: true,
+           scope: $scope,
+           preserveScope: true,
+           template: `<md-dialog>
+                      <md-dialog-content style="padding: 30px 30px 0px 30px;"">
+                      <div layout-align="center" layout-margin>
+
+                        <div class="md-block" layout = "row">
+                          <md-datepicker ng-model="reportFrom" md-placeholder="From"></md-datepicker>
+
+                          <md-datepicker ng-model="reportTo" md-placeholder="To"></md-datepicker>
+                        </div>
+
+                        <div class="md-block" layout ="row" layout-align="center">
+                          <label style="margin-right: 15px;">Job Number</label>
+                          <md-input-container style="margin-right: 20px; width: 50px;">
+                            <md-select ng-model="jobPrefix" style="width: 50px;">
+                              <md-option ng-repeat="prefix in prefixes" ng-value="prefix">
+                                     {{prefix}}
+                              </md-option>
+                            </md-select>
+                          </md-input-container>
+                            -
+                          <md-input-container style="width: 50px;">
+                            <input ng-model="jobYear" type="number">
+                          </md-input-container>
+                            -
+                          <md-input-container style="width: 125px;">
+                            <input ng-model="jobLabel" type="text">
+                          </md-input-container>
+                        </div>
+
+                        <div class="md-block" layout = "row">
+
+                          <md-input-container flex="70">
+                             <label>City</label>
+                             <input name="city" ng-model="city">
+                          </md-input-container>
+
+
+
+                          <md-input-container flex="30">
+                             <label>State</label>
+                             <input name="state" ng-model="state">
+                          </md-input-container>
+
+                        </div>
+
+                        <div class="md-block" layout = "row">
+
+                        <md-autocomplete flex
+                            md-selected-item="customer"
+                            md-search-text="customerSearchText"
+                            md-items="customer in queryCustomers(customerSearchText)"
+                            md-item-text="customer.label"
+                            md-floating-label="Customer" layout-margin>
+                          <span>{{customer.label}}</span>
+                        </md-autocomplete>
+
+                        </div>
+
+                      </div>
+                      </md-dialog-content>
+                      <md-dialog-actions>
+                        <md-button ng-click="closeDialog()" class="md-primary">Cancel</md-button>
+                        <span flex></span>
+                        <md-button ng-click="displayReport()" class="md-primary">Submit</md-button>
+                      </md-dialog-actions>
+                    </md-dialog>`,
+           controller: function DialogController($scope, $mdDialog) {
+
+             $scope.closeDialog = function () {
+
+               $scope.reportFrom = undefined;
+               $scope.reportTo = undefined;
+               $scope.jobPrefix = undefined;
+               $scope.jobYear = undefined;
+               $scope.jobLabel = undefined;
+               $scope.city = undefined;
+               $scope.state = undefined;
+               $scope.customer = undefined;
+               $scope.customerSearchText = undefined;
+
+               $mdDialog.hide();
+             }
+
+             $scope.displayReport = function () {
+               $mdDialog.hide();
+               Report.jobSearch(
+                 $scope.reportFrom ? $scope.reportFrom.toISOString().substring(0, 10) : undefined, $scope.reportTo ? $scope.reportTo.toISOString().substring(0, 10) : undefined, $scope.jobPrefix || '', ($scope.jobYear && '' + $scope.jobYear) || '', $scope.jobLabel || '', $scope.city || '', $scope.state || '', ($scope.customer && $scope.customer.label) || '').then(function (report)
+               {
+                   if (report.length > 0)
+                    window.open('data:application/pdf;base64,' + report);
+                   else
+                    self.failAlert();
+
+                   $scope.reportFrom = undefined;
+                   $scope.reportTo = undefined;
+                   $scope.jobPrefix = undefined;
+                   $scope.jobYear = undefined;
+                   $scope.jobLabel = undefined;
+                   $scope.city = undefined;
+                   $scope.state = undefined;
+                   $scope.customer = undefined;
+                   $scope.customerSearchText = undefined;
+
+                 });
+             }
+
+           }
+         });
+     }
 
      self.productionSchedule = function productionSchedule(entry)
      {

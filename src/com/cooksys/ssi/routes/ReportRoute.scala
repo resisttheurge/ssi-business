@@ -140,6 +140,28 @@ case class ReportRoute(path: String)(implicit val db: Database, ec: ExecutionCon
               report
             }
           }
+        } ~ path("job-search") {
+          entity(as[JobSearchReportRequest]) { params =>
+            Future {
+              val session = db.createSession()
+              val report = Report(
+                title = "Job Search Report",
+                data = ReportUtil.JOB_SEARCH.generate(
+                  session.conn,
+                  params.start.map(_.toString).getOrElse(""),
+                  params.end.map(_.toString).getOrElse(""),
+                  params.prefix,
+                  params.year,
+                  params.label,
+                  params.city,
+                  params.state,
+                  params.customer
+                )
+              )
+              session.close()
+              report
+            }
+          }
         } ~ path("production-schedule") {
           entity(as[ProductionScheduleReportRequest]) { params =>
             Future {

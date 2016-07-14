@@ -50,4 +50,7 @@ package object models {
   type SpecialtyItemsByJobReportRequest = JobReportRequest
   val SpecialtyItemsByJobReportRequest = JobReportRequest
 
+  type JobSearchReportRequest = ManagementReviewReportRequest
+  val jobSearchReportRequest = ManagementReviewReportRequest
+
 }
