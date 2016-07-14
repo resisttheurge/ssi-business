@@ -44,8 +44,8 @@ export default class JobListController extends ListController {
                 <label class="md-block" flex>Customer</label>
                 <md-autocomplete
                     md-selected-item="$jobs.JobSearchParameters.customer"
-                    md-search-text="customerSearchText"
-                    md-items="customer in queryCustomers(customerSearchText)"
+                    md-search-text="$jobs.JobSearchParameters.customerSearchText"
+                    md-items="customer in queryCustomers($jobs.JobSearchParameters.customerSearchText)"
                     md-item-text="customer.label"
                     md-floating-label="Customer" layout-margin>
                   <span>{{customer.label}}</span>
@@ -296,9 +296,9 @@ export default class JobListController extends ListController {
             && job.identifier.label
                 .toUpperCase()
                 .match(new RegExp(`^${(this.JobSearchParameters.label || '').toUpperCase()}.*`))
-            && (!this.JobSearchParameters.customer || !this.JobSearchParameters.customer.label || (job.customer !== undefined && job.customer.label !== undefined &&
+            && (!this.JobSearchParameters.customerSearchText || (job.customer !== undefined && job.customer.label !== undefined &&
                 job.customer.label.toUpperCase()
-                .match(new RegExp(`^${this.JobSearchParameters.customer.label.toUpperCase()}.*`))))
+                .match(new RegExp(`^${this.JobSearchParameters.customerSearchText.toUpperCase()}.*`))))
             && (this.JobSearchParameters.city === undefined || (job.addresses.shipping.city && job.addresses.shipping.city
                 .toUpperCase()
                 .match(new RegExp(`^${(this.JobSearchParameters.city || '').toUpperCase()}.*`))))
