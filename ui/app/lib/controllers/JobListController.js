@@ -33,7 +33,7 @@ export default class JobListController extends ListController {
                   </md-input-container>
                     -
                   <md-input-container style="margin-top: 24px; width: 50px;">
-                    <input ng-model="$jobs.JobSearchParameters.year" type="number">
+                    <input ng-model="$jobs.JobSearchParameters.year" type="text">
                   </md-input-container>
                     -
                   <md-input-container style="margin-top: 24px; width: 125px;">
@@ -289,9 +289,9 @@ export default class JobListController extends ListController {
     return this.JobSearchParameters
       ? jobs.filter(job =>
           job.identifier.prefix === (this.JobSearchParameters.prefix || job.identifier.prefix)
-            && `${job.identifier.year}`
+            && (!this.JobSearchParameters.year || `${job.identifier.year}`
                 .substring(2, 4)
-                .match(new RegExp(`^${this.JobSearchParameters.year ? this.JobSearchParameters.year < 10 ? '0' + this.JobSearchParameters.year : this.JobSearchParameters.year : ''}.*`))
+                .match(new RegExp(`^${this.JobSearchParameters.year}.*`)))
             && job.identifier.label
                 .toUpperCase()
                 .match(new RegExp(`^${(this.JobSearchParameters.label || '').toUpperCase()}.*`))
