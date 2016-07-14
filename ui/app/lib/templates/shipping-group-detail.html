@@ -61,7 +61,7 @@
                             </div>
 
                             <div layout="row">
-                              <md-input-container flex>
+                              <md-input-container ng-hide="true" flex>
                                 <label>Specialty Item </label>
                                 <md-select ng-model="shippingGroup.specialtyItem" ng-model-options="{trackBy: '$value.id'}">
                                   <md-option ng-repeat="specialtyItem in specialtyItems track by specialtyItem.id" ng-value="specialtyItem">
