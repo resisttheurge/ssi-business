@@ -45,7 +45,7 @@
 		<p class="head1">Specialty Items (by Part Type)</p>
 	</div>	
 	
-	<h2>${part[0].prefix}-${part[0].year}-${part[0].label}</h2>
+	<h2>${part[0].partType}</h2>
 	<table border="1" cellspacing="0" cellpadding="0" align="center" width="100%">
 		<thead>
 			<tr style="background: #CCC0DA">
@@ -61,7 +61,7 @@
 <!-- 		<tr style="background: #ffffff"> -->
 <!-- 			</#if> -->
 		<tr>
-			<td width="25%" align="center"><p align="center">${part[i-1].partType}</p></td>
+			<td width="25%" align="center"><p align="center">${part[i-1].prefix}-${part[i-1].year}-${part[i-1].label}</p></td>
 			<td width="25%" align="center"><p align="center">${part[i-1].customer}</p></td>
 			<td width="25%" align="center"><p align="center">${part[i-1].drawing}</p></td>
 			<td width="25%" align="center"><p align="center">${part[i-1].title}</p></td>
