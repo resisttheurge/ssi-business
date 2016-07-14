@@ -6,8 +6,8 @@ import static com.cooksys.util.DataUtil.convertRaw;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.cooksys.test.VariableGenerator;
@@ -24,16 +24,14 @@ public class JobSearch implements VariableGenerator<JobSearch>
 	String country;
 	String description;
 	String contractPrice;
-
-	Double contractPriceSum;
-
+	String cpSumDisplay;
 	@Override
 	public List<JobSearch> generateVariables(Connection connection, ResultSet rawData)
 	{
 		BigDecimal _contractPriceSum = new BigDecimal(0);
-
 		ArrayList<JobSearch> jsList = new ArrayList<JobSearch>();
 
+		DecimalFormat contractPriceFormat = new DecimalFormat("#0.00");
 		try
 		{
 
@@ -50,7 +48,7 @@ public class JobSearch implements VariableGenerator<JobSearch>
 				jobSearch.setState(convertRaw(rawData.getString(6)));
 				jobSearch.setCountry(convertRaw(rawData.getString(7)));
 				jobSearch.setDescription(convertRaw(rawData.getString(8)));
-				jobSearch.setContractPrice(rawData.getBigDecimal(9).toString());
+				jobSearch.setContractPrice(contractPriceFormat.format(rawData.getBigDecimal(9).doubleValue()));
 
 				_contractPriceSum = _contractPriceSum.add(rawData.getBigDecimal(9));
 
@@ -61,9 +59,17 @@ public class JobSearch implements VariableGenerator<JobSearch>
 			e.printStackTrace();
 		}
 		if(jsList.size() > 0) {
-			jsList.get(0).contractPriceSum = _contractPriceSum.doubleValue();
+			jsList.get(0).cpSumDisplay = contractPriceFormat.format(_contractPriceSum.doubleValue());
 		}
 		return jsList;
+	}
+
+	public String getCpSumDisplay() {
+		return cpSumDisplay;
+	}
+
+	public void setCpSumDisplay(String cpSumDisplay) {
+		this.cpSumDisplay = cpSumDisplay;
 	}
 
 	public String getPrefix() {
@@ -136,14 +142,6 @@ public class JobSearch implements VariableGenerator<JobSearch>
 
 	public void setContractPrice(String contractPrice) {
 		this.contractPrice = contractPrice;
-	}
-
-	public Double getContractPriceSum() {
-		return contractPriceSum;
-	}
-
-	public void setContractPriceSum(Double contractPriceSum) {
-		this.contractPriceSum = contractPriceSum;
 	}
 
 }
