@@ -1,0 +1,106 @@
+<!DOCTYPE html [
+    <!ENTITY nbsp "&#160;">
+]>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Management Review</title>
+
+<style type="text/css">
+@page {
+	size: A4 landscape;
+	@bottom-right{
+	    font-size:80%;
+	    content: "Page " counter(page)  " of " counter(pages);
+    }
+}
+
+.head1 {
+	color: #000;
+	font-size: x-large;
+}
+
+.head2 {
+	color: #496192;
+	font-size: large;
+}
+
+.- {
+	color: #000;
+	font-size: medium
+}
+
+.paragraph {
+	text-align: justify;
+}
+
+.toc {
+	list-style-type: none;
+}
+
+.toc a::after {
+	content: leader('.') target-counter(attr(href), page);
+}
+
+th {
+	font-size: 8px;
+	text-align: left;
+}
+
+table {
+	-fs-table-paginate: paginate;
+	page-break-inside: avoid;
+}
+
+p {
+	font-size: 10px;
+	text-align: left;
+	padding-left: 5px;
+}
+</style>
+
+</head>
+
+<body>
+	<div id="header">
+		<img src="/ssilogo.png" alt="Southern Systems, Inc."
+			style="height: 75px;" />
+		<p class="head1">Management Review</p>
+	</div>
+
+	<table border="1" cellspacing="0" cellpadding="0" align="center"
+		width="100%">
+
+		<thead>
+			<tr style="background: #CCC0DA">
+				<th align="center" width="6%">Job</th>
+				<th align="center" width="13%">Customer</th>
+				<th align="center" width="8%">City</th>
+				<th align="center" width="3%">State</th>
+				<th align="center" width="6%">Country</th>
+				<th align="center" width="46%">Description</th>
+        <th align="center" width="6%">Contract Price</th>
+			</tr>
+		</thead>
+
+		<#list 1..mgmt?size as i>
+<!-- 		<#if i%2==0> -->
+<!-- 		<tr style="background: #FABF8F"><#else> -->
+<!-- 		<tr style="background: #C4D79B"> -->
+<!-- 			</#if> -->
+		<tr>
+
+			<td align="center" width="6%"><p align="center">${mgmt[i-1].prefix}-${mgmt[i-1].year}-${mgmt[i-1].label}</p></td>
+			<td align="center" width="13%"><p align="center">${mgmt[i-1].customer}</p></td>
+			<td align="center" width="8%"><p align="center">${mgmt[i-1].city}</p></td>
+			<td align="center" width="3%"><p align="center">${mgmt[i-1].state}</p></td>
+			<td align="center" width="6%"><p align="center">${mgmt[i-1].country}</p></td>
+			<td align="center" width="46W%"><p align="center">${mgmt[i-1].description}</p></td>
+			<td align="center" width="6%"><p align="center">${mgmt[i-1].contractPrice}</p></td>
+		</tr>
+		</#list>
+	</table>
+	<p align="center" style="font-size: large; font-weight: bold;">TOTAL : ${mgmt[0].contractPriceSum}</p>
+</body>
+</html>
