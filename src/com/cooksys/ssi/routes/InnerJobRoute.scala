@@ -57,8 +57,8 @@ case class InnerJobRoute(jobId: Int)(implicit db: Database, ec: ExecutionContext
           JobDao.addSystemType(jobId, st)
         }
       } ~ delete {
-        entity(as[SystemType]) {st =>
-          JobDao.removeSystemType(jobId, st)
+        pathPrefix(IntNumber) {systemTypeId =>
+          JobDao.removeSystemType(jobId, systemTypeId)
         }
       }
     } ~ pathPrefix("zones") {

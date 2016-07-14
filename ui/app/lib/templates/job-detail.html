@@ -13,7 +13,7 @@
             </h2>
 
             <span flex></span>
-            <md-button class="md-raised" ng-disabled="jobForm.$pristine || restricted" ng-click="update ? update(job, jobAddresses, jobSchedules) : create(job, jobAddresses, jobSchedules)">{{restricted ? 'ADMIN ONLY' : 'Save'}}</md-button>
+            <md-button class="md-raised" ng-disabled="jobForm.$pristine || restricted" ng-click="update ? update(job, jobAddresses, jobSchedules, jobSystemTypes, editedJobSystemTypes) : create(job, jobAddresses, jobSchedules)">{{restricted ? 'ADMIN ONLY' : 'Save'}}</md-button>
           </div>
         </md-toolbar>
         <md-content flex>
@@ -67,6 +67,20 @@
                             <label>Description</label>
                             <textarea ng-model="job.description"></textarea>
                           </md-input-container>
+                        </div>
+                        <div layout-margin layout="row" ng-hide="update === undefined">
+                          <md-chips ng-model="editedJobSystemTypes" md-autocomplete-snap md-require-match="true">
+                            <md-autocomplete
+                              md-search-text="systemTypeSearchText"
+                              md-items="item in allSystemTypes | filter : systemTypeSearchText : false : 'label'"
+                              md-item-text="item.label"
+                              placeholder="Search for a System Type">
+                              <span md-highlight-text="systemTypeSearchText">{{item.label}}</span>
+                            </md-autocomplete>
+                            <md-chip-template>
+                              <span><strong>{{$chip.label}}</strong></span>
+                            </md-chip-template>
+                          </md-chips>
                         </div>
                       </div>
                       <md-divider></md-divider>
