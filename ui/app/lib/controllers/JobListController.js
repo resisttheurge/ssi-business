@@ -286,6 +286,7 @@ export default class JobListController extends ListController {
 
   jobSearchFilter(jobs) {
     console.dir(jobs)
+    console.log(this.JobSearchParameters)
     return this.JobSearchParameters
       ? jobs.filter(job =>
           job.identifier.prefix === (this.JobSearchParameters.prefix || job.identifier.prefix)
@@ -295,9 +296,9 @@ export default class JobListController extends ListController {
             && job.identifier.label
                 .toUpperCase()
                 .match(new RegExp(`^${(this.JobSearchParameters.label || '').toUpperCase()}.*`))
-            && (job.customer === undefined || job.customer.label
-                .toUpperCase()
-                .match(new RegExp(`^${((this.JobSearchParameters.customer && this.JobSearchParameters.customer.label) || '').toUpperCase()}.*`)))
+            && (!this.JobSearchParameters.customer || !this.JobSearchParameters.customer.label || (job.customer !== undefined && job.customer.label !== undefined &&
+                job.customer.label.toUpperCase()
+                .match(new RegExp(`^${this.JobSearchParameters.customer.label.toUpperCase()}.*`))))
             && (this.JobSearchParameters.city === undefined || (job.addresses.shipping.city && job.addresses.shipping.city
                 .toUpperCase()
                 .match(new RegExp(`^${(this.JobSearchParameters.city || '').toUpperCase()}.*`))))
