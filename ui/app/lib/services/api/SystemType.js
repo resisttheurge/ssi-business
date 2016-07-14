@@ -9,6 +9,9 @@ export default class SystemType extends ApiService {
         query: { method: 'GET', params:{ systemTypeId: '' } }
       })
 
+    this.list = () =>
+      this.endpoint.query().$promise.then($unpack)
+
     this.update = item =>
       $q(
         (resolve, reject) =>

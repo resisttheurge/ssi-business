@@ -1,7 +1,7 @@
 import { ApiService } from 'utils'
 export default class Job extends ApiService {
   /*@ngInject*/
-  constructor ($q, $resource, $unpack, $convertDate, endpoint, Contact, JobAddresses, JobSchedules) {
+  constructor ($q, $resource, $unpack, $convertDate, endpoint, Contact, JobAddresses, JobSchedules, SystemTypeByJob) {
     super()
 
     var self = this
@@ -147,12 +147,15 @@ export default class Job extends ApiService {
         })
       }
 
-    self.updateFull = (job, jobAddresses, jobSchedules) =>
+    self.updateFull = (job, jobAddresses, jobSchedules, addedSystemTypes, removedSystemTypes) =>
       self.update(job)
-        .then(({ before, after }) => $q.all([
-          jobAddresses !== undefined ? self.addresses.update(after, jobAddresses) : undefined,
-          jobSchedules !== undefined ? self.schedules.update(after, jobSchedules) : undefined
-        ].filter(x => x !== undefined)).then(() => after))
+        .then(({ before, after }) =>
+          $q.all([
+            jobAddresses !== undefined ? self.addresses.update(after, jobAddresses) : undefined,
+            jobSchedules !== undefined ? self.schedules.update(after, jobSchedules) : undefined,
+            SystemTypeByJob.update({ jobId: after.id }, addedSystemTypes, removedSystemTypes)
+          ].filter(x => x !== undefined))
+          .then(() => after))
 
     self.createFull = (job, jobAddresses, jobSchedules) =>
       self.create(job)

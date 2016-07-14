@@ -90,10 +90,10 @@ object JobDao extends CrudDao[Job] {
       }
     )
 
-  def removeSystemType(id: Int, st: SystemType)(implicit db: DB, ec: EC) =
+  def removeSystemType(id: Int, systemTypeId: Int)(implicit db: DB, ec: EC) =
     run(
       for {
-        _ <- JobSystemTypes.filter(st => st.jobId === id && st.systemTypeId === st.id.get).delete
+        _ <- JobSystemTypes.filter(st => st.jobId === id && st.systemTypeId === systemTypeId).delete
         result <- SystemTypeDao.indexByJobIdQuery(id).result
       } yield {
         Response[Seq[SystemType]](

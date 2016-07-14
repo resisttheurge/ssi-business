@@ -1,11 +1,12 @@
 import { DetailController, strip } from 'utils'
+import differenceBy from 'lodash.differenceby'
 
 export default class JobDetailController extends DetailController {
   /*@ngInject*/
   constructor(
     $scope, $route, $location, $routeParams, $q, Address, Customer, Job, Schedule,
     Shop, Salesperson, enums, $filter, $mdDialog, $unpack, $convertDate,
-    JobAddresses, JobSchedules, $log, $ssiUser, $ssiSelected
+    JobAddresses, JobSchedules, SystemType, SystemTypeByJob, $log, $ssiUser, $ssiSelected
   ) {
     super()
 
@@ -81,7 +82,9 @@ export default class JobDetailController extends DetailController {
           $q.all({
             job: Job.get($routeParams),
             jobAddresses: JobAddresses.get($routeParams),
-            jobSchedules: JobSchedules.get($routeParams)
+            jobSchedules: JobSchedules.get($routeParams),
+            allSystemTypes: SystemType.list(),
+            jobSystemTypes: SystemTypeByJob.list($routeParams)
           })
         })
 
@@ -106,27 +109,32 @@ export default class JobDetailController extends DetailController {
       })
     }
 
-    function store({ job, jobAddresses, jobSchedules }) {
+    function store({ job, jobAddresses, jobSchedules, allSystemTypes, jobSystemTypes }) {
       return $q(function (resolve, reject) {
         $log.debug('storing job')
         return resolve(do {
           $scope.job = job
           $scope.jobAddresses = jobAddresses
           $scope.jobSchedules = jobSchedules
-          { job, jobAddresses, jobSchedules }
+          $scope.allSystemTypes = allSystemTypes
+          $scope.jobSystemTypes = jobSystemTypes
+          $scope.editedJobSystemTypes = angular.copy(jobSystemTypes)
+          { job, jobAddresses, jobSchedules, allSystemTypes, jobSystemTypes }
         })
       })
     }
 
     if ($routeParams.jobId) {
 
-      $scope.update = function update(job, jobAddresses, jobSchedules)
+      $scope.update = function update(job, jobAddresses, jobSchedules, jobSystemTypes, editedJobSystemTypes)
       {
         if (job.identifier.prefix &&
             job.identifier.year &&
             job.identifier.label &&
             job.status) {
-          Job.updateFull(job, jobAddresses, jobSchedules)
+          const systemTypesToAdd = differenceBy(editedJobSystemTypes, jobSystemTypes, st => st.id)
+          const systemTypesToRemove = differenceBy(jobSystemTypes, editedJobSystemTypes, st => st.id)
+          Job.updateFull(job, jobAddresses, jobSchedules, systemTypesToAdd, systemTypesToRemove)
           .then(function (data) {
             $mdDialog
               .show(
