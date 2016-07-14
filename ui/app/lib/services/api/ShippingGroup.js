@@ -83,7 +83,7 @@ export default class ShippingGroup extends ApiService {
         .then(::this.sgPadLines)
 
     this.prepForUpdate = sg => {
-      const { info } = sg
+      const { info, label } = sg
       const { contact, address } = info
       return $q.all({
         contact:
@@ -103,7 +103,8 @@ export default class ShippingGroup extends ApiService {
         info:
           info ?
             { ...info, ...partialInfo }
-          : undefined
+          : undefined,
+        label: label ? label : ''
       })).then(::this.sgDateToString)
     }
 
@@ -122,7 +123,7 @@ export default class ShippingGroup extends ApiService {
       )
 
     this.prepForCreate = sg => {
-      const { info } = sg
+      const { info, label } = sg
       const { contact, address } = info
       return $q.all({
         contact:
@@ -138,7 +139,8 @@ export default class ShippingGroup extends ApiService {
         info:
           info ?
             { ...info, ...partialInfo }
-          : undefined
+          : undefined,
+        label: label ? label : ''
       })).then(::this.sgDateToString)
     }
 
