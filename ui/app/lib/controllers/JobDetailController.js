@@ -142,7 +142,7 @@ export default class JobDetailController extends DetailController {
                   .title('Changes Saved!')
                   .textContent('Changes to this record have been saved')
                   .ok('Close')
-              ).then(() => $route.reload())
+              ).then(() => Job.cacheInvalid = true).then(() => $route.reload())
           }, function (error) {
 
             $log.error(JSON.stringify(error))
@@ -200,7 +200,7 @@ export default class JobDetailController extends DetailController {
                   .title('Record created!')
                   .textContent('This record has been saved to the database')
                   .ok('Close')
-              ).then(() => $location.path(`/jobs/${data.id}`)),
+              ).then(() => Job.cacheInvalid = true).then(() => $location.path(`/jobs/${data.id}`)),
             error => {
               $log.error(JSON.stringify(error))
               $mdDialog.show(
