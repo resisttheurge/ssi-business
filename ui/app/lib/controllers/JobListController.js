@@ -215,7 +215,7 @@ export default class JobListController extends ListController {
           .then(() => $route.reload()).then(() => this.refresh()),
         reason => $mdToast.show(
           $mdToast.simple()
-            .textContent(`Could not delete job ${this.jobTitle(item)} because ${reason}`)
+            .textContent(`Could not delete job ${this.jobTitle(item)}`)
             .position('bottom right')
           )
       )

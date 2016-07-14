@@ -30,7 +30,7 @@ export default class ShipmentListController extends ListController {
           .then(() => $route.reload()),
         reason => $mdToast.show(
           $mdToast.simple()
-            .textContent(`Could not delete shipment ${item.number} because ${reason}`)
+            .textContent(`Could not delete shipment ${item.number}`)
             .position('bottom right')
           )
       )

@@ -30,7 +30,7 @@ export default class PartOrderListController extends ListController {
           .then(() => $route.reload()),
         reason => $mdToast.show(
           $mdToast.simple()
-            .textContent(`Could not delete part order [${item.id}] ${item.partNumber} because ${reason}`)
+            .textContent(`Could not delete part order [${item.id}] ${item.partNumber}`)
             .position('bottom right')
           )
       )

@@ -40,7 +40,7 @@ export default class SalespersonListController extends ListController {
           .then(() => $route.reload()).then(() => this.refresh()),
         reason => $mdToast.show(
           $mdToast.simple()
-            .textContent(`Could not delete salesperson ${item.label} because ${reason}`)
+            .textContent(`Could not delete salesperson ${item.label}`)
             .position('bottom right')
           )
       )

@@ -30,7 +30,7 @@ export default class ZoneListController extends ListController {
           .then(() => $route.reload()),
         reason => $mdToast.show(
           $mdToast.simple()
-            .textContent(`Could not delete zone ${item.number} because ${reason}`)
+            .textContent(`Could not delete zone ${item.number}`)
             .position('bottom right')
           )
       )

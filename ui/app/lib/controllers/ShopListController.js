@@ -40,7 +40,7 @@ export default class ShopListController extends ListController {
           .then(() => $route.reload()).then(() => this.refresh()),
         reason => $mdToast.show(
           $mdToast.simple()
-            .textContent(`Could not delete shop ${item.label} because ${reason}`)
+            .textContent(`Could not delete shop ${item.label}`)
             .position('bottom right')
           )
       )

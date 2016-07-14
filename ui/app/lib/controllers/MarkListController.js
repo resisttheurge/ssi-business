@@ -30,7 +30,7 @@ export default class MarkListController extends ListController {
           .then(() => $route.reload()),
         reason => $mdToast.show(
           $mdToast.simple()
-            .textContent(`Could not delete mark ${item.label} because ${reason}`)
+            .textContent(`Could not delete mark ${item.label}`)
             .position('bottom right')
           )
       )

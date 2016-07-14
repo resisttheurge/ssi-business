@@ -38,7 +38,7 @@ export default class DrawingListController extends ListController {
           .then(() => $route.reload()),
         reason => $mdToast.show(
           $mdToast.simple()
-            .textContent(`Could not delete drawing ${item.label} because ${reason}`)
+            .textContent(`Could not delete drawing ${item.label}`)
             .position('bottom right')
           )
       )

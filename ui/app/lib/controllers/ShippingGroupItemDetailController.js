@@ -34,7 +34,7 @@ export default class ShippingGroupItemDetailController extends DetailController 
           .then(() => $route.reload()),
         reason => $mdToast.show(
           $mdToast.simple()
-            .textContent(`Could not delete shipping group item information for zone ${item.zone.number} because ${reason}`)
+            .textContent(`Could not delete shipping group item information for zone ${item.zone.number}`)
             .position('bottom right')
           )
       )

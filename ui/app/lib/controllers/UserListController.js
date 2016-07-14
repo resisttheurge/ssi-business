@@ -41,7 +41,7 @@ export default class UserListController extends ListController {
           .then(() => $route.reload()),
         reason => $mdToast.show(
           $mdToast.simple()
-            .textContent(`Could not delete user ${item.username} because ${reason}`)
+            .textContent(`Could not delete user ${item.username}`)
             .position('bottom right')
           )
       )

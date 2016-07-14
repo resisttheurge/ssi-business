@@ -36,7 +36,7 @@ export default class MarkDetailController extends DetailController {
           .then(() => $route.reload()),
         reason => $mdToast.show(
           $mdToast.simple()
-            .textContent(`Could not delete mark information for zone ${item.zone.number} because ${reason}`)
+            .textContent(`Could not delete mark information for zone ${item.zone.number}`)
             .position('bottom right')
           )
       )
