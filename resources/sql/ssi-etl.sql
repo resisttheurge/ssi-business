@@ -230,6 +230,7 @@ SELECT
         FROM
             `ssi-business`.customers c
         where c.label = j.customer) AS customerid,
+    null as invoicingCustomerId,
     (select cj.id from `ssi-business`.contactjobTemp cj where cj.jobid = j.jobid) AS contactId,
     (select s.CLOSEDDATE from `Material Shipper`.schedule s where s.jobid = j.jobid and s.`DELETE` != 1 ORDER BY s.SCHEDID DESC LIMIT 1) AS completedDate    
 FROM
