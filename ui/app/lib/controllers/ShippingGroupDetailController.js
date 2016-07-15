@@ -86,7 +86,16 @@ export default class ShippingGroupDetailController extends DetailController {
         $scope.shops = shops
         $scope.carriers = carriers
       }).then(() => $scope.loading = false)
-      $scope.shippingGroup = { jobId: $ssiSelected.job.id, rush: false, info: { address: $ssiSelected.job.address }}
+
+      $scope.shippingGroup = {
+        jobId: $ssiSelected.job.id,
+        rush: false,
+        info: {
+          tagType: 'S',
+          shop: { id: 1, label: 'MEM' },
+          address: $ssiSelected.job.addresses.shipping
+        }
+      }
 
       $scope.create = sg =>
       {
@@ -127,16 +136,6 @@ export default class ShippingGroupDetailController extends DetailController {
       }
 
       this.refresh()
-    }
-
-    if(!$scope.shippingGroup.id){
-
-      $scope.shippingGroup.info.tagType = 'S';
-      $scope.shippingGroup.info.shop = { id : 1, label: 'MEM' };
-      $scope.shippingGroup.info.address = { city: $scope.job.addresses.shipping.city,
-                                          stateOrProvince: $scope.job.addresses.shipping.stateOrProvince,
-                                          country: $scope.job.addresses.shipping.country,
-                                          postalCode: $scope.job.addresses.shipping.postalCode}
     }
   }
 
