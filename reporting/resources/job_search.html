@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Management Review</title>
+<title>Job Search</title>
 
 <style type="text/css">
 @page {
@@ -66,7 +66,7 @@ p {
 	<div id="header">
 		<img src="/ssilogo.png" alt="Southern Systems, Inc."
 			style="height: 75px;" />
-		<p class="head1">Management Review</p>
+		<p class="head1">Job Search</p>
 	</div>
 
 	<table border="1" cellspacing="0" cellpadding="0" align="center"
@@ -78,38 +78,29 @@ p {
 				<th align="center" width="13%">Customer</th>
 				<th align="center" width="8%">City</th>
 				<th align="center" width="3%">State</th>
-				<th align="center" width="6%">Start Date</th>
-				<th align="center" width="6%">Due Date</th>
-				<th align="center" width="6%">Complete Date</th>
-				<th align="center" width="6%">Status</th>
+				<th align="center" width="6%">Country</th>
 				<th align="center" width="46%">Description</th>
+        <th align="center" width="6%">Contract Price</th>
 			</tr>
 		</thead>
 
-		<#list 1..mgmt?size as i>
+		<#list 1..js?size as i>
 <!-- 		<#if i%2==0> -->
 <!-- 		<tr style="background: #FABF8F"><#else> -->
 <!-- 		<tr style="background: #C4D79B"> -->
 <!-- 			</#if> -->
 		<tr>
 
-			<td align="center" width="6%"><p align="center">${mgmt[i-1].prefix}-${mgmt[i-1].year}-${mgmt[i-1].label}</p></td>
-			<td align="center" width="13%"><p align="center">${mgmt[i-1].customer}</p></td>
-			<td align="center" width="8%"><p align="center">${mgmt[i-1].city}</p></td>
-			<td align="center" width="3%"><p align="center">${mgmt[i-1].state}</p></td>
-			<td align="center" width="6%"><p align="center">${mgmt[i-1].startDate}</p></td>
-			<td align="center" width="6%"><p align="center">${mgmt[i-1].dueDate}</p></td>
-			<td align="center" width="6%"><p align="center">${mgmt[i-1].completeDate}</p></td>
-			<td align="center" width="6%"><p align="center">${mgmt[i-1].status}</p></td>
-			<td align="center" width="46W%"><p align="center">${mgmt[i-1].description}</p></td>
+			<td align="center" width="6%"><p align="center">${js[i-1].prefix}-${js[i-1].year}-${js[i-1].label}</p></td>
+			<td align="center" width="13%"><p align="center">${js[i-1].customer}</p></td>
+			<td align="center" width="8%"><p align="center">${js[i-1].city}</p></td>
+			<td align="center" width="3%"><p align="center">${js[i-1].state}</p></td>
+			<td align="center" width="6%"><p align="center">${js[i-1].country}</p></td>
+			<td align="center" width="46W%"><p align="center">${js[i-1].description}</p></td>
+			<td align="center" width="6%"><p align="center">${js[i-1].contractPrice}</p></td>
 		</tr>
 		</#list>
 	</table>
-	<p align="center" style="font-size: large; font-weight: bold;">TOTAL
-		ON TIME ORDERS : ${mgmt[0].onTimeOrders}</p>
-	<p align="center" style="font-size: large; font-weight: bold;">TOTAL
-		LATE ORDERS : ${mgmt[0].lateOrders}</p>
-	<p align="center" style="font-size: large; font-weight: bold;">TOTAL
-		NO STATUS ORDERS : ${mgmt[0].noStatusOrders}</p>
+	<p align="center" style="font-size: large; font-weight: bold;">TOTAL : ${js[0].cpSumDisplay}</p>
 </body>
 </html>
