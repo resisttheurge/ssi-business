@@ -134,7 +134,7 @@ CREATE TABLE `drawings` (
   CONSTRAINT `drawings__jobs__fk` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `drawings__shipping_requests__fk` FOREIGN KEY (`shipping_request_id`) REFERENCES `shipping_requests` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `drawings__specialty_items__fk` FOREIGN KEY (`specialty_item_id`) REFERENCES `specialty_items` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=24457 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24456 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,7 +205,7 @@ CREATE TABLE `job_system_types` (
   KEY `job_system_types__system_types__fk_idx` (`system_type_id`),
   CONSTRAINT `job_system_types__jobs__fk` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `job_system_types__system_types__fk` FOREIGN KEY (`system_type_id`) REFERENCES `system_types` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=433 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=432 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -240,7 +240,7 @@ CREATE TABLE `jobs` (
   CONSTRAINT `jobs__customers__fk` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `jobs__salespeople__fk` FOREIGN KEY (`salesperson_id`) REFERENCES `salespeople` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `jobs__shops__fk` FOREIGN KEY (`shop_id`) REFERENCES `shops` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=13240 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13236 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -368,7 +368,7 @@ CREATE TABLE `shipment_items` (
   KEY `shipment_items__shipping_items__fk_idx` (`shipping_item_id`),
   CONSTRAINT `shipment_items__shipments__fk` FOREIGN KEY (`shipment_id`) REFERENCES `shipments` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `shipment_items__shipping_items__fk` FOREIGN KEY (`shipping_item_id`) REFERENCES `shipping_items` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=30369 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30365 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -401,7 +401,7 @@ CREATE TABLE `shipments` (
   CONSTRAINT `shipments__contacts__fk` FOREIGN KEY (`contact_id`) REFERENCES `contacts` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
   CONSTRAINT `shipments__jobs__fk` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `shipments__shops__fk` FOREIGN KEY (`shop_id`) REFERENCES `shops` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1342 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1338 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -423,7 +423,7 @@ CREATE TABLE `shipping_group_items` (
   KEY `shipping_groupt_items__shipping_items__fk_idx` (`shipping_item_id`),
   CONSTRAINT `shipping_group_items__shipping_groups__fk` FOREIGN KEY (`shipping_group_id`) REFERENCES `shipping_groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `shipping_groupt_items__shipping_items__fk` FOREIGN KEY (`shipping_item_id`) REFERENCES `shipping_items` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7721 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7710 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -459,10 +459,10 @@ DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 trigger rms_label_insert before insert on shipping_groups
 for each row 
 BEGIN
-  DECLARE next_id INT;
-  SET next_id = (SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='shipping_groups');
-  SET NEW.id=next_id;
-  SET NEW.label = if(char_length(NEW.label) = 0, concat('RMS', next_id), NEW.label);
+  IF (NEW.id is null) then
+	SET NEW.id = (SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='shipping_groups');
+  END IF;
+  SET NEW.label = if(char_length(NEW.label) = 0, concat('RMS', NEW.id), NEW.label);
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -580,7 +580,7 @@ CREATE TABLE `shops` (
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `label_UNIQUE` (`label`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -684,7 +684,7 @@ CREATE TABLE `vendors` (
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `label_UNIQUE` (`label`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -702,7 +702,7 @@ CREATE TABLE `zones` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE_JOB_ZONE_NUMBER` (`job_id`,`number`),
   CONSTRAINT `zones__jobs__fk` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=966 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=954 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1806,4 +1806,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-15 11:28:31
+-- Dump completed on 2016-07-18 16:36:40
