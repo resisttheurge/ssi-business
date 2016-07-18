@@ -48,7 +48,7 @@ public class JobSearch implements VariableGenerator<JobSearch>
 				jobSearch.setState(convertRaw(rawData.getString(6)));
 				jobSearch.setCountry(convertRaw(rawData.getString(7)));
 				jobSearch.setDescription(convertRaw(rawData.getString(8)));
-				jobSearch.setContractPrice(contractPriceFormat.format(rawData.getBigDecimal(9).doubleValue()));
+				jobSearch.setContractPrice(convertRaw(contractPriceFormat.format(rawData.getBigDecimal(9).doubleValue())));
 
 				_contractPriceSum = _contractPriceSum.add(rawData.getBigDecimal(9));
 
@@ -59,7 +59,7 @@ public class JobSearch implements VariableGenerator<JobSearch>
 			e.printStackTrace();
 		}
 		if(jsList.size() > 0) {
-			jsList.get(0).cpSumDisplay = contractPriceFormat.format(_contractPriceSum.doubleValue());
+			jsList.get(0).cpSumDisplay = convertRaw(contractPriceFormat.format(_contractPriceSum.doubleValue()));
 		}
 		return jsList;
 	}
