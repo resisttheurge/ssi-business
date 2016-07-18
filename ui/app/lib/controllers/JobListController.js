@@ -113,7 +113,7 @@ export default class JobListController extends ListController {
                  </md-content>
                </form>
             </md-dialog-content>`,
-        controller: function SearchController($scope, $mdDialog, $unpack, $filter, $q, JobSearchParameters) {
+        controller: function SearchController($scope, $mdDialog, $unpack, $filter, $q) {
 
           $scope.$jobs = self;
 
@@ -134,7 +134,7 @@ export default class JobListController extends ListController {
           }
 
           $scope.clear = function () {
-            for (var member in JobSearchParameters) delete JobSearchParameters[member];
+            for (var member in self.JobSearchParameters) delete self.JobSearchParameters[member];
             $scope.customerSearchText = undefined;
           }
         }
