@@ -459,7 +459,7 @@ DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 trigger rms_label_insert before insert on shipping_groups
 for each row 
 BEGIN
-  IF (NEW.id is null) then
+  IF (NEW.id is null or NEW.id = 0) then
 	SET NEW.id = (SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='shipping_groups');
   END IF;
   SET NEW.label = if(char_length(NEW.label) = 0, concat('RMS', NEW.id), NEW.label);
@@ -971,7 +971,10 @@ SELECT
     sr.shop_date,
     sr.field_date,
     d.drawing_type,
-    sr.tag_type
+    sr.tag_type,
+    (select prefix from jobs where id = jobId) as prefix,
+    (select year from jobs where id = jobId) as year,
+    (select label from jobs where id = jobId) as label
 FROM
     drawings d
         LEFT JOIN
@@ -1806,4 +1809,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-18 16:36:40
+-- Dump completed on 2016-07-19 12:25:41
