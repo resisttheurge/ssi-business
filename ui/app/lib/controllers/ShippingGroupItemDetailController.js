@@ -96,7 +96,7 @@ export default class ShippingGroupItemDetailController extends DetailController 
           }
         ).then(() => $scope.loading = false)
 
-      $scope.shippingGroupItem = { shippingGroupId: $ssiSelected.shippingGroup.id, shippingItem: { status: 'NS', requested: 0, completed: 0 } }
+      $scope.shippingGroupItem = { shippingGroupId: $ssiSelected.shippingGroup.id, shippingItem: { status: 'NS', requested: 0, completed: 0 }, label: $ssiSelected.shippingGroup.id + '-'  + $ssiSelected.shippingGroupItem.label}
 
       $scope.create = item => {
         if (
