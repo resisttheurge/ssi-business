@@ -2,13 +2,27 @@ import { DetailController } from 'utils'
 
 export default class ShippingGroupDetailController extends DetailController {
   /*@ngInject*/
-  constructor($scope, $routeParams, ShippingGroup, enums, $ssiSelected,
+  constructor ($scope, $routeParams, ShippingGroup, enums, $ssiSelected,
     $mdDialog, $convertDate, $route, $location, $log, $q, SpecialtyItem, Carrier,
     Shop
   ) {
     super()
 
-    var self = this
+    this.padLines = address =>
+      !address
+        ? {
+            lines: [{ id: 0, value: '' }],
+            city: '',
+            stateOrProvince: '',
+            postalCode: '',
+            country: ''
+          }
+        : {
+            ...address,
+            lines: address.lines
+              ? address.lines.map((line, index) => ({ id: index, value: line }))
+              : undefined
+          }
 
     $scope.job = $ssiSelected.job;
     $scope.tagTypes      = enums.tagTypes;
@@ -93,7 +107,7 @@ export default class ShippingGroupDetailController extends DetailController {
         info: {
           tagType: 'S',
           shop: { id: 1, label: 'MEM' },
-          address: $ssiSelected.job.addresses.shipping
+          address: this.padLines($ssiSelected.job.addresses.shipping)
         }
       }
 
