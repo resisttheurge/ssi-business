@@ -21,6 +21,9 @@ public class LayoutDrawing implements VariableGenerator<LayoutDrawing> {
 	String fieldDate;
 	String drawingType;
 	String tagType;
+	String jobPrefix;
+	String jobYear;
+	String jobLabel;
 
 	public String getLabel() {
 		return label;
@@ -102,6 +105,30 @@ public class LayoutDrawing implements VariableGenerator<LayoutDrawing> {
 		this.tagType = tagType;
 	}
 
+	public String getJobPrefix() {
+		return jobPrefix;
+	}
+
+	public void setJobPrefix(String jobPrefix) {
+		this.jobPrefix = jobPrefix;
+	}
+
+	public String getJobYear() {
+		return jobYear;
+	}
+
+	public void setJobYear(String jobYear) {
+		this.jobYear = jobYear;
+	}
+
+	public String getJobLabel() {
+		return jobLabel;
+	}
+
+	public void setJobLabel(String jobLabel) {
+		this.jobLabel = jobLabel;
+	}
+
 	@Override
 	public List<LayoutDrawing> generateVariables(Connection connection, ResultSet rawData) {
 
@@ -122,6 +149,9 @@ public class LayoutDrawing implements VariableGenerator<LayoutDrawing> {
 				item.fieldDate = convertRaw(rawData.getDate(8));
 				item.drawingType = convertRaw(rawData.getString(9));
 				item.tagType = convertRaw(rawData.getString(10));
+				item.jobPrefix = convertRaw(rawData.getString(11));
+				item.jobYear = convertRaw(rawData.getString(12).substring(2));
+				item.jobLabel = convertRaw(rawData.getString(13));
 
 				result.add(item);
 			}

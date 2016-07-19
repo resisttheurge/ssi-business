@@ -71,6 +71,7 @@ p{
 		<img src="/ssilogo.png" alt="Southern Systems, Inc."
 			style="height: 75px;" />
 		<p class="head1">Layout Drawing List</p>
+    <p class="head2">${drawing[0].jobPrefix}-${drawing[0].jobYear}-${drawing[0].jobLabel}</p>
 	</div>
 
 	<table border="1" cellspacing="0" cellpadding="0" align="center">
@@ -86,7 +87,7 @@ p{
 				<th align="center">Field Date</th>
 			</tr>
 		</thead>
-		<#list 1..drawing?size as i> 
+		<#list 1..drawing?size as i>
 <!-- 		<#if i%2==0> -->
 <!-- 		<tr style="background: #FABF8F"><#else> -->
 <!-- 		<tr style="background: #C4D79B"> -->
