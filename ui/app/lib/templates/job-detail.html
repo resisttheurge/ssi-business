@@ -520,7 +520,7 @@
                   </md-table-container>
                   <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
                   <div layout="row" layout-align="end center">
-                    <md-button class="md-fab" ng-click="$ssiSelected.shipment = { number: shipments.length + 1 }" ng-href="/jobs/{{$app.selected.job.id}}/shipments/new">
+                    <md-button class="md-fab" ng-click="$ssiSelected.shipment = { number: total + 1 }" ng-href="/jobs/{{$app.selected.job.id}}/shipments/new">
                       <md-tooltip md-direction="top" md-autohide="true">
                         New Shipment
                       </md-tooltip>
@@ -581,7 +581,7 @@
                   </md-table-container>
                   <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
                   <div layout="row" layout-align="end center">
-                    <md-button class="md-fab" ng-click="$ssiSelected.partOrder = { abmNumber : partOrders.length + 1 }" ng-href="/jobs/{{$app.selected.job.id}}/part-orders/new">
+                    <md-button class="md-fab" ng-click="$ssiSelected.partOrder = { abmNumber : total + 1 }" ng-href="/jobs/{{$app.selected.job.id}}/part-orders/new">
                       <md-tooltip md-direction="top" md-autohide="true">
                         New Part Order
                       </md-tooltip>
