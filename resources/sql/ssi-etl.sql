@@ -855,8 +855,9 @@ WHERE
             `ssi-business`.system_types);
 */
 
+insert into users values (1,'admin','$2a$10$kK4kez1VWd6BL.UIAb9iye0KM884/pbiFk9UsgWFA/GSwGzdIax.a',1);
 
-
+insert into user_roles values (1,'ADMIN',1);
 /*
 drop table addressjobtemp;
 drop table contactjobtemp;
