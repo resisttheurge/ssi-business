@@ -308,7 +308,7 @@ export default class ReportController {
            scope: $scope,
            preserveScope: true,
            template: `<md-dialog>
-                      <md-dialog-content style="padding: 30px 30px 0px 30px;"">
+                      <md-dialog-content style="padding: 30px 30px 0px 30px;">
                       <div layout-align="center" layout-margin>
 
                         <div class="md-block" layout = "row">
@@ -364,6 +364,12 @@ export default class ReportController {
                         </md-autocomplete>
 
                         </div>
+                        <div class="md-block" layout="row">
+                          <md-input-container flex>
+                            <label>Description</label>
+                            <textarea ng-model="description"></textarea>
+                          </md-input-container>
+                        </div>
 
                       </div>
                       </md-dialog-content>
@@ -386,6 +392,7 @@ export default class ReportController {
                $scope.state = undefined;
                $scope.customer = undefined;
                $scope.customerSearchText = undefined;
+               $scope.description = undefined;
 
                $mdDialog.hide();
              }
@@ -393,7 +400,7 @@ export default class ReportController {
              $scope.displayReport = function () {
                $mdDialog.hide();
                Report.jobSearch(
-                 $scope.reportFrom ? $scope.reportFrom.toISOString().substring(0, 10) : undefined, $scope.reportTo ? $scope.reportTo.toISOString().substring(0, 10) : undefined, $scope.jobPrefix || '', ($scope.jobYear && '' + $scope.jobYear) || '', $scope.jobLabel || '', $scope.city || '', $scope.state || '', ($scope.customer && $scope.customer.label) || '').then(function (report)
+                 $scope.reportFrom ? $scope.reportFrom.toISOString().substring(0, 10) : undefined, $scope.reportTo ? $scope.reportTo.toISOString().substring(0, 10) : undefined, $scope.jobPrefix || '', ($scope.jobYear && '' + $scope.jobYear) || '', $scope.jobLabel || '', $scope.city || '', $scope.state || '', ($scope.customer && $scope.customer.label) || '', $scope.description || '').then(function (report)
                {
                    if (report.length > 0)
                     window.open('data:application/pdf;base64,' + report);
@@ -409,6 +416,7 @@ export default class ReportController {
                    $scope.state = undefined;
                    $scope.customer = undefined;
                    $scope.customerSearchText = undefined;
+                   $scope.description = undefined;
 
                  });
              }
