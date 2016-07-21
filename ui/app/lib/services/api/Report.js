@@ -24,9 +24,9 @@ export default class Report extends ApiService {
             .$promise
             .then(report => report.data).catch('some exception')
 
-    self.jobSearch = (start, end, prefix, year, label, city, state, customer) =>
+    self.jobSearch = (start, end, prefix, year, label, city, state, customer, description) =>
           self.endpoint
-            .generate({ reportTitle: 'job-search' }, { start, end, prefix, year, label, city, state, customer })
+            .generate({ reportTitle: 'job-search' }, { start, end, prefix, year, label, city, state, customer, description })
             .$promise
             .then(report => report.data).catch('some exception')
 
