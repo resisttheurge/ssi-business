@@ -2,7 +2,7 @@ import { ListController } from 'utils'
 
 export default class UserListController extends ListController {
   /*@ngInject*/
-  constructor($scope, User, $filter, $q, $mdDialog, $mdToast, $ssiUser) {
+  constructor($scope, User, $filter, $q, $mdDialog, $mdToast, $ssiUser, $route) {
     super()
 
     $scope.$ssiUser = $ssiUser;
