@@ -155,7 +155,8 @@ case class ReportRoute(path: String)(implicit val db: Database, ec: ExecutionCon
                   params.label,
                   params.city,
                   params.state,
-                  params.customer
+                  params.customer,
+                  params.description
                 )
               )
               session.close()
