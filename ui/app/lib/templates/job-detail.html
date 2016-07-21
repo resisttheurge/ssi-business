@@ -13,7 +13,7 @@
             </h2>
 
             <span flex></span>
-            <md-button class="md-raised" ng-disabled="jobForm.$pristine || restricted" ng-click="update ? update(job, jobAddresses, jobSchedules, jobSystemTypes, editedJobSystemTypes) : create(job, jobAddresses, jobSchedules)">{{restricted ? 'ADMIN ONLY' : 'Save'}}</md-button>
+            <md-button class="md-raised" ng-disabled="jobForm.$pristine" ng-click="update ? update(job, jobAddresses, jobSchedules, jobSystemTypes, editedJobSystemTypes) : create(job, jobAddresses, jobSchedules)">Save</md-button>
           </div>
         </md-toolbar>
         <md-content flex>
@@ -27,7 +27,7 @@
                         <div layout-margin layout="row">
                           <md-input-container>
                             <label>Prefix</label>
-                            <md-select required ng-model="job.identifier.prefix" >
+                            <md-select required ng-model="job.identifier.prefix" ng-disabled="restricted">
                               <md-option ng-repeat="prefix in prefixes" ng-value="prefix">
                                 {{prefix}}
                               </md-option>
@@ -35,15 +35,16 @@
                           </md-input-container>
                           <md-input-container>
                             <label>Year</label>
-                            <input required max="9999" min="1" ng-model="job.identifier.year" type="number"></input>
+                            <input required max="9999" min="1" ng-model="job.identifier.year" type="number" ng-disabled="restricted"></input>
                           </md-input-container>
                           <md-input-container flex>
                             <label>Label</label>
-                            <input required md-maxlength="20" ng-model="job.identifier.label" type="text"></input>
+                            <input required md-maxlength="20" ng-model="job.identifier.label" type="text" ng-disabled="restricted"></input>
                           </md-input-container>
                         </div>
                         <div layout-margin layout="row">
                           <md-autocomplete
+                              ng-disabled="restricted"
                               md-selected-item="job.salesperson"
                               md-search-text="salespersonSearchText"
                               md-items="salesperson in querySalespeople(salespersonSearchText)"
@@ -54,6 +55,7 @@
                         </div>
                         <div layout-margin layout="row">
                           <md-autocomplete
+                              ng-disabled="restricted"
                               md-selected-item="job.shop"
                               md-search-text="shopSearchText"
                               md-items="shop in queryShops(shopSearchText)"
@@ -65,7 +67,7 @@
                         <div layout-margin layout="row">
                           <md-input-container flex>
                             <label>Description</label>
-                            <textarea ng-model="job.description"></textarea>
+                            <textarea ng-model="job.description" ng-disabled="restricted"></textarea>
                           </md-input-container>
                         </div>
                         <div layout-margin layout="row" ng-hide="update === undefined">
@@ -77,7 +79,7 @@
                               placeholder="Search for a System Type">
                               <span md-highlight-text="systemTypeSearchText">{{item.label}}</span>
                             </md-autocomplete>
-                            <md-chip-template>
+                            <md-chip-template ng-disabled="restricted">
                               <span><strong>{{$chip.label}}</strong></span>
                             </md-chip-template>
                           </md-chips>
@@ -99,24 +101,24 @@
                           <label flex layout="row" layout-align="start center">
                             <span>Start Date</span>
                           </label>
-                          <md-datepicker ng-model="job.startDate" md-placeholder="Start Date"></md-datepicker>
+                          <md-datepicker ng-model="job.startDate" md-placeholder="Start Date" ng-disabled="restricted"></md-datepicker>
                         </div>
                         <div layout-margin layout="row" layout-align="end">
                           <label flex layout="row" layout-align="start center">
                             <span>Due Date</span>
                           </label>
-                          <md-datepicker ng-model="job.dueDate" md-placeholder="Due Date"></md-datepicker>
+                          <md-datepicker ng-model="job.dueDate" md-placeholder="Due Date" ng-disabled="restricted"></md-datepicker>
                         </div>
                         <div layout-margin layout="row" layout-align="end">
                           <label flex layout="row" layout-align="start center">
                             <span>Complete Date</span>
                           </label>
-                          <md-datepicker ng-model="job.completeDate" md-placeholder="Complete Date"></md-datepicker>
+                          <md-datepicker ng-model="job.completeDate" md-placeholder="Complete Date" ng-disabled="restricted"></md-datepicker>
                         </div>
                         <div layout-margin layout="row" ng-hide="!$app.user.hasRole('ADMIN')">
                           <md-input-container flex>
                             <label>Contract Price</label>
-                            <input max="9999999999999999999.9999" min="0.0001" ng-model="job.contractPrice" type="number" step="0.0001">
+                            <input max="9999999999999999999.9999" min="0.0001" ng-model="job.contractPrice" type="number" step="0.0001" ng-disabled="restricted">
                           </md-input-container>
                         </div>
                       </div>
@@ -127,36 +129,29 @@
                     <div layout-margin layout="row">
                       <md-input-container flex>
                         <label>Contact</label>
-                        <input ng-model="job.contact.label" type="text">
+                        <input ng-model="job.contact.label" type="text" ng-disabled="restricted">
                       </md-input-container>
                       <md-input-container flex>
                         <label>Phone Number</label>
-                        <input ng-model="job.contact.phone" type="text">
+                        <input ng-model="job.contact.phone" type="text" ng-disabled="restricted">
                       </md-input-container>
                       <md-input-container flex>
                         <label>Fax</label>
-                        <input ng-model="job.contact.fax" type="text">
+                        <input ng-model="job.contact.fax" type="text" ng-disabled="restricted">
                       </md-input-container>
                       <md-input-container flex>
                         <label>Email</label>
-                        <input ng-model="job.contact.email" type="text">
+                        <input ng-model="job.contact.email" type="text" ng-disabled="restricted">
                       </md-input-container>
                     </div>
                     <md-autocomplete
+                        ng-disabled="restricted"
                         md-selected-item="job.customer"
                         md-search-text="customerSearchText"
                         md-items="customer in queryCustomers(customerSearchText)"
                         md-item-text="customer.label"
                         md-floating-label="Customer" layout-margin>
                       <span>{{customer.label}}</span>
-                    </md-autocomplete>
-                    <md-autocomplete
-                        md-selected-item="job.invoicingCustomer"
-                        md-search-text="invoicingCustomerSearchText"
-                        md-items="invoicingCustomer in queryCustomers(invoicingCustomerSearchText)"
-                        md-item-text="invoicingCustomer.label"
-                        md-floating-label="Invoicing Customer" layout-margin>
-                      <span>{{invoicingCustomer.label}}</span>
                     </md-autocomplete>
                   </div>
                   <md-divider></md-divider>
@@ -165,9 +160,9 @@
                     <div layout="row" layout-margin ng-repeat="line in jobAddresses.shipping.lines track by line.id">
                       <md-input-container flex>
                         <label>Address line {{$index + 1}}</label>
-                        <input ng-model="line.value" type="text"></input>
+                        <input ng-model="line.value" type="text" ng-disabled="restricted"></input>
                       </md-input-container>
-                      <md-button ng-click="addAddressLine('shipping')" ng-if="$last" class="md-fab md-mini" aria-label="Add Another Address Line">
+                      <md-button ng-click="addAddressLine('shipping')" ng-if="$last" class="md-fab md-mini" aria-label="Add Another Address Line" ng-disabled="restricted">
                         <md-tooltip md-direction="top">Add Another Address Line</md-tooltip>
                         <md-icon class="material-icons">add</md-icon>
                       </md-button>
@@ -175,33 +170,45 @@
                     <div layout="row" layout-margin>
                       <md-input-container flex>
                         <label>City</label>
-                        <input md-maxlength="100" ng-model="jobAddresses.shipping.city" type="text"></input>
+                        <input md-maxlength="100" ng-model="jobAddresses.shipping.city" type="text" ng-disabled="restricted"></input>
                       </md-input-container>
                       <md-input-container flex>
                         <label>State or Province</label>
-                        <input md-maxlength="100" ng-model="jobAddresses.shipping.stateOrProvince" type="text"></input>
+                        <input md-maxlength="100" ng-model="jobAddresses.shipping.stateOrProvince" type="text" ng-disabled="restricted"></input>
                       </md-input-container>
                       <md-input-container flex>
                         <label>Postal Code</label>
-                        <input md-maxlength="30" ng-model="jobAddresses.shipping.postalCode" type="text"></input>
+                        <input md-maxlength="30" ng-model="jobAddresses.shipping.postalCode" type="text" ng-disabled="restricted"></input>
                       </md-input-container>
                     </div>
                     <div layout="row" layout-margin>
                       <md-input-container flex>
                         <label>Country</label>
-                        <input md-maxlength="100" ng-model="jobAddresses.shipping.country" type="text"></input>
+                        <input md-maxlength="100" ng-model="jobAddresses.shipping.country" type="text" ng-disabled="restricted"></input>
                       </md-input-container>
                     </div>
                   </div>
+                  <md-divider></md-divider>
+                    <div layout-margin layout="column">
+                      <md-autocomplete
+                          ng-disabled="restricted"
+                          md-selected-item="job.invoicingCustomer"
+                          md-search-text="invoicingCustomerSearchText"
+                          md-items="invoicingCustomer in queryCustomers(invoicingCustomerSearchText)"
+                          md-item-text="invoicingCustomer.label"
+                          md-floating-label="Invoicing Customer" layout-margin>
+                        <span>{{invoicingCustomer.label}}</span>
+                      </md-autocomplete>
+                    </div>
                   <md-divider></md-divider>
                   <div layout-margin layout="column">
                     <label>Invoicing Address</label>
                     <div layout="row" layout-margin ng-repeat="line in jobAddresses.invoicing.lines track by line.id">
                       <md-input-container flex>
                         <label>Address line {{$index + 1}}</label>
-                        <input ng-model="line.value" type="text"></input>
+                        <input ng-model="line.value" type="text" ng-disabled="restricted"></input>
                       </md-input-container>
-                      <md-button ng-click="addAddressLine('invoicing')" ng-if="$last" class="md-fab md-mini" aria-label="Add Another Address Line">
+                      <md-button ng-click="addAddressLine('invoicing')" ng-if="$last" class="md-fab md-mini" aria-label="Add Another Address Line" ng-disabled="restricted">
                         <md-tooltip md-direction="top">Add Another Address Line</md-tooltip>
                         <md-icon class="material-icons">add</md-icon>
                       </md-button>
@@ -209,21 +216,21 @@
                     <div layout="row" layout-margin>
                       <md-input-container flex>
                         <label>City</label>
-                        <input md-maxlength="100" ng-model="jobAddresses.invoicing.city" type="text"></input>
+                        <input md-maxlength="100" ng-model="jobAddresses.invoicing.city" type="text" ng-disabled="restricted"></input>
                       </md-input-container>
                       <md-input-container flex>
                         <label>State or Province</label>
-                        <input md-maxlength="100" ng-model="jobAddresses.invoicing.stateOrProvince" type="text"></input>
+                        <input md-maxlength="100" ng-model="jobAddresses.invoicing.stateOrProvince" type="text" ng-disabled="restricted"></input>
                       </md-input-container>
                       <md-input-container flex>
                         <label>Postal Code</label>
-                        <input md-maxlength="30" ng-model="jobAddresses.invoicing.postalCode" type="text"></input>
+                        <input md-maxlength="30" ng-model="jobAddresses.invoicing.postalCode" type="text" ng-disabled="restricted"></input>
                       </md-input-container>
                     </div>
                     <div layout="row" layout-margin>
                       <md-input-container flex>
                         <label>Country</label>
-                        <input md-maxlength="100" ng-model="jobAddresses.invoicing.country" type="text"></input>
+                        <input md-maxlength="100" ng-model="jobAddresses.invoicing.country" type="text" ng-disabled="restricted"></input>
                       </md-input-container>
                     </div>
                   </div>
