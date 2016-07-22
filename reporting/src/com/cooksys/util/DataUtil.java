@@ -18,7 +18,7 @@ public class DataUtil {
 			+ "]";
 
 	public static String convertRaw(String data){
-		return escapeHtml4(Strings.nullToEmpty(data)).replaceAll(xml1regex, "");
+		return escapeHtml4(Strings.nullToEmpty(data)).replaceAll(xml1regex, "").replaceAll("&hellip;", "&#8230;");
 	}
 	
 	public static String convertRaw(int data){

@@ -9,13 +9,11 @@
 
 <style type="text/css">
 @page {
-	size: A4 landscape; 
-	@bottom-right{
-	    font-size:80%;
-	    content: "Page " counter(page)  " of " counter(pages);
-    }
+	size: A4 landscape; @ bottom-right { font-size : 80%;
+	content: "Page " counter(page) " of " counter(pages);
 }
 
+}
 .head1 {
 	color: #000;
 	font-size: x-large;
@@ -71,7 +69,7 @@ p {
 
 	<table border="1" cellspacing="0" cellpadding="0" align="center"
 		width="100%">
-			
+
 		<thead>
 			<tr style="background: #CCC0DA">
 				<th align="center" width="6%">Job</th>
@@ -87,10 +85,10 @@ p {
 		</thead>
 
 		<#list 1..mgmt?size as i>
-<!-- 		<#if i%2==0> -->
-<!-- 		<tr style="background: #FABF8F"><#else> -->
-<!-- 		<tr style="background: #C4D79B"> -->
-<!-- 			</#if> -->
+		<!-- 		<#if i%2==0> -->
+		<!-- 		<tr style="background: #FABF8F"><#else> -->
+		<!-- 		<tr style="background: #C4D79B"> -->
+		<!-- 			</#if> -->
 		<tr>
 
 			<td align="center" width="6%"><p align="center">${mgmt[i-1].prefix}-${mgmt[i-1].year}-${mgmt[i-1].label}</p></td>
