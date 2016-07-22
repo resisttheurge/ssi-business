@@ -9,7 +9,8 @@ lazy val `ssi-business` =
       addCompilerPlugin("org.scalamacros" %% "paradise" % "2.1.+" cross CrossVersion.full),
       unmanagedSourceDirectories in Compile += baseDirectory.value / "generated",
       unmanagedResourceDirectories in Compile += baseDirectory.value / "ui" / "dist",
-      slick <<= slickCodeGenTask
+      slick <<= slickCodeGenTask,
+      javaOptions in run := Seq("-Xms256M", "-Xmx4G")
     )
     .dependsOn(codegen, reporting)
 
