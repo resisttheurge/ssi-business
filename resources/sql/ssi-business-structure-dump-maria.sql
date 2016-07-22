@@ -744,14 +744,15 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `JobSearch`(in instart varchar(10),
+CREATE DEFINER=`root`@`localhost` PROCEDURE `JobSearch`(in instart varchar(200),
 				 in inend varchar(200),
                  in inprefix varchar(200),
                  in inyear varchar(200),
                  in inlabel varchar(200),
                  in incity varchar(200),
                  in instate varchar(200),
-                 in incustomer varchar(200))
+                 in incustomer varchar(200),
+                 in indescription varchar(200))
 BEGIN
 	
 	DROP TEMPORARY TABLE IF EXISTS jobstarttemp;
@@ -774,7 +775,7 @@ BEGIN
     if inprefix = '' then
 		create temporary table jobprefixtemp select id from jobendtemp;
     else
-		create temporary table jobprefixtemp select id from jobs where prefix like concat(inprefix,'%') and id in (select id from jobendtemp);
+		create temporary table jobprefixtemp select id from jobs where prefix like concat(inprefix) and id in (select id from jobendtemp);
 	end if;
     
     DROP TEMPORARY TABLE IF EXISTS jobyeartemp;
@@ -789,6 +790,13 @@ BEGIN
 		create temporary table joblabeltemp select id from jobyeartemp;
     else
 		create temporary table joblabeltemp select id from jobs where label like concat(inlabel,'%') and id in (select id from jobyeartemp);
+	end if;
+    
+    DROP TEMPORARY TABLE IF EXISTS jobdescriptiontemp;
+    if indescription = '' then
+		create temporary table jobdescriptiontemp select id from jobyeartemp;
+    else
+		create temporary table jobdescriptiontemp select id from jobs where description like concat('%',indescription,'%') and id in (select id from jobyeartemp);
 	end if;
     
     DROP TEMPORARY TABLE IF EXISTS addresscitytemp;
@@ -817,7 +825,7 @@ BEGIN
     select * 
     from jobs 
     where id in (select id 
-                 from joblabeltemp) 
+                 from jobdescriptiontemp) 
     and id in (select job_id 
 			   from job_addresses 
                where address_id in (select id 
@@ -1665,7 +1673,9 @@ SELECT
     '' as proNo,
     (SELECT label from shops where id = sr.shop_id) as shopId,
     sr.requested_by,
-    sr.prepared_by
+    sr.prepared_by,
+    sr.revision,
+    sr.revision_date
 FROM
     jobs j
         INNER JOIN
@@ -1809,4 +1819,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-19 12:25:41
+-- Dump completed on 2016-07-22 11:24:57
