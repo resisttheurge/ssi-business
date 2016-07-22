@@ -71,81 +71,85 @@ td {
 			style="height: 75px;" />
 		<p class="head1">RMS Shipper</p>
 	</div>
-
-	<table
-		style="border: none; cellspacing: 0; cellpadding: 0; display: block; float: left; width: 55%'">
-		<tr>
-			<td><strong>SHIP TO:</strong></td>
-		</tr>
-		<tr>
-			<td align="left">&nbsp;${sgs[0].contact}</td>
-		</tr>
-		<tr>
-			<td align="left">&nbsp;${sgs[0].address}</td>
-		</tr>
-		<tr>
-			<td align="left">&nbsp;${sgs[0].city},${sgs[0].state}
-				${sgs[0].zip} ${sgs[0].country}</td>
-		</tr>
-	</table>
-	<table style="display: block; float: left; width: 17%">
-		<tr>
-			<td align="left"><strong>JOB NO.</strong></td>
-			<td align="right">${sgs[0].prefix}-${sgs[0].year}-${sgs[0].label}</td>
-		</tr>
-		<tr>
-			<td align="left"><strong>DATE REQ</strong></td>
-			<td align="right">${sgs[0].dateReq}</td>
-		</tr>
-		<tr>
-			<td align="left"><strong>SHIPPER NO.</strong></td>
-			<td align="right">${sgs[0].shipperNumber}</td>
-		</tr>
-	</table>
-	<table style="display: block; float: left; width: 9%">
-		<tr>
-			<td align="center"><strong>COLLECT</strong></td>
-			<td align="right"><input type="checkbox" /></td>
-		</tr>
-		<tr>
-			<td align="center"><strong>PREPAID</strong></td>
-			<td align="right"><input type="checkbox" /></td>
-		</tr>
-	</table>
-	<table style="display: block; float: left; width: 19%">
-		<tr>
-			<td align="left"><strong>SHIP VIA</strong></td>
-			<td align="right">${sgs[0].shipVia}</td>
-		</tr>
-		<tr>
-			<td align="left"><strong>BILL OF LADING</strong></td>
-			<td align="right">${sgs[0].billOfLading}</td>
-		</tr>
-		<tr>
-			<td align="left"><strong>DATE SHIPPED</strong></td>
-			<td align="right">${sgs[0].dateShipped}</td>
-		</tr>
-		<tr>
-			<td align="left"><strong>PRO NO.</strong></td>
-			<td align="right">${sgs[0].proNo}</td>
-		</tr>
-	</table>
-	<table style="display: block; float: left; width: 19%">
-		<tr>
-			<td align="left"><strong>SHOP</strong></td>
-			<td align="right">${sgs[0].shop}</td>
-		</tr>
-		<tr>
-			<td align="left"><strong>REQUESTED BY</strong></td>
-			<td align="right">${sgs[0].requestedBy}</td>
-		</tr>
-		<tr>
-			<td align="left"><strong>PREPARED BY</strong></td>
-			<td align="right">${sgs[0].preparedBy}</td>
-		</tr>
-	</table>
-
-
+	<div style="display: inline-block;">
+		<table
+			style="border: none;display: block; float: left;'">
+			<tr>
+				<td><strong>SHIP TO:</strong></td>
+			</tr>
+			<tr>
+				<td align="left">&nbsp;${sgs[0].contact}</td>
+			</tr>
+			<tr>
+				<td align="left">&nbsp;${sgs[0].address}</td>
+			</tr>
+			<tr>
+				<td align="left">&nbsp;${sgs[0].city},${sgs[0].state}
+					${sgs[0].zip} ${sgs[0].country}</td>
+			</tr>
+		</table>
+	</div>
+	<div>
+		<table style="display: block; float: left; width: 30%">
+			<tr>
+				<td align="left"><strong>JOB NO.</strong></td>
+				<td align="right">${sgs[0].prefix}-${sgs[0].year}-${sgs[0].label}</td>
+			</tr>
+			<tr>
+				<td align="left"><strong>DATE REQ</strong></td>
+				<td align="right">${sgs[0].dateReq}</td>
+			</tr>
+			<tr>
+				<td align="left"><strong>SHIPPER NO.</strong></td>
+				<td align="right">${sgs[0].shipperNumber}</td>
+			</tr>
+			<tr>
+				<td align="center"><strong>COLLECT</strong></td>
+				<td align="right"><input type="checkbox" /></td>
+			</tr>
+			<tr>
+				<td align="center"><strong>PREPAID</strong></td>
+				<td align="right"><input type="checkbox" /></td>
+			</tr>
+		</table>
+		
+		<table style="display: block; float: left; width: 40%">
+			<tr>
+				<td align="left"><strong>SHIP VIA</strong></td>
+				<td align="right">${sgs[0].shipVia}</td>
+			</tr>
+			<tr>
+				<td align="left"><strong>BILL OF LADING</strong></td>
+				<td align="right">${sgs[0].billOfLading}</td>
+			</tr>
+			<tr>
+				<td align="left"><strong>DATE SHIPPED</strong></td>
+				<td align="right">${sgs[0].dateShipped}</td>
+			</tr>
+			<tr>
+				<td align="left"><strong>REQUESTED BY</strong></td>
+				<td align="right">${sgs[0].requestedBy}</td>
+			</tr>
+			<tr>
+				<td align="left"><strong>PREPARED BY</strong></td>
+				<td align="right">${sgs[0].preparedBy}</td>
+			</tr>
+		</table>
+		<table style="display: block; float: left; width: 25%">
+			<tr>
+				<td align="left"><strong>SHOP</strong></td>
+				<td align="right">${sgs[0].shop}</td>
+			</tr>
+			<tr>
+				<td align="left"><strong>REVISION</strong></td>
+				<td align="right">${sgs[0].revision}</td>
+			</tr>
+			<tr>
+				<td align="left"><strong>REVISION DATE</strong></td>
+				<td align="right">${sgs[0].revisionDate}</td>
+			</tr>
+		</table>
+	</div>
 	<table id="mainTable" style="display: block; float: left; margin: 0px;">
 		<thead>
 			<tr style="background: #CCC0DA">

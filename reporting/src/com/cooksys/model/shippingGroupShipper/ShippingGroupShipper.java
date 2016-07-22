@@ -34,6 +34,8 @@ public class ShippingGroupShipper implements VariableGenerator<ShippingGroupShip
 	String shop;
 	String requestedBy;
 	String preparedBy;
+	String revision;
+	String revisionDate;
 
 	private ArrayList<ShipperInfo> shipperInfo = new ArrayList<ShipperInfo>();
 
@@ -203,6 +205,22 @@ public class ShippingGroupShipper implements VariableGenerator<ShippingGroupShip
 	public void setPreparedBy(String preparedBy) {
 		this.preparedBy = preparedBy;
 	}
+	
+	public String getRevision() {
+		return revision;
+	}
+
+	public void setRevision(String revision) {
+		this.revision = revision;
+	}
+	
+	public String getRevisionDate() {
+		return revisionDate;
+	}
+
+	public void setRevisionDate(String revisionDate) {
+		this.revisionDate = revisionDate;
+	}
 
 	@Override
 	public List<ShippingGroupShipper> generateVariables(Connection connection, ResultSet rawData) {
@@ -233,7 +251,9 @@ public class ShippingGroupShipper implements VariableGenerator<ShippingGroupShip
 				item.shop = convertRaw(rawData.getString(18));
 				item.requestedBy = convertRaw(rawData.getString(19));
 				item.preparedBy = convertRaw(rawData.getString(20));
-
+				item.revision = convertRaw(rawData.getString(21));
+				item.revisionDate = convertRaw(rawData.getDate(22));
+				
 				ResultSet shipperInfoSet = Connector.executeStoredProcedure(connection, new ShipperInfo(),
 						new String[] { item.shippingGroupId });
 
