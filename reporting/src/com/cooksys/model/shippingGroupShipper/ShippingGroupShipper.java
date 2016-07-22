@@ -232,7 +232,7 @@ public class ShippingGroupShipper implements VariableGenerator<ShippingGroupShip
 				result.add(item);
 
 				item.contact = convertRaw(rawData.getString(1));
-				item.address = convertRaw(rawData.getString(2));
+				item.address = convertRaw(rawData.getString(2)).replace(";","<br />&nbsp;");
 				item.city = convertRaw(rawData.getString(3));
 				item.state = convertRaw(rawData.getString(4));
 				item.zip = convertRaw(rawData.getString(5));
