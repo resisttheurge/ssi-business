@@ -57,25 +57,7 @@ export default class VendorListController extends ListController {
     }
 
     function searchFilter(items) {
-
-      var resultArray = [];
-      if ($scope.search)
-      {
-        if (items)
-          items.forEach(function (item) {
-
-            if ($scope.search && !item.label.toUpperCase().match(new RegExp('^' + $scope.search.toUpperCase() + '.*'))) {}
-
-            //don't add to results array
-            else
-
-              //doesn't violate constraints, add to results array
-              resultArray.push(item);
-          })
-
-        return resultArray;
-      } else
-        return items;
+      return $filter('filter')(items, $scope.search, false, 'label')
     }
 
     function unpackResponse(response) {

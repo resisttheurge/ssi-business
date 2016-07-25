@@ -71,25 +71,7 @@ export default class CarrierListController extends ListController {
     }
 
     function carrierSearchFilter(carriers) {
-
-      var resultArray = [];
-      if ($scope.search)
-      {
-        if (carriers)
-          carriers.forEach(function (carrier) {
-
-            if ($scope.search && !carrier.label.toUpperCase().match(new RegExp('^' + $scope.search.toUpperCase() + '.*'))) {}
-
-            //don't add to results array
-            else
-
-              //doesn't violate constraints, add to results array
-              resultArray.push(carrier);
-          })
-
-        return resultArray;
-      } else
-        return carriers;
+      return $filter('filter')(items, $scope.search, false, 'label')
     }
 
     function total(array) {

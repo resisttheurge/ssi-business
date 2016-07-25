@@ -57,25 +57,7 @@ export default class CustomerListController extends ListController {
     }
 
     function customerSearchFilter(customers) {
-
-      var resultArray = [];
-      if ($scope.search)
-      {
-        if (customers)
-          customers.forEach(function (customer) {
-
-            if ($scope.search && !customer.label.toUpperCase().match(new RegExp('^' + $scope.search.toUpperCase() + '.*'))) {}
-
-            //don't add to results array
-            else
-
-              //doesn't violate constraints, add to results array
-              resultArray.push(customer);
-          })
-
-        return resultArray;
-      } else
-        return customers;
+      return $filter('filter')(customers, $scope.search, false, 'label')
     }
 
     function unpackResponse(response) {
