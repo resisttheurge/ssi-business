@@ -97,6 +97,12 @@ export default class CarrierListController extends ListController {
       return $scope.carriers = carriers
     }
 
+    $scope.$watch(() => $scope.search,
+      (o) => {
+        getCarriers($scope.query);
+        $scope.query.page = 1;
+      })
+
     getCarriers($scope.query)
   }
 }

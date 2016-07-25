@@ -97,6 +97,14 @@ export default class SalespersonListController extends ListController {
       return $scope.salespeople = salespeople
     }
 
+
+    $scope.$watch(() => $scope.search,
+      (o) => {
+        getSalespersons($scope.query);
+        $scope.query.page = 1;
+      })
+
     getSalespersons($scope.query)
+
   }
 }

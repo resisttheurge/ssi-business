@@ -97,6 +97,12 @@ export default class VendorListController extends ListController {
       return $scope.vendors = vendors
     }
 
+    $scope.$watch(() => $scope.search,
+      (o) => {
+        getVendors($scope.query);
+        $scope.query.page = 1;
+      })
+
     getVendors($scope.query)
   }
 }

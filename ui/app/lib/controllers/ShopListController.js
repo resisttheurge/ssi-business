@@ -97,6 +97,12 @@ export default class ShopListController extends ListController {
       return $scope.shops = shops
     }
 
+    $scope.$watch(() => $scope.search,
+      (o) => {
+        getShops($scope.query);
+        $scope.query.page = 1;
+      })
+
     getShops($scope.query)
   }
 }

@@ -97,6 +97,12 @@ export default class CustomerListController extends ListController {
       return $scope.customers = customers
     }
 
+    $scope.$watch(() => $scope.search,
+      (o) => {
+        getCustomers($scope.query);
+        $scope.query.page = 1;
+      })
+
     getCustomers($scope.query)
   }
 }

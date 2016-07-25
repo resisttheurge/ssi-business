@@ -97,6 +97,12 @@ export default class SpecialtyItemListController extends ListController {
       return $scope.specialtyItems = specialtyItems
     }
 
+    $scope.$watch(() => $scope.search,
+      (o) => {
+        getSpecialtyItems($scope.query);
+        $scope.query.page = 1;
+      })
+
     getSpecialtyItems($scope.query)
   }
 }
