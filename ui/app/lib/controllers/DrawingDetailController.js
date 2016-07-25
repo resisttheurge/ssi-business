@@ -7,6 +7,22 @@ export default class DrawingDetailController extends DetailController {
      super()
      var self = this
 
+     this.padLines = address =>
+       !address
+         ? {
+             lines: [{ id: 0, value: '' }],
+             city: '',
+             stateOrProvince: '',
+             postalCode: '',
+             country: ''
+           }
+         : {
+             ...address,
+             lines: address.lines
+               ? address.lines.map((line, index) => ({ id: index, value: line }))
+               : undefined
+           }
+
      $scope.job = $ssiSelected.job;
      $scope.loading = true
      $scope.drawing = $ssiSelected.drawing;
@@ -88,7 +104,8 @@ export default class DrawingDetailController extends DetailController {
          info: {
            tagType: 'S',
            shop: { id: 1, label: 'MEM' },
-           address: { lines: [{ id: 0, value: '' }] }
+           shopDate: new Date(),
+           address: this.padLines($ssiSelected.job.addresses.shipping)
          }
        }
 
