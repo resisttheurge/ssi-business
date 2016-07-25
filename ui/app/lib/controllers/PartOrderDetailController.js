@@ -31,9 +31,9 @@ export default class PartOrderDetailController extends DetailController {
 
       $scope.update = function update(item)
       {
-        if (item.requestedQuantity &&
-            item.stockQuantity &&
-            item.purchaseQuantity) {
+        if (item.requestedQuantity >= 0 &&
+            item.stockQuantity >= 0 &&
+            item.purchaseQuantity >= 0) {
           PartOrder.update(item).then(function (data) { $mdDialog
             .show($mdDialog
             .alert()
