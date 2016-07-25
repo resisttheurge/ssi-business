@@ -279,8 +279,8 @@ export default class JobListController extends ListController {
 
     $scope.$watchCollection(() => this.JobSearchParameters,
       (o) => {
-        this.getJobs();
         this.query.page = 1;
+        this.getJobs();
       })
     self.getJobs()
   }

@@ -99,8 +99,8 @@ export default class ManufacturerListController extends ListController {
 
     $scope.$watch(() => $scope.search,
       (o) => {
-        getManufacturers($scope.query);
         $scope.query.page = 1;
+        getManufacturers($scope.query);
       })
 
     getManufacturers($scope.query)

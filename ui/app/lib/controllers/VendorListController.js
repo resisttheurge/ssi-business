@@ -99,8 +99,8 @@ export default class VendorListController extends ListController {
 
     $scope.$watch(() => $scope.search,
       (o) => {
-        getVendors($scope.query);
         $scope.query.page = 1;
+        getVendors($scope.query);
       })
 
     getVendors($scope.query)

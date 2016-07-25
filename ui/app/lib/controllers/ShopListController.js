@@ -99,8 +99,8 @@ export default class ShopListController extends ListController {
 
     $scope.$watch(() => $scope.search,
       (o) => {
-        getShops($scope.query);
         $scope.query.page = 1;
+        getShops($scope.query);
       })
 
     getShops($scope.query)

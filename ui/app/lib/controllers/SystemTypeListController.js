@@ -99,8 +99,8 @@ export default class SystemTypeListController extends ListController {
 
     $scope.$watch(() => $scope.search,
       (o) => {
-        getSystemTypes($scope.query);
         $scope.query.page = 1;
+        getSystemTypes($scope.query);
       })
 
     getSystemTypes($scope.query)
