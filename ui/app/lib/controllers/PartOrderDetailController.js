@@ -69,7 +69,14 @@ export default class PartOrderDetailController extends DetailController {
           $scope.drawings = drawings
         }).then(() => $scope.loading = false)
 
-      $scope.partOrder = { jobId: $scope.job.id, status: 'ACTIVE', ...$ssiSelected.partOrder }
+      $scope.partOrder = {
+        jobId: $scope.job.id,
+        status: 'ACTIVE',
+        requestedQuantity: 0,
+        stockQuantity: 0,
+        purchaseQuantity: 0,
+        ...$ssiSelected.partOrder
+      }
 
       $scope.create = item => {
         if (
