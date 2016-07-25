@@ -71,7 +71,7 @@ export default class CarrierListController extends ListController {
     }
 
     function carrierSearchFilter(carriers) {
-      return $filter('filter')(items, $scope.search, false, 'label')
+      return $filter('filter')(carriers, $scope.search, false, 'label')
     }
 
     function total(array) {
