@@ -49,6 +49,10 @@
                               md-search-text="salespersonSearchText"
                               md-items="salesperson in querySalespeople(salespersonSearchText)"
                               md-item-text="salesperson.label"
+                              md-select-on-match="true"
+                              md-match-case-insensitive="true"
+                              md-autoselect="true"
+                              md-select-on-focus
                               md-floating-label="Salesperson" flex>
                             <span>{{salesperson.label}}</span>
                           </md-autocomplete>
@@ -60,6 +64,10 @@
                               md-search-text="shopSearchText"
                               md-items="shop in queryShops(shopSearchText)"
                               md-item-text="shop.label"
+                              md-select-on-match="true"
+                              md-match-case-insensitive="true"
+                              md-autoselect="true"
+                              md-select-on-focus
                               md-floating-label="Shop" flex>
                             <span>{{shop.label}}</span>
                           </md-autocomplete>
@@ -76,6 +84,10 @@
                               md-search-text="systemTypeSearchText"
                               md-items="item in allSystemTypes | filter : systemTypeSearchText : false : 'label'"
                               md-item-text="item.label"
+                              md-select-on-match="true"
+                              md-match-case-insensitive="true"
+                              md-autoselect="true"
+                              md-select-on-focus
                               placeholder="Search for a System Type">
                               <span md-highlight-text="systemTypeSearchText">{{item.label}}</span>
                             </md-autocomplete>
@@ -150,6 +162,10 @@
                         md-search-text="customerSearchText"
                         md-items="customer in queryCustomers(customerSearchText)"
                         md-item-text="customer.label"
+                        md-select-on-match="true"
+                        md-match-case-insensitive="true"
+                        md-autoselect="true"
+                        md-select-on-focus
                         md-floating-label="Customer" layout-margin>
                       <span>{{customer.label}}</span>
                     </md-autocomplete>
@@ -196,6 +212,10 @@
                           md-search-text="invoicingCustomerSearchText"
                           md-items="invoicingCustomer in queryCustomers(invoicingCustomerSearchText)"
                           md-item-text="invoicingCustomer.label"
+                          md-select-on-match="true"
+                          md-match-case-insensitive="true"
+                          md-autoselect="true"
+                          md-select-on-focus
                           md-floating-label="Invoicing Customer" layout-margin>
                         <span>{{invoicingCustomer.label}}</span>
                       </md-autocomplete>
