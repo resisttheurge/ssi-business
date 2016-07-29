@@ -12,6 +12,22 @@ export default class ShipmentDetailController extends DetailController {
     $scope.job = $ssiSelected.job
     $scope.loading = true
 
+    this.padLines = address =>
+      !address
+        ? {
+            lines: [{ id: 0, value: '' }],
+            city: '',
+            stateOrProvince: '',
+            postalCode: '',
+            country: ''
+          }
+        : {
+            ...address,
+            lines: address.lines
+              ? address.lines.map((line, index) => ({ id: index, value: line }))
+              : undefined
+          }
+
     $scope.addAddressLine = () =>
       $scope.shipment ?
         $scope.shipment.address ?
@@ -83,7 +99,14 @@ export default class ShipmentDetailController extends DetailController {
           }
         ).then(() => $scope.loading = false)
 
-      $scope.shipment = { jobId: $scope.job.id, status: 'ACTIVE', weight: 0, shop: { id: 1, label: 'MEM' }, address: { lines: [{ id: 0, value: '' }] }, ...$ssiSelected.shipment }
+      $scope.shipment = {
+        jobId: $scope.job.id,
+        status: 'ACTIVE',
+        weight: 0,
+        shop: { id: 1, label: 'MEM' },
+        address: this.padLines($ssiSelected.job.addresses.shipping),
+        ...$ssiSelected.shipment
+      }
 
       $scope.create = shipment => {
         if (

@@ -49,6 +49,7 @@ export default class MarkDetailController extends DetailController {
           shops: Shop.list()
         }).then(
           ({ mark, shops }) => {
+            $ssiSelected.mark = mark
             $scope.mark = mark
             $scope.zones = mark.shippingItemZones
             $scope.shops = shops
