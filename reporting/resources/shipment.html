@@ -50,7 +50,6 @@ th{
 
 p{
 	font-size: 14px;
-	text-align: left;
 	padding-left: 5px;
 }
 </style>
@@ -83,12 +82,12 @@ p{
 		<#list ship[0].shipmentByCarrier?keys as prop>
 		<#list ship[0].shipmentByCarrier[prop] as carrier>
 		<tr>
-			<td align="center" width="10%"><p align="center">${carrier.number}</p></td>
+			<td align="center" width="10%"><p align="left">${carrier.number}</p></td>
 			<td align="center" width="15%"><p align="center">${carrier.shipDate}</p></td>
 			<td align="center" width="10%"><p align="center">${carrier.shop}</p></td>
-			<td align="center" width="35%"><p align="center">${carrier.shipVia}</p></td>
-			<td align="center" width="10%"><p align="center">${carrier.weight}</p></td>
-			<td align="center" width="10%"><p align="center">${carrier.billOfLading}</p></td>
+			<td align="center" width="35%"><p align="left">${carrier.shipVia}</p></td>
+			<td align="center" width="10%"><p align="right">${carrier.weight}</p></td>
+			<td align="center" width="10%"><p align="left">${carrier.billOfLading}</p></td>
 			<td align="center" width="10%">
 				<p align="center"><#if carrier.posted == "1">POSTED</#if></p>
 			</td>
