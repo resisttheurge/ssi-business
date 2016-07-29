@@ -54,6 +54,7 @@ export default class DrawingDetailController extends DetailController {
            shops: Shop.list(),
            carriers: Carrier.list()
          }).then(({ drawing, specialtyItems, shops, carriers }) => {
+           $ssiSelected.drawing = drawing
            $scope.drawing = drawing
            $scope.specialtyItems = specialtyItems
            $scope.shops = shops
