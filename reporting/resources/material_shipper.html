@@ -73,16 +73,16 @@
 		<#list drawing.markList as mark>
 		
 		<tr style="background: #F5F5F5">
-			<td align="center"><p align="center">${mark.mark}</p></td>
-			<td align="center"><p align="center">${mark.jobDesc}</p></td>
-			<td align="center"><p align="center">${mark.shop}</p></td>
-			<td align="center"><p align="center">${mark.requested}</p></td>
-			<td align="center"><p align="center">${mark.quantity}</p></td>
-			<td align="center"><p align="center">${mark.balance}</p></td>
-			<td align="center"><p align="center">${mark.completed}</p></td>
-			<td align="center"><p align="center">${mark.status}</p></td>
+			<td width="75px" align="center"><p align="left">${mark.mark}</p></td>
+			<td width="300px" align="center"><p align="left">${mark.jobDesc}</p></td>
+			<td width="50px" align="center"><p align="center">${mark.shop}</p></td>
+			<td width="50px" align="center"><p align="center">${mark.requested}</p></td>
+			<td width="50px" align="center"><p align="center">${mark.quantity}</p></td>
+			<td width="50px" align="center"><p align="center">${mark.balance}</p></td>
+			<td width="50px" align="center"><p align="center">${mark.completed}</p></td>
+			<td width="50px" align="center"><p align="center">${mark.status}</p></td>
 			<#list mark.zoneList as zone>
-				<td align="center"><p align="center">${zone.quantity}</p></td>
+				<td width="4%" align="center"><p align="center">${zone.quantity}</p></td>
 			</#list>
 		</tr>
 		</#list>
@@ -113,14 +113,14 @@
 		<#list shipping.shippingGroupItemList as shippingGroupItem>
 		
 		<tr style="background: #F5F5F5">
-			<td width="7%" align="center"><p align="left">${shippingGroupItem.mark}</p></td>
-			<td width="25%" align="center"><p align="left">${shippingGroupItem.jobDesc}</p></td>
-			<td width="4%" align="center"><p align="center">${shippingGroupItem.shop}</p></td>
-			<td width="4%" align="center"><p align="center">${shippingGroupItem.requested}</p></td>
-			<td width="4%" align="center"><p align="center">${shippingGroupItem.quantity}</p></td>
-			<td width="4%" align="center"><p align="center">${shippingGroupItem.balance}</p></td>
-			<td width="4%" align="center"><p align="center">${shippingGroupItem.completed}</p></td>
-			<td width="4%" align="center"><p align="center">${shippingGroupItem.status}</p></td>
+			<td width="75px" align="center"><p align="left">${shippingGroupItem.mark}</p></td>
+			<td width="300px" align="center"><p align="left">${shippingGroupItem.jobDesc}</p></td>
+			<td width="50px" align="center"><p align="center">${shippingGroupItem.shop}</p></td>
+			<td width="50px" align="center"><p align="center">${shippingGroupItem.requested}</p></td>
+			<td width="50px" align="center"><p align="center">${shippingGroupItem.quantity}</p></td>
+			<td width="50px" align="center"><p align="center">${shippingGroupItem.balance}</p></td>
+			<td width="50px" align="center"><p align="center">${shippingGroupItem.completed}</p></td>
+			<td width="50px" align="center"><p align="center">${shippingGroupItem.status}</p></td>
 			<#list shippingGroupItem.zoneList as zone>
 				<td width="4%" align="center"><p align="center">${zone.quantity}</p></td>
 			</#list>
